@@ -1,5 +1,5 @@
 ___________________________________________________
-Normalized KARDL Results (long-run results)
+Adjusted KARDL Results (long-run results)
   {x$results}
 ___________________________________________________
   {x$starsDesc}
