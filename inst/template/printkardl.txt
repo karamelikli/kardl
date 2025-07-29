@@ -1,0 +1,11 @@
+==============================================================
+KARDL Results
+The lags of the model is:
+  {x$OptLag}
+
+The estimated model's formula is:
+{x$finalModel$ModelFormula}
+
+The coeffients estimation's results are:
+{x$finalModel$model$coefficients}
+===============================================================

@@ -1,0 +1,5 @@
+ARCH test
+
+F = {x$Fval[[1]]}, p-value = {x$p.value[[1]]}, df1 = {x$parameter[[1]]}, df2 = {x$parameter[[2]]}
+
+{summary(x$statistic)}

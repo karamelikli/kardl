@@ -1,0 +1,132 @@
+==============================================================
+==Start Info======
+NARDL.version: {packageVersion(getPackageName())}
+Model Name: {x$OptModel$inputs$modelName}
+Owner: {owner}
+  
+Mothod: {x$OptModel$inputs$modelType}
+Project Start Time  : {ProjectStartTime}
+Start Time:     {x$OptModel$inputs$startTime}
+Finished:       {currenTime}
+Time elapsed for the project: {ProjectElapsedTime}
+Time elapsed for the file:  {FileElapsedTime}
+  
+==Start F Bound============
+{names(x$PB$result)}
+{x$PB$result}
+
+__table__
+{x$PB$criticalValues$names}
+{x$PB$criticalValues$vals}
+
+==End F Bound============
+
+==Start NARAYAN F Bound============
+{x$NB$result$names}
+{x$NB$result$vals}
+
+__table__
+{x$NB$criticalValues$names}
+{x$NB$criticalValues$vals}
+
+==End NARAYAN F Bound============
+
+==Start t Bound============
+{x$Pt$result$names}
+{x$Pt$result$vals}
+
+__table__
+{x$Pt$criticalValues$names}
+{x$Pt$criticalValues$vals}
+
+==End t Bound============  
+  
+==Start t Banerjee============
+{x$BECM$result$names}
+{x$BECM$result$vals}
+
+__table__
+{x$BECM$criticalValues$names}
+{x$BECM$criticalValues$vals}
+==End t Banerjee============   
+
+==Start AARDL F Bound============
+{x$AARDLCo$result$names}
+{x$AARDLCo$result$vals}
+
+BoundNum: {x$AARDLCo$BoundNum}
+__table__
+{x$AARDLCo$criticalValues$names}
+{x$AARDLCo$criticalValues$vals}
+
+==End AARDL F Bound============
+  
+==Start Vars============
+dependentVar : {x$OptModel$inputs$dependentVar} 
+independentVars : {x$OptModel$inputs$independentVars}  
+AllAsymVars :  {x$OptModel$inputs$AllAsymVars} 
+indepASexcluded :  {x$OptModel$inputs$indepASexcluded} 
+indepALexcluded :  {x$OptModel$inputs$indepALexcluded} 
+method :  {x$OptModel$inputs$modelType}  
+shortrunLength :  {x$OptModel$inputs$shortrunLength}  
+lagRowsNumber :  {x$OptModel$inputs$lagRowsNumber}  
+shortRunVars :  {x$OptModel$inputs$shortRunVars} 
+longRunVars :  {x$OptModel$inputs$longRunVars} 
+exegenvars :  {x$OptModel$inputs$exegenvars}
+  
+==End Vars============
+==Start Model def============
+Total iteration: {x$OptModel$inputs$lagRowsNumber}
+Proper Model: {x$OptModel$properLag}
+Criterion: {x$OptModel$Criterion}
+Formula: {x$OptModel$ModelFormula}
+Used observations for estimation starts with: {x$OptModel$start}
+Used observations for estimation ends with: {x$OptModel$end}
+Included observations after adjustments: {x$OptModel$TimeSpan}
+Total included variables and constant: {x$OptModel$k}
+Lag selection statistics:
+  {x$OptModel$OptLag$names}
+  {x$OptModel$OptLag$vals}
+==End Model def============
+  
+===Start Normalized the Long-run Coefficients======
+ {kardl_longrun(x)}
+===End Normalized the Long-run Coefficients======
+  
+===Start Cusum Tests======
+Cusum: {x$cusum$Cusum$Cusum}
+Cusum file name: {x$cusum$Cusum$fileName}
+
+CusumQ: {x$cusum$CusumQ$CusumQ}
+CusumQ file name: {x$cusum$CusumQ$fileName}
+===End  Cusum Tests======
+  
+===Start Model results======
+  {summary(x$OptModel[["model"]])}
+===End Model results======
+  
+===Start Model R======
+Adjusted r.squared: {summ$adj$r$squared}
+R.squared: {summ$r$squared}
+===End Model R======
+==Start asymmetry tests============
+Short-run statistics:
+  {x$wald[["SwaldResults"]]}
+________________________________________
+Long-run statistics:
+  {x$wald[["LwaldResults"]]}
+  
+==End asymmetry tests============
+==Diagnostic tests============
+shapiro.test: {x$jbtest[["statistic"]][["W"]]} p.value: {x$jbtest[["p.value"]]}
+the Breusch-Godfrey test for higher-order serial correlation: {x$bg$statistic} p.value: {x$bg$p.value}
+Ramsey RESET: {x$reset$statistic} p.value: {x$reset$p.value}
+ARCH Heteroscedasticity test: {x$harch$Fval[["value"]]} p.value: {x$harch$p.value[["value"]]}
+Breusch-Pagan test against heteroskedasticity: {x$hbp$statistic[["BP"]]} p.value: {x$hbp$p.value[["BP"]]}
+  
+==End Diagnostic tests============
+  
+==End Model============
+==File End======
+  
+  

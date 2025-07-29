@@ -1,0 +1,30 @@
+Package: kardl
+Type: Package
+Title: Make symmetric and asymmetric ARDL estimations
+Version: 5.2.2
+Authors@R: 
+  c(person(given = "Huseyin",
+           family = "Karamelikli",
+           role = c("aut", "cre"),
+           email = "hakperest@gmail.com",
+           comment = c(ORCID = "0000-0001-7622-0972")),
+    person(given = "Huseyin Utku",
+           family = "Demir",
+           role = "aut",
+           comment = c(ORCID = "0000-0002-9140-0362")) 
+           )
+Maintainer: Huseyin Karamelikli <hakperest@gmail.com>
+Description: Estimation of linear and non-linear ARDL models.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Imports: stats, msm, lmtest, nlWaldTest, car, strucchange, utils
+RoxygenNote: 7.3.2
+Suggests: knitr, rmarkdown, officer, flextable, equatags, magrittr, rlang, ggplot2, tidyr, dplyr
+NeedsCompilation: no
+Packaged: 2025-06-24 17:22:10 UTC; karamelikli
+Author: Huseyin Karamelikli [aut, cre] (ORCID:
+    <https://orcid.org/0000-0001-7622-0972>),
+  Huseyin Utku Demir [aut] (ORCID:
+    <https://orcid.org/0000-0002-9140-0362>)
+Depends: R (>= 3.5.0)

@@ -1,0 +1,10 @@
+Method: {x$method}. Case: {x$case}
+{x$H0}
+{x$H1}
+{x$CointText}
+The results: There is {x$Cont}
+Significance level: {x$siglvl}
+___________________________________________________
+Critique values are as follows:
+{x$criticalValues}
+
