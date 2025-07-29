@@ -3,14 +3,15 @@ title: "Symmetric and Asymmetric ARDL Modeling with kardl"
 author: "Huseyin Karamelikli and Huseyin Utku Demir"
 date: "`r Sys.Date()`"
 output:
+  pdf_document:
+    toc: true
+    latex_engine: xelatex
   html_document:
     toc: true
     toc_float: true
     theme: united
-vignette: >
-  %\VignetteIndexEntry{Symmetric and Asymmetric ARDL Modeling with kardl}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+vignette: "%\\VignetteIndexEntry{Symmetric and Asymmetric ARDL Modeling with kardl}
+  %\\VignetteEngine{knitr::rmarkdown} %\\VignetteEncoding{UTF-8}\n"
 ---
 
 ```{r setup, include=FALSE}

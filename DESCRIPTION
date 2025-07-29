@@ -15,13 +15,14 @@ Authors@R:
            )
 Maintainer: Huseyin Karamelikli <hakperest@gmail.com>
 Description: Estimation of linear and non-linear ARDL models.
-License: GPL (>= 3)
+License: file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: stats, msm, lmtest, nlWaldTest, car, strucchange, utils
 RoxygenNote: 7.3.2
 Suggests: knitr, rmarkdown, officer, flextable, equatags, magrittr, rlang, ggplot2, tidyr, dplyr
 NeedsCompilation: no
+VignetteBuilder: knitr
 Packaged: 2025-06-24 17:22:10 UTC; karamelikli
 Author: Huseyin Karamelikli [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-7622-0972>),
