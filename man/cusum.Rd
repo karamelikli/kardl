@@ -32,7 +32,8 @@ cDF
 head(cDF$dataframe )
 
 # For saving as a file:
-cusum(kardl_model,"~/Downloads/myCusum.jpg")
+# File creation in this example is disabled because of CRAN policies.
+# cusum(kardl_model,"~/Downloads/myCusum.jpg")
 
 # Use your own plot utilizing ggplot
 library(magrittr)

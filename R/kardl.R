@@ -1,6 +1,11 @@
 Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #' Estimation of ARDL and NARDL
 #'
+#' This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear ARDL (NARDL) model based on the provided data and model formula.
+#' It allows for flexible specification of variables, including deterministic terms, asymmetric variables, and trend components.
+#' The function also supports automatic lag selection using various information criteria.
+#'
+#' Note: All arguments of this function can be set using \code{\link{kardl_set}} function.
 #'
 #' @param data The data of analysis
 #' @param model A formula specifying the long-run model equation. This formula defines the relationships
@@ -130,11 +135,26 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #'
 #'        Selecting the appropriate mode can improve the efficiency and usability of the function depending
 #'        on the user's requirements and the computational environment.
-
-
-
+#' @param criterion A string specifying the information criterion to be used for selecting the optimal lag structure.
+#'       The available options are:
+#'       \itemize{
+#'       \item \strong{"AIC"}: Akaike Information Criterion (default). This criterion balances model fit and complexity,
+#'       favoring models that explain the data well with fewer parameters.
+#'       \item \strong{"BIC"}: Bayesian Information Criterion. This criterion imposes a stronger penalty for model complexity
+#'       than AIC, making it more conservative in selecting models with fewer parameters.
+#'       \item \strong{"AICc"}: Corrected Akaike Information Criterion. This is an adjusted version of AIC that accounts for small sample sizes,
+#'       making it more suitable when the number of observations is limited relative to the number of parameters.
+#'       \item \strong{"HQ"}: Hannan-Quinn Information Criterion. This criterion provides a compromise between AIC and BIC,
+#'       favoring models that balance fit and complexity without being overly conservative.
+#'       }
+#'       The criterion can be specified as a string (e.g., \code{"AIC"}) or as a user-defined function that takes a fitted model object.
+#'       Please visit the \code{\link{modelCriterion}} function documentation for more details on using custom criteria.
 #'
-#'
+#' @param differentAsymLag A logical value indicating whether to allow different lag lengths for positive and negative decompositions.
+#' @param batch A string specifying the batch processing configuration in the format "current_batch/total_batches".
+#' If a user utilize grid or grid_custom mode and want to split the lag search into multiple batches, this parameter can be used to define the current batch and the total number of batches.
+#'       For example, "2/5" indicates that the current batch is the second out of a total of five batches.
+#'       The default value is "1/1", meaning that the entire lag search is performed in a single batch.
 #'
 #' @param ... Additional arguments that can be passed to the function. These arguments can be used to
 #'
@@ -161,97 +181,99 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #'
 #' @examples
 #'
+#' # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
+#'  library(magrittr)
+#'
+#'   kardl_set(model=CPI~ER+PPI+asym(ER)+deterministic(covid)+trend ,
+#'            data=imf_example_data,
+#'            maxlag=2
+#'            ) # setting the default values of the kardl function
 #'
 #'
+#'  kardl_model_grid<-kardl( mode = "grid")
+#'  kardl_model_grid
+#'  kardl_model<- imf_example_data %>% kardl(mode = "grid_custom")
+#'  kardl_model
+#'  kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
+#'  # Getting the results
+#'  kardl_model2
+#'  # Getting the summary of the results
+#'  summary(kardl_model)
+#'  # OR
+#'  imf_example_data %>% kardl(model=CPI~PPI+asym(ER)) %>% summary()
+#'
+#'  # using . in the formula means that all variables in the data will be used
+#'
+#'  kardl(model=CPI~.+deterministic(covid),mode = "grid")
+#'
+#'  # Setting max lag instead of default value [4]
+#'  kardl(imf_example_data,
+#'        CPI~ER+PPI+asymL(ER),
+#'        maxlag = 3, mode = "grid_custom")
+#'  # Using another criterion for finding the best lag
+#'
+#'  kardl_set(criterion = "HQ") # setting the criterion to HQ
+#'  kardl( mode = "grid_custom")
+#'
+#'  # using default values of lags
+#'  kardl( mode=c(1,2,3,0))
+#'
+#'  # summary( myNewStarSigns)
+#'  # For using different lag values for negative and positive decompositions of non-linear variables
+#'  # setting the same lags for positive and negative decompositions.
+#'  kardl_set(differentAsymLag = FALSE)
+#'
+#'  diffAsymLags<-kardl(model=CPI~asym(ER),maxlag=2, mode = "grid_custom")
+#'  diffAsymLags$properLag
 #'
 #'
-#'# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
-#' library(magrittr)
+#'  # setting the different lags for positive and negative decompositions
+#'  kardl_set(differentAsymLag = TRUE)
+#'  sameAsymLags<-kardl(model=CPI~asym(ER),maxlag=2, mode = "grid_custom")
+#'  sameAsymLags$properLag
+#'
+#'  # Setting the preffixes and suffixes for non-linear variables
+#'  kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
+#'  kardl()
+#'
+#'  # For having the lags plot
+#'  library(ggplot2)
+#'  library(dplyr)
+#'
+#'  #  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
+#'  LagCriteria <- as.data.frame(kardl_model_grid[["LagCriteria"]])
+#'  # Rename columns for easier access and convert relevant columns to numeric
+#'  colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+#'
+#'  LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+#'
+#'  # Pivot the data to a long format excluding AICc
+#'  library(tidyr)
+#'
+#'  LagCriteria_long <- LagCriteria %>%
+#'  select(-AICc) %>%
+#'  pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+#'  # Find the minimum value for each criterion
+#'  min_values <- LagCriteria_long %>%  group_by(Criteria) %>%
+#'  slice_min(order_by = Value) %>%  ungroup()
+#'
+#'  # Create the ggplot with lines, highlight minimum values, and add labels
+#'  ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
+#'   geom_line() +
+#'    geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
+#'      geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
+#'       vjust = 1.5, color = "black", size = 3.5) +
+#'       labs(title = "Lag Criteria Comparison ", x = "Lag Configuration",  y = "Criteria Value") +
+#'   theme_minimal() +
+#'   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #'
 #'
-#'
-#' MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
-#' kardl_model_grid<-kardl(imf_example_data,MyFormula,mode = "grid")
-#' kardl_model_grid
-#' kardl_model<- imf_example_data %>% kardl(MyFormula,mode = "grid_custom")
-#' kardl_model
-#' kardl_model2<-kardl(imf_example_data,MyFormula,mode = c( 2    ,  1    ,  1   ,   3 ))
-#' # Getting the results
-#' kardl_model2
-#' # Getting the summary of the results
-#' summary(kardl_model)
-#' # OR
-#' imf_example_data %>% kardl(MyFormula) %>% summary()
-#'
-#' # using . in the formula means that all variables in the data will be used
-#'
-#' kardl(imf_example_data,CPI~.+deterministic(covid),mode = "grid")
-#'
-#' # For increasing the performance of finding the most fitted lag vector
-#' kardl(imf_example_data,MyFormula, mode = "grid_custom")
-#' # Setting max lag instead of default value [4]
-#' kardl(imf_example_data,MyFormula,maxlag = 6, mode = "grid_custom")
-#' # Using another criterion for finding the best lag
-#'
-#' kardl_set(criterion = "HQ") # setting the criterion to HQ
-#' kardl(imf_example_data, MyFormula, maxlag = 6, mode = "grid_custom")
-#'
-#' # using default values of lags
-#' kardl(imf_example_data, MyFormula, mode=c(1,2,3,0))
-#'
-#' # summary( myNewStarSigns)
-#' # For using different lag values for negative and positive decompositions of non-linear variables
-#'
-#' kardl_set(DifferentAsymLag = FALSE) # setting the same lags for positive and negative decompositions
-#' diffAsymLags<-kardl(imf_example_data, MyFormula, mode = "grid_custom")
-#' diffAsymLags$properLag
-#'
-#' # setting the different lags for positive and negative decompositions
-#' kardl_set(DifferentAsymLag = TRUE)
-#' sameAsymLags<-kardl(imf_example_data, MyFormula, mode = "grid_custom" )
-#' sameAsymLags$properLag
-#'
-#' # Setting the preffixes and suffixes for non-linear variables
-#' kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
-#' kardl(imf_example_data, MyFormula,  mode = "grid_custom")
-#'
-#' # For having the lags plot
-#' library(ggplot2)
-#' library(dplyr)
-#'
-#' #  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
-#' LagCriteria <- as.data.frame(kardl_model_grid[["LagCriteria"]])
-#' # Rename columns for easier access and convert relevant columns to numeric
-#' colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
-#'
-#' LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
-#'
-#' # Pivot the data to a long format excluding AICc
-#' library(tidyr)
-#'
-#' LagCriteria_long <- LagCriteria %>%
-#' select(-AICc) %>%   pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
-#' # Find the minimum value for each criterion
-#' min_values <- LagCriteria_long %>%  group_by(Criteria) %>%
-#' slice_min(order_by = Value) %>%  ungroup()
-#'
-#' # Create the ggplot with lines, highlight minimum values, and add labels
-#' ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
-#'  geom_line() +
-#'   geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
-#'     geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
-#'      vjust = 1.5, color = "black", size = 3.5) +
-#'      labs(title = "Lag Criteria Comparison ", x = "Lag Configuration",  y = "Criteria Value") +
-#'  theme_minimal() +
-#'  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-kardl <- function(data, model,
-                  maxlag  = 4,
-                  mode    = "quick",
-                  # criterion = "AIC",
-                  # DifferentAsymLag = FALSE,
-                  # AsymPrefix = character(),          # <- new
-                  # AsymSuffix = c("_POS", "_NEG"),    # <- new
-                  # batch      = "1/1",                    # <- new
+kardl <- function(data = NULL, model = NULL,
+                  maxlag  = NULL,
+                  mode    = NULL,
+                   criterion = NULL,
+                   differentAsymLag = NULL,
+                  batch = NULL,
                   ...
 ){
   ## ------------------------------------------------------------------
@@ -263,9 +285,50 @@ kardl <- function(data, model,
   #   AsymSuffix <- c("_POS", "_NEG")
   # }
   ## ------------------------------------------------------------------
-  otherArgs <- list(...)
+  if (is.null(data)) {
+    data <- kardl_get("data")
+    if (is.null(data)) {
+      stop("No data provided. Please supply `data` or set it with kardl_set(data = ...).",
+           call. = FALSE)
+    }
+  }
+  if (is.null(model)) {
+    model <- kardl_get("model")
+    if (is.null(model)) {
+      stop("No model formula provided. Please supply `model` or set it with kardl_set(model = ...).",
+           call. = FALSE)
 
-  Args <- as.list(environment())
+    }
+  }
+  if (is.null(maxlag)) {
+    maxlag <- kardl_get("maxlag")
+    if (is.null(maxlag)) maxlag <- 4  # default value
+  }
+  if (is.null(mode)) {
+    mode <- kardl_get("mode")
+    if (is.null(mode)) mode <- "quick"  # default value
+  }
+  if (is.null(criterion)) {
+    criterion <- kardl_get("criterion")
+    if (is.null(criterion)) criterion <- "AIC"  # default value
+  }
+  if (is.null(differentAsymLag)) {
+    differentAsymLag <- kardl_get("differentAsymLag")
+    if (is.null(differentAsymLag)) differentAsymLag <- TRUE  # default value
+  }
+  if (is.null(batch)) {
+    batch <- kardl_get("batch")
+    if (is.null(batch)) batch <- "1/1"  # default value
+  }
+
+
+  Args <- list(data=data, model=model, maxlag=maxlag, mode=mode,
+               criterion=criterion,
+               differentAsymLag=differentAsymLag,
+               batch=batch)
+
+  otherArgs <- list(...)
+ # Args <- as.list(environment())
 
   inputs <- lmerge(Args,otherArgs)
   for (name in names(inputs)) {

@@ -325,18 +325,18 @@ parseFormula<- function(formula_, matchPattern = "asym",ignore.case=FALSE) {
 #
 
 BatchControl<-function(inputs){
-  if ( .kardl_env$batch =="1/1") {
+  if ( inputs$batch =="1/1") {
     startRow<-1
     endRow<-inputs$lagRowsNumber # Default: all tasks if batch is NULL
     batch_size <- inputs$lagRowsNumber
   } else
   {
-    if (!grepl("^\\d+/\\d+$", .kardl_env$batch)) {
+    if (!grepl("^\\d+/\\d+$", inputs$batch)) {
       stop("Invalid batch format. Use 'x/y', where x is the batch number and y is the total number of batches.")
     }
 
     # Extract batch number and total batches
-    batch_parts <- as.numeric(strsplit(.kardl_env$batch, "/")[[1]])
+    batch_parts <- as.numeric(strsplit(inputs$batch, "/")[[1]])
     current_batch <- batch_parts[1]
     total_batches <- batch_parts[2]
 

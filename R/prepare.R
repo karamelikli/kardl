@@ -74,9 +74,9 @@ verifyUserDefinedLags<-function(inputs){
   j<-0
   for (i in 1:length(inputs$Allvars)) {
     if(inputs$Allvars[i] %in% inputs$ASvars){
-      nlist[i+j]<-paste0(.kardl_env$AsymPrefix[1],inputs$Allvars[i],.kardl_env$AsymSuffix[1])
+      nlist[i+j]<-paste0(.kardl_Settings_env$AsymPrefix[1],inputs$Allvars[i],.kardl_Settings_env$AsymSuffix[1])
       j=j+1
-      nlist[i+j]<-paste0(.kardl_env$AsymPrefix[2],inputs$Allvars[i],.kardl_env$AsymSuffix[2])
+      nlist[i+j]<-paste0(.kardl_Settings_env$AsymPrefix[2],inputs$Allvars[i],.kardl_Settings_env$AsymSuffix[2])
     }else{
       nlist[i+j]<- inputs$Allvars[i]
     }
@@ -134,8 +134,8 @@ CheckInputs<-function(inputs){
   #   stop(paste0("Error: Significance level should be a valid significant level. The valid levels here are  0.01, 0.05, 0.10."))
   # }
 
-  if(!is.function(.kardl_env$criterion) ){
-        if(typeof(.kardl_env$criterion) != "character" && !.kardl_env$criterion %in% c("AIC","BIC","AICc","HQ")  ){
+  if(!is.function(inputs$criterion) ){
+        if(typeof(inputs$criterion) != "character" && !inputs$criterion %in% c("AIC","BIC","AICc","HQ")  ){
           stop(paste0("Error: The entered criterion should be a function or one of the defined criteria here. The defined criteria are  AIC , BIC , AICc , HQ "))
         }
   }
@@ -143,7 +143,7 @@ CheckInputs<-function(inputs){
   # if(typeof(inputs$trend)!= "logical"){
   #   stop(paste0("Error: The entered trend should be a logical value. TRUE/FALSE ."))
   # }
-  if(typeof(.kardl_env$DifferentAsymLag)!= "logical"){
+  if(typeof(inputs$differentAsymLag)!= "logical"){
     stop(paste0("Error: The entered DifferentAsymLag should be a logical value. TRUE/FALSE ."))
   }
   if(!all(inputs$mode %in% c("grid_custom","grid","quick") )){
@@ -156,7 +156,7 @@ CheckInputs<-function(inputs){
   #   stop(paste0("Error: The entered makeCusumPlots should be a logical value. TRUE/FALSE ."))
   # }
 
-    if (!is.null(.kardl_env$batch) & !grepl("^\\d+/\\d+$", .kardl_env$batch)) {
+    if (!is.null(inputs$batch) & !grepl("^\\d+/\\d+$", inputs$batch)) {
       stop("Invalid batch format. Use 'x/y', where x is the batch number and y is the total number of batches.")
     }
   # Check whether are digit or not
@@ -217,14 +217,14 @@ detectVars <-function(inputs){
     }else{
       ## c(paste0(AsymPrefix[1],i,inputs$AsymSuffix[1])
       ##  baslik<-c(baslik,paste0(x,".NEG"));baslik<-c(baslik,paste0(x,".POS"));
-      baslik<-c(baslik,paste0(.kardl_env$AsymPrefix[1],x,.kardl_env$AsymSuffix[1]));
-      baslik<-c(baslik,paste0(.kardl_env$AsymPrefix[2],x,.kardl_env$AsymSuffix[2]));
+      baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]));
+      baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]));
       #   if(DifferentAsymLag) {} else baslik<-c(baslik,x)
     }
     if(!(x %in% inputs$ALvars)){
       baslik2<-c(baslik2,x)
     }else{
-      baslik2<-c(baslik2,paste0(.kardl_env$AsymPrefix[1],x,.kardl_env$AsymSuffix[1]));baslik2<-c(baslik2,paste0(.kardl_env$AsymPrefix[2],x,.kardl_env$AsymSuffix[2]));
+      baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]));baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]));
     }
   }
   shortRunVars<-baslik
@@ -241,7 +241,7 @@ detectVars <-function(inputs){
   else {method<-"SS"}
 
   # calculating the column numbers for each row
-  shortrunLength<-length(indepASexcluded)+length(inputs$ASvars)*(if(.kardl_env$DifferentAsymLag) 2 else 1)
+  shortrunLength<-length(indepASexcluded)+length(inputs$ASvars)*(if(inputs$differentAsymLag) 2 else 1)
   # calculating the row numbers for all of possibilities of lags
   lagRowsNumber <- (inputs$maxlag^(shortrunLength+1))-(inputs$maxlag^(shortrunLength))
 
@@ -284,8 +284,8 @@ detectVars <-function(inputs){
 CreateNewVars <-function( inputs){
   # Create and adding asymmetric variables to the data
   for (x in  inputs$AllAsymVars ){
-    posName<-paste0(.kardl_env$AsymPrefix[1],x,.kardl_env$AsymSuffix[1]) ### posName<- paste0(x,".POS")
-    negName<-paste0(.kardl_env$AsymPrefix[2],x,.kardl_env$AsymSuffix[2]) ### negName<- paste0(x,".NEG")
+    posName<-paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]) ### posName<- paste0(x,".POS")
+    negName<-paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]) ### negName<- paste0(x,".NEG")
     if(! posName %in% colnames(inputs$data)){
       varNames<-colnames(inputs$data)
       gecici<-diff(inputs$data[,x])
@@ -323,14 +323,14 @@ CreateNewVars <-function( inputs){
 
 
   varAdlari<-colnames(inputs$data)
-  AsShortlar<-unlist(lapply(inputs$ASvars, function(i){c(paste0(.kardl_env$AsymPrefix[1],i,.kardl_env$AsymSuffix[1]),paste0(.kardl_env$AsymPrefix[2],i,.kardl_env$AsymSuffix[2]))})) ## AsShortlar<- as.vector(outer(inputs$ASvars,c("POS","NEG"), paste, sep="."))
+  AsShortlar<-unlist(lapply(inputs$ASvars, function(i){c(paste0(.kardl_Settings_env$AsymPrefix[1],i,.kardl_Settings_env$AsymSuffix[1]),paste0(.kardl_Settings_env$AsymPrefix[2],i,.kardl_Settings_env$AsymSuffix[2]))})) ## AsShortlar<- as.vector(outer(inputs$ASvars,c("POS","NEG"), paste, sep="."))
   shortRunVars<-c(inputs$dependentVar,inputs$indepASexcluded,AsShortlar)
 
   for (x in shortRunVars ){
     fark<-diff(inputs$data[,x])
     m<-fark
     for(j in 0:inputs$maxlag){
-      newVarName<-replace_lag_var(.kardl_env$ShortCoef ,x,j) #paste0("L",j,".d.",x)
+      newVarName<-replace_lag_var(.kardl_Settings_env$ShortCoef ,x,j) #paste0("L",j,".d.",x)
       if(! newVarName %in% colnames(inputs$data)){
         # y<-inputs$data[,x] # boyutunu alsın diye
         y<-c()
@@ -344,11 +344,11 @@ CreateNewVars <-function( inputs){
     }
   }
 
-  AsLonglar<-unlist(lapply(inputs$ALvars, function(i){c(paste0(.kardl_env$AsymPrefix[1],i,.kardl_env$AsymSuffix[1]),paste0(.kardl_env$AsymPrefix[2],i,.kardl_env$AsymSuffix[2]))}))## AsLonglar<- as.vector(outer(ALvars,c("POS","NEG"), paste, sep="."))
+  AsLonglar<-unlist(lapply(inputs$ALvars, function(i){c(paste0(.kardl_Settings_env$AsymPrefix[1],i,.kardl_Settings_env$AsymSuffix[1]),paste0(.kardl_Settings_env$AsymPrefix[2],i,.kardl_Settings_env$AsymSuffix[2]))}))## AsLonglar<- as.vector(outer(ALvars,c("POS","NEG"), paste, sep="."))
   longRunVars<-c(inputs$dependentVar,inputs$indepALexcluded,AsLonglar)
 
   for (x in longRunVars ){
-    newVarName<-replace_lag_var(.kardl_env$LongCoef ,x,1) #paste0("L1.",x)
+    newVarName<-replace_lag_var(.kardl_Settings_env$LongCoef ,x,1) #paste0("L1.",x)
     if(! newVarName %in% colnames(inputs$data)){
       # y<-inputs$data[,x] # boyutunu alsın diye
       y<-c()
@@ -446,7 +446,7 @@ makeShortrunMOdel<-function(shortRunVars,LagsList, deterministic){
     # modd1<-c(modd1,lapply(start:LagsList[j], function(i,y){sprintf(paste0("L%d.d.",y),i)},y=inputs$shortRunVars[j]))
     # Using for loop has better performance than lapply
     for (k in start:LagsList[j]) {
-      modd1<-c(modd1,replace_lag_var(.kardl_env$ShortCoef,shortRunVars[j],k) #paste0("L",k,".d.",shortRunVars[j])
+      modd1<-c(modd1,replace_lag_var(.kardl_Settings_env$ShortCoef,shortRunVars[j],k) #paste0("L",k,".d.",shortRunVars[j])
                )
     }
   }
@@ -461,7 +461,7 @@ makeLongrunMOdel<-function(inputs){
   if(!is.null(inputs$longRunPart  )){
     LS_longrun<-inputs$longRunPart
   }else{
-      modd<-lapply(inputs$longRunVars,function(i){ replace_lag_var(.kardl_env$LongCoef ,i,1) # paste0("L1.",i)
+      modd<-lapply(inputs$longRunVars,function(i){ replace_lag_var(.kardl_Settings_env$LongCoef ,i,1) # paste0("L1.",i)
         } )
       LS_longrun<-paste(modd, collapse = "+")
       if(inputs$noConstant){
@@ -471,7 +471,7 @@ makeLongrunMOdel<-function(inputs){
   }
 
 
-  LS_dependent<- replace_lag_var(.kardl_env$ShortCoef,inputs$dependentVar,0) # paste0("L0.d.",inputs$dependentVar)
+  LS_dependent<- replace_lag_var(.kardl_Settings_env$ShortCoef,inputs$dependentVar,0) # paste0("L0.d.",inputs$dependentVar)
   list(LS_longrun=LS_longrun,
        LS_dependent=LS_dependent
   )

@@ -17,7 +17,7 @@ This function resets all options in the kardl package to their default values.
 }
 \examples{
 # Set some options
-kardl_set(criterion = "BIC", DifferentAsymLag = TRUE)
+kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 # Reset to default values
 kardl_get()  # Check current settings
 kardl_reset()
@@ -26,13 +26,13 @@ kardl_get()  # Check settings after reset
 library(magrittr)
  MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
 imf_example_data \%>\%
-  kardl_set(LongCoef= "K1{lag}w1{varName}",DifferentAsymLag= FALSE ) \%>\%  kardl(MyFormula ) \%>\%
+  kardl_set(LongCoef= "K1{lag}w1{varName}",differentAsymLag= FALSE ) \%>\%  kardl(MyFormula ) \%>\%
     kardl_reset()
 kardl_get()
 
 imf_example_data \%>\%
   kardl_reset() \%>\%
-    kardl_set(LongCoef= "K2{lag}w2{varName}",DifferentAsymLag=FALSE ) \%>\%  kardl(MyFormula)
+    kardl_set(LongCoef= "K2{lag}w2{varName}",differentAsymLag=FALSE ) \%>\%  kardl(MyFormula)
 
 kardl_get()
 

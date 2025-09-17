@@ -17,7 +17,7 @@ This function retrieves options from the kardl package settings.
 }
 \examples{
 # Get specific options
-kardl_get("criterion", "DifferentAsymLag")
+kardl_get("criterion", "differentAsymLag")
 
 # Get all options
 kardl_get()

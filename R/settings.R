@@ -1,17 +1,21 @@
 # Create an environment to store settings
-.kardl_env <- new.env(parent = emptyenv())
+.kardl_Settings_env <- new.env(parent = emptyenv())
 
 # Initialize settings in the environment
-.kardl_env$criterion <- "AIC"
-.kardl_env$DifferentAsymLag <- TRUE
-.kardl_env$AsymPrefix <- c()
-.kardl_env$AsymSuffix <- c("_POS", "_NEG")
-.kardl_env$LongCoef <- "L{lag}.{varName}" #  L{lag}.{varName}    L1.LRM
-.kardl_env$ShortCoef <- "L{lag}.d.{varName}" # L{lag}.d.{varName}  L2.d.LRM
-.kardl_env$batch <- "1/1"
+.kardl_Settings_env$data<-NULL
+.kardl_Settings_env$model<-NULL
+.kardl_Settings_env$maxlag <- 4
+.kardl_Settings_env$mode<-"quick"
+.kardl_Settings_env$criterion <- "AIC"
+.kardl_Settings_env$differentAsymLag <- TRUE
+.kardl_Settings_env$AsymPrefix <- c()
+.kardl_Settings_env$AsymSuffix <- c("_POS", "_NEG")
+.kardl_Settings_env$LongCoef <- "L{lag}.{varName}" #  L{lag}.{varName}    L1.LRM
+.kardl_Settings_env$ShortCoef <- "L{lag}.d.{varName}" # L{lag}.d.{varName}  L2.d.LRM
+.kardl_Settings_env$batch <- "1/1"
 
 # Store default settings as a list
-.kardl_env_default <- as.list(.kardl_env)
+.kardl_Settings_env_default <- as.list(.kardl_Settings_env)
 
 #' Function to get or set settings
 #'
@@ -23,9 +27,9 @@
 #' @export
 #' @examples
 #' # Set options
-#' kardl_set(criterion = "BIC", DifferentAsymLag = TRUE)
+#' kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 #' # Get specific options
-#' kardl_get("criterion", "DifferentAsymLag")
+#' kardl_get("criterion", "differentAsymLag")
 #' # Get all options
 #' kardl_get()
 #'
@@ -56,13 +60,13 @@ kardl_set <- function(.=FALSE, ...) {
 
   # Named arguments: set options
   if (!is.null(names(args))) {
-    invalid <- setdiff(names(args), names(.kardl_env))
+    invalid <- setdiff(names(args), names(.kardl_Settings_env))
     if (length(invalid) > 0) {
       stop(sprintf("Invalid option(s): %s", paste(invalid, collapse = ", ")))
     }
     # Assign new values to the environment
     for (name in names(args)) {
-      .kardl_env[[name]] <- args[[name]]
+      .kardl_Settings_env[[name]] <- args[[name]]
     }
   }
 
@@ -70,7 +74,7 @@ kardl_set <- function(.=FALSE, ...) {
   if (!missing(.) && !is.null(.) && !isFALSE(.)) {
     return(.)
   } else {
-    return(invisible(as.list(.kardl_env)))
+    return(invisible(as.list(.kardl_Settings_env)))
   }
 }
 
@@ -85,7 +89,7 @@ kardl_set <- function(.=FALSE, ...) {
 #' @export
 #' @examples
 #' # Get specific options
-#' kardl_get("criterion", "DifferentAsymLag")
+#' kardl_get("criterion", "differentAsymLag")
 #'
 #' # Get all options
 #' kardl_get()
@@ -98,17 +102,17 @@ kardl_get <- function(...) {
 
   # No arguments: return all options as a list
   if (length(names_requested) == 0) {
-    return(as.list(.kardl_env))
+    return(as.list(.kardl_Settings_env))
   }
 
   # Check for invalid option names
-  invalid <- setdiff(names_requested, names(.kardl_env))
+  invalid <- setdiff(names_requested, names(.kardl_Settings_env))
   if (length(invalid) > 0) {
     stop(sprintf("Option(s) not found: %s", paste(invalid, collapse = ", ")))
   }
 
   # Retrieve requested options
-  result <- lapply(names_requested, function(name) .kardl_env[[name]])
+  result <- lapply(names_requested, function(name) .kardl_Settings_env[[name]])
 
   # Name the result list
   names(result) <- names_requested
@@ -131,7 +135,7 @@ kardl_get <- function(...) {
 #' @export
 #' @examples
 #' # Set some options
-#' kardl_set(criterion = "BIC", DifferentAsymLag = TRUE)
+#' kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 #' # Reset to default values
 #' kardl_get()  # Check current settings
 #' kardl_reset()
@@ -140,13 +144,13 @@ kardl_get <- function(...) {
 #' library(magrittr)
 #'  MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
 #' imf_example_data %>%
-#'   kardl_set(LongCoef= "K1{lag}w1{varName}",DifferentAsymLag= FALSE ) %>%  kardl(MyFormula ) %>%
+#'   kardl_set(LongCoef= "K1{lag}w1{varName}",differentAsymLag= FALSE ) %>%  kardl(MyFormula ) %>%
 #'     kardl_reset()
 #' kardl_get()
 #'
 #' imf_example_data %>%
 #'   kardl_reset() %>%
-#'     kardl_set(LongCoef= "K2{lag}w2{varName}",DifferentAsymLag=FALSE ) %>%  kardl(MyFormula)
+#'     kardl_set(LongCoef= "K2{lag}w2{varName}",differentAsymLag=FALSE ) %>%  kardl(MyFormula)
 #'
 #' kardl_get()
 #'
@@ -155,13 +159,13 @@ kardl_get <- function(...) {
 #'
 kardl_reset <- function(.=FALSE) {
   # Reinitialize the environment with default settings
-  for (name in names(.kardl_env_default)) {
-    .kardl_env[[name]] <- .kardl_env_default[[name]]
+  for (name in names(.kardl_Settings_env_default)) {
+    .kardl_Settings_env[[name]] <- .kardl_Settings_env_default[[name]]
   }
   # Return based on whether . exists and is non-NULL
   if (!missing(.) && !is.null(.) && !isFALSE(.)) {
     return(.)
   } else {
-    return(invisible(as.list(.kardl_env)))
+    return(invisible(as.list(.kardl_Settings_env)))
   }
 }

@@ -24,7 +24,6 @@
 #'   \deqn{
 #'   H_{0}: \sum_{j = 0}^{q}{\beta^{+}_{j}} = \sum_{j = 0}^{m}{\beta^{-}_{j}} }
 #'   \deqn{H_{1}: \sum_{j = 0}^{q}{\beta^{+}_{j}} \neq \sum_{j = 0}^{m}{\beta^{-}_{j}}
-#'
 #'   }
 #'
 #'
@@ -77,7 +76,7 @@ asymmetrytest<-function(model){
   LwaldName<-c()
    Lhypotheses<-list()
   coefNames<-names(model$coefficients)
-  LongDep<- replace_lag_var(.kardl_env$LongCoef ,vars$dependentVar,1)  # paste0("L1.",vars$dependentVar)
+  LongDep<- replace_lag_var(.kardl_Settings_env$LongCoef ,vars$dependentVar,1)  # paste0("L1.",vars$dependentVar)
   dependentID<-which(LongDep==coefNames)
   if(length(vars$ALvars)>0){
       LongAs<-data.frame()
@@ -85,11 +84,11 @@ asymmetrytest<-function(model){
 
     # POS<-paste0(vars$AsymPrefix[1],x,vars$AsymSuffix[1]);
     # POS_param<-paste0("L1.",POS)
-    POS_param<-replace_lag_var(.kardl_env$LongCoef ,paste0(.kardl_env$AsymPrefix[1],x,.kardl_env$AsymSuffix[1]),1)
+    POS_param<-replace_lag_var(.kardl_Settings_env$LongCoef ,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]),1)
     POS_index<-which(POS_param==coefNames)
     # NEG<-paste0(vars$AsymPrefix[2],x,vars$AsymSuffix[2]);
     # NEG_param<-paste0("L1.",NEG)
-    NEG_param<-replace_lag_var(.kardl_env$LongCoef ,paste0(.kardl_env$AsymPrefix[2],x,.kardl_env$AsymSuffix[2]),1)
+    NEG_param<-replace_lag_var(.kardl_Settings_env$LongCoef ,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]),1)
 
     NEG_index<-which(NEG_param==coefNames)
     LongAs<-rbind(LongAs,data.frame(varName=x,POS_param=POS_param,POS_index=POS_index, NEG_param=NEG_param,NEG_index=NEG_index))
@@ -139,9 +138,9 @@ asymmetrytest<-function(model){
     ceofPOS<-ceofNEG<-NegHyp<-PosHyp<-c();
     for (i in 0:vars$maxlag) {
       # posLagged<-paste0("L",i,".d.",xPOS)
-      posLagged<-replace_lag_var(.kardl_env$ShortCoef ,paste0(.kardl_env$AsymPrefix[1],v,.kardl_env$AsymSuffix[1]),i)
+      posLagged<-replace_lag_var(.kardl_Settings_env$ShortCoef ,paste0(.kardl_Settings_env$AsymPrefix[1],v,.kardl_Settings_env$AsymSuffix[1]),i)
       # negLagged<-paste0("L",i,".d.",xNEG)
-      negLagged<-replace_lag_var(.kardl_env$ShortCoef ,paste0(.kardl_env$AsymPrefix[2],v,.kardl_env$AsymSuffix[2]),i)
+      negLagged<-replace_lag_var(.kardl_Settings_env$ShortCoef ,paste0(.kardl_Settings_env$AsymPrefix[2],v,.kardl_Settings_env$AsymSuffix[2]),i)
 
       if(posLagged %in% coefNames){ceofPOS<-c(ceofPOS,posLagged) ;PosHyp<-c(PosHyp,paste0("Coef(",posLagged,")"))}
       if(negLagged %in% coefNames){ceofNEG<-c(ceofNEG,negLagged) ;NegHyp<-c(NegHyp,paste0("Coef(",negLagged,")"))}
@@ -203,22 +202,20 @@ asymmetrytest<-function(model){
 #' }
 #'
 #' \describe{
-#'   \code{Cases 1, 3, 5:}{}
-#' }
-#'   \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k  = 0}
-#'   \deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k} \neq 0}
+#'   \item{Cases 1, 3, 5:}{
+#'      \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k  = 0}
+#'      \deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k} \neq 0}
+#'   }
+#'   \item{Case 2:}{
+#'      \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k =  \psi  = 0}
+#'      \deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \psi \neq 0}
+#'   }
 #'
-#' \describe{
-#'   \code{Case 2:}{}
-#' }
-#'   \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k =  \psi  = 0}
-#'   \deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \psi \neq 0}
-#'
-#' \describe{
-#'   \code{Case 4:}{}
-#' }
-#'   \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k = \varphi = 0}
-#'   \deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \varphi \neq 0}
+#'   \item{Case 4:}{
+#'      \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k = \varphi = 0}
+#'      \deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \varphi \neq 0}
+#'       }
+#'   }
 #'
 #' @return A list with class "kardl" containing the following components:
 #' \itemize{
@@ -353,7 +350,7 @@ pssf<-function(model,case=3,signif_level = "auto"){
                    c(0,9.81,9.81,11.64,11.64,13.36,13.36,15.73,15.73,1,5.59,6.26,6.56,7.30,7.46,8.27,8.74,9.63,2,4.19,5.06,4.87,5.85,5.49,6.59,6.34,7.52,3,3.47,4.45,4.01,5.07,4.52,5.62,5.17,6.36,4,3.03,4.06,3.47,4.57,3.89,5.07,4.40,5.72,5,2.75,3.79,3.12,4.25,3.47,4.67,3.93,5.23,6,2.53,3.59,2.87,4.00,3.19,4.38,3.60,4.90,7,2.38,3.45,2.69,3.83,2.98,4.16,3.34,4.63,8,2.26,3.34,2.55,3.68,2.82,4.02,3.15,4.43,9,2.16,3.24,2.43,3.56,2.67,3.87,2.97,4.24,10,2.07,3.16,2.33,3.46,2.56,3.76,2.84,4.10)
                    )
 
-  longrunNames<-replace_lag_var(.kardl_env$LongCoef ,inputs$longRunVars,1) # paste0("L1.",inputs$longRunVars)
+  longrunNames<-replace_lag_var(.kardl_Settings_env$LongCoef ,inputs$longRunVars,1) # paste0("L1.",inputs$longRunVars)
   # check if case is 1,3,5
   if(case == 2){
     longrunNames<-c(longrunNames,"(Intercept)")
@@ -572,7 +569,7 @@ narayan<-function(model,case=3,signif_level = "auto"){
 
 
 
-  longrunNames<-replace_lag_var(.kardl_env$LongCoef ,inputs$longRunVars,1) # paste0("L1.",inputs$longRunVars)
+  longrunNames<-replace_lag_var(.kardl_Settings_env$LongCoef ,inputs$longRunVars,1) # paste0("L1.",inputs$longRunVars)
   # check if case is 1,3,5
   if(case == 2){
     longrunNames<-c(longrunNames,"(Intercept)")
@@ -694,7 +691,6 @@ narayan<-function(model,case=3,signif_level = "auto"){
 #'   \deqn{\mathbf{H_{0}:} \eta_0  =    = 0}
 #'   \deqn{\mathbf{H_{1}:} \eta_{0}  \neq 0}
 #'
-
 #'
 #' @return A list containing the results of the PSS t Bound test, including:
 #'  \itemize{
@@ -799,7 +795,7 @@ psst<-function(model,case=3,signif_level = "auto"){
 
   vcov_matrix <- stats::vcov(OptModel$finalModel$model)
   CoefTest<-lmtest::coeftest(OptModel$finalModel$model, vcov = vcov_matrix)
-  testVarName<-replace_lag_var(.kardl_env$LongCoef ,inputs$dependentVar,1)
+  testVarName<-replace_lag_var(.kardl_Settings_env$LongCoef ,inputs$dependentVar,1)
   Pt <- CoefTest[testVarName ,3]
 
   MatName=c("k","0.10L","0.10U","0.05L","0.05U","0.025L","0.025U","0.01L","0.01U")
@@ -855,7 +851,7 @@ psst<-function(model,case=3,signif_level = "auto"){
     criticalValues=bu,
     parameter = testVarName,
     coef=CoefTest,
-    FH0 = paste0(replace_lag_var(.kardl_env$LongCoef ,inputs$dependentVar,1) ,"=0"), # paste0("L1.",inputs$dependentVar,"=0"),
+    FH0 = paste0(replace_lag_var(.kardl_Settings_env$LongCoef ,inputs$dependentVar,1) ,"=0"), # paste0("L1.",inputs$dependentVar,"=0"),
     warnings=warningArray,
     method = "Pesarant"
   )
@@ -985,7 +981,7 @@ banerjee<-function(model,signif_level = "auto"){
   colnames(datats2)<-c(isim,"EcmRes")
 
   # EcmSh<- paste0("L0.d.",inputs$dependentVar,"~EcmRes+",  makeShortrunMOdel(inputs$shortRunVars, OptModel$properLag,inputs$deterministic))
-  EcmSh<- paste0( replace_lag_var(.kardl_env$ShortCoef ,inputs$dependentVar,0),"~EcmRes+",  makeShortrunMOdel(inputs$shortRunVars, OptModel$properLag,inputs$deterministic))
+  EcmSh<- paste0( replace_lag_var(.kardl_Settings_env$ShortCoef ,inputs$dependentVar,0),"~EcmRes+",  makeShortrunMOdel(inputs$shortRunVars, OptModel$properLag,inputs$deterministic))
   EcmModel<-lm(as.formula(EcmSh),datats2)
   Ecm_tidy <- summary(EcmModel)$coefficients
 
@@ -1107,7 +1103,6 @@ banerjee<-function(model,signif_level = "auto"){
 #'   \deqn{
 #' \begin{aligned}
 #' \Delta y_t =  \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1}  - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
-#'
 #' \end{aligned}
 #' }
 #'
@@ -1191,86 +1186,89 @@ banerjee<-function(model,signif_level = "auto"){
 #'
 #' @examples
 #'
-#' # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
-#' library(magrittr)
+#'  # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
+#'  library(magrittr)
+#'  kardl_set(model=CPI~ER+PPI+asym(ER)+deterministic(covid)+trend ,
+#'            data=imf_example_data ,
+#'            maxlag=3)
 #'
-#' MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
-#' recmt_model_grid<-recmt(imf_example_data,MyFormula,mode = "grid")
-#' recmt_model_grid
-#' recmt_model<- imf_example_data %>% recmt(MyFormula,mode = "grid_custom")
-#' recmt_model
-#' recmt_model2<-recmt(imf_example_data,MyFormula,mode = c( 2    ,  1    ,  1   ,   3 ))
-#' # Getting the results
-#' recmt_model2
-#' # Getting the summary of the results
-#' summary(recmt_model2)
-#' # OR
-#' imf_example_data %>% recmt(CPI~PPI+asym(ER) +trend,case=4) %>% summary()
+#'  recmt_model_grid<-recmt(mode = "grid")
+#'  recmt_model_grid
+#'  recmt_model<- imf_example_data %>% recmt(mode = "grid_custom")
+#'  recmt_model
+#'  recmt_model2<-recmt(mode = c( 2    ,  1    ,  1   ,   3 ))
+#'  # Getting the results
+#'  recmt_model2
+#'  # Getting the summary of the results
+#'  summary(recmt_model2)
+#'  # OR
+#'  imf_example_data %>% recmt(CPI~PPI+asym(ER) +trend,case=4) %>% summary()
 #'
-#' # For increasing the performance of finding the most fitted lag vector
-#' recmt(imf_example_data,MyFormula, mode = "grid_custom")
-#' # Setting max lag instead of default value [4]
-#' recmt(imf_example_data,MyFormula,maxlag = 6, mode = "grid_custom")
-#' # Using another criterion for finding the best lag
-#'
-#' kardl_set(criterion = "HQ") # setting the criterion to HQ
-#' recmt(imf_example_data, MyFormula, maxlag = 6, mode = "grid_custom")
-#'
-#' # using default values of lags
-#' recmt(imf_example_data, MyFormula, mode=c(1,2,3,0))
-#'
-#' # summary( myNewStarSigns)
-#' # For using different lag values for negative and positive decompositions of non-linear variables
-#'
-#' kardl_set(DifferentAsymLag = FALSE) # setting the same lags for positive and negative decompositions
-#' diffAsymLags<-recmt(imf_example_data, MyFormula, mode = "grid_custom")
-#' diffAsymLags$OptLag
-#'
-#' # setting the different lags for positive and negative decompositions
-#' kardl_set(DifferentAsymLag = TRUE)
-#' sameAsymLags<-recmt(imf_example_data, MyFormula, mode = "grid_custom" )
-#' sameAsymLags$OptLag
+#'  # For increasing the performance of finding the most fitted lag vector
+#'  recmt(mode = "grid_custom")
+#'  # Setting max lag instead of default value [4]
+#'  recmt(maxlag = 2, mode = "grid_custom")
+#'  # Using another criterion for finding the best lag
+#'  recmt(criterion = "HQ", mode = "grid_custom")
 #'
 #'
 #'
-#' # Setting the preffixes and suffixes for non-linear variables
-#' kardl_reset()
-#' kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
-#' customizedNames<-recmt(imf_example_data, MyFormula,  mode = "grid_custom")
-#' customizedNames$ecmS$finalModel$model
+#'  # summary( myNewStarSigns)
+#'  # For using different lag values for negative and positive decompositions of non-linear variables
 #'
-#' # For having the lags plot
-#' library(ggplot2)
-#' library(dplyr)
+#'  # setting the same lags for positive and negative decompositions.
+#'  kardl_set(differentAsymLag = FALSE)
 #'
-#' kardl_reset()
-#' #  recmt_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
-#' LagCriteria <- as.data.frame(recmt_model_grid$ecmS$LagCriteria)
-#' # Rename columns for easier access and convert relevant columns to numeric
-#' colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
-#' LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+#'  diffAsymLags<-recmt( mode = "grid_custom")
+#'  diffAsymLags$OptLag
 #'
-#' # Pivot the data to a long format excluding AICc
-#' library(tidyr)
+#'  # setting the different lags for positive and negative decompositions
+#'  sameAsymLags<-recmt(differentAsymLag = TRUE , mode = "grid_custom" )
+#'  sameAsymLags$OptLag
 #'
-#' LagCriteria_long <- LagCriteria %>%  select(-AICc) %>%
-#' pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
-#' # Find the minimum value for each criterion
-#' min_values <- LagCriteria_long %>%  group_by(Criteria) %>%
-#'   slice_min(order_by = Value) %>%  ungroup()
 #'
-#' # Create the ggplot with lines, highlight minimum values, and add labels
-#' ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
-#'   geom_line() +
-#'   geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
-#'   geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
-#'     vjust = 1.5, color = "black", size = 3.5) +
-#'   labs(title = "Lag Criteria Comparison", x = "Lag Configuration",  y = "Criteria Value") +
-#'   theme_minimal() +
-#'   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+#'  # Setting the preffixes and suffixes for non-linear variables
+#'  kardl_reset()
+#'  kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
+#'  customizedNames<-recmt(imf_example_data, CPI~ER+PPI+asym(ER) )
+#'  customizedNames$ecmS$finalModel$model
 #'
-recmt<-function(data, model, maxlag  = 4,   mode    = "quick",
-               case=3,signif_level = "auto", ...  ){
+#'  # For having the lags plot
+#'  library(ggplot2)
+#'  library(dplyr)
+#'
+#'  #  recmt_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
+#'  LagCriteria <- as.data.frame(recmt_model_grid$ecmS$LagCriteria)
+#'  # Rename columns for easier access and convert relevant columns to numeric
+#'  colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+#'  LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+#'
+#'  # Pivot the data to a long format excluding AICc
+#'  library(tidyr)
+#'
+#'  LagCriteria_long <- LagCriteria %>%  select(-AICc) %>%
+#'  pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+#'  # Find the minimum value for each criterion
+#'  min_values <- LagCriteria_long %>%  group_by(Criteria) %>%
+#'    slice_min(order_by = Value) %>%  ungroup()
+#'
+#'  # Create the ggplot with lines, highlight minimum values, and add labels
+#'  ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
+#'    geom_line() +
+#'    geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
+#'    geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
+#'      vjust = 1.5, color = "black", size = 3.5) +
+#'    labs(title = "Lag Criteria Comparison", x = "Lag Configuration",  y = "Criteria Value") +
+#'    theme_minimal() +
+#'    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+#'
+recmt<-function(data = NULL, model = NULL,  case=3,signif_level = "auto",
+                maxlag  = NULL,
+                mode    = NULL,
+                criterion = NULL,
+                differentAsymLag = NULL,
+                batch = NULL,
+                ...  ){
   if(! case %in% c(1,2,3,4,5,"auto")){
     stop("Invalid case. The options for case are 1, 2, 3, 4, 5 and auto")
   }
@@ -1281,11 +1279,51 @@ recmt<-function(data, model, maxlag  = 4,   mode    = "quick",
     stop("Invalid significance level. The options for signif_level are auto, 0.10, 0.1, 0.05, 0.025 and 0.01")
   }
 
+  if (is.null(data)) {
+    data <- kardl_get("data")
+    if (is.null(data)) {
+      stop("No data provided. Please supply `data` or set it with kardl_set(data = ...).",
+           call. = FALSE)
+    }
+  }
+  if (is.null(model)) {
+    model <- kardl_get("model")
+    if (is.null(model)) {
+      stop("No model formula provided. Please supply `model` or set it with kardl_set(model = ...).",
+           call. = FALSE)
 
+    }
+  }
+  if (is.null(maxlag)) {
+    maxlag <- kardl_get("maxlag")
+    if (is.null(maxlag)) maxlag <- 4  # default value
+  }
+  if (is.null(mode)) {
+    mode <- kardl_get("mode")
+    if (is.null(mode)) mode <- "quick"  # default value
+  }
+  if (is.null(criterion)) {
+    criterion <- kardl_get("criterion")
+    if (is.null(criterion)) criterion <- "AIC"  # default value
+  }
+  if (is.null(differentAsymLag)) {
+    differentAsymLag <- kardl_get("differentAsymLag")
+    if (is.null(differentAsymLag)) differentAsymLag <- TRUE  # default value
+  }
+  if (is.null(batch)) {
+    batch <- kardl_get("batch")
+    if (is.null(batch)) batch <- "1/1"  # default value
+  }
+
+
+  Args <- list(data=data, model=model, maxlag=maxlag, mode=mode,
+               criterion=criterion,
+               differentAsymLag=differentAsymLag,
+               batch=batch)
   # providing inputs for the rest of operations
   otherArgs <- list(...)
 
-  Args <- as.list(environment())
+ # Args <- as.list(environment())
   inputs <- lmerge(Args,otherArgs)
   for (name in names(inputs)) {
     if(!is.null(inputs[[name]])) {
@@ -1315,7 +1353,7 @@ recmt<-function(data, model, maxlag  = 4,   mode    = "quick",
 
   # longrunEQ<- paste0(paste0("L1.",inputs$dependentVar) ," ~ " ,paste0(paste0("L1.",inputs$independentVars),collapse = " + "))
 
-  longrunEQ<- paste0(replace_lag_var(.kardl_env$LongCoef ,inputs$dependentVar,1)  ," ~ " , paste0( replace_lag_var(.kardl_env$LongCoef ,inputs$longRunVars[-1],1) ,collapse = " + "))
+  longrunEQ<- paste0(replace_lag_var(.kardl_Settings_env$LongCoef ,inputs$dependentVar,1)  ," ~ " , paste0( replace_lag_var(.kardl_Settings_env$LongCoef ,inputs$longRunVars[-1],1) ,collapse = " + "))
 
 
   if(case == "auto"){
@@ -1378,7 +1416,11 @@ recmt<-function(data, model, maxlag  = 4,   mode    = "quick",
   if(case==5){
     shortrunEQ<-update(shortrunEQ, . ~ . + trend)
   }
-  ecmS <-kardl(data, shortrunEQ, mode =mode, maxlag = maxlag,longRunPart ="EcmRes")
+
+  ecmS <-kardl(data, shortrunEQ,maxlag = maxlag, mode =mode,criterion = criterion,
+               differentAsymLag = differentAsymLag,   batch = batch,
+               longRunPart ="EcmRes",...)
+
 
 
   bu<-psstCRvalues(case=case)

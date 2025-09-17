@@ -26,18 +26,37 @@
 #' @export
 #'
 #' @examples
+#' # Note: The file creations in this examples were deactivated in the current examples
+#' # because of CRAN policies.
+#'
+#' # For saving all equations in a MS word document, \strong{docx}.
+#' # The directory can be added alongside of the file name.
+#' # For Windows OS directories could be written as \\ not /.
+#'
+#' ## Not run:
+#'  # writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
+#'
+#' # For Markdown file the extenssion of the file should be assigned as \strong{md}.
+#'  # writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
+#' # All equations are able to be saved in a PDF file.
+#'  # writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
+#'
+#' ## End(Not run)
 #'
 #'
-#' # Following commad saves LibreOffice formulas.
+#'
+#' # Following commad saves LibreOffice formulas in terminal.
+#'
 #' # Copy and paste formulas there and after selecting related formula click on formula icon.
 #'
 #' kardl_model<-kardl(imf_example_data,CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,mode=c(1,2,3,0))
 #'
-#' # Following command writes all equations in a latex file in cuurent directory.
+#' # Following command writes all equations in a latex file in current directory.
 #'
-#' tmp <- tempfile(fileext = ".tex")
-#' writemath(kardl_model,tmp)
-#' unlink(tmp)
+#' # Note: The file creations in this examples were deactivated because of CRAN policies.
+#' # tmp <- tempfile(fileext = ".tex")
+#' # writemath(kardl_model,tmp)
+#' # unlink(tmp)
 #'
 #' # For printing the equations in Latex fomrat assignning of file name to 1 is required.
 #' # A user's formula can be written directly ib the function.
@@ -48,21 +67,13 @@
 #' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),2)
 #' # For printing the equations in OpenOffice fomrat assignning of file name to 3 is required.
 #' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),3)
-#' # For saving all equations in a MS word document, \strong{docx}.
-#' # The directory can be added alongside of the file name.
-#' # For Windows OS directories could be written as \\ not /.
-#'
-#' writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
-#' # For Markdown file the extenssion of the file should be assigned as \strong{md}.
-#' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
-#' # All equations are able to be saved in a PDF file.
-#' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
+
   writemath<-function(formula_,output=1){
     if(inherits(formula_, "kardl")){
       vars<- formula_$inputs
     }else{
       if(inherits(formula_, "formula")){
-        vars<- list(DifferentAsymLag=T)
+        vars<- list(differentAsymLag=T)
         deterministic<-parseFormula(formula_,"deterministic()",T)
         deterministic_<-unique(trimws(deterministic$detected));
         vars[["deterministic"]] <- deterministic_[nzchar(deterministic_)]
@@ -221,7 +232,7 @@ makeEquationComponents<-function(settings,Fformat){
   LibreO_ulaTxtLOrtak <-paste0("",identifier,"eta _0   ", LDependVar,"_{t-1} ")
   ARDL_def_eq_Formula<-paste0("ARDL(",gostergeler[1])
 
-  if(.kardl_env$DifferentAsymLag &  length(settings$ASvars) >0 )
+  if(settings$differentAsymLag &  length(settings$ASvars) >0 )
   {
     eklenecekSayi=1
   }else{
@@ -428,14 +439,14 @@ commonText<-function(){
   ARDL_eq_Formula = list(title="Integration of Long-Run Model into the ECM",desc="By embedding the long-run equilibrium relationship from the long-run model into the ECM, the model can account for both immediate changes and the gradual return to equilibrium, capturing both short-term fluctuations and the overarching long-run trend.",end="By using the long-run model into the ECM model we can have:"),
   ARDL_def_eq_Formula = list(title="ARDL Model Definition",desc="The ARDL (Auto-Regressive Distributed Lag) model is a regression model that includes lags of both the dependent and independent variables. It is particularly useful in analyzing relationships when variables have different orders of integration, as it can handle both I(0) (stationary) and I(1) (non-stationary) series. It provides a framework to explore both long-term relationships and short-term dynamics.",end="We have ARDL model with following definiation:"),
   Coefs_modif_eq_Formula = list(title="Parameters of the ARDL Model",desc="By embedding the residuals from the long-run model into the ECM, new parameters can be introduced.",end="We used following modifications to obtain the ARDL model:"),
-  Coefs_longRun_eq_Formula = list(title="Long-Run Coefficients Calculation",desc="To obtain estimated values for the long-run model from the ARDL model estimation, additional calculations are required.",end="Then, for reobtaining the long-run coefficients...:"),
-  Decompos_eq_Formula = list(title="Decomposition of the non-linear variable",desc="Asymmetric models capture different responses to positive and negative changes in independent variables. For example, a variable like oil prices might affect economic output differently during increases versus decreases. Asymmetric models allow for this kind of differential impact, which standard models may not capture.",end="The decomposition formula is as follow:"),
+  Coefs_longRun_eq_Formula = list(title="Long-Run Coefficients Calculation",desc="To obtain estimated values for the long-run model from the ARDL model estimation, additional calculations are required.",end="Then, we can reobtain the long-run coefficients with the following equations:"),
+  Decompos_eq_Formula = list(title="Decomposition of the non-linear variable",desc="Asymmetric models capture different responses to positive and negative changes in independent variables. For example, a variable like oil prices might affect economic output differently when it increases than when it decreases. Asymmetric models allow for this kind of differential impact, which standard models may not capture.",end="The decomposition formula is as follow:"),
   NlongRunEqFormula = list(title="Asymmetric Long-Run Model",desc="The asymmetric long-run model extends the concept of asymmetry to the long-term relationship, estimating how positive and negative changes in independent variables differently impact the dependent variable over the long run.",end="The long-run model containing asymmetric variables is defined as follow:"),
   NARDL_eq_Formula = list(title="Asymmetric Model",desc="In this context, an asymmetric model explicitly models how variables respond differently depending on the direction of the change, applicable in both short and long-run analyses.",end="Non-linear ARDL model is as follow:"),
   NCoefs_modif_eq_Formula = list(title="Parameters of the NARDL Model",desc="By embedding the residuals from the nonlinear long-run model into the ECM, which includes nonlinear independent variables, new parameters can be introduced.",end="We used following modifications to obtain the NARDL model:"),
-  NCoefs_longRun_eq_Formula = list(title="Long-Run Coefficients Calculation in the case of non-linearity",desc="To get estiamted values for the long-run NARDL model's values some calculations should be performed.",end="Then, for reobtaining the NARDL long-run coefficients...:"),
+  NCoefs_longRun_eq_Formula = list(title="Long-Run Coefficients Calculation in the case of non-linearity",desc="To get estiamted values for the long-run NARDL model's values some calculations should be performed.",end="Then, we can reobtain the NARDL long-run coefficients with the following equations:"),
   NARDL_eq_FormulaShort = list(title="Asymmetric Short-Run Model",desc="The asymmetric short-run model analyzes the differing effects of positive and negative changes in independent variables in the short term. While nonlinearity exists in the short run, linearity is maintained in the long run.",end="The NARDL model in the case of linearity in the long-run is as follow:"),
-  NARDL_eq_FormulaLong = list(title="Asymmetric Long-Run Model",desc="This variant of the asymmetric model considers long-term effects, focusing on how variables might have different impacts on the dependent variable in the long run, based on the direction of changes.",end="The NARDL model in the case of linearity in short-run"),
+  NARDL_eq_FormulaLong = list(title="Asymmetric Long-Run Model",desc="This variant of the asymmetric model considers long-term effects, focusing on how variables might have different impacts on the dependent variable in the long run, based on the direction of changes.",end="The NARDL model in the case of linearity in the short run is as follows:"),
   DynMul_eq_Formula = list(title="Dynamic multipliers",desc="Asymmetric dynamics describe the process by which variables adjust over time, capturing differing speeds or magnitudes of response to positive versus negative shocks. These dynamics are critical in accurately modeling the evolution of economic or financial systems under asymmetric influences.",end="The dynamic multipliers formulas are as follow:")
   )
 }

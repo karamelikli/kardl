@@ -19,9 +19,9 @@ This function allows you to get or set various options related to the kardl pack
 }
 \examples{
 # Set options
-kardl_set(criterion = "BIC", DifferentAsymLag = TRUE)
+kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 # Get specific options
-kardl_get("criterion", "DifferentAsymLag")
+kardl_get("criterion", "differentAsymLag")
 # Get all options
 kardl_get()
 

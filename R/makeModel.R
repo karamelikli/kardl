@@ -134,7 +134,7 @@ makemodel.quick<-function(inputs , ...  ){#model,data,inputs){
   #internal func
   myEst<-function(order){
     theResults<-makeEstimation(inputs$shortRunVars,order,inputs$deterministic,preModel$LS_dependent,preModel$LS_longrun,inputs$data)
-    modelCriterion(.kardl_env$criterion,theResults)
+    modelCriterion(inputs$criterion,theResults)
   }
 
   for (i in 1:inputs$maxlag) { # for each parse
@@ -191,8 +191,8 @@ makemodel.quick<-function(inputs , ...  ){#model,data,inputs){
 
 
   OptLag<-data.frame(c( paste0(best_order,collapse = ","),minValue[,ncol(minValue)])  )
-  if(!is.function(.kardl_env$criterion)){
-    colnames(OptLag)<-.kardl_env$criterion
+  if(!is.function(inputs$criterion)){
+    colnames(OptLag)<-inputs$criterion
   }
   rownames(OptLag)<-c("lag","value")
 
@@ -304,7 +304,7 @@ makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
   GeneralOrder<-append(OrderForShortRun,OrderForInd) # p<-append(m,b)
   LagQueue<-rev(expand.grid(GeneralOrder))  # q<-expand.grid(p)
 
-  if(length(inputs$ASvars)>0 && ! .kardl_env$DifferentAsymLag) {
+  if(length(inputs$ASvars)>0 && ! inputs$differentAsymLag) {
     i<-1 # satrt from the second var
     for (x in  inputs$independentVars){
       i<-i+1
@@ -321,12 +321,12 @@ makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
   for(i in batch$startRow:batch$endRow)  {
     theResults<- makeEstimation(inputs$shortRunVars,LagsList=unlist(LagQueue[i,]),inputs$deterministic,preModel$LS_dependent,preModel$LS_longrun,inputs$data)
 
-    cr<-modelCriterion(.kardl_env$criterion, theResults, ...)
+    cr<-modelCriterion(inputs$criterion, theResults, ...)
     # k<-theResults$k
     # n<-theResults$n
     # llh<-logLik(theResults$model)
     #
-    # cr<-switch (.kardl_env$criterion,"AIC"=((2*k-2*llh)/n),"BIC"=((log(n)*k-2*llh)/n ),"AICc"=(((2 * k * (k + 1))/(n - k - 1))+(2*k-2*llh)/n),"HQ"=((2*log(log(n))*k-2*llh)/n) )
+    # cr<-switch (inputs$criterion,"AIC"=((2*k-2*llh)/n),"BIC"=((log(n)*k-2*llh)/n ),"AICc"=(((2 * k * (k + 1))/(n - k - 1))+(2*k-2*llh)/n),"HQ"=((2*log(log(n))*k-2*llh)/n) )
     if(cr<Mincr){
       Mincr<-cr
       OptRow<-i
@@ -339,8 +339,8 @@ makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
   # OptLag<-data.frame(  LagQueue[OptRow,]
   # rownames(OptLag)<-""
   OptLag<-data.frame(c( paste0(LagQueue[OptRow,],collapse = ","),Mincr)  )
-  if(!is.function(.kardl_env$criterion)){
-      colnames(OptLag)<-.kardl_env$criterion
+  if(!is.function(inputs$criterion)){
+      colnames(OptLag)<-inputs$criterion
       }
   rownames(OptLag)<-c("lag","value")
   Mincr<-NULL
@@ -411,7 +411,7 @@ makemodel.grid<-function(inputs , ... ){#model ,  data,inputs  ){ # makemodel.de
   for (i in 1:inputs$shortrunLength) {
     r<-rep(rep(c(0:(inputs$maxlag-1)), each = (inputs$maxlag)^(inputs$shortrunLength-i)),time=(inputs$maxlag^i -inputs$maxlag^(i-1)) )
     if(length(inputs$ASvars)>0 && (inputs$independentVars[i] %in% inputs$ASvars)){
-      if(! .kardl_env$DifferentAsymLag) {
+      if(! inputs$differentAsymLag) {
         bir<-cbind(bir,r)
       }
     }
@@ -452,7 +452,7 @@ makemodel.grid<-function(inputs , ... ){#model ,  data,inputs  ){ # makemodel.de
   )
 
   rownames(OptLag)<-c("lag","value")
-  properRow<-switch (.kardl_env$criterion,"AIC"=aicRow,"BIC"=bicRow ,"AICc"=aiccRow,"HQ"=hqRow )
+  properRow<-switch (inputs$criterion,"AIC"=aicRow,"BIC"=bicRow ,"AICc"=aiccRow,"HQ"=hqRow )
   properLag <-LagMatrix[properRow,]
   theResults<- makeEstimation(inputs$shortRunVars,LagsList=unlist(properLag),inputs$deterministic,preModel$LS_dependent,preModel$LS_longrun,inputs$data)
   k<-theResults$k
@@ -477,7 +477,7 @@ makemodel.grid<-function(inputs , ... ){#model ,  data,inputs  ){ # makemodel.de
     end_time=end_time,
     properLag = LagMatrix[properRow,],
     properRow=properRow,
-    Criterion=.kardl_env$criterion,
+    Criterion=inputs$criterion,
     LagsFrom=startLag,
     LagsTo=endLag,
     TimeSpan=n+MaxLag+1,

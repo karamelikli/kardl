@@ -34,18 +34,37 @@ print or save
 The \strong{writemath} function generates all necessary equations for analysis, including those for ARDL, NARDL, short-run and long-run nonlinearities, and dynamic multipliers. It produces these equations in multiple formats: as text and as files compatible with MS Word, Markdown, LaTeX, and LibreOffice. This function provides a comprehensive set of formulas essential for econometric analysis, facilitating easy access to equations across various document formats for efficient reporting and presentation.
 }
 \examples{
+# Note: The file creations in this examples were deactivated in the current examples
+# because of CRAN policies.
+
+# For saving all equations in a MS word document, \strong{docx}.
+# The directory can be added alongside of the file name.
+# For Windows OS directories could be written as \\ not /.
+
+## Not run:
+ # writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
+
+# For Markdown file the extenssion of the file should be assigned as \strong{md}.
+ # writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
+# All equations are able to be saved in a PDF file.
+ # writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
+
+## End(Not run)
 
 
-# Following commad saves LibreOffice formulas.
+
+# Following commad saves LibreOffice formulas in terminal.
+
 # Copy and paste formulas there and after selecting related formula click on formula icon.
 
 kardl_model<-kardl(imf_example_data,CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,mode=c(1,2,3,0))
 
-# Following command writes all equations in a latex file in cuurent directory.
+# Following command writes all equations in a latex file in current directory.
 
-tmp <- tempfile(fileext = ".tex")
-writemath(kardl_model,tmp)
-unlink(tmp)
+# Note: The file creations in this examples were deactivated because of CRAN policies.
+# tmp <- tempfile(fileext = ".tex")
+# writemath(kardl_model,tmp)
+# unlink(tmp)
 
 # For printing the equations in Latex fomrat assignning of file name to 1 is required.
 # A user's formula can be written directly ib the function.
@@ -56,13 +75,4 @@ a<-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),1)
 writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),2)
 # For printing the equations in OpenOffice fomrat assignning of file name to 3 is required.
 writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),3)
-# For saving all equations in a MS word document, \strong{docx}.
-# The directory can be added alongside of the file name.
-# For Windows OS directories could be written as \\ not /.
-
-writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
-# For Markdown file the extenssion of the file should be assigned as \strong{md}.
-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
-# All equations are able to be saved in a PDF file.
-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
 }
