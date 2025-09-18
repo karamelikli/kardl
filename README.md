@@ -57,7 +57,9 @@ library(tidyr)
 
 # Define the model formula
 MyFormula <- CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend
+
 ```
+
 
 ### Step 2: Model Estimation
 
@@ -68,7 +70,7 @@ The `"grid"` mode evaluates all lag combinations up to `maxlag` and provides con
 
 ```{r model-grid}
 # Set model options
-kardl_set(criterion = "BIC", DifferentAsymLag = TRUE)
+kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 # Estimate model with grid mode
 kardl_model <- kardl(trdata, MyFormula, maxlag = 4, mode = "grid")
 # View results
@@ -307,7 +309,7 @@ kardl_custom$properLag
     - User-defined vector (e.g., `c(1, 2, 4, 5)` or `c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)`).
   - Returns a list with components: `inputs`, `finalModel`, `start_time`, `end_time`, `properLag`, `TimeSpan`, `OptLag`, `LagCriteria`, `type` ("kardlmodel").
 
-- **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC, AICc, HQ), `DifferentAsymLag`, `AsymPrefix`, `AsymSuffix`, `ShortCoef`, and `LongCoef`. Use `kardl_get()` to retrieve settings and `kardl_reset()` to restore defaults.
+- **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC, AICc, HQ), `differentAsymLag`, `AsymPrefix`, `AsymSuffix`, `ShortCoef`, and `LongCoef`. Use `kardl_get()` to retrieve settings and `kardl_reset()` to restore defaults.
 
 - **`kardl_longrun(model)`**: Calculates standardized long-run coefficients, returning `type` ("kardl_longrun"), `coef`, `delta_se`, `results`, and `starsDesc`.
 
@@ -340,7 +342,7 @@ The following options are available:
 | Option Name | Default | Description |
 |-------------|---------|-------------|
 | criterion | "AIC" | The criterion for model selection, can be "AIC", "BIC", "HQ" or a user-defined function |
-| DifferentAsymLag | FALSE | If TRUE, the asymmetry lags will be different for positive and negative shocks |
+| differentAsymLag | FALSE | If TRUE, the asymmetry lags will be different for positive and negative shocks |
 | AsymPrefix | character() | Prefix for asymmetry variables, default is empty |
 | AsymSuffix | c("_POS", "_NEG") | Suffix for asymmetry variables, default is "_POS" and "_NEG" |
 | LongCoef | "L{lag}.{varName}" | Prefix for long-run coefficients, default is "L1." |
@@ -401,11 +403,11 @@ kardl(data, MyFormula)
 
 ### DifferentAsymLag
 
-`DifferentAsymLag` is a logical value (`TRUE` or `FALSE`) indicating whether positive and negative asymmetric variables should be assigned different lags during the estimation process. The default value is `FALSE`, meaning that both positive and negative components will use the same lag.
+`differentAsymLag` is a logical value (`TRUE` or `FALSE`) indicating whether positive and negative asymmetric variables should be assigned different lags during the estimation process. The default value is `FALSE`, meaning that both positive and negative components will use the same lag.
 
 #### Details
 
-Asymmetric decomposition separates a variable into its positive and negative changes. In some models, it may be desirable to assign different lags to these components to capture distinct dynamic behaviors. Setting `DifferentAsymLag = TRUE` allows the function to optimize lags for positive and negative components independently. When `DifferentAsymLag = FALSE`, both components will share the same lag.
+Asymmetric decomposition separates a variable into its positive and negative changes. In some models, it may be desirable to assign different lags to these components to capture distinct dynamic behaviors. Setting `differentAsymLag = TRUE` allows the function to optimize lags for positive and negative components independently. When `differentAsymLag = FALSE`, both components will share the same lag.
 
 This parameter is particularly useful when:
 
@@ -414,20 +416,20 @@ This parameter is particularly useful when:
 
 **Attention!**
 
-- When `DifferentAsymLag = TRUE`, ensure that the model has sufficient data to estimate separate lags reliably.
-- For models with limited observations or a high number of variables, `DifferentAsymLag = FALSE` may be more robust and computationally efficient.
+- When `differentAsymLag = TRUE`, ensure that the model has sufficient data to estimate separate lags reliably.
+- For models with limited observations or a high number of variables, `differentAsymLag = FALSE` may be more robust and computationally efficient.
 
 #### Examples
 
 ##### Using the same lag for positive and negative components (default)
 ```R
-kadrl_set(DifferentAsymLag = FALSE)
+kadrl_set(differentAsymLag = FALSE)
 kardl(data, MyFormula)
 ```
 
 ##### Assigning different lags for positive and negative components
 ```R
-kardl_set(DifferentAsymLag = TRUE)
+kardl_set(differentAsymLag = TRUE)
 kardl(data, MyFormula)
 
 ```
