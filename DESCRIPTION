@@ -1,6 +1,6 @@
 Package: kardl
 Type: Package
-Title: Make symmetric and asymmetric ARDL estimations
+Title: Make Symmetric and Asymmetric ARDL Estimations
 Version: 0.1.1
 Authors@R: 
   c(person(given = "Huseyin",

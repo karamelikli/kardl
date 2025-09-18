@@ -19,7 +19,7 @@ A string with all \code{{}} placeholders replaced by evaluated values.
 }
 \description{
 The \code{replaceValues()} function allows you to replace placeholders in text with variable values or evaluated expressions.
-Placeholders are marked by \strong{{}} brackets, and the function supports capturing both global and non-global variables,
+Placeholders are marked by \strong{\{\}} brackets, and the function supports capturing both global and non-global variables,
 making it useful for templating and dynamic string generation in R.
 }
 \examples{

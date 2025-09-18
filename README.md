@@ -540,4 +540,4 @@ The `kardl` package is a versatile tool for econometric analysis, offering robus
 
 ## Disclosures
 
-* The logo created by [**canva.com**](https://www.canva.com) free account
+* The logo created by **canva.com** free account.
