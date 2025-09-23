@@ -2,66 +2,48 @@
 % Please edit documentation in R/cusum.R
 \name{cusum}
 \alias{cusum}
-\title{Plot CUSUSM}
+\title{CUSUM Stability Test}
 \usage{
-cusum(inputs_, saveToFile = F)
+cusum(inputs_)
 }
 \arguments{
-\item{inputs_}{the model}
-
-\item{saveToFile}{save to file TRUE/FALSE.  File name should be have .jpg extension.}
+\item{inputs_}{A fitted model object of class "lm" or "kardl".}
 }
 \value{
-list plot
+An object of class "kardl" with test results and data frame for plotting.
 }
 \description{
-This function generates a plot for the Cumulative Sum (CUSUM) test, which is used to evaluate the stability of regression coefficients over time in econometric models. The CUSUM test checks for parameter stability by examining the cumulative sum of recursive residuals, and the plot visually displays any potential deviations from stability. If the CUSUM line stays within the confidence bands, the model is stable; if it crosses the bounds, it indicates instability.
+Computes the CUSUM (Cumulative Sum) test for stability of regression coefficients.
+The function returns the test statistics and confidence bands but does not plot automatically.
 }
 \examples{
 # For lm estimations
-
-MyLM <-lm(CPI~ER+PPI,imf_example_data)
-cusum(MyLM)
+MyLM <- lm(CPI ~ ER + PPI, imf_example_data)
+res_cusum <- cusum(MyLM)
+plot(res_cusum)   # explicitly plot
 
 # For ARDL model
-kardl_model<-kardl(imf_example_data,CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,mode=c(1,2,3,0))
-cDF<-cusum(kardl_model)
-cDF
+kardl_model <- kardl(
+  imf_example_data,
+  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+  mode = c(1,2,3,0)
+)
+res_cusum <- cusum(kardl_model)
+res_cusum
+plot(res_cusum)
 
 # Print Cusum data frame
-head(cDF$dataframe )
+head(res_cusum$dataframe)
 
-# For saving as a file:
-# File creation in this example is disabled because of CRAN policies.
-# cusum(kardl_model,"~/Downloads/myCusum.jpg")
-
-# Use your own plot utilizing ggplot
-library(magrittr)
-
-myCusum<- imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+trend,mode=c(1,2,3,0)) \%>\% cusum( )
- myCusum
+# Example with ggplot2
 library(ggplot2)
-ggplot(myCusum$dataframe, aes(x = X, y = Y)) +
+ggplot(res_cusum$dataframe, aes(x = X, y = Y)) +
   geom_line(color = "blue") +
   geom_line(aes(y = Lower), color = "red") +
-geom_line(aes(y = Upper), color = "red") +
-geom_hline(yintercept = 0, linetype = "dashed") +
-ggtitle("CUSUM Test") +
-xlab("") +
-ylab("") +
-ylim(range(myCusum$dataframe$Lower, myCusum$dataframe$Upper)) +
-scale_color_manual(values = c("blue", "red")) +
-guides(color = guide_legend(override.aes = list(linetype = c(1, 1)))) +
-  theme(
-    legend.position = "topleft",
-    legend.title = element_blank(),
-    plot.margin = margin(5, 4, 4, 1, "pt"),
-    legend.background = element_blank(),
-    legend.box.background = element_blank(),
-    legend.key = element_blank(),
-    plot.title = element_text(hjust = 0.5)
-  )
+  geom_line(aes(y = Upper), color = "red") +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  ggtitle("CUSUM Test")
 }
 \seealso{
-\code{\link{cusumq}}
+\code{\link{cusumq}}, \code{\link{plot.kardl}}
 }

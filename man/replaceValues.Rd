@@ -4,7 +4,7 @@
 \alias{replaceValues}
 \title{Replace Patterns with Evaluated Values}
 \usage{
-replaceValues(original_text, x = F, capture_warnings = TRUE)
+replaceValues(original_text, x = FALSE, capture_warnings = TRUE)
 }
 \arguments{
 \item{original_text}{A string containing expressions within \code{{}} to be evaluated and replaced.}
