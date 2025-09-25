@@ -34,7 +34,7 @@ imf_example_data \%>\%
   kardl_reset() \%>\%
     kardl_set(LongCoef= "K2{lag}w2{varName}",differentAsymLag=FALSE ) \%>\%  kardl(MyFormula)
 
-kardl_get()
+kardl_get(c("LongCoef","differentAsymLag","ShortCoef","batch"))
 
 }
 \seealso{

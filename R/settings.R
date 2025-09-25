@@ -30,12 +30,15 @@
 #' kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 #' # Get specific options
 #' kardl_get("criterion", "differentAsymLag")
-#' # Get all options
+#' # Get all options.
+#' # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+#' \dontrun{
 #' kardl_get()
+#' }
 #'
 #' # Utilizing the magrittr pipe
 #' library(magrittr)
-#' #' # Set options and then get them
+#' # Set options and then get them
 #'
 #' MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
 #' kardl_set(ShortCoef = "L___{lag}.d.{varName}")
@@ -46,7 +49,7 @@
 #'
 #' imf_example_data %>%  kardl_set(LongCoef= "LK{lag}_{varName}",ShortCoef = "D{lag}.d.{varName}") %>%
 #' kardl(MyFormula)
-#' kardl_get()
+#' kardl_get(c("LongCoef","ShortCoef"))
 #'
 #' @return If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
 #' @seealso [kardl_get()] [kardl_reset()]
@@ -152,7 +155,7 @@ kardl_get <- function(...) {
 #'   kardl_reset() %>%
 #'     kardl_set(LongCoef= "K2{lag}w2{varName}",differentAsymLag=FALSE ) %>%  kardl(MyFormula)
 #'
-#' kardl_get()
+#' kardl_get(c("LongCoef","differentAsymLag","ShortCoef","batch"))
 #'
 #' @return Returns the default options as a list.
 #' @seealso [kardl_set()], [kardl_get()]

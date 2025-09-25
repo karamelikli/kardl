@@ -377,7 +377,8 @@ BatchControl<-function(inputs){
 ## @seealso  \code{\link[progressr]{progressr}}
 ## @examples
 ## progressBar(23,400)
-progressBar<-function(current, total,additionalStrings=""){
+progressBar<-function(current, total,additionalStrings="",
+                      verbose = TRUE, use_message = FALSE){
   if (!interactive()) return(invisible()) # Skip in non-interactive environments
 
   persentage<-floor(current/total*100)
@@ -394,8 +395,18 @@ progressBar<-function(current, total,additionalStrings=""){
   theSecondTimes<-totalLines-theFirstTimes # floor((100-persentage)*totalLines/100)
   theFirstPart<-paste0( rep("#",times=theFirstTimes)  ,collapse = "")
   theSecondPart<-paste0(rep(" ",times=theSecondTimes),collapse = "")
-
-  cat("\r",paste0("% ",persentage, " [ ", theFirstPart,animate,theSecondPart, "] ",current,"/",total," ",additionalStrings))
+  txt <- sprintf("%% %s [ %s%s%s ] %s/%s %s",
+                 persentage, theFirstPart, animate, theSecondPart,
+                 current, total, additionalStrings)
+  if (verbose) {
+    if (use_message) {
+      message(txt)   # CRAN-friendly but no overwrite
+    } else {
+      cat("\r", txt) # Overwrite in console
+      flush.console()
+    }
+  }
+ # cat("\r",paste0("% ",persentage, " [ ", theFirstPart,animate,theSecondPart, "] ",current,"/",total," ",additionalStrings))
 }
 
 # Change the lag value in a string

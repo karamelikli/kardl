@@ -4,7 +4,7 @@
 \alias{writemath}
 \title{Make Equations of used model in Latex or Office}
 \usage{
-writemath(formula_, output = 1)
+writemath(formula_, output = 1, verbose = FALSE)
 }
 \arguments{
 \item{formula_}{The \strong{formula_} parameter allows a user to specify a model formula, such as \code{CPI~ER+PPI+asym(ER)+deterministic(covid)+trend}, to define the relationships in the analysis. Alternatively, if a user provide a kardl output object, the function will automatically extract all necessary variables and parameters from this object, simplifying the setup process. This flexibility enables users to define the model structure either through a formula or directly from an existing analysis object.}
@@ -26,6 +26,8 @@ writemath(formula_, output = 1)
 If \emph{output} is specified without directory paths (i.e., without / for Linux or \\\\ for Windows), the file will be saved in the current working directory, which can be identified by calling the \code{getwd()} function. This feature ensures that, in the absence of a specified path, files are saved to a known default location.
 
 See examples for details}
+
+\item{verbose}{A logical value indicating whether to print the generated formula to the console when not saving to a file. If set to TRUE, the function will display the formula; if FALSE, it will not print anything. This parameter is useful for users who want to see the output directly in the console without saving it to a file.}
 }
 \value{
 print or save
@@ -41,16 +43,16 @@ The \strong{writemath} function generates all necessary equations for analysis, 
 # The directory can be added alongside of the file name.
 # For Windows OS directories could be written as \\ not /.
 
-\donttest{
+\dontrun{
 writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
 }
 
 # For Markdown file the extenssion of the file should be assigned as \strong{md}.
-\donttest{
+\dontrun{
 writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
 }
 # All equations are able to be saved in a PDF file.
-\donttest{
+\dontrun{
 writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
  }
 
@@ -65,17 +67,33 @@ kardl_model<-kardl(imf_example_data,CPI~ER+PPI+asym(ER)+deterministic(covid)+tre
 # Following command writes all equations in a latex file in current directory.
 
 # Note: The file creations in this examples were deactivated because of CRAN policies.
-# tmp <- tempfile(fileext = ".tex")
-# writemath(kardl_model,tmp)
-# unlink(tmp)
+\dontrun{
+tmp <- tempfile(fileext = ".tex")
+writemath(kardl_model,tmp)
+unlink(tmp)
+}
 
 # For printing the equations in Latex fomrat assignning of file name to 1 is required.
-# A user's formula can be written directly ib the function.
-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),1)
+# A user's formula can be written directly in the function.
+eq1 <- writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),1)
+# To get all of the N/ARDL equations (in LaTeX format):
+# Note: Here the output is not printed in the console because of avoiding cluttering.
+\dontrun{
+eq1
+}
+
 # To saving outputs for different output type, in a list is available.
-a<-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),1)
+eq2 <- writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),1)
+# To get the equations' subcomponents, here the long-run equation (in LaTeX format):
+eq2$formulas$longRunEqFormula
+
 # For printing the equations in Markdown fomrat assignning of file name to 2 is required.
-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),2)
+eq3<- writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),2)
+# To get the ECM equation (in Markdown format):
+eq3$formulas$ECMEqFormula
+
 # For printing the equations in OpenOffice fomrat assignning of file name to 3 is required.
-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),3)
+eq4<-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),3)
+# To get the NARDL equation (in LibreOffice format):
+eq4$formulas$NARDL_eq_Formula
 }

@@ -6,7 +6,7 @@
 #' @param inputs_ A fitted model object of class "lm" or "kardl".
 #'
 #' @return An object of class "kardl" with test results and data frame for plotting.
-#' @seealso \code{\link{cusumq}}, \code{\link{plot.kardl}}
+#' @seealso \code{\link{cusumq}}
 #' @export
 #' @importFrom strucchange recresid
 #' @examples
@@ -14,6 +14,14 @@
 #' MyLM <- lm(CPI ~ ER + PPI, imf_example_data)
 #' res_cusum <- cusum(MyLM)
 #' plot(res_cusum)   # explicitly plot
+#'
+#' # For saving the plot directly:
+#' # Note: Saving plots is disabled in examples due to CRAN policies.
+#' \dontrun{
+#' png("cusum_plot.png")
+#' plot(res_cusum)
+#' dev.off()
+#' }
 #'
 #' # For ARDL model
 #' kardl_model <- kardl(
@@ -85,7 +93,7 @@ cusum <- function(inputs_) {
 #' @param inputs_ A fitted model object of class "lm" or "kardl".
 #'
 #' @return An object of class "kardl" with test results and data frame for plotting.
-#' @seealso \code{\link{cusum}}, \code{\link{plot.kardl}}
+#' @seealso \code{\link{cusum}}
 #' @export
 #' @importFrom strucchange recresid
 #' @examples
@@ -93,6 +101,14 @@ cusum <- function(inputs_) {
 #' MyLM <- lm(CPI ~ ER + PPI, imf_example_data)
 #' res_cusumq <- cusumq(MyLM)
 #' plot(res_cusumq)   # explicitly plot
+#'
+#' # For saving the plot directly:
+#' # Note: Saving plots is disabled in examples due to CRAN policies.
+#' \dontrun{
+#' png("cusumQ_plot.png")
+#' plot(res_cusumq)
+#' dev.off()
+#' }
 #'
 #' # For ARDL model
 #' kardl_model <- kardl(
@@ -148,7 +164,7 @@ cusumq <- function(inputs_) {
   karar <- max(CuTest)
 
   Karamelikli <- list(
-    type = "CusumQ",
+    type = "Cusum",
     Stability = ifelse(karar > 0, "U", "S"),
     dataframe = Cuq,
     karar = karar,

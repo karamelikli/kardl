@@ -22,12 +22,15 @@ This function allows you to get or set various options related to the kardl pack
 kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 # Get specific options
 kardl_get("criterion", "differentAsymLag")
-# Get all options
+# Get all options.
+# Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+\dontrun{
 kardl_get()
+}
 
 # Utilizing the magrittr pipe
 library(magrittr)
-#' # Set options and then get them
+# Set options and then get them
 
 MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
 kardl_set(ShortCoef = "L___{lag}.d.{varName}")
@@ -38,7 +41,7 @@ kardl_get()
 
 imf_example_data \%>\%  kardl_set(LongCoef= "LK{lag}_{varName}",ShortCoef = "D{lag}.d.{varName}") \%>\%
 kardl(MyFormula)
-kardl_get()
+kardl_get(c("LongCoef","ShortCoef"))
 
 }
 \seealso{

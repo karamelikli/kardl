@@ -22,6 +22,14 @@ MyLM <- lm(CPI ~ ER + PPI, imf_example_data)
 res_cusum <- cusum(MyLM)
 plot(res_cusum)   # explicitly plot
 
+# For saving the plot directly:
+# Note: Saving plots is disabled in examples due to CRAN policies.
+\dontrun{
+png("cusum_plot.png")
+plot(res_cusum)
+dev.off()
+}
+
 # For ARDL model
 kardl_model <- kardl(
   imf_example_data,
@@ -45,5 +53,5 @@ ggplot(res_cusum$dataframe, aes(x = X, y = Y)) +
   ggtitle("CUSUM Test")
 }
 \seealso{
-\code{\link{cusumq}}, \code{\link{plot.kardl}}
+\code{\link{cusumq}}
 }

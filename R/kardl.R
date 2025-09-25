@@ -177,7 +177,7 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #' @import lmtest stats
 #' @importFrom grDevices dev.off jpeg
 #' @importFrom graphics  legend lines par abline
-#' @importFrom utils  methods  capture.output tail
+#' @importFrom utils  methods  capture.output tail flush.console
 #'
 #' @examples
 #'

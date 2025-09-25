@@ -1,7 +1,3 @@
-#' Plot method for CUSUM and CUSUMQ tests
-#'
-#' @param x An object of class "kardl" created by \code{\link{cusum}} or \code{\link{cusumq}}.
-#' @param ... Additional arguments passed to \code{plot()}.
 #' @export
 plot.kardl <- function(x, ...) {
   if (x$type %in% c("Cusum", "CusumQ")) {
@@ -119,11 +115,9 @@ print.kardl<-function(x,saveToFile=FALSE,...){
             },
           "Cusum"=  {
             yaz<-list()
-            if(isFALSE(isFALSE(x$saveToFile))){
-              yaz$text<-paste0("The file saved in: ",x$saveToFile)
-            }else{
-              yaz$text<-paste0(x$method," results is ",ifelse(x$Stability=="U","Unstable","Stable"))
-            } },
+              yaz$text<-paste0("According to the ", x$method," results, the model is ",ifelse(x$Stability=="U","Unstable","Stable"))
+
+             },
           "kardl_longrun"={
            # returnList <- list(Normalized=x$results, Desc=x$starsDesc)
              yaz<-printTemplate(x,"printkardl_longrun.txt",saveToFile,...)
