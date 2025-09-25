@@ -1,3 +1,30 @@
+#' Plot method for CUSUM and CUSUMQ tests
+#'
+#' @param x An object of class "kardl" created by \code{\link{cusum}} or \code{\link{cusumq}}.
+#' @param ... Additional arguments passed to \code{plot()}.
+#' @export
+plot.kardl <- function(x, ...) {
+  if (x$type %in% c("Cusum", "CusumQ")) {
+    Cu <- x$dataframe
+    grange <- range(Cu$Lower, Cu$Upper)
+
+    op <- par(mar = c(5,4,4,1))
+    on.exit(par(op))
+
+    plot(Cu$X, Cu$Y, type = "l", col = "blue",
+         main = paste(x$method, "Test"),
+         xlab = "", ylab = "", ylim = grange, ...)
+    lines(Cu$X, Cu$Lower, col = "red")
+    lines(Cu$X, Cu$Upper, col = "red")
+    abline(h=0, lty=2)
+    legend("topleft", xpd = TRUE, bty = "n",
+           legend = c(x$method, "5% significance"),
+           lty = c(1,1), cex = 0.9,
+           col = c("blue","red"))
+  } else {
+    stop("No plot method for this object type.")
+  }
+}
 
 #' @export
 summary.kardl<-function(object, saveToFile=FALSE, ...){

@@ -33,15 +33,18 @@
 #' # The directory can be added alongside of the file name.
 #' # For Windows OS directories could be written as \\ not /.
 #'
-#' ## Not run:
-#'  # writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
+#' \donttest{
+#' writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
+#' }
 #'
 #' # For Markdown file the extenssion of the file should be assigned as \strong{md}.
-#'  # writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
+#' \donttest{
+#' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
+#' }
 #' # All equations are able to be saved in a PDF file.
-#'  # writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
-#'
-#' ## End(Not run)
+#' \donttest{
+#' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
+#'  }
 #'
 #'
 #'

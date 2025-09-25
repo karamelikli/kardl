@@ -58,7 +58,7 @@
 #' output<- replaceValues(file_contents,kardl_model)
 #' cat(output)
 
-replaceValues <- function(original_text, x=F, capture_warnings = TRUE) {
+replaceValues <- function(original_text, x=FALSE, capture_warnings = TRUE) {
   original_text<- paste(original_text, collapse = "\n")
 
   # variable_names <- gsub("\\{(.+?)\\}", "\\1", regmatches( original_text, gregexpr("\\{(.+?)\\}", original_text, perl = T))[[1]] , perl = T)
