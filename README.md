@@ -1,9 +1,3 @@
----
-editor_options: 
-  markdown: 
-    wrap: sentence
----
-
 # KARDL <img src="man/figures/KARDL.png" align="right"/>
 
 ## Introduction
