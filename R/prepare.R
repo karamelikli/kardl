@@ -9,12 +9,11 @@
 combineVarTypes <-function(inputs){
   # checking the existence of model in gotten varaibales of the function
   if(is.null(inputs$model)){
-    print("Error: The model for the model not found")
-    return(NULL)
+  #  stop("The model for the model not found! Please define the model like as: model=y~x+z")
+    stop("The model is missing! Please define the model like as: model=y~x+z", call. = FALSE)
   }
   if(typeof(inputs$model) != "language"){
-    print("Error: The model should be a valid model without any \" or '. For y~x+z ")
-    return(NULL)
+    stop("The model should be a valid model without any \" or '. For y~x+z ", call. = FALSE)
   }
   extracted<-list()
   deterministic<-parseFormula(inputs$model,"deterministic()",T)
@@ -43,6 +42,17 @@ combineVarTypes <-function(inputs){
   ASvars_ <-unique(trimws(c(Asym$detected,asymS$detected)))
   extracted[["ASvars"]]<-ASvars_[nzchar(ASvars_)]
 
+
+  # stop if any of Allvars is not in the data
+  if(length(extracted[["Allvars"]])==0){
+    stop("No variable found in the model! Please check the model again.", call. = FALSE)
+  }
+  for (x in extracted[["Allvars"]]) {
+    if(!(x %in% colnames(inputs$data))){
+      stop(paste("The variable: ", (x), " not found in the data file's vars list!"), call. = FALSE)
+    }
+  }
+
   for (name in names(extracted)) {
     if(!is.null(extracted[[name]])) {
       attr(extracted[[name]], "source") <- "user_input"
@@ -63,10 +73,10 @@ combineVarTypes <-function(inputs){
 verifyUserDefinedLags<-function(inputs){
 
   if(typeof(inputs$mode)!= "double"){
-    stop("Error: User-defined value should have valid vector. For example: c(1,0,1)")
+    stop("User-defined value should have valid vector. For example: c(1,0,1)", call. = FALSE)
   }
   if(all(inputs$mode==floor(inputs$mode)) != TRUE){
-    stop(paste0("Error: User-defined should have valid numeric and non-decimal. Your pattern is ",paste(inputs$mode,collapse = ","),". For example: 1,0,1 "))
+    stop(paste0("User-defined should have valid numeric and non-decimal. Your pattern is ",paste(inputs$mode,collapse = ","),". For example: 1,0,1 "), call. = FALSE)
   }
 
 
@@ -82,7 +92,7 @@ verifyUserDefinedLags<-function(inputs){
     }
   }
   if(length(inputs$mode)!=length(inputs$Allvars )+length(inputs$ASvars)){
-    stop(paste0("Error: User-defined should match with short-run variables. User defined lags vector must has exactly ",length(inputs$Allvars )+length(inputs$ASvars)," element. Your pattern is ",paste(inputs$mode,collapse = ","),". Please define by this order: ",paste(nlist,collapse = ",")))
+    stop(paste0("User-defined should match with short-run variables. User defined lags vector must has exactly ",length(inputs$Allvars )+length(inputs$ASvars)," element. Your pattern is ",paste(inputs$mode,collapse = ","),". Please define by this order: ",paste(nlist,collapse = ",")), call. = FALSE)
   }
 
   # If user defines by her order, the order should be redefined
@@ -97,10 +107,10 @@ verifyUserDefinedLags<-function(inputs){
   }
 
   if(inputs$mode[1]<1){
-    stop(paste0("Error: User-defined should start with a digit greater than zero. Your pattern is ",paste(inputs$mode,collapse = ","),". For example: 1,0,1 "))
+    stop(paste0("User-defined should start with a digit greater than zero. Your pattern is ",paste(inputs$mode,collapse = ","),". For example: 1,0,1 "), call. = FALSE)
   }
   if(all(inputs$mode>=0)!=T){
-    stop(paste0("Error: User-defined should containt only positive values. Your pattern is ",paste(inputs$mode,collapse = ","),". For example: 1,0,1 "))
+    stop(paste0("User-defined should containt only positive values. Your pattern is ",paste(inputs$mode,collapse = ","),". For example: 1,0,1 "), call. = FALSE)
   }
 
 
@@ -118,13 +128,13 @@ verifyUserDefinedLags<-function(inputs){
 
 CheckInputs<-function(inputs){
   if(is.null(inputs$model)){
-    stop("model is missing! Please define the model like as: model=y~x+z")
+    stop("model is missing! Please define the model like as: model=y~x+z", call. = FALSE)
   }
   if(typeof(inputs$model)!="language"){
-    stop("The model is not defined properly.")
+    stop("The model is not defined properly.", call. = FALSE)
   }
   if(is.null(inputs$data)){
-    stop("The data is missing! Please select related data. data=data")
+    stop("The data is missing! Please select related data. data=data", call. = FALSE)
   }
   # if(typeof(inputs$dataTimeSeriesStart) != "double" || ! is.numeric(inputs$dataTimeSeriesStart)){
   #   stop("dataTimeSeriesStart should be a valid  time series start point. For example c(2010,3) ")
@@ -136,7 +146,7 @@ CheckInputs<-function(inputs){
 
   if(!is.function(inputs$criterion) ){
         if(typeof(inputs$criterion) != "character" && !inputs$criterion %in% c("AIC","BIC","AICc","HQ")  ){
-          stop(paste0("Error: The entered criterion should be a function or one of the defined criteria here. The defined criteria are  AIC , BIC , AICc , HQ "))
+          stop(paste0("The entered criterion should be a function or one of the defined criteria here. The defined criteria are  AIC , BIC , AICc , HQ "), call. = FALSE)
         }
   }
 
@@ -144,7 +154,7 @@ CheckInputs<-function(inputs){
   #   stop(paste0("Error: The entered trend should be a logical value. TRUE/FALSE ."))
   # }
   if(typeof(inputs$differentAsymLag)!= "logical"){
-    stop(paste0("Error: The entered DifferentAsymLag should be a logical value. TRUE/FALSE ."))
+    stop(paste0("The entered DifferentAsymLag should be a logical value. TRUE/FALSE ."), call. = FALSE)
   }
   if(!all(inputs$mode %in% c("grid_custom","grid","quick") )){
      # The predefined option for user-defined is false. Then here, we check just if it is not false.
@@ -157,11 +167,11 @@ CheckInputs<-function(inputs){
   # }
 
     if (!is.null(inputs$batch) & !grepl("^\\d+/\\d+$", inputs$batch)) {
-      stop("Invalid batch format. Use 'x/y', where x is the batch number and y is the total number of batches.")
+      stop("Invalid batch format. Use 'x/y', where x is the batch number and y is the total number of batches.", call. = FALSE)
     }
   # Check whether are digit or not
   if(!grepl("^([1-9])[0-9]*$", inputs$maxlag, perl = T)){
-    stop(paste0("Error: The entered maxlag should be a digit. You entered: ",inputs$maxlag))
+    stop(paste0("The entered maxlag should be a digit. You entered: ",inputs$maxlag), call. = FALSE)
   }
   # if(!grepl("^([1-9])[0-9]*$", inputs$dataTimeSeriesFrequency, perl = T)){
   #   stop(paste0("Error: The entered dataTimeSeriesFrequency should be a digit."))
@@ -191,21 +201,21 @@ detectVars <-function(inputs){
   AllAsymVars<-unique(c(inputs$ALvars,inputs$ASvars))
   if(length(inputs$ASvars)>0){
     for (x in inputs$ASvars ){
-      if(!(x %in% independentVars )){stop(paste("Attention! The Short-run asymmetric variable: ", (x), " not found in the main vars list!"))}
+      if(!(x %in% independentVars )){stop(paste("Attention! The Short-run asymmetric variable: ", (x), " not found in the main vars list!"), call. = FALSE)}
     }
   }
   if(length(inputs$ALvars)>0){
     for (x in inputs$ALvars ){
-      if(!(x %in% independentVars)){stop(paste("Attention! The Long-run asymmetric variable: ", (x), " not found in the main vars list!"))}
+      if(!(x %in% independentVars)){stop(paste("Attention! The Long-run asymmetric variable: ", (x), " not found in the main vars list!"), call. = FALSE)}
     }
   }
   for (x in inputs$Allvars ){
-    if(!(x %in% colnames(inputs$data))){stop(paste("Attention! The variable: ", (x), " not found in the data file's vars list!"))}
+    if(!(x %in% colnames(inputs$data))){stop(paste("Attention! The variable: ", (x), " not found in the data file's vars list!"), call. = FALSE)}
   }
   if(length(inputs$deterministic)>0){
     for (x in inputs$deterministic ){
-      if((x %in% inputs$Allvars)){stop(paste("Attention! The external variable: ", (x), "  FOUND in the main vars list! The exegenious variables should be excluded from the main list"))}
-      if(!(x %in% colnames(inputs$data))){stop(paste("Attention! The variable: ", (x), " not found in the data file's vars list!"))}
+      if((x %in% inputs$Allvars)){stop(paste("Attention! The external variable: ", (x), "  FOUND in the main vars list! The exegenious variables should be excluded from the main list"), call. = FALSE)}
+      if(!(x %in% colnames(inputs$data))){stop(paste("Attention! The variable: ", (x), " not found in the data file's vars list!"), call. = FALSE)}
     }
   }
 
@@ -399,7 +409,7 @@ prepare<-function(inputs){
   # inputs<-convertListInputs(...)
   inputs<-combineVarTypes(inputs) #(lmerge(initial_,defaultVars()))
   if(is.null(inputs)){
-    stop("Error: The inputs are not defined properly. Please check the inputs again.")
+    stop("The inputs are not defined properly. Please check the inputs again.", call. = FALSE)
   }
 
   inputs$startTime<-Sys.time()

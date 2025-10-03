@@ -12,8 +12,7 @@
 #'  \Delta{y_{t}} = \psi + \eta_{0}y_{t - 1} + \eta^{+}_{1} x^{+}_{t - 1}+ \eta^{-}_{1} x^{-}_{t - 1} + \sum_{j = 1}^{p}{\gamma_{j}\Delta y_{t - j}} + \sum_{j = 0}^{q}{\beta^{+}_{j}\Delta x^{+}_{t - j}}  + \sum_{j = 0}^{m}{\beta^{-}_{j}\Delta x^{-}_{t - j}} + e_{t}
 #' }
 #'
-#' This function performs the asymmetry test both for long-run and short-run variables in a kardl model. It uses the nlWaldTest function to perform the Wald test for long-run variables and the linearHypothesis function from the car package for short-run variables.
-#'
+#' This function performs the asymmetry test both for long-run and short-run variables in a kardl model. It uses the \code{\link[nlWaldTest]{nlWaldtest}} function from the \pkg{nlWaldTest} package for long-run variables and the \code{\link[car]{linearHypothesis}} function from the \pkg{car} package for short-run variables.
 #' The hypotheses for the long-run variables are:
 #' \deqn{
 #'     H_{0}: -\frac{\eta^{+}_{1}}{\eta_{0}} = -\frac{\eta^{-}_{1}}{\eta_{0}} }

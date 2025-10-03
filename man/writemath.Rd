@@ -23,7 +23,7 @@ writemath(formula_, output = 1, verbose = FALSE)
          }
 }
 
-If \emph{output} is specified without directory paths (i.e., without / for Linux or \\\\ for Windows), the file will be saved in the current working directory, which can be identified by calling the \code{getwd()} function. This feature ensures that, in the absence of a specified path, files are saved to a known default location.
+If \emph{output} is specified without directory paths (i.e., without / for Linux or \\\\ for Windows), the file will be saved in the current working directory. This feature ensures that, in the absence of a specified path, files are saved to a known default location.
 
 See examples for details}
 
@@ -43,18 +43,18 @@ The \strong{writemath} function generates all necessary equations for analysis, 
 # The directory can be added alongside of the file name.
 # For Windows OS directories could be written as \\ not /.
 
-\dontrun{
-writemath(y~x+z+asym(v)+asymL(q+a),"~/Downloads/myWordEqueation.docx")
-}
+# Here the tempdir() function is used to get a temporary directory path.
+# Users can replace this with their desired directory path.
+
+
+writemath(y~x+z+asym(v)+asymL(q+a),tempfile(fileext = ".docx"))
 
 # For Markdown file the extenssion of the file should be assigned as \strong{md}.
-\dontrun{
-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.md")
-}
+writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),tempfile(fileext = ".md"))
+
 # All equations are able to be saved in a PDF file.
-\dontrun{
-writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),"~/Downloads/myWordEqueation.pdf")
- }
+writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),tempfile(fileext = ".pdf"))
+
 
 
 
@@ -67,20 +67,20 @@ kardl_model<-kardl(imf_example_data,CPI~ER+PPI+asym(ER)+deterministic(covid)+tre
 # Following command writes all equations in a latex file in current directory.
 
 # Note: The file creations in this examples were deactivated because of CRAN policies.
-\dontrun{
+
 tmp <- tempfile(fileext = ".tex")
 writemath(kardl_model,tmp)
-unlink(tmp)
-}
 
 # For printing the equations in Latex fomrat assignning of file name to 1 is required.
 # A user's formula can be written directly in the function.
 eq1 <- writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),1)
+
 # To get all of the N/ARDL equations (in LaTeX format):
-# Note: Here the output is not printed in the console because of avoiding cluttering.
-\dontrun{
-eq1
-}
+# Note: Here the output is limited to 1000 characters for better visibility.
+print(eq1,1000)
+
+
+
 
 # To saving outputs for different output type, in a list is available.
 eq2 <- writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),1)

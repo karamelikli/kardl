@@ -24,7 +24,7 @@ kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 kardl_get("criterion", "differentAsymLag")
 # Get all options.
 # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
-\dontrun{
+\donttest{
 kardl_get()
 }
 
@@ -45,5 +45,5 @@ kardl_get(c("LongCoef","ShortCoef"))
 
 }
 \seealso{
-[kardl_get()] [kardl_reset()]
+\code{\link{kardl_get}}, \code{\link{kardl_reset}}
 }

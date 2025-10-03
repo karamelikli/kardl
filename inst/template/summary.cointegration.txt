@@ -5,6 +5,6 @@ Method: {x$method}. Case: {x$case}
 The results: There is {x$Cont}
 Significance level: {x$siglvl}
 ___________________________________________________
-Critique values are as follows:
+Critical values are as follows:
 {x$criticalValues}
 

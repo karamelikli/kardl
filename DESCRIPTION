@@ -28,12 +28,11 @@ Description: Implements estimation procedures for Autoregressive Distributed Lag
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: stats, msm, lmtest, nlWaldTest, car, strucchange, utils
+Imports: stats, msm, lmtest, nlWaldTest, car,  utils
 RoxygenNote: 7.3.3
 Suggests: 
     knitr,
     rmarkdown,
-    litedown,
     officer,
     flextable,
     equatags,

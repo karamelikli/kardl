@@ -20,7 +20,7 @@ imf_example_data
 This is an example data set used for testing purposes.
 }
 \details{
-These data obtained from "imf.data" package.
+These data obtained from \pkg{imf.data} package.
 The sample data is not updated and obtained by following codes.:
 
 \code{install.packages("imf.data")}\cr

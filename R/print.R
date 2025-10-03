@@ -1,26 +1,3 @@
-#' @export
-plot.kardl <- function(x, ...) {
-  if (x$type %in% c("Cusum", "CusumQ")) {
-    Cu <- x$dataframe
-    grange <- range(Cu$Lower, Cu$Upper)
-
-    op <- par(mar = c(5,4,4,1))
-    on.exit(par(op))
-
-    plot(Cu$X, Cu$Y, type = "l", col = "blue",
-         main = paste(x$method, "Test"),
-         xlab = "", ylab = "", ylim = grange, ...)
-    lines(Cu$X, Cu$Lower, col = "red")
-    lines(Cu$X, Cu$Upper, col = "red")
-    abline(h=0, lty=2)
-    legend("topleft", xpd = TRUE, bty = "n",
-           legend = c(x$method, "5% significance"),
-           lty = c(1,1), cex = 0.9,
-           col = c("blue","red"))
-  } else {
-    stop("No plot method for this object type.")
-  }
-}
 
 #' @export
 summary.kardl<-function(object, saveToFile=FALSE, ...){
@@ -98,8 +75,23 @@ yaz<- printTemplate(x,template,saveToFile,...)
 
 
 #' @export
-print.kardlPrint<-function(x,...){
-  cat(x$text)
+print.kardlPrint<-function(x,limit=NULL,verbose=TRUE ,...){
+  # if limit is number, limit the number of characters printed
+  if(!is.null(limit) && is.numeric(limit) && limit>0 && nchar(x$text)>limit){
+    x$text<-substr(x$text,1,limit)
+    # add ... at the end
+    x$text<-paste0(x$text," ...")
+  }
+  if(isFALSE(verbose)){
+    # remove all empty lines
+    x$text<-gsub("\n\n","\n",x$text)
+    # remove leading and trailing spaces
+    x$text<-gsub("^\n+|\n+$","",x$text)
+    # remove leading and trailing spaces in each line
+    x$text<-gsub("^[ \t]+|[ \t]+$","",x$text)
+  }
+
+  cat(x$text,...)
 }
 
 #' @export
@@ -115,7 +107,7 @@ print.kardl<-function(x,saveToFile=FALSE,...){
             },
           "Cusum"=  {
             yaz<-list()
-              yaz$text<-paste0("According to the ", x$method," results, the model is ",ifelse(x$Stability=="U","Unstable","Stable"))
+              yaz$text<-paste0("According to the ", x$method," results, the model is ",ifelse(x$Stability=="U","Unstable","Stable"),".")
 
              },
           "kardl_longrun"={

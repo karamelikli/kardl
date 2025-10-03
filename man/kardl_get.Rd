@@ -19,10 +19,11 @@ This function retrieves options from the kardl package settings.
 # Get specific options
 kardl_get("criterion", "differentAsymLag")
 
-# Get all options
-kardl_get()
+# Get all options (Note: In interactive use, avoid calling this directly to prevent cluttering the console)
+a<-kardl_get()
+a$AsymSuffix
 
 }
 \seealso{
-[kardl_set()] [kardl_reset()]
+\code{\link{kardl_set}}, \code{\link{kardl_reset}}
 }

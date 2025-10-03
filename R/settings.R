@@ -32,7 +32,7 @@
 #' kardl_get("criterion", "differentAsymLag")
 #' # Get all options.
 #' # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
-#' \dontrun{
+#' \donttest{
 #' kardl_get()
 #' }
 #'
@@ -52,7 +52,7 @@
 #' kardl_get(c("LongCoef","ShortCoef"))
 #'
 #' @return If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
-#' @seealso [kardl_get()] [kardl_reset()]
+#' @seealso  \code{\link{kardl_get}}, \code{\link{kardl_reset}}
 #'
 #'
 
@@ -94,11 +94,12 @@ kardl_set <- function(.=FALSE, ...) {
 #' # Get specific options
 #' kardl_get("criterion", "differentAsymLag")
 #'
-#' # Get all options
-#' kardl_get()
+#' # Get all options (Note: In interactive use, avoid calling this directly to prevent cluttering the console)
+#' a<-kardl_get()
+#' a$AsymSuffix
 #'
 #' @return If no arguments are provided, returns all options as a list. If one option is requested, returns its value directly. If multiple options are requested, returns a list of those options.
-#' @seealso [kardl_set()] [kardl_reset()]
+#' @seealso \code{\link{kardl_set}}, \code{\link{kardl_reset}}
 #'
 kardl_get <- function(...) {
   names_requested <- c(...)
@@ -140,9 +141,9 @@ kardl_get <- function(...) {
 #' # Set some options
 #' kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 #' # Reset to default values
-#' kardl_get()  # Check current settings
+#' kardl_get("criterion")  # Check current settings
 #' kardl_reset()
-#' kardl_get()  # Check settings after reset
+#' kardl_get("criterion")  # Check settings after reset
 #'
 #' library(magrittr)
 #'  MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
@@ -158,7 +159,7 @@ kardl_get <- function(...) {
 #' kardl_get(c("LongCoef","differentAsymLag","ShortCoef","batch"))
 #'
 #' @return Returns the default options as a list.
-#' @seealso [kardl_set()], [kardl_get()]
+#' @seealso \code{\link{kardl_set}}, \code{\link{kardl_get}}
 #'
 kardl_reset <- function(.=FALSE) {
   # Reinitialize the environment with default settings

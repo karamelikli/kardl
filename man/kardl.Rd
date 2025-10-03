@@ -42,7 +42,7 @@ kardl(
            \item \strong{asym}: Includes variables for both short-run and long-run asymmetry.
                  For example, \code{asym(x1 + x3)} applies asymmetric decomposition for both dynamics.
          }
-       - A \strong{trend} term can be added to the model to account for deterministic linear trends
+        A \strong{trend} term can be added to the model to account for deterministic linear trends
          over time. Simply include \code{trend} in the formula.
 
        These components can be combined flexibly in the formula to define a robust model tailored
@@ -60,16 +60,17 @@ kardl(
        will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
        It controls the computational effort and helps prevent overfitting by restricting the search
        space for lag selection.
-
-       - If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
-       - If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary
-         to capture the relevant dynamics.
+         \itemize{
+           \item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
+       -   \item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
+       }
 
        Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
        context of the analysis:
-       - For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
-       - For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})
-         may be appropriate, though this increases computational time.
+       \itemize{
+         \item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
+         \item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
+         }
 
 
 \strong{\emph{examples}}
@@ -191,7 +192,7 @@ Note: All arguments of this function can be set using \code{\link{kardl_set}} fu
 \examples{
 
 # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
- library(magrittr)
+ library(dplyr)
 
   kardl_set(model=CPI~ER+PPI+asym(ER)+deterministic(covid)+trend ,
            data=imf_example_data,
@@ -204,10 +205,13 @@ Note: All arguments of this function can be set using \code{\link{kardl_set}} fu
  kardl_model<- imf_example_data \%>\% kardl(mode = "grid_custom")
  kardl_model
  kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
+
  # Getting the results
  kardl_model2
+
  # Getting the summary of the results
  summary(kardl_model)
+
  # OR
  imf_example_data \%>\% kardl(model=CPI~PPI+asym(ER)) \%>\% summary()
 
@@ -219,8 +223,8 @@ Note: All arguments of this function can be set using \code{\link{kardl_set}} fu
  kardl(imf_example_data,
        CPI~ER+PPI+asymL(ER),
        maxlag = 3, mode = "grid_custom")
- # Using another criterion for finding the best lag
 
+ # Using another criterion for finding the best lag#'
  kardl_set(criterion = "HQ") # setting the criterion to HQ
  kardl( mode = "grid_custom")
 
@@ -247,7 +251,6 @@ Note: All arguments of this function can be set using \code{\link{kardl_set}} fu
 
  # For having the lags plot
  library(ggplot2)
- library(dplyr)
 
  #  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
  LagCriteria <- as.data.frame(kardl_model_grid[["LagCriteria"]])

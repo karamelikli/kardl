@@ -44,7 +44,7 @@ recmt(
            \item \strong{asym}: Includes variables for both short-run and long-run asymmetry.
                  For example, \code{asym(x1 + x3)} applies asymmetric decomposition for both dynamics.
          }
-       - A \strong{trend} term can be added to the model to account for deterministic linear trends
+        A \strong{trend} term can be added to the model to account for deterministic linear trends
          over time. Simply include \code{trend} in the formula.
 
        These components can be combined flexibly in the formula to define a robust model tailored
@@ -78,16 +78,17 @@ Invalid values will result in an error.}
        will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
        It controls the computational effort and helps prevent overfitting by restricting the search
        space for lag selection.
-
-       - If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
-       - If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary
-         to capture the relevant dynamics.
+         \itemize{
+           \item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
+       -   \item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
+       }
 
        Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
        context of the analysis:
-       - For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
-       - For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})
-         may be appropriate, though this increases computational time.
+       \itemize{
+         \item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
+         \item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
+         }
 
 
 \strong{\emph{examples}}

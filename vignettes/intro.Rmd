@@ -12,7 +12,9 @@ vignette: >
 
 
 ```{r setup, include=FALSE}
+
 knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+
 ```
 
 ## Introduction
@@ -21,8 +23,8 @@ The `kardl` package is an R tool for estimating symmetric and asymmetric Autoreg
 
 - **Flexible Formula Specification**: Use `asym()`, `asymL()`, and `asymS()` to model asymmetric effects in short- and long-run dynamics, and `deterministic()` for dummy variables.
 - **Lag Optimization**: Choose between automatic lag selection (`"quick"`, `"grid"`, `"grid_custom"`) or user-defined lags.
-- **Dynamic Analysis**: Compute long-run coefficients, perform cointegration tests (PSS F, PSS t, Narayan, Banerjee, ECM), assess parameter stability (CUSUM, CUSUMQ), and test for heteroskedasticity (ARCH).
-- **Visualization and Reporting**: Generate plots for lag criteria, and stability tests.
+- **Dynamic Analysis**: Compute long-run coefficients, perform cointegration tests (PSS F, PSS t, Narayan, Banerjee, ECM), and test for heteroskedasticity (ARCH).
+
 
 This vignette demonstrates how to use the `kardl()` function to estimate an asymmetric ARDL model, perform diagnostic tests, and visualize results, using economic data from Turkey.
 
@@ -30,29 +32,35 @@ This vignette demonstrates how to use the `kardl()` function to estimate an asym
 
 
 `kardl` in R can easily be installed from its CRAN repository:
-```
+
+```{r install-cran, eval=FALSE}
+
 install.packages("kardl")
 library(kardl)
+
 ```
 
 Alternatively, you can use the `devtools` package to load directly from GitHub:
 
 ```{r install, eval=FALSE}
+
 # Install required packages
 install.packages(c("stats", "msm", "lmtest", "nlWaldTest", "car", "strucchange", "utils"))
 # Install kardl from GitHub
 install.packages("devtools")
 devtools::install_github("karamelikli/kardl")
+
 ```
 
 Load the package:
 
 ```{r load}
+
 library(kardl)
-library(magrittr)
+
 ```
 
-## Example: Estimating an Asymmetric ARDL Model
+## Estimating an Asymmetric ARDL Model
 
 This example estimates an asymmetric ARDL model to analyze the dynamics of exchange rate pass-through to domestic prices in Turkey, using a sample dataset (`imf_example_data`) with variables for Consumer Price Index (CPI), Exchange Rate (ER), Producer Price Index (PPI), and a COVID-19 dummy variable.
 
@@ -61,20 +69,22 @@ This example estimates an asymmetric ARDL model to analyze the dynamics of excha
 Assume `imf_example_data` contains monthly data for CPI, ER, PPI, and a COVID dummy variable. We prepare the data by ensuring proper formatting and adding the dummy variable. We retrieve data from the IMF’s International Financial Statistics (IFS) dataset and prepare it for analysis.
 
 Note: The `imf_example_data` is a placeholder for demonstration purposes. You should replace it with your actual dataset.
+The data can be loaded by `readxl` or other data import functions.
 
-```{r data-prep}
-# Load required packages
-library(ggplot2)
-library(dplyr)
-library(tidyr) 
 
- trdata <- imf_example_data
+### Step 2: Define the Model Formula
+
+We define the model formula using R's formula syntax, incorporating asymmetric effects and deterministic variables. We use `asym()` for variables with both short- and long-run asymmetry, `deterministic()` for fixed effects, and `trend` for a linear time trend.
+
+```{r data-prepare}
 
 # Define the model formula
-MyFormula <- CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend
+MyFormula <- CPI ~ ER + PPI + asym(ER + PPI) + deterministic(covid) + trend
+
 ```
 
-### Step 2: Model Estimation
+
+### Step 3: Model Estimation
 
 We estimate the ARDL model using different `mode` settings to demonstrate flexibility in lag selection. The `kardl()` function supports various modes: `"grid"`, `"grid_custom"`, `"quick"`, or a user-defined lag vector.
 
@@ -82,35 +92,49 @@ We estimate the ARDL model using different `mode` settings to demonstrate flexib
 The `"grid"` mode evaluates all lag combinations up to `maxlag` and provides console feedback.
 
 ```{r model-grid}
+
 # Set model options
-kardl_set(criterion = "BIC", differentAsymLag = TRUE)
+kardl_set(criterion = "BIC", differentAsymLag = TRUE, data=imf_example_data)
 # Estimate model with grid mode
-kardl_model <- kardl(trdata, MyFormula, maxlag = 4, mode = "grid")
+kardl_model <- kardl(data=imf_example_data,model= MyFormula, maxlag = 4, mode = "grid")
 # View results
 kardl_model
 # Display model summary
 summary(kardl_model)
+
 ```
+
 #### Using User-Defined Lags
+
 Specify custom lags to bypass automatic lag selection:
 
 ```{r model-user-defined}
-kardl_model2 <- kardl(trdata, MyFormula, mode = c(2, 1, 1, 3))
+
+kardl_model2 <- kardl(data=imf_example_data, MyFormula, mode = c(2, 1, 1, 3, 0))
+# View results
 kardl_model2$properLag
+
 ```
 
 #### Using All Variables
 Use the `.` operator to include all variables except the dependent variable:
 
 ```{r model-all-vars}
-kardl(trdata, CPI ~ . + deterministic(covid), mode = "grid")
+
+kardl_set(data=imf_example_data)
+kardl(model =  CPI ~ . + deterministic(covid), mode = "grid")
+
 ```
 
-### Step 3: Visualizing Lag Criteria
+#### Visualizing Lag Criteria
 
 The `LagCriteria` component contains lag combinations and their criterion values. We visualize these to compare model selection criteria (AIC, BIC, HQ).
 
 ```{r lag-criteria}
+
+library(dplyr)
+library(tidyr)
+library(ggplot2)
 # Convert LagCriteria to a data frame
 LagCriteria <- as.data.frame(kardl_model[["LagCriteria"]])
 colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
@@ -135,6 +159,7 @@ ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Crite
   labs(title = "Lag Criteria Comparison", x = "Lag Configuration", y = "Criteria Value") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
 ```
 
 ### Step 4: Long-Run Coefficients
@@ -142,134 +167,88 @@ ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Crite
 We calculate long-run coefficients using `kardl_longrun()`, which standardizes coefficients by dividing them by the negative of the dependent variable’s long-run parameter.
 
 ```{r long-run}
+
 # Long-run coefficients
 mylong <- kardl_longrun(kardl_model)
 mylong
+
 ```
 
-### Step 5: Parameter Stability Tests
 
-We assess the stability of regression coefficients and variance using `cusum()` and `cusumq()`.
 
-#### CUSUM Test
-The `cusum()` function plots the Cumulative Sum of recursive residuals to check for parameter stability.
-
-```{r cusum}
-cDF <- cusum(kardl_model)
-# View CUSUM data frame
-head(cDF$dataframe)
-# Custom plot with ggplot2
-ggplot(cDF$dataframe, aes(x = X, y = Y)) +
-  geom_line(color = "blue") +
-  geom_line(aes(y = Lower), color = "red") +
-  geom_line(aes(y = Upper), color = "red") +
-  geom_hline(yintercept = 0, linetype = "dashed") +
-  ggtitle("CUSUM Test") +
-  xlab("") +
-  ylab("") +
-  ylim(range(cDF$dataframe$Lower, cDF$dataframe$Upper)) +
-  scale_color_manual(values = c("blue", "red")) +
-  guides(color = guide_legend(override.aes = list(linetype = c(1, 1)))) +
-  theme(
-    legend.position = "topleft",
-    legend.title = element_blank(),
-    plot.margin = margin(5, 4, 4, 1, "pt"),
-    legend.background = element_blank(),
-    legend.box.background = element_blank(),
-    legend.key = element_blank(),
-    plot.title = element_text(hjust = 0.5)
-  )
-```
-
-#### CUSUM of Squares Test
-The `cusumq()` function plots the Cumulative Sum of Squares to assess variance stability.
-
-```{r cusumq}
-cDFq <- cusumq(kardl_model)
-# View CUSUMQ data frame
-head(cDFq$dataframe)
-# Custom plot with ggplot2
-ggplot(cDFq$dataframe, aes(x = X, y = Y)) +
-  geom_line(color = "blue") +
-  geom_line(aes(y = Lower), color = "red") +
-  geom_line(aes(y = Upper), color = "red") +
-  geom_hline(yintercept = 0, linetype = "dashed") +
-  ggtitle("CUSUM of Squares Test") +
-  xlab("") +
-  ylab("") +
-  ylim(range(cDFq$dataframe$Lower, cDFq$dataframe$Upper)) +
-  scale_color_manual(values = c("blue", "red")) +
-  guides(color = guide_legend(override.aes = list(linetype = c(1, 1)))) +
-  theme(
-    legend.position = "topleft",
-    legend.title = element_blank(),
-    plot.margin = margin(5, 4, 4, 1, "pt"),
-    legend.background = element_blank(),
-    legend.box.background = element_blank(),
-    legend.key = element_blank(),
-    plot.title = element_text(hjust = 0.5)
-  )
-```
-
-### Step 6: Asymmetry Test
+### Step 5: Asymmetry Test
 
 The `asymmetrytest()` function performs Wald tests to assess short- and long-run asymmetry in the model.
 
 ```{r asymmetry-test}
-ast <- trdata %>% kardl(CPI ~ ER + PPI + asym(ER + PPI) + deterministic(covid) + trend, mode = c(1, 2, 3, 0, 1)) %>% asymmetrytest()
+
+ast <- imf_example_data %>% kardl(CPI ~ ER + PPI + asym(ER + PPI) + deterministic(covid) + trend, mode = c(1, 2, 3, 0, 1)) %>% asymmetrytest()
 ast
 # View long-run hypotheses
 ast$Lhypotheses
 # Detailed results
 summary(ast)
+
 ```
 
-### Step 7: Cointegration Tests
+### Step 6: Cointegration Tests
 
 We perform cointegration tests to assess long-term relationships using `pssf()`, `psst()`, `narayan()`, `banerjee()`, and `recmt()`.
 
 #### PSS F Bound Test
+
 The `pssf()` function tests for cointegration using the Pesaran, Shin, and Smith F Bound test.
 
 ```{r pssf}
+
 A <- kardl_model %>% pssf(case = 3, signif_level = "0.05")
 cat(paste0("The F statistic = ", A$statistic, " where k = ", A$k, "."))
 cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
 A$criticalValues
 summary(A)
+
 ```
 
 #### PSS t Bound Test
+
 The `psst()` function tests the significance of the lagged dependent variable’s coefficient.
 
 ```{r psst}
+
 A <- kardl_model %>% psst(case = 3, signif_level = "0.05")
 cat(paste0("The t statistic = ", A$statistic, " where k = ", A$k, "."))
 cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
 A$criticalValues
 summary(A)
+
 ```
 
 #### Narayan Test
+
 The `narayan()` function is tailored for small sample sizes.
 
 ```{r narayan}
+
 A <- kardl_model %>% narayan(case = 3, signif_level = "0.05")
 cat(paste0("The F statistic = ", A$statistic, " where k = ", A$k, "."))
 cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
 A$criticalValues
 summary(A)
+
 ```
 
 #### Banerjee Test
+
 The `banerjee()` function is designed for small datasets (≤100 observations).
 
 ```{r banerjee}
+
 A <- kardl_model %>% banerjee(signif_level = "0.05")
 cat(paste0("The ECM parameter = ", A$coef, ", k = ", A$k, ", t statistic = ", A$statistic, "."))
 cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
 A$criticalValues
 summary(A)
+
 ```
 
 #### Restricted ECM Test
@@ -277,31 +256,37 @@ summary(A)
 The `recmt()` function tests for cointegration using an Error Correction Model.
 
 ```{r recmt}
-recmt_model <- trdata %>% recmt(MyFormula, mode = "grid_custom", case = 3)
+
+recmt_model <- imf_example_data %>% recmt(MyFormula, mode = "grid_custom", case = 3)
 recmt_model
 # View results
 summary(recmt_model)
+
 ```
 
-### Step 8: ARCH Test
+### Step 7: ARCH Test
 
 The `archtest()` function checks for autoregressive conditional heteroskedasticity in the model residuals.
 
 ```{r arch-test}
+
 arch_result <- archtest(kardl_model$finalModel$model$residuals, q = 2)
 summary(arch_result)
+
 ```
 
-### Step 9: Customizing Asymmetric Variables
+### Step 8: Customizing Asymmetric Variables
 
 We demonstrate how to customize prefixes and suffixes for asymmetric variables using `kardl_set()`.
 
 ```{r asym-custom}
+
 # Set custom prefixes and suffixes
 kardl_reset()
 kardl_set(AsymPrefix = c("asyP_", "asyN_"), AsymSuffix = c("_PP", "_NN"))
-kardl_custom <- kardl(trdata, MyFormula, mode = "grid_custom")
+kardl_custom <- kardl(data=imf_example_data, MyFormula, mode = "grid_custom")
 kardl_custom$properLag
+
 ```
 
 ## Key Functions and Parameters
@@ -326,10 +311,6 @@ kardl_custom$properLag
 
 - **`kardl_longrun(model)`**: Calculates standardized long-run coefficients, returning `type` ("kardl_longrun"), `coef`, `delta_se`, `results`, and `starsDesc`.
 
-- **`cusum(inputs_, saveToFile)`**: Plots the Cumulative Sum test for parameter stability, returning a list with a data frame for plotting.
-
-- **`cusumq(inputs_, saveToFile)`**: Plots the Cumulative Sum of Squares test for variance stability, returning a similar list.
-
 - **`asymmetrytest(model)`**: Performs Wald tests for short- and long-run asymmetry, returning `Lhypotheses`, `Lwald`, `Shypotheses`, `Swald`, and `type` ("asymmetrytest").
 
 - **`pssf(model, case, signif_level)`**: Performs the Pesaran, Shin, and Smith F Bound test for cointegration, supporting cases 1–5 and significance levels ("auto", 0.01, 0.025, 0.05, 0.1, 0.10).
@@ -344,7 +325,7 @@ kardl_custom$properLag
 
 - **`archtest(resid, q)`**: Tests for ARCH effects in model residuals, returning `type`, `statistic`, `parameter`, `p.value`, and `Fval`.
 
-For detailed documentation, use `?kardl`, `?kardl_set`, `?kardl_longrun`, `?cusum`, `?cusumq`, `?asymmetrytest`, `?pssf`, `?psst`, `?narayan`, `?banerjee`, `?recmt`, or `?archtest`.
+For detailed documentation, use `?kardl`, `?kardl_set`, `?kardl_longrun`, `?asymmetrytest`, `?pssf`, `?psst`, `?narayan`, `?banerjee`, `?recmt`, or `?archtest`.
 
 ## Conclusion
 
