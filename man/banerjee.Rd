@@ -53,11 +53,14 @@ cat(paste0("\nWe found '",A$Cont, "' at ",A$siglvl,"."))
 library(magrittr)
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
                     mode=c(1,2,3,0)) \%>\% banerjee()
+
 # critical Values are
 A$criticalValues
+
 # Getting details of the test.
  mySummary<-summary(A)
  mySummary
+
 # The null hypothesis :
 mySummary$H0
 

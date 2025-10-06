@@ -15,7 +15,7 @@ replaceValues(original_text, x = FALSE, capture_warnings = TRUE)
 If \code{FALSE}, errors and warnings are not captured.}
 }
 \value{
-A string with all \code{{}} placeholders replaced by evaluated values.
+A string with all placeholders replaced by evaluated values.
 }
 \description{
 The \code{replaceValues()} function allows you to replace placeholders in text with variable values or evaluated expressions.
@@ -63,4 +63,7 @@ data(imf_example_data)
  kardl_model<-kardl(imf_example_data,MyFormula,mode="quick")
 output<- replaceValues(file_contents,kardl_model)
 cat(output)
+}
+\seealso{
+\code{\link[base]{eval}}, \code{\link[base]{parse}}, \code{\link[base]{gregexpr}}, \code{\link[base]{regmatches}}
 }

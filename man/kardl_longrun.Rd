@@ -39,3 +39,6 @@ library(magrittr)
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
                   mode=c(1,2,3,0)) \%>\% kardl_longrun()
 }
+\seealso{
+\code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}
+}

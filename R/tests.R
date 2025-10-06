@@ -40,6 +40,7 @@
 #' @import nlWaldTest
 #' @importFrom car linearHypothesis
 #' @references Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014). Modelling asymmetric cointegration and dynamic multipliers in a nonlinear ARDL framework. Festschrift in honor of Peter Schmidt: Econometric methods and applications, 281-314.
+#' @seealso   \code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}, \code{\link{banerjee}}, \code{\link{recmt}}, \code{\link{narayan}}
 #' @examples
 #'
 #'
@@ -687,7 +688,7 @@ narayan<-function(model,case=3,signif_level = "auto"){
 #'   \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  + \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +   \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+ \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
 #' }
 #'
-#'   \deqn{\mathbf{H_{0}:} \eta_0  =    = 0}
+#'   \deqn{\mathbf{H_{0}:} \eta_0   = 0}
 #'   \deqn{\mathbf{H_{1}:} \eta_{0}  \neq 0}
 #'
 #'
@@ -735,9 +736,11 @@ narayan<-function(model,case=3,signif_level = "auto"){
 #'
 #' # critical Values are
 #' A$criticalValues
-#'  # Getting details of the test.
-#'  mySummary<-summary(A)
-#'  mySummary
+#'
+#' # Getting details of the test.
+#' mySummary<-summary(A)
+#' mySummary
+#'
 #' # The null hypothesis :
 #' mySummary$H0
 #'
@@ -935,11 +938,14 @@ psstCRvalues<-function(case){
 #' library(magrittr)
 #' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
 #'                     mode=c(1,2,3,0)) %>% banerjee()
+#'
 #' # critical Values are
 #' A$criticalValues
+#'
 #' # Getting details of the test.
 #'  mySummary<-summary(A)
 #'  mySummary
+#'
 #' # The null hypothesis :
 #' mySummary$H0
 #'
@@ -1181,7 +1187,7 @@ banerjee<-function(model,signif_level = "auto"){
 #'
 #'
 #' @export
-#' @seealso \code{\link{pssf}}  \code{\link{psst}}   \code{\link{recmt}}  \code{\link{narayan}}
+#' @seealso \code{\link{kardl}} \code{\link{pssf}}  \code{\link{psst}}   \code{\link{recmt}}  \code{\link{narayan}}
 #'
 #' @examples
 #'
@@ -1524,6 +1530,8 @@ recmt<-function(data = NULL, model = NULL,  case=3,signif_level = "auto",
 #'  }
 #'
 #' @export
+#'
+#' @seealso \code{\link[lmtest]{bgtest}} \code{\link[lmtest]{bptest}}  \code{\link[lmtest]{resettest}}
 #'
 #' @examples
 #'

@@ -31,7 +31,9 @@
 #' # Get specific options
 #' kardl_get("criterion", "differentAsymLag")
 #' # Get all options.
+#'
 #' # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+#'
 #' \donttest{
 #' kardl_get()
 #' }
@@ -94,7 +96,8 @@ kardl_set <- function(.=FALSE, ...) {
 #' # Get specific options
 #' kardl_get("criterion", "differentAsymLag")
 #'
-#' # Get all options (Note: In interactive use, avoid calling this directly to prevent cluttering the console)
+#' # Get all options
+#' # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
 #' a<-kardl_get()
 #' a$AsymSuffix
 #'

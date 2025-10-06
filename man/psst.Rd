@@ -58,7 +58,7 @@ The PSS t Bound test evaluates the null hypothesis that the long-run coefficient
   \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  + \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +   \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+ \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
 }
 
-  \deqn{\mathbf{H_{0}:} \eta_0  =    = 0}
+  \deqn{\mathbf{H_{0}:} \eta_0   = 0}
   \deqn{\mathbf{H_{1}:} \eta_{0}  \neq 0}
 }
 
@@ -80,9 +80,11 @@ imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
 
 # critical Values are
 A$criticalValues
- # Getting details of the test.
- mySummary<-summary(A)
- mySummary
+
+# Getting details of the test.
+mySummary<-summary(A)
+mySummary
+
 # The null hypothesis :
 mySummary$H0
 

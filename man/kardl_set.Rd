@@ -23,7 +23,9 @@ kardl_set(criterion = "BIC", differentAsymLag = TRUE)
 # Get specific options
 kardl_get("criterion", "differentAsymLag")
 # Get all options.
+
 # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+
 \donttest{
 kardl_get()
 }

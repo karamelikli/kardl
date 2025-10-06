@@ -75,7 +75,7 @@ makemodel<-function(inputs,...){
 #' }
 #'
 #' If \code{cr} is a function, it is called with the fitted model and any additional arguments passed through \code{...}.
-#'
+#' @seealso \code{\link{kardl}}
 #' @examples
 #' model <- list(model = lm(mpg ~ wt + hp, data = mtcars), k = 3, n = nrow(mtcars))
 #' modelCriterion(AIC, model)

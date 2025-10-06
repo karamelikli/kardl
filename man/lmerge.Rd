@@ -2,7 +2,7 @@
 % Please edit documentation in R/miscellaneous.R
 \name{lmerge}
 \alias{lmerge}
-\title{Merge Two lists accenting the fist list.}
+\title{Merge two lists, accenting the first list.}
 \usage{
 lmerge(first, second, ...)
 }
@@ -42,4 +42,7 @@ h1<-lmerge(a, m2)
 unlist( h1)
 h2<-lmerge(a,b,m2,m3,list("m1.1"=4))
 unlist(h2)
+}
+\seealso{
+\code{\link[base]{append}}
 }

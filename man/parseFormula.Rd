@@ -49,3 +49,6 @@ a<-parseFormula(formula_,c("mm","det","uuu"))
 
 parseFormula(formula_,"asyms", TRUE)
 }
+\seealso{
+\code{\link{replaceValues}}, \code{\link[stats]{formula}}
+}

@@ -22,6 +22,7 @@
 #' @export
 #' @import stats
 #' @importFrom msm deltamethod
+#' @seealso \code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}
 #' @examples
 #' kardl_model<-kardl(imf_example_data,
 #'                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,

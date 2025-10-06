@@ -370,5 +370,5 @@ The null and alternative hypotheses for the restricted ECM test are as follows:
 
 }
 \seealso{
-\code{\link{pssf}}  \code{\link{psst}}   \code{\link{recmt}}  \code{\link{narayan}}
+\code{\link{kardl}} \code{\link{pssf}}  \code{\link{psst}}   \code{\link{recmt}}  \code{\link{narayan}}
 }

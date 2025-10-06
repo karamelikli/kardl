@@ -34,6 +34,9 @@
 #'   \item{PPI}{Numeric. PPI of Turkey.}
 #'   \item{covid}{Integer.Covid19 dummy variable.}
 #' }
+#'
+#' @seealso \code{\link[imf.data]{load_datasets}}
+#'
 #' @examples
 #' data(imf_example_data)
 #' head(imf_example_data)

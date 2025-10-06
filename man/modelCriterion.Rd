@@ -67,3 +67,6 @@ my_cr_fun <- function(mod, ...) { AIC(mod) / length(mod$model[[1]]) }
 modelCriterion(my_cr_fun, model)
 
 }
+\seealso{
+\code{\link{kardl}}
+}

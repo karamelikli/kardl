@@ -38,3 +38,6 @@ summary(archtest(kardl_model$finalModel$model$residuals))
 \references{
 Engle, Robert F. (1982). Autoregressive Conditional Heteroskedasticity with Estimates of the Variance of United Kingdom Inflation. Econometrica. 50 (4): 987–1007.
 }
+\seealso{
+\code{\link[lmtest]{bgtest}} \code{\link[lmtest]{bptest}}  \code{\link[lmtest]{resettest}}
+}

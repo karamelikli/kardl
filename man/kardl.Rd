@@ -281,3 +281,6 @@ Note: All arguments of this function can be set using \code{\link{kardl_set}} fu
 
 
 }
+\seealso{
+\code{\link{recmt}}, \code{\link{kardl_set}}, \code{\link{kardl_get}}, \code{\link{kardl_reset}}, \code{\link{modelCriterion}}
+}

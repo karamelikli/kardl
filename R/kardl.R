@@ -173,6 +173,7 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #'  \item \code{type}: A string indicating the type of model, which is "kardlmodel".
 #'  }
 #'
+#' @seealso  \code{\link{recmt}}, \code{\link{kardl_set}}, \code{\link{kardl_get}}, \code{\link{kardl_reset}}, \code{\link{modelCriterion}}
 #' @export
 #'
 #' @import lmtest stats

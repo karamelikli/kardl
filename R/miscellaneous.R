@@ -12,8 +12,8 @@
 #' @param x Non-global variables to be evaluated within the function's context.
 #' @param capture_warnings  Logical. If \code{TRUE}, captures errors and warnings during evaluation and continues with replacements.
 #'        If \code{FALSE}, errors and warnings are not captured.
-#'
-#' @return A string with all \code{{}} placeholders replaced by evaluated values.
+#' @seealso \code{\link[base]{eval}}, \code{\link[base]{parse}}, \code{\link[base]{gregexpr}}, \code{\link[base]{regmatches}}
+#' @return A string with all placeholders replaced by evaluated values.
 #' @export
 #'
 #' @examples
@@ -121,7 +121,7 @@ replaceValues <- function(original_text, x=FALSE, capture_warnings = TRUE) {
 
 
 
-#' Merge Two lists accenting the fist list.
+#' Merge two lists, accenting the first list.
 #'
 #' The first list of values takes precedence. When both lists have items with the same names, the values from the first list will be applied. In merging the two lists, priority is given to the left list, so if there are overlapping items, the corresponding value from the left list will be used in the merged result.
 #' @param first list or vector
@@ -130,7 +130,7 @@ replaceValues <- function(original_text, x=FALSE, capture_warnings = TRUE) {
 #'
 #' @return list
 #' @export
-#'
+#' @seealso  \code{\link[base]{append}}
 #' @examples
 #'
 #' a<-list("a"="first a","b"="second a","c"=list("w"=12,"k"=c(1,3,6)))
@@ -214,6 +214,8 @@ lmerge<-function(first,second,...){
 #'    \item   Remaining model: The rest of the formula, excluding the parsed variables.
 #'    }
 #' @export
+#'
+#' @seealso \code{\link{replaceValues}}, \code{\link[stats]{formula}}
 #'
 #' @examples
 #'

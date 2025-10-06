@@ -24,6 +24,7 @@
 #'
 #' @return print or save
 #' @export
+#' @seealso \code{\link{kardl}}, \code{\link{kardl_longrun}}
 #'
 #' @examples
 #' # Note: The file creations in this examples were deactivated in the current examples
@@ -36,14 +37,19 @@
 #' # Here the tempdir() function is used to get a temporary directory path.
 #' # Users can replace this with their desired directory path.
 #'
-#'
+#' \donttest{
 #' writemath(y~x+z+asym(v)+asymL(q+a),tempfile(fileext = ".docx"))
+#' }
 #'
 #' # For Markdown file the extenssion of the file should be assigned as \strong{md}.
+#' \donttest{
 #' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),tempfile(fileext = ".md"))
+#' }
 #'
 #' # All equations are able to be saved in a PDF file.
+#' \donttest{
 #' writemath(y~x+z+asym(v+w)+asymL(q+a)+asymS(m),tempfile(fileext = ".pdf"))
+#' }
 #'
 #'
 #'
@@ -58,9 +64,10 @@
 #'
 #' # Note: The file creations in this examples were deactivated because of CRAN policies.
 #'
+#' \donttest{
 #' tmp <- tempfile(fileext = ".tex")
 #' writemath(kardl_model,tmp)
-
+#' }
 #'
 #' # For printing the equations in Latex fomrat assignning of file name to 1 is required.
 #' # A user's formula can be written directly in the function.

@@ -71,3 +71,6 @@ This function evaluates whether the inclusion of a particular variable in the mo
 \references{
 Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014). Modelling asymmetric cointegration and dynamic multipliers in a nonlinear ARDL framework. Festschrift in honor of Peter Schmidt: Econometric methods and applications, 281-314.
 }
+\seealso{
+\code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}, \code{\link{banerjee}}, \code{\link{recmt}}, \code{\link{narayan}}
+}

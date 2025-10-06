@@ -48,4 +48,7 @@ The sample data is not updated and obtained by following codes.:
 data(imf_example_data)
 head(imf_example_data)
 }
+\seealso{
+\code{\link[imf.data]{load_datasets}}
+}
 \keyword{datasets}
