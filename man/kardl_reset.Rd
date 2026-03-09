@@ -2,7 +2,7 @@
 % Please edit documentation in R/settings.R
 \name{kardl_reset}
 \alias{kardl_reset}
-\title{Function to reset kardl package settings}
+\title{Function to Reset KARDL Package Options to Default Values}
 \usage{
 kardl_reset(. = FALSE)
 }
@@ -10,7 +10,11 @@ kardl_reset(. = FALSE)
 \item{.}{If provided and not `FALSE`, the function will return this value after resetting the settings. If not provided or set to `FALSE`, it will return the current settings.}
 }
 \value{
-Returns the default options as a list.
+If resetting options, returns the provided value (if any) or invisibly
+returns the current settings as a list.
+
+If resetting options, returns the provided value (if any) or invisibly
+returns the current settings as a list.
 }
 \description{
 This function resets all options in the kardl package to their default values.
@@ -18,7 +22,8 @@ This function resets all options in the kardl package to their default values.
 \examples{
 # Set some options
 kardl_set(criterion = "BIC", differentAsymLag = TRUE)
-# Reset to default values
+
+# Reset to default options
 kardl_get("criterion")  # Check current settings
 kardl_reset()
 kardl_get("criterion")  # Check settings after reset

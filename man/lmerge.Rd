@@ -2,19 +2,19 @@
 % Please edit documentation in R/miscellaneous.R
 \name{lmerge}
 \alias{lmerge}
-\title{Merge two lists, accenting the first list.}
+\title{Merge two lists, giving precedence to the first list for overlapping names}
 \usage{
 lmerge(first, second, ...)
 }
 \arguments{
-\item{first}{list or vector}
+\item{first}{The first list}
 
-\item{second}{list or vector}
+\item{second}{The second list}
 
-\item{...}{other lists or vectors}
+\item{...}{Additional lists to merge}
 }
 \value{
-list
+A merged list with unique names, prioritizing values from the first list in case of name conflicts.
 }
 \description{
 The first list of values takes precedence. When both lists have items with the same names, the values from the first list will be applied. In merging the two lists, priority is given to the left list, so if there are overlapping items, the corresponding value from the left list will be used in the merged result.

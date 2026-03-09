@@ -2,12 +2,12 @@
 % Please edit documentation in R/tests.R
 \name{psst}
 \alias{psst}
-\title{PSS t Bound test}
+\title{PSS t Bound Test}
 \usage{
-psst(model, case = 3, signif_level = "auto")
+psst(kmodel, case = 3, signif_level = "auto")
 }
 \arguments{
-\item{model}{The kardl obejct}
+\item{kmodel}{A fitted KARDL model object of class 'kardl_lm' created using the \code{\link{kardl}} function.}
 
 \item{case}{Numeric or character. Specifies the case of the test to be used in the function.
 Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the function determines the case automatically based on the model's characteristics. Invalid values will result in an error.
@@ -26,22 +26,20 @@ If "auto" is chosen, the function determines the significance level automaticall
 Invalid values will result in an error.}
 }
 \value{
-A list containing the results of the PSS t Bound test, including:
- \itemize{
- \item \code{type}: The type of test performed, which is "cointegration".
- \item \code{case}: The case number used in the test (1, 2, 3, 4, or 5).
- \item \code{statistic}: The t-statistic value calculated from the test.
- \item \code{k}: The number of long-run variables in the model.
- \item \code{Cont}: The conclusion of the test, indicating whether cointegration is present, inconclusive, or absent.
- \item \code{BoundNum}: A numeric representation of the conclusion, where 1 indicates cointegration, 0 indicates inconclusive, and -1 indicates no cointegration.
- \item \code{siglvl}: The significance level used in the test, either "auto" or one of the specified numeric levels.
- \item \code{criticalValues}: A vector of critical values for the test, corresponding to the significance levels.
- \item \code{parameter}: The names of the long-run variables in the model.
- \item \code{FH0}: The null hypothesis of the test, which includes the long-run variables set to zero.
- \item \code{Fmodel}: The linear hypothesis model used in the test.
- \item \code{warnings}: Any warnings generated during the test, such as sample size concerns.
- \item \code{method}: The method used for the test, which is "Narayan".
- }
+The function returns an object of class "htest" containing the following components:
+\itemize{
+\item{statistic: The calculated t-statistic for the test.}
+\item{method: A description of the test performed.}
+\item{data.name: The name of the data used in the test.}
+\item{k: The number of independent variables in the model.}
+\item{notes: Any notes or warnings related to the test results, such as
+sample size considerations or adjustments made to the case based on model characteristics.}
+\item{sig: The significance level used for the test, either specified by the user or determined automatically.}
+\item{alternative: The alternative hypothesis being tested.}
+\item{case: The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
+
+
+}
 }
 \description{
 This function performs the Pesaran t Bound test
@@ -65,36 +63,36 @@ The PSS t Bound test evaluates the null hypothesis that the long-run coefficient
 \examples{
 
 kardl_model<-kardl(imf_example_data,
-                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                    mode=c(1,2,3,0))
-A<- psst(kardl_model)
-cat(paste0("The t statistics=",A$statistic," where k=",A$k,"."))
- cat(paste0("\nWe found '",A$Cont, "' at ",A$siglvl,"."))
+                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                   mode=c(1,2,3,0))
+my_test<-psst(kardl_model)
+# Getting the results of the test.
+my_test
+# Getting details of the test.
+my_summary<-summary(my_test)
+my_summary
+
+# Getting the critical values of the test.
+my_summary$crit_vals
 
 
-# Using magrittr
+
+
+# Using magrittr :
 
 library(magrittr)
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                    mode=c(1,2,3,0)) \%>\% psst()
+                           mode=c(1,2,3,0)) \%>\% psst()
 
-# critical Values are
-A$criticalValues
-
-# Getting details of the test.
-mySummary<-summary(A)
-mySummary
-
-# The null hypothesis :
-mySummary$H0
-
+# Getting details of the test results using magrittr:
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                    mode=c(1,2,3,0)) \%>\% psst() \%>\% summary()
+                           mode=c(1,2,3,0)) \%>\% psst() \%>\% summary()
+
 
 }
 \references{
-Pesaran, M. H., Shin, Y. and Smith, R. (2001), “Bounds Testing Approaches to the Analysis of Level Relationship”, Journal of Applied Econometrics, 16(3), 289-326.
+Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing Approaches to the Analysis of Level Relationship", Journal of Applied Econometrics, 16(3), 289-326.
 }
 \seealso{
-\code{\link{pssf}}   \code{\link{banerjee}}  \code{\link{recmt}}  \code{\link{narayan}}
+\code{\link{pssf}}   \code{\link{ecm}}  \code{\link{narayan}}
 }

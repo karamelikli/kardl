@@ -2,40 +2,43 @@
 % Please edit documentation in R/settings.R
 \name{kardl_set}
 \alias{kardl_set}
-\title{Function to get or set settings}
+\title{Function to Set KARDL Package Options}
 \usage{
 kardl_set(. = FALSE, ...)
 }
 \arguments{
-\item{.}{If provided, the function will return this value. If not provided or set to `FALSE`, it will return the current settings.}
+\item{.}{If provided and not `FALSE`, the function will return this value after setting the options. If not provided or set to `FALSE`, it will return the current settings.}
 
-\item{...}{Named arguments to set options, or no arguments to get all options.}
+\item{...}{Named arguments corresponding to the options to be set. Valid option names include those defined in the kardl package settings.}
 }
 \value{
 If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
+
+If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
 }
 \description{
-This function allows you to get or set various options related to the kardl package.
+This function allows users to set options for the kardl package. Users can specify named arguments to set options or call the function without arguments to retrieve all current settings.
 }
 \examples{
 # Set options
-kardl_set(criterion = "BIC", differentAsymLag = TRUE)
+kardl_set(maxlag = 5, mode = "grid")
+# Get all options
+kardl_get()
 # Get specific options
-kardl_get("criterion", "differentAsymLag")
-# Get all options.
+kardl_get("maxlag", "mode")
 
-# Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+# Note: In interactive use, avoid calling kardl_get() directly to prevent cluttering the console.
 
 \donttest{
 kardl_get()
 }
 
-# Utilizing the magrittr pipe
+# Example with magrittr pipe
 library(magrittr)
-# Set options and then get them
+# Set custom coefficient naming conventions
 
 MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
-kardl_set(ShortCoef = "L___{lag}.d.{varName}")
+kardl_set(ShortCoef = "L___{lag}.d.{varName}", formula = MyFormula, data = imf_example_data)
 imf_example_data \%>\%   kardl(MyFormula)
 
 kardl_reset()

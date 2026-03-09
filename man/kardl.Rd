@@ -2,11 +2,11 @@
 % Please edit documentation in R/kardl.R
 \name{kardl}
 \alias{kardl}
-\title{Estimation of ARDL and NARDL}
+\title{Estimate an ARDL or NARDL model with automatic lag selection}
 \usage{
 kardl(
   data = NULL,
-  model = NULL,
+  formula = NULL,
   maxlag = NULL,
   mode = NULL,
   criterion = NULL,
@@ -18,35 +18,81 @@ kardl(
 \arguments{
 \item{data}{The data of analysis}
 
-\item{model}{A formula specifying the long-run model equation. This formula defines the relationships
+\item{formula}{A formula specifying the long-run model equation. This formula defines the relationships
        between the dependent variable and explanatory variables, including options for deterministic terms,
        asymmetric variables, and a trend component.
 
        Example formula:
-       \code{y ~ x + z + asym(z) + asymL(x2 + x3) + asymS(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
+       \code{y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
 
 
 
 \strong{\emph{Details}}
 
-       The formula allows flexible specification of variables and their roles in the model:
-       - Deterministic variables (e.g., dummies) can be included using \code{deterministic()}. Multiple
-         deterministic variables can be added with \code{+} (e.g., \code{deterministic(dummy1 + dummy2)}).
-         These variables are considered fixed and are not associated with short-run or long-run dynamics.
-       - Asymmetric variables can be included for both short-run and long-run dynamics:
-         \itemize{
-           \item \strong{asymS}: Specifies short-run asymmetric variables. For example,
-                 \code{asymS(x1 + x2)} includes variables \code{x1} and \code{x2} for short-run asymmetry.
-           \item \strong{asymL}: Specifies long-run asymmetric variables. For example,
-                 \code{asymL(x1 + x3)} includes variables \code{x1} and \code{x3} for long-run asymmetry.
-           \item \strong{asym}: Includes variables for both short-run and long-run asymmetry.
-                 For example, \code{asym(x1 + x3)} applies asymmetric decomposition for both dynamics.
-         }
-        A \strong{trend} term can be added to the model to account for deterministic linear trends
-         over time. Simply include \code{trend} in the formula.
+The formula allows flexible specification of variables and their roles:
 
-       These components can be combined flexibly in the formula to define a robust model tailored
-       to your analysis.}
+\itemize{
+\item \strong{Deterministic variables:}
+Deterministic regressors (e.g., dummy variables) can be included using
+\code{deterministic()}. Multiple deterministic variables may be supplied
+using \code{+}, for example \code{deterministic(dummy1 + dummy2)}.
+These variables are treated as fixed components and are not associated
+with short-run or long-run dynamics.
+\item \strong{Asymmetric variables:}
+Asymmetric decompositions can be specified for short-run and/or
+long-run dynamics:
+\itemize{
+\item \strong{Sasymmetric}: Specifies short-run asymmetric variables.
+For example, \code{Sasymmetric(x1 + x2)} applies short-run
+asymmetric decomposition to \code{x1} and \code{x2}.
+\item \strong{Lasymmetric}: Specifies long-run asymmetric variables.
+For example, \code{Lasymmetric(x1 + x3)} applies long-run
+asymmetric decomposition to \code{x1} and \code{x3}.
+\item \strong{Asymmetric}: Specifies variables that enter both
+short-run and long-run asymmetric decompositions.
+For example, \code{Asymmetric(x1 + x3)} applies asymmetric
+decomposition in both dynamics.
+}
+}
+
+A \strong{trend} term may be included to capture deterministic linear
+time trends by simply adding \code{trend} to the formula.
+
+The formula also supports the use of \code{.} to represent all available
+regressors in the supplied data (excluding the dependent variable),
+following standard R formula conventions.
+
+All of the operators \code{Deterministic()}, \code{Sasymmetric()},
+\code{Lasymmetric()}, and \code{Asymmetric()} follow the same usage
+rules:
+
+\itemize{
+\item They can be freely combined within a single formula, for example:
+  \preformatted{
+  y ~ . +
+    Asymmetric(z) +
+    Lasymmetric(x2 + x3) +
+    Sasymmetric(x3 + x4) +
+    deterministic(dummy1 + dummy2) +
+    trend
+  }
+
+\item They must not be nested within one another. Valid usage:
+  \code{y ~ x + deterministic(dummy) + Asymmetric(z)}.
+  Invalid usage (to be avoided):
+  \code{y ~ x + deterministic(Asymmetric(z))} or
+  \code{y ~ x + Asymmetric(deterministic(dummy))}.
+
+\item Where applicable, arguments are validated internally using
+  \code{match.arg()}. Consequently, abbreviated inputs are accepted
+  provided they uniquely identify a valid option. For example, if
+  \code{"asymmetric"} is an admissible value, specifying \code{"a"}
+  is sufficient. For clarity and reproducibility, however, full
+  argument names are recommended.
+}
+
+These components may therefore be combined flexibly to construct
+a specification tailored to the empirical analysis.}
 
 \item{maxlag}{An integer specifying the maximum number of lags to be considered for the model.
        The default value is \code{4}. This parameter sets an upper limit on the lag length during
@@ -60,17 +106,17 @@ kardl(
        will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
        It controls the computational effort and helps prevent overfitting by restricting the search
        space for lag selection.
-         \itemize{
-           \item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
-       -   \item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
-       }
+\itemize{
+\item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
+\item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
+}
 
        Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
        context of the analysis:
-       \itemize{
-         \item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
-         \item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
-         }
+\itemize{
+\item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
+\item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
+}
 
 
 \strong{\emph{examples}}
@@ -93,25 +139,25 @@ Increasing the maximum lag to 8 for datasets with longer dependencies
        the process. The available options are:
 
 \itemize{
-  \item \strong{"quick"} (default):
+\item \strong{"quick"} (default):
         Displays progress and messages in the console while the function estimates the optimal lag values.
         This mode is suitable for interactive use or for users who want to monitor the estimation process
         in real-time. It provides detailed feedback for debugging or observation but may use additional
         resources due to verbose output.
 
-  \item \strong{"grid"} :
+\item \strong{"grid"} :
         Displays progress and messages in the console while the function estimates the optimal lag values.
         This mode is suitable for interactive use or for users who want to monitor the estimation process
         in real-time. It provides detailed feedback for debugging or observation but may use additional
         resources due to verbose output.
 
-  \item \strong{"grid_custom"}:
+\item \strong{"grid_custom"}:
         Suppresses most or all console output, prioritizing faster execution and reduced resource usage
         on PCs or servers. This mode is recommended for high-performance scenarios, batch processing,
         or when the estimation process does not require user monitoring. Suitable for large-scale or
         repeated runs where output is unnecessary.
 
-  \item \strong{User-defined vector}:
+\item \strong{User-defined vector}:
         A numeric vector of lag values specified by the user, allowing full customization of the lag
         structure used in model estimation. When a user-defined vector is provided (e.g., `c(1, 2, 4, 5)`),
         the function skips the lag optimization process and directly uses the specified lags.
@@ -144,19 +190,19 @@ Increasing the maximum lag to 8 for datasets with longer dependencies
        on the user's requirements and the computational environment.}
 
 \item{criterion}{A string specifying the information criterion to be used for selecting the optimal lag structure.
-The available options are:
+      The available options are:
 \itemize{
 \item \strong{"AIC"}: Akaike Information Criterion (default). This criterion balances model fit and complexity,
-favoring models that explain the data well with fewer parameters.
+      favoring models that explain the data well with fewer parameters.
 \item \strong{"BIC"}: Bayesian Information Criterion. This criterion imposes a stronger penalty for model complexity
-than AIC, making it more conservative in selecting models with fewer parameters.
+      than AIC, making it more conservative in selecting models with fewer parameters.
 \item \strong{"AICc"}: Corrected Akaike Information Criterion. This is an adjusted version of AIC that accounts for small sample sizes,
-making it more suitable when the number of observations is limited relative to the number of parameters.
+      making it more suitable when the number of observations is limited relative to the number of parameters.
 \item \strong{"HQ"}: Hannan-Quinn Information Criterion. This criterion provides a compromise between AIC and BIC,
-favoring models that balance fit and complexity without being overly conservative.
+      favoring models that balance fit and complexity without being overly conservative.
 }
-The criterion can be specified as a string (e.g., \code{"AIC"}) or as a user-defined function that takes a fitted model object.
-Please visit the \code{\link{modelCriterion}} function documentation for more details on using custom criteria.}
+      The criterion can be specified as a string (e.g., \code{"AIC"}) or as a user-defined function that takes a fitted model object.
+      Please visit the \code{\link{modelCriterion}} function documentation for more details on using custom criteria.}
 
 \item{differentAsymLag}{A logical value indicating whether to allow different lag lengths for positive and negative decompositions.}
 
@@ -168,18 +214,17 @@ If a user utilize grid or grid_custom mode and want to split the lag search into
 \item{...}{Additional arguments that can be passed to the function. These arguments can be used to}
 }
 \value{
-A list containing the final model, input parameters, and estimation results.
+An object of class \code{kardl_lm} containing the estimated ARDL or NARDL model.
+The object includes the following components:
 \itemize{
- \item \code{inputs}: The input parameters used for the model.
- \item \code{finalModel}: A list containing the final model formula, model object, number of parameters (\code{k}), sample size (\code{n}), start and end indices, and time span.
- \item \code{start_time}: The time when the model estimation started.
- \item \code{end_time}: The time when the model estimation ended.
- \item \code{properLag}: The optimal lag values for the short-run variables.
- \item \code{TimeSpan}: The total time span of the model.
- \item \code{OptLag}: A data frame containing the optimal lags and their corresponding criterion values.
- \item \code{LagCriteria}: A matrix containing the lag combinations and their corresponding criterion values.
- \item \code{type}: A string indicating the type of model, which is "kardlmodel".
- }
+\item \strong{argsInfo}: A list of input arguments used for the estimation. It includes the data, formula, maxlag, mode, criterion, differentAsymLag, and batch settings.
+\item \strong{extractedInfo}: A list containing extracted information from the input data and formula, such as variable names, deterministic terms, asymmetric variables, and the prepared dataset for estimation.
+\item \strong{timeInfo}: A list containing timing information for the estimation process, including start time, end time, and total duration.
+\item \strong{lagInfo}: A list containing lag selection information, including the optimal lag configuration and criteria values for different lag combinations.
+\item \strong{estInfo}: A list containing estimation details, such as the type of model, estimation method, model formula, number of parameters (k), number of observations (n), start and end points of the fitted values, and total time span.
+\item \strong{model}: The fitted linear model object of class \code{lm} representing the estimated ARDL or NARDL model.
+
+}
 }
 \description{
 This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear ARDL (NARDL) model based on the provided data and model formula.
@@ -191,96 +236,94 @@ Note: All arguments of this function can be set using \code{\link{kardl_set}} fu
 }
 \examples{
 
+suppressPackageStartupMessages(library(dplyr))
+suppressPackageStartupMessages(library(tidyr))
+suppressPackageStartupMessages(library(ggplot2))
+
 # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
- library(dplyr)
 
-  kardl_set(model=CPI~ER+PPI+asym(ER)+deterministic(covid)+trend ,
-           data=imf_example_data,
-           maxlag=2
-           ) # setting the default values of the kardl function
-
-
- kardl_model_grid<-kardl( mode = "grid")
- kardl_model_grid
- kardl_model<- imf_example_data \%>\% kardl(mode = "grid_custom")
- kardl_model
- kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
-
- # Getting the results
- kardl_model2
-
- # Getting the summary of the results
- summary(kardl_model)
-
- # OR
- imf_example_data \%>\% kardl(model=CPI~PPI+asym(ER)) \%>\% summary()
-
- # using . in the formula means that all variables in the data will be used
-
- kardl(model=CPI~.+deterministic(covid),mode = "grid")
-
- # Setting max lag instead of default value [4]
- kardl(imf_example_data,
-       CPI~ER+PPI+asymL(ER),
-       maxlag = 3, mode = "grid_custom")
-
- # Using another criterion for finding the best lag#'
- kardl_set(criterion = "HQ") # setting the criterion to HQ
- kardl( mode = "grid_custom")
-
- # using default values of lags
- kardl( mode=c(1,2,3,0))
-
- # summary( myNewStarSigns)
- # For using different lag values for negative and positive decompositions of non-linear variables
- # setting the same lags for positive and negative decompositions.
- kardl_set(differentAsymLag = FALSE)
-
- diffAsymLags<-kardl(model=CPI~asym(ER),maxlag=2, mode = "grid_custom")
- diffAsymLags$properLag
+kardl_set(formula =CPI~ER+PPI+Asymmetr(ER)+deterministic(covid)+trend ,
+          data=imf_example_data,
+          maxlag=2
+) # setting the default values of the kardl function
 
 
- # setting the different lags for positive and negative decompositions
- kardl_set(differentAsymLag = TRUE)
- sameAsymLags<-kardl(model=CPI~asym(ER),maxlag=2, mode = "grid_custom")
- sameAsymLags$properLag
 
- # Setting the preffixes and suffixes for non-linear variables
- kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
- kardl()
+kardl_model_grid<-kardl( mode = "grid")
+kardl_model_grid
 
- # For having the lags plot
- library(ggplot2)
+kardl_model<- imf_example_data \%>\% kardl(mode = "grid_custom")
+kardl_model
+kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
 
- #  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
- LagCriteria <- as.data.frame(kardl_model_grid[["LagCriteria"]])
- # Rename columns for easier access and convert relevant columns to numeric
- colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+# Getting the results
+kardl_model2
 
- LagCriteria <- LagCriteria \%>\%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+# Getting the summary of the results
+summary(kardl_model)
 
- # Pivot the data to a long format excluding AICc
- library(tidyr)
+  # OR
+  imf_example_data \%>\% kardl(formula=CPI~PPI+Asymmetric(ER)) \%>\% summary()
+
+# using . in the formula means that all variables in the data will be used
+
+kardl(formula=CPI~.+deterministic(covid),mode = "grid")
+
+# Setting max lag instead of default value [4]
+kardl(imf_example_data,
+      CPI~ER+PPI+Lasymmetric(ER),
+      maxlag = 3, mode = "grid_custom")
+
+# Using another criterion for finding the best lag#'
+kardl_set(criterion = "HQ") # setting the criterion to HQ
+kardl( mode = "grid_custom")
+
+# using default values of lags
+kardl( mode=c(1,2,3,0))
+
+# For using different lag values for negative and positive decompositions of non-linear variables
+# setting the same lags for positive and negative decompositions.
+
+same<-kardl(formula=CPI~Asymmetric(ER),maxlag=2, mode = "grid_custom",differentAsymLag = FALSE)
+dif<-kardl(formula=CPI~Sasymmetric(ER),maxlag=2, mode = "grid_custom",differentAsymLag = TRUE)
+
+same$lagInfo$OptLag
+dif$lagInfo$OptLag
+
+# Setting the preffixes and suffixes for non-linear variables
+kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
+kardl()
+
+# For having the lags plot
+
+#  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
+LagCriteria <- as.data.frame(kardl_model_grid$lagInfo$LagCriteria)
+# Rename columns for easier access and convert relevant columns to numeric
+colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+
+LagCriteria <- LagCriteria \%>\%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+
+# Pivot the data to a long format excluding AICc
 
  LagCriteria_long <- LagCriteria \%>\%
- select(-AICc) \%>\%
- pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+  select(-AICc) \%>\%
+  pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+
  # Find the minimum value for each criterion
  min_values <- LagCriteria_long \%>\%  group_by(Criteria) \%>\%
- slice_min(order_by = Value) \%>\%  ungroup()
+  slice_min(order_by = Value) \%>\%  ungroup()
 
  # Create the ggplot with lines, highlight minimum values, and add labels
- ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
+ ggplot2::ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
   geom_line() +
-   geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
-     geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
-      vjust = 1.5, color = "black", size = 3.5) +
-      labs(title = "Lag Criteria Comparison ", x = "Lag Configuration",  y = "Criteria Value") +
+  geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
+  geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
+            vjust = 1.5, color = "black", size = 3.5) +
+  labs(title = "Lag Criteria Comparison ", x = "Lag Configuration",  y = "Criteria Value") +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-
 }
 \seealso{
-\code{\link{recmt}}, \code{\link{kardl_set}}, \code{\link{kardl_get}}, \code{\link{kardl_reset}}, \code{\link{modelCriterion}}
+\code{\link{ecm}}, \code{\link{kardl_set}}, \code{\link{kardl_get}}, \code{\link{kardl_reset}}, \code{\link{modelCriterion}}
 }

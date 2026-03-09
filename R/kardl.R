@@ -1,5 +1,6 @@
 Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
-#' Estimation of ARDL and NARDL
+
+#' Estimate an ARDL or NARDL model with automatic lag selection
 #'
 #' This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear ARDL (NARDL) model based on the provided data and model formula.
 #' It allows for flexible specification of variables, including deterministic terms, asymmetric variables, and trend components.
@@ -8,35 +9,81 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #' Note: All arguments of this function can be set using \code{\link{kardl_set}} function.
 #'
 #' @param data The data of analysis
-#' @param model A formula specifying the long-run model equation. This formula defines the relationships
+#' @param formula A formula specifying the long-run model equation. This formula defines the relationships
 #'        between the dependent variable and explanatory variables, including options for deterministic terms,
 #'        asymmetric variables, and a trend component.
 #'
 #'        Example formula:
-#'        \code{y ~ x + z + asym(z) + asymL(x2 + x3) + asymS(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
+#'        \code{y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
 #'
 #'
 #'
 #' \strong{\emph{Details}}
 #'
-#'        The formula allows flexible specification of variables and their roles in the model:
-#'        - Deterministic variables (e.g., dummies) can be included using \code{deterministic()}. Multiple
-#'          deterministic variables can be added with \code{+} (e.g., \code{deterministic(dummy1 + dummy2)}).
-#'          These variables are considered fixed and are not associated with short-run or long-run dynamics.
-#'        - Asymmetric variables can be included for both short-run and long-run dynamics:
-#'          \itemize{
-#'            \item \strong{asymS}: Specifies short-run asymmetric variables. For example,
-#'                  \code{asymS(x1 + x2)} includes variables \code{x1} and \code{x2} for short-run asymmetry.
-#'            \item \strong{asymL}: Specifies long-run asymmetric variables. For example,
-#'                  \code{asymL(x1 + x3)} includes variables \code{x1} and \code{x3} for long-run asymmetry.
-#'            \item \strong{asym}: Includes variables for both short-run and long-run asymmetry.
-#'                  For example, \code{asym(x1 + x3)} applies asymmetric decomposition for both dynamics.
-#'          }
-#'         A \strong{trend} term can be added to the model to account for deterministic linear trends
-#'          over time. Simply include \code{trend} in the formula.
+#' The formula allows flexible specification of variables and their roles:
 #'
-#'        These components can be combined flexibly in the formula to define a robust model tailored
-#'        to your analysis.
+#' \itemize{
+#' \item \strong{Deterministic variables:}
+#' Deterministic regressors (e.g., dummy variables) can be included using
+#' \code{deterministic()}. Multiple deterministic variables may be supplied
+#' using \code{+}, for example \code{deterministic(dummy1 + dummy2)}.
+#' These variables are treated as fixed components and are not associated
+#' with short-run or long-run dynamics.
+#' \item \strong{Asymmetric variables:}
+#' Asymmetric decompositions can be specified for short-run and/or
+#' long-run dynamics:
+#' \itemize{
+#' \item \strong{Sasymmetric}: Specifies short-run asymmetric variables.
+#' For example, \code{Sasymmetric(x1 + x2)} applies short-run
+#' asymmetric decomposition to \code{x1} and \code{x2}.
+#' \item \strong{Lasymmetric}: Specifies long-run asymmetric variables.
+#' For example, \code{Lasymmetric(x1 + x3)} applies long-run
+#' asymmetric decomposition to \code{x1} and \code{x3}.
+#' \item \strong{Asymmetric}: Specifies variables that enter both
+#' short-run and long-run asymmetric decompositions.
+#' For example, \code{Asymmetric(x1 + x3)} applies asymmetric
+#' decomposition in both dynamics.
+#' }
+#' }
+#'
+#' A \strong{trend} term may be included to capture deterministic linear
+#' time trends by simply adding \code{trend} to the formula.
+#'
+#' The formula also supports the use of \code{.} to represent all available
+#' regressors in the supplied data (excluding the dependent variable),
+#' following standard R formula conventions.
+#'
+#' All of the operators \code{Deterministic()}, \code{Sasymmetric()},
+#' \code{Lasymmetric()}, and \code{Asymmetric()} follow the same usage
+#' rules:
+#'
+#' \itemize{
+#' \item They can be freely combined within a single formula, for example:
+#'   \preformatted{
+#'   y ~ . +
+#'     Asymmetric(z) +
+#'     Lasymmetric(x2 + x3) +
+#'     Sasymmetric(x3 + x4) +
+#'     deterministic(dummy1 + dummy2) +
+#'     trend
+#'   }
+#'
+#' \item They must not be nested within one another. Valid usage:
+#'   \code{y ~ x + deterministic(dummy) + Asymmetric(z)}.
+#'   Invalid usage (to be avoided):
+#'   \code{y ~ x + deterministic(Asymmetric(z))} or
+#'   \code{y ~ x + Asymmetric(deterministic(dummy))}.
+#'
+#' \item Where applicable, arguments are validated internally using
+#'   \code{match.arg()}. Consequently, abbreviated inputs are accepted
+#'   provided they uniquely identify a valid option. For example, if
+#'   \code{"asymmetric"} is an admissible value, specifying \code{"a"}
+#'   is sufficient. For clarity and reproducibility, however, full
+#'   argument names are recommended.
+#' }
+#'
+#' These components may therefore be combined flexibly to construct
+#' a specification tailored to the empirical analysis.
 #'
 #'
 #' @param maxlag An integer specifying the maximum number of lags to be considered for the model.
@@ -51,17 +98,17 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #'        will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
 #'        It controls the computational effort and helps prevent overfitting by restricting the search
 #'        space for lag selection.
-#'          \itemize{
-#'            \item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
-#'        -   \item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
-#'        }
+#' \itemize{
+#' \item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
+#' \item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
+#' }
 #'
 #'        Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
 #'        context of the analysis:
-#'        \itemize{
-#'          \item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
-#'          \item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
-#'          }
+#' \itemize{
+#' \item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
+#' \item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
+#' }
 #'
 #'
 #' \strong{\emph{examples}}
@@ -87,25 +134,25 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #'        the process. The available options are:
 #'
 #' \itemize{
-#'   \item \strong{"quick"} (default):
+#' \item \strong{"quick"} (default):
 #'         Displays progress and messages in the console while the function estimates the optimal lag values.
 #'         This mode is suitable for interactive use or for users who want to monitor the estimation process
 #'         in real-time. It provides detailed feedback for debugging or observation but may use additional
 #'         resources due to verbose output.
 #'
-#'   \item \strong{"grid"} :
+#' \item \strong{"grid"} :
 #'         Displays progress and messages in the console while the function estimates the optimal lag values.
 #'         This mode is suitable for interactive use or for users who want to monitor the estimation process
 #'         in real-time. It provides detailed feedback for debugging or observation but may use additional
 #'         resources due to verbose output.
 #'
-#'   \item \strong{"grid_custom"}:
+#' \item \strong{"grid_custom"}:
 #'         Suppresses most or all console output, prioritizing faster execution and reduced resource usage
 #'         on PCs or servers. This mode is recommended for high-performance scenarios, batch processing,
 #'         or when the estimation process does not require user monitoring. Suitable for large-scale or
 #'         repeated runs where output is unnecessary.
 #'
-#'   \item \strong{User-defined vector}:
+#' \item \strong{User-defined vector}:
 #'         A numeric vector of lag values specified by the user, allowing full customization of the lag
 #'         structure used in model estimation. When a user-defined vector is provided (e.g., `c(1, 2, 4, 5)`),
 #'         the function skips the lag optimization process and directly uses the specified lags.
@@ -138,16 +185,16 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #'        on the user's requirements and the computational environment.
 #' @param criterion A string specifying the information criterion to be used for selecting the optimal lag structure.
 #'       The available options are:
-#'       \itemize{
-#'       \item \strong{"AIC"}: Akaike Information Criterion (default). This criterion balances model fit and complexity,
+#' \itemize{
+#' \item \strong{"AIC"}: Akaike Information Criterion (default). This criterion balances model fit and complexity,
 #'       favoring models that explain the data well with fewer parameters.
-#'       \item \strong{"BIC"}: Bayesian Information Criterion. This criterion imposes a stronger penalty for model complexity
+#' \item \strong{"BIC"}: Bayesian Information Criterion. This criterion imposes a stronger penalty for model complexity
 #'       than AIC, making it more conservative in selecting models with fewer parameters.
-#'       \item \strong{"AICc"}: Corrected Akaike Information Criterion. This is an adjusted version of AIC that accounts for small sample sizes,
+#' \item \strong{"AICc"}: Corrected Akaike Information Criterion. This is an adjusted version of AIC that accounts for small sample sizes,
 #'       making it more suitable when the number of observations is limited relative to the number of parameters.
-#'       \item \strong{"HQ"}: Hannan-Quinn Information Criterion. This criterion provides a compromise between AIC and BIC,
+#' \item \strong{"HQ"}: Hannan-Quinn Information Criterion. This criterion provides a compromise between AIC and BIC,
 #'       favoring models that balance fit and complexity without being overly conservative.
-#'       }
+#' }
 #'       The criterion can be specified as a string (e.g., \code{"AIC"}) or as a user-defined function that takes a fitted model object.
 #'       Please visit the \code{\link{modelCriterion}} function documentation for more details on using custom criteria.
 #'
@@ -159,136 +206,366 @@ Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
 #'
 #' @param ... Additional arguments that can be passed to the function. These arguments can be used to
 #'
-#'
-#' @return A list containing the final model, input parameters, and estimation results.
+#'@return An object of class \code{kardl_lm} containing the estimated ARDL or NARDL model.
+#' The object includes the following components:
 #' \itemize{
-#'  \item \code{inputs}: The input parameters used for the model.
-#'  \item \code{finalModel}: A list containing the final model formula, model object, number of parameters (\code{k}), sample size (\code{n}), start and end indices, and time span.
-#'  \item \code{start_time}: The time when the model estimation started.
-#'  \item \code{end_time}: The time when the model estimation ended.
-#'  \item \code{properLag}: The optimal lag values for the short-run variables.
-#'  \item \code{TimeSpan}: The total time span of the model.
-#'  \item \code{OptLag}: A data frame containing the optimal lags and their corresponding criterion values.
-#'  \item \code{LagCriteria}: A matrix containing the lag combinations and their corresponding criterion values.
-#'  \item \code{type}: A string indicating the type of model, which is "kardlmodel".
-#'  }
+#' \item \strong{argsInfo}: A list of input arguments used for the estimation. It includes the data, formula, maxlag, mode, criterion, differentAsymLag, and batch settings.
+#' \item \strong{extractedInfo}: A list containing extracted information from the input data and formula, such as variable names, deterministic terms, asymmetric variables, and the prepared dataset for estimation.
+#' \item \strong{timeInfo}: A list containing timing information for the estimation process, including start time, end time, and total duration.
+#' \item \strong{lagInfo}: A list containing lag selection information, including the optimal lag configuration and criteria values for different lag combinations.
+#' \item \strong{estInfo}: A list containing estimation details, such as the type of model, estimation method, model formula, number of parameters (k), number of observations (n), start and end points of the fitted values, and total time span.
+#' \item \strong{model}: The fitted linear model object of class \code{lm} representing the estimated ARDL or NARDL model.
 #'
-#' @seealso  \code{\link{recmt}}, \code{\link{kardl_set}}, \code{\link{kardl_get}}, \code{\link{kardl_reset}}, \code{\link{modelCriterion}}
+#' }
+#'
+#'
+#' @seealso  \code{\link{ecm}}, \code{\link{kardl_set}}, \code{\link{kardl_get}}, \code{\link{kardl_reset}}, \code{\link{modelCriterion}}
 #' @export
 #'
 #' @import lmtest stats
-#' @importFrom grDevices dev.off jpeg
-#' @importFrom graphics  legend lines par abline
 #' @importFrom utils  methods  capture.output tail flush.console
 #'
 #' @examples
 #'
+#' suppressPackageStartupMessages(library(dplyr))
+#' suppressPackageStartupMessages(library(tidyr))
+#' suppressPackageStartupMessages(library(ggplot2))
+#'
 #' # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
-#'  library(dplyr)
 #'
-#'   kardl_set(model=CPI~ER+PPI+asym(ER)+deterministic(covid)+trend ,
-#'            data=imf_example_data,
-#'            maxlag=2
-#'            ) # setting the default values of the kardl function
-#'
-#'
-#'  kardl_model_grid<-kardl( mode = "grid")
-#'  kardl_model_grid
-#'  kardl_model<- imf_example_data %>% kardl(mode = "grid_custom")
-#'  kardl_model
-#'  kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
-#'
-#'  # Getting the results
-#'  kardl_model2
-#'
-#'  # Getting the summary of the results
-#'  summary(kardl_model)
-#'
-#'  # OR
-#'  imf_example_data %>% kardl(model=CPI~PPI+asym(ER)) %>% summary()
-#'
-#'  # using . in the formula means that all variables in the data will be used
-#'
-#'  kardl(model=CPI~.+deterministic(covid),mode = "grid")
-#'
-#'  # Setting max lag instead of default value [4]
-#'  kardl(imf_example_data,
-#'        CPI~ER+PPI+asymL(ER),
-#'        maxlag = 3, mode = "grid_custom")
-#'
-#'  # Using another criterion for finding the best lag#'
-#'  kardl_set(criterion = "HQ") # setting the criterion to HQ
-#'  kardl( mode = "grid_custom")
-#'
-#'  # using default values of lags
-#'  kardl( mode=c(1,2,3,0))
-#'
-#'  # summary( myNewStarSigns)
-#'  # For using different lag values for negative and positive decompositions of non-linear variables
-#'  # setting the same lags for positive and negative decompositions.
-#'  kardl_set(differentAsymLag = FALSE)
-#'
-#'  diffAsymLags<-kardl(model=CPI~asym(ER),maxlag=2, mode = "grid_custom")
-#'  diffAsymLags$properLag
+#' kardl_set(formula =CPI~ER+PPI+Asymmetr(ER)+deterministic(covid)+trend ,
+#'           data=imf_example_data,
+#'           maxlag=2
+#' ) # setting the default values of the kardl function
 #'
 #'
-#'  # setting the different lags for positive and negative decompositions
-#'  kardl_set(differentAsymLag = TRUE)
-#'  sameAsymLags<-kardl(model=CPI~asym(ER),maxlag=2, mode = "grid_custom")
-#'  sameAsymLags$properLag
 #'
-#'  # Setting the preffixes and suffixes for non-linear variables
-#'  kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
-#'  kardl()
+#' kardl_model_grid<-kardl( mode = "grid")
+#' kardl_model_grid
 #'
-#'  # For having the lags plot
-#'  library(ggplot2)
+#' kardl_model<- imf_example_data %>% kardl(mode = "grid_custom")
+#' kardl_model
+#' kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
 #'
-#'  #  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
-#'  LagCriteria <- as.data.frame(kardl_model_grid[["LagCriteria"]])
-#'  # Rename columns for easier access and convert relevant columns to numeric
-#'  colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+#' # Getting the results
+#' kardl_model2
 #'
-#'  LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+#' # Getting the summary of the results
+#' summary(kardl_model)
 #'
-#'  # Pivot the data to a long format excluding AICc
-#'  library(tidyr)
+#'   # OR
+#'   imf_example_data %>% kardl(formula=CPI~PPI+Asymmetric(ER)) %>% summary()
+#'
+#' # using . in the formula means that all variables in the data will be used
+#'
+#' kardl(formula=CPI~.+deterministic(covid),mode = "grid")
+#'
+#' # Setting max lag instead of default value [4]
+#' kardl(imf_example_data,
+#'       CPI~ER+PPI+Lasymmetric(ER),
+#'       maxlag = 3, mode = "grid_custom")
+#'
+#' # Using another criterion for finding the best lag#'
+#' kardl_set(criterion = "HQ") # setting the criterion to HQ
+#' kardl( mode = "grid_custom")
+#'
+#' # using default values of lags
+#' kardl( mode=c(1,2,3,0))
+#'
+#' # For using different lag values for negative and positive decompositions of non-linear variables
+#' # setting the same lags for positive and negative decompositions.
+#'
+#' same<-kardl(formula=CPI~Asymmetric(ER),maxlag=2, mode = "grid_custom",differentAsymLag = FALSE)
+#' dif<-kardl(formula=CPI~Sasymmetric(ER),maxlag=2, mode = "grid_custom",differentAsymLag = TRUE)
+#'
+#' same$lagInfo$OptLag
+#' dif$lagInfo$OptLag
+#'
+#' # Setting the preffixes and suffixes for non-linear variables
+#' kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
+#' kardl()
+#'
+#' # For having the lags plot
+#'
+#' #  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
+#' LagCriteria <- as.data.frame(kardl_model_grid$lagInfo$LagCriteria)
+#' # Rename columns for easier access and convert relevant columns to numeric
+#' colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+#'
+#' LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+#'
+#' # Pivot the data to a long format excluding AICc
 #'
 #'  LagCriteria_long <- LagCriteria %>%
-#'  select(-AICc) %>%
-#'  pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+#'   select(-AICc) %>%
+#'   pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+#'
 #'  # Find the minimum value for each criterion
 #'  min_values <- LagCriteria_long %>%  group_by(Criteria) %>%
-#'  slice_min(order_by = Value) %>%  ungroup()
+#'   slice_min(order_by = Value) %>%  ungroup()
 #'
 #'  # Create the ggplot with lines, highlight minimum values, and add labels
-#'  ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
+#'  ggplot2::ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
 #'   geom_line() +
-#'    geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
-#'      geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
-#'       vjust = 1.5, color = "black", size = 3.5) +
-#'       labs(title = "Lag Criteria Comparison ", x = "Lag Configuration",  y = "Criteria Value") +
+#'   geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
+#'   geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
+#'             vjust = 1.5, color = "black", size = 3.5) +
+#'   labs(title = "Lag Criteria Comparison ", x = "Lag Configuration",  y = "Criteria Value") +
 #'   theme_minimal() +
 #'   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #'
-#'
-kardl <- function(data = NULL, model = NULL,
+
+kardl <- function(data = NULL, formula = NULL,
                   maxlag  = NULL,
                   mode    = NULL,
-                   criterion = NULL,
-                   differentAsymLag = NULL,
+                  criterion = NULL,
+                  differentAsymLag = NULL,
                   batch = NULL,
                   ...
 ){
-  ## ------------------------------------------------------------------
-  ## Normalise asymmetric name parts – make sure we have exactly two strings
-  # if (length(AsymPrefix) < 2) {
-  #   AsymPrefix <- rep("", 2)
-  # }
-  # if (length(AsymSuffix) < 2) {
-  #   AsymSuffix <- c("_POS", "_NEG")
-  # }
-  ## ------------------------------------------------------------------
+  argsInfo <- list(data=data, formula=formula, maxlag=maxlag, mode=mode,
+                   criterion=criterion,differentAsymLag=differentAsymLag,batch=batch)
+  otherargsInfo <- list(...)
+  kardlVars <- lmerge(argsInfo,otherargsInfo)
+  myNames <- names(kardlVars)
+  for (i in 1:length(kardlVars)) {
+    name <- myNames[i]
+    if(nzchar(name)==FALSE) {
+      kardlVars[[i]] <- NULL
+      next
+    }
+    if (is.null(kardlVars[[name]])) {
+      kardlVars[[name]] <- kardl_get(name)
+      if (is.null(kardlVars[[name]])) {
+        stop(paste0("No ",name," provided. Please supply `",name,"` or set it with kardl_set(",name," = ...)."),
+             call. = FALSE)
+      }
+      attr(kardlVars[[name]], "source") <- "kardl_set"
+    }else{
+      attr(kardlVars[[name]], "source") <- "argument"
+    }
+  }
+  # inputs<<-kardlVars
+  makemodel(kardlVars,...)
+}
+
+
+#'
+#' Perform the Error Correction Model (ECM) test to assess cointegration in the model
+#'
+#' This function is used to perform the Error Correction Model (ECM) test, which is designed to determine whether there is cointegration in the model. Cointegration indicates a long-term equilibrium relationship between variables, despite short-term deviations. The ECM test helps identify if such a long-term relationship exists by examining the short-run dynamics and adjusting for deviations from equilibrium. If the test confirms cointegration, it suggests that the variables move together over time, maintaining a stable long-term relationship. This is critical for ensuring that the model properly captures both short-term fluctuations and long-term equilibrium behavior.
+#' @inheritParams kardl
+#' @param case An integer specifying the case number for the restricted ECM test. The available cases are:
+#'  \itemize{
+#'  \item \code{case 1}: No constant, no trend.
+#'  \item \code{case 2}: Restricted constant, no trend.
+#'  \item \code{case 3}: Unrestricted constant, no trend.
+#'  \item \code{case 4}: Unrestricted Constant, restricted trend.
+#'  \item \code{case 5}: Unrestricted constant, unrestricted trend.
+#'  }
+#'  The choice of case depends on the specific characteristics of the data and the model being tested. Each case corresponds to different assumptions about the presence of a constant term and a trend in the model, which can affect the interpretation of the test results and the conclusions about cointegration.
+#'
+#' @section Hypothesis testing:
+#' The restricted ECM test, also known as the PSS t Bound test, is a statistical test used to assess the presence of cointegration in a model. Cointegration refers to a long-term equilibrium relationship between two or more time series variables. The PSS t Bound test is based on the work of Pesaran, Shin, and Smith (2001) and is particularly useful for models with small sample sizes.
+#'
+#'
+#' The null and alternative hypotheses for the restricted ECM test are as follows:
+#'
+#'   \deqn{\mathbf{H_{0}:} \theta  =   0}
+#'   \deqn{\mathbf{H_{1}:} \theta  \neq 0}
+#'
+#'   The null hypothesis (\eqn{H_{0}}) states that there is no cointegration in the model, meaning that the long-run relationship between the variables is not significant. The alternative hypothesis (\eqn{H_{1}}) suggests that there is cointegration, indicating a significant long-term relationship between the variables.
+#'
+#'   The test statistic is calculated as the t-statistic of the coefficient of the error correction term (\eqn{\theta}) in the ECM model. If the absolute value of the t-statistic exceeds the critical value from the PSS t Bound table, we reject the null hypothesis in favor of the alternative hypothesis, indicating that cointegration is present.
+#'
+#'   The cases for the restricted ECM Bound test are defined as follows:
+#'
+#'
+#'
+#' \itemize{
+#' \item \code{case 1}: No constant, no trend.
+#'
+#'   This case is used when the model does not include a constant term or a trend term. It is suitable for models where the variables are stationary and do not exhibit any long-term trends.
+#'
+#'   The model is specified as follows:
+#'
+#'   \deqn{
+#' \begin{aligned}
+#' \Delta y_t =  \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1}  - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+#' \end{aligned}
+#' }
+#'
+#' \item \code{case 2}: Restricted constant, no trend.
+#'
+#'   This case is used when the model includes a constant term but no trend term. It is suitable for models where the variables exhibit a long-term relationship but do not have a trend component.
+#'   The model is specified as follows:
+#'   \deqn{
+#'   \begin{aligned}
+#'   \Delta y_t &= \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1} - \alpha_0 - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+#'   \end{aligned}
+#'   }
+#'
+#' \item \code{case 3}: Unrestricted constant, no trend.
+#'
+#'   This case is used when the model includes an unrestricted constant term but no trend term. It is suitable for models where the variables exhibit a long-term relationship with a constant but do not have a trend component.
+#'
+#'   The model is specified as follows:
+#'
+#'   \deqn{
+#'   \begin{aligned}
+#'   \Delta y_t &= \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1} - \alpha_0 - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+#'   \end{aligned}
+#'     }
+#' \item \code{case 4}: Unrestricted Constant, restricted trend.
+#'
+#'   This case is used when the model includes an unrestricted constant term and a restricted trend term. It is suitable for models where the variables exhibit a long-term relationship with a constant and a trend component.
+#'
+#'   The model is specified as follows:
+#'
+#'   \deqn{
+#'   \begin{aligned}
+#'   \Delta y_t &= \phi + \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1} - \pi (t-1) - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+#'   \end{aligned}
+#'    }
+#' \item \code{case 5}: Unrestricted constant, unrestricted trend.
+#' }
+#'
+
+#'
+#'  The Error Correction Model (ECM) is specified as follows:
+#' \deqn{
+#' \begin{aligned}
+#' \Delta y_t &= \phi + \varphi t +  \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1}  - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+#' \end{aligned}
+#' }
+#'
+
+#'
+#' @return A list containing the results of the restricted ECM test, including:
+#' \itemize{
+#' \item \code{ecm}: The estimated ECM model objects including:
+#' \itemize{
+#' \item \code{case}: The case number used in the test (1, 2, 3, 4, or 5).
+#' \item \code{EcmResLagged}: The lagged error correction term used in the ECM model.
+#' \item \code{ecmL}: The estimated long-run model object.
+#' \item \code{shortrunEQ}: The estimated short-run model equation object.
+#' \item \code{longrunEQ}: The estimated long-run model equation object.
+#' }
+#' \item \strong{argsInfo}: A list of input arguments used for the estimation. It includes the data, formula, maxlag, mode, criterion, differentAsymLag, and batch settings.
+#' \item \strong{extractedInfo}: A list containing extracted information from the input data and formula, such as variable names, deterministic terms, asymmetric variables, and the prepared dataset for estimation.
+#' \item \strong{timeInfo}: A list containing timing information for the estimation process, including start time, end time, and total duration.
+#' \item \strong{lagInfo}: A list containing lag selection information, including the optimal lag configuration and criteria values for different lag combinations.
+#' \item \strong{estInfo}: A list containing estimation details, such as the type of model, estimation method, model formula, number of parameters (k), number of observations (n), start and end points of the fitted values, and total time span.
+#' \item \strong{model}: The fitted linear model object of class \code{lm} representing the estimated ARDL or NARDL model.
+#' }
+#'
+#'
+#'
+#'
+#'
+#' @export
+#' @seealso \code{\link{kardl}} \code{\link{pssf}}  \code{\link{psst}}   \code{\link{ecm}}  \code{\link{narayan}}
+#'
+#' @examples
+#'
+#' suppressPackageStartupMessages(library(dplyr))
+#' suppressPackageStartupMessages(library(tidyr))
+#' suppressPackageStartupMessages(library(ggplot2))
+#'
+#'
+#'  # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
+#'  kardl_set(formula=CPI~ER+PPI+asym(ER)+deterministic(covid)+trend ,
+#'            data=imf_example_data ,
+#'            maxlag=3)
+#'
+#'  ecm_model_grid<- ecm(mode = "grid")
+#'  ecm_model_grid
+#'
+#'  # Checking the cointegration test results using pesaran t test
+#'  psst(ecm_model_grid)
+#'  # Getting the details of psst result
+#'  summary(psst(ecm_model_grid))
+#'
+#'  # using the grid_custom mode for faster execution without console output
+#'  ecm_model<- imf_example_data %>% ecm(mode = "grid_custom")
+#'  ecm_model
+#'
+#'  # Estimating the model with user-defined lag values
+#'  ecm_model2<-ecm(mode = c( 2    ,  1    ,  1   ,   3 ))
+#'  # Getting the results
+#'  ecm_model2
+#'  # Getting the summary of the results
+#'  summary(ecm_model2)
+#'  # OR using pipe operator
+#'  imf_example_data %>% ecm(CPI~PPI+asym(ER) +trend,case=4) %>% summary()
+#'
+#'  # For increasing the performance of finding the most fitted lag vector
+#'  ecm(mode = "grid_custom")
+#'  # Setting max lag instead of default value [4]
+#'  ecm(maxlag = 2, mode = "grid_custom")
+#'  # Using another criterion for finding the best lag
+#'  ecm(criterion = "HQ", mode = "grid_custom")
+#'
+#'
+#'
+#'  # For using different lag values for negative and positive decompositions of non-linear variables
+#'
+#'  # setting the same lags for positive and negative decompositions.
+#'  kardl_set(differentAsymLag = FALSE)
+#'
+#'  diffAsymLags<-ecm( mode = "grid_custom")
+#'  diffAsymLags$lagInfo$OptLag
+#'
+#'  # setting the different lags for positive and negative decompositions
+#'  sameAsymLags<-ecm(differentAsymLag = TRUE , mode = "grid_custom" )
+#'  sameAsymLags$lagInfo$OptLag
+#'
+#'
+#'  # Setting the preffixes and suffixes for non-linear variables
+#'  kardl_reset()
+#'  kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
+#'  customizedNames<-ecm(imf_example_data, CPI~ER+PPI+asym(ER) )
+#'  customizedNames
+#'
+#'  # For having the lags plot
+#'
+#'  #  ecm_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
+#'  LagCriteria <- as.data.frame(ecm_model_grid$lagInfo$LagCriteria)
+#'  # Rename columns for easier access and convert relevant columns to numeric
+#'  colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+#'  LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
+#'
+#'  # Pivot the data to a long format excluding AICc
+#'
+#'  LagCriteria_long <- LagCriteria %>%  select(-AICc) %>%
+#'    pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+#'  # Find the minimum value for each criterion
+#'  min_values <- LagCriteria_long %>%  group_by(Criteria) %>%
+#'    slice_min(order_by = Value) %>%  ungroup()
+#'
+#'  # Create the ggplot with lines, highlight minimum values, and add labels
+#'  ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
+#'    geom_line() +
+#'    geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
+#'    geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
+#'              vjust = 1.5, color = "black", size = 3.5) +
+#'    labs(title = "Lag Criteria Comparison", x = "Lag Configuration",  y = "Criteria Value") +
+#'    theme_minimal() +
+#'    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+#'
+#'
+ecm<-function(data = NULL, formula = NULL,  case=3,
+              maxlag  = NULL,
+              mode    = NULL,
+              criterion = NULL,
+              differentAsymLag = NULL,
+              batch = NULL,
+              ...  ){
+  if(! case %in% c(1,2,3,4,5,"auto")){
+    stop("Invalid case. The options for case are 1, 2, 3, 4, 5 and auto",call. = FALSE)
+  }
+
+
   if (is.null(data)) {
     data <- kardl_get("data")
     if (is.null(data)) {
@@ -296,54 +573,669 @@ kardl <- function(data = NULL, model = NULL,
            call. = FALSE)
     }
   }
-  if (is.null(model)) {
-    model <- kardl_get("model")
-    if (is.null(model)) {
-      stop("No model formula provided. Please supply `model` or set it with kardl_set(model = ...).",
-           call. = FALSE)
-
+  notesArray<-c()
+  argsInfo <- list(data=data, formula=formula, maxlag=maxlag, mode=mode,
+                   criterion=criterion,differentAsymLag=differentAsymLag,batch=batch)
+  for (name in names(argsInfo)) {
+    if (is.null(argsInfo[[name]])) {
+      argsInfo[[name]] <- kardl_get(name)
+      if (is.null(argsInfo[[name]])) {
+        stop(paste0("No ",name," provided. Please supply `",name,"` or set it with kardl_set(",name," = ...)."),
+             call. = FALSE)
+      }
     }
   }
-  if (is.null(maxlag)) {
-    maxlag <- kardl_get("maxlag")
-    if (is.null(maxlag)) maxlag <- 4  # default value
+  spec<- combineVarTypes(argsInfo)
+  if(!is.data.frame(spec$argsInfo$data)){
+    spec$argsInfo$data<-as.data.frame(spec$argsInfo$data) # convert to data frame
   }
-  if (is.null(mode)) {
-    mode <- kardl_get("mode")
-    if (is.null(mode)) mode <- "quick"  # default value
+  spec$argsInfo$data<-as.ts(spec$argsInfo$data[,c(spec$extractedInfo$Allvars[spec$extractedInfo$Allvars!="trend"],spec$extractedInfo$deterministic)])
+  spec<-CheckInputs(spec ) # It captures any changes during the checking process of the inputs. Especially user-defined nominations for each variable.
+  spec<-detectVars(spec) # dependentVar independentVars  AllAsymVars   indepASexcluded   indepALexcluded method
+
+  spec<-CreateNewVars( spec)
+
+  longrunEQ<- paste0(replace_lag_var(.kardl_Settings_env$LongCoef ,spec$extractedInfo$dependentVar,1)  ," ~ " , paste0( replace_lag_var(.kardl_Settings_env$LongCoef ,spec$extractedInfo$longRunVars[-1],1) ,collapse = " + "))
+
+
+  if(case == "auto"){
+    case <- 3 # Default case is 3, which means unrestricted intercept and no trend
   }
-  if (is.null(criterion)) {
-    criterion <- kardl_get("criterion")
-    if (is.null(criterion)) criterion <- "AIC"  # default value
+
+  if(spec$extractedInfo$noConstant){
+    if(case >1){
+      notesArray <- c(notesArray, "No constant term is included in the model. The case was set to 1.")
+    }
+    case<-1
+  }else if(spec$extractedInfo$trend){
+    if(case <4){
+      notesArray <- c(notesArray, "Trend is detected in the model. The case was set to 5.")
+      case<-5
+    }
+
+  }else{
+    # if(!case ==3 ){
+    #   # model has not trend but have constant
+    #   notesArray <- c(notesArray, "No trend is used in the model. The case was set to 3.")
+    # }
+    # case<-3
   }
-  if (is.null(differentAsymLag)) {
-    differentAsymLag <- kardl_get("differentAsymLag")
-    if (is.null(differentAsymLag)) differentAsymLag <- TRUE  # default value
+  condtionalFormula <- " -1"
+  if(case==2){
+    condtionalFormula <- " "
   }
-  if (is.null(batch)) {
-    batch <- kardl_get("batch")
-    if (is.null(batch)) batch <- "1/1"  # default value
+  if(case==4){
+    condtionalFormula <- " -1 + trend"
+    varAdlari<-colnames(spec$extractedInfo$data)
+    trend1<-seq(nrow(spec$extractedInfo$data))
+    spec$extractedInfo$data<-cbind(spec$extractedInfo$data,trend=c(trend1))
+    varAdlari<-c(varAdlari,"trend")
+    colnames(spec$extractedInfo$data)<-varAdlari
+
   }
 
 
-  Args <- list(data=data, model=model, maxlag=maxlag, mode=mode,
-               criterion=criterion,
-               differentAsymLag=differentAsymLag,
-               batch=batch)
 
-  otherArgs <- list(...)
- # Args <- as.list(environment())
+  longrunEQ<- as.formula(paste0(longrunEQ, condtionalFormula))
 
-  inputs <- lmerge(Args,otherArgs)
-  for (name in names(inputs)) {
-    if(!is.null(inputs[[name]])) {
-      attr(inputs[[name]], "source") <- "argument"  # Indicates the origin of the variable
-      attr(inputs[[name]], "description") <- "This value is provided as a function argument."  # Describes the variable's purpose
-
+  ecmL<-lm(longrunEQ,spec$extractedInfo$data)
+  ecmL$call <- longrunEQ
+  EcmResLagged<-rep(NA,times=nrow(spec$extractedInfo$data))
+  for (v in 1:length(ecmL$residuals)) {
+    newId<-as.numeric( names(ecmL$residuals[v]))+1
+    if(newId<=nrow(spec$extractedInfo$data)){
+      EcmResLagged[newId]<-ecmL$residuals[v]
     }
   }
-  inputs$otherArgs<-NULL
-  #  inputs<-as.list(environment())
-  # inputs[c("data")]<-NULL
-  makemodel(inputs,...)
+
+
+  isim<-colnames(data)
+  data <-cbind(data,EcmResLagged)
+  colnames(data)<-c(isim,"EcmRes")
+  # spec$extractedInfo$longRunPart <- "EcmRes"
+  # add EcmRes to model
+
+  shortrunEQ<-update(argsInfo$formula, . ~ . + deterministic (EcmRes))
+  if(case==5){
+    shortrunEQ<-update(shortrunEQ, . ~ . + trend)
+  }
+
+  ecmS <-kardl(data, shortrunEQ,maxlag = maxlag, mode =mode,criterion = criterion,
+               differentAsymLag = differentAsymLag,   batch = batch,
+               longRunPart ="EcmRes",list(...))
+  ecmList<-list(ecm=list(
+    longrunEQ=longrunEQ,
+    shortrunEQ=shortrunEQ,
+    ecmL=ecmL,
+    EcmResLagged=EcmResLagged,
+    case=case
+  ))
+  ecmS$estInfo$type="ecm"
+  ecmOutput<-lmerge(ecmList,ecmS)
+  if(coef(ecmS)[["EcmRes"]]>=0){
+    notesArray <- c(notesArray, "The coefficient of the error correction term (EcmRes) is non-negative. This may indicate a lack of long-run equilibrium adjustment.")
+  }
+  if(coef(ecmS)[["EcmRes"]] < -1){
+    notesArray <- c(notesArray, "The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship.")
+  }
+
+  ecmOutput$notes<-notesArray
+  class(ecmOutput) <- c("kardl_lm","lm")
+  return(ecmOutput)
+
 }
+
+
+#' Model Selection Criterion
+#'
+#' Computes a model selection criterion (AIC, BIC, AICc, or HQ) or applies a user-defined function
+#' to evaluate a statistical model.
+#'
+#' @param estModel An object containing the fitted model. The object should include at least:
+#' \itemize{
+#' \item \code{estModel$model} – the actual fitted model object (e.g., from \code{lm}, \code{glm}).
+#' \item \code{k} – the number of estimated parameters.
+#' \item \code{n} – the sample size.
+#' }
+#' @param cr A character string specifying the criterion to compute.
+#'           Options are \code{"AIC"}, \code{"BIC"}, \code{"AICc"}, and \code{"HQ"}. Alternatively,
+#'           a user-defined function can be provided.
+#' @param ... Additional arguments passed to the user-defined criterion function if \code{cr} is a function.
+#'
+#' @return A numeric value representing the selected criterion, normalized by the sample size if one of the predefined options is used.
+#'
+#' @details
+#' This function returns model selection criteria used to compare the quality of different models.
+#' All criteria are defined such that \strong{lower values indicate better models} (i.e., the goal is minimization).
+#'
+#' If you wish to compare models using a maximization approach (e.g., log-likelihood),
+#' you can multiply the result by \code{-1}.
+#'
+#' Note: The predefined string options (e.g., \code{"AIC"}) are \strong{not} the same as the built-in R functions \code{AIC()} or \code{BIC()}.
+#' In particular, the values returned by this function are adjusted by dividing by the sample size \code{n}
+#' (i.e., normalized AIC/BIC), which makes it more comparable across datasets of different sizes.
+#'
+#' The function returns:
+#' \itemize{
+#' \item \strong{"AIC"}:  \eqn{ \frac{2k - 2\ell}{n} } Akaike Information Criterion divided by \code{n}.
+#' \item \strong{"BIC"}:  \eqn{ \frac{\log(n) \cdot k - 2\ell}{n} } Bayesian Information Criterion divided by \code{n}.
+#' \item \strong{"AICc"}: \eqn{ \frac{2k(k+1)}{n - k - 1} + \frac{2k - 2\ell}{n} } Corrected Akaike Information Criterion divided by \code{n}.
+#' \item \strong{"HQ"}: \eqn{ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} } Hannan–Quinn Criterion divided by \code{n}.
+#' }
+#'
+#' where:
+#' \itemize{
+#' \item \eqn{k} is the number of parameters,
+#' \item \eqn{n} is the sample size,
+#' \item \eqn{\ell} is the log-likelihood of the model.
+#' }
+#'
+#' If \code{cr} is a function, it is called with the fitted model and any additional arguments passed through \code{...}.
+#' @seealso \code{\link{kardl}}
+#' @examples
+#'
+#' # Example usage of modelCriterion function with a linear model
+#' mylm<- lm(mpg ~ wt + hp, data = mtcars)
+#' modelCriterion(mylm, AIC )
+#' modelCriterion(mylm, "BIC" )
+#' mm<-AIC(mylm)
+#'  class(mm) == class(modelCriterion(mylm, "AIC"))
+#'
+#'  # Example usage of modelCriterion function with a kardl model
+#'  kardl_model <- kardl(imf_example_data,
+#'                       CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#'                       mode = c(1, 2, 3, 0))
+#'  modelCriterion(kardl_model, "AIC")
+#'  modelCriterion(kardl_model, AIC)
+#'  AIC(kardl_model)
+#'  modelCriterion(kardl_model, "BIC")
+#'
+#'  # Using a custom criterion function
+#'  my_cr_fun <- function(mod, ...) { AIC(mod) / length(mod$model[[1]]) }
+#'  modelCriterion(kardl_model, my_cr_fun)
+#'
+#' @export
+modelCriterion<-function(estModel,cr,...){
+  if (is.function(cr)) {
+    do.call(cr,list(estModel, ...))
+  } else {
+    myCr<- match.arg( cr ,c("AIC","BIC","AICc","HQ"))
+    k<-length(estModel$coefficients) #k
+    n<-length(estModel$residuals)
+    llh<-logLik(estModel)
+    val<-switch (myCr,"AIC"=((2*k-2*llh)/n),"BIC"=((log(n)*k-2*llh)/n ),"AICc"=(((2 * k * (k + 1))/(n - k - 1))+(2*k-2*llh)/n),"HQ"=((2*log(log(n))*k-2*llh)/n) )
+    as.numeric( val)
+  }
+}
+
+
+
+makemodel<-function(inputs,...){
+
+  myMethod<-T
+  # if(is.vector(inputs$mode))
+  if(is.vector(inputs$mode[1]) && is.numeric(inputs$mode) && isFALSE(isFALSE(inputs$mode)) )  {
+    class(myMethod)<- "user"
+  }else{
+    class(myMethod)<- match.arg(tolower(inputs$mode) ,c("quick","grid_custom","grid"))
+  }
+  UseMethod("makemodel",myMethod)
+}
+
+
+
+# Estimation the model by quick lags
+#
+#If the lags of short-run variables are determined by user, the results will be obtained with \code{userDefinedModel}
+# @param inputs All inputs of making model.
+# @param ... Other inputs
+#
+# @return
+
+#' @export
+makemodel.quick<-function(inputs , ...  ){#model,data,inputs){
+  inputs$mode<-"quick"
+  start_time <- Sys.time()
+  # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
+
+  spec<-prepare(inputs)
+  preModel<-makeLongrunMOdel(spec) #retruns LS_longrun   LS_dependent
+
+
+  #fmodel<-paste0(LS_dependent,"~",paste(LS_longrun,makeShortrunMOdel(spec$extractedInfo$shortRunVars,LagsList,deterministic),sep="+"))
+
+  Xlength<-length( spec$extractedInfo$shortRunVars)
+
+  failed_checks<-matrix(NA,1,Xlength)[-1,]
+  colnames(failed_checks)<- spec$extractedInfo$shortRunVars
+
+  toporders<-matrix(0,1,Xlength+1)[-1,]
+  colnames(toporders)<- c(spec$extractedInfo$shortRunVars,"criterion_value")
+
+  #internal func
+  myEst<-function(order){
+
+    # function(shortRunVars,LagsList,deterministic,LS_dependent,LS_longrun,thisData)
+      theResults<-lm(as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
+                      makeShortrunMOdel(spec$extractedInfo$shortRunVars,order,spec$extractedInfo$deterministic),sep="+")) ) ,spec$extractedInfo$data)
+
+    # theResults<-makeEstimation(spec$extractedInfo$shortRunVars,
+    #                            order,spec$extractedInfo$deterministic,preModel$LS_dependent,preModel$LS_longrun,spec$extractedInfo$data)
+    modelCriterion(theResults,spec$argsInfo$criterion)
+  }
+
+  for (i in 1:spec$argsInfo$maxlag) { # for each parse
+    ardl_converge <- FALSE
+    order1 <- rep(i, Xlength)
+    Base_cr <- myEst(order1)
+    toporders<-rbind(toporders,c(order1 ,Base_cr))
+    while (ardl_converge == FALSE) {
+      for(j in 1:(Xlength-1)) {
+        order2_back <- order1
+        order2_forth <- order1
+        if (order1[j + 1] == 0) {
+          # order2_back is the order1
+          order2_forth[j + 1] <- order1[j + 1] + 1
+        } else {
+          if (order1[j + 1] == spec$argsInfo$maxlag) {
+            order2_back[j + 1] <- order1[j + 1] - 1
+          }else{
+            order2_back[j + 1] <- order1[j + 1] - 1
+            order2_forth[j + 1] <- order1[j + 1] + 1
+          }
+        }
+        model0 <- myEst(order2_back)
+        model1 <- myEst(order2_forth)
+        minCr<-min(model0,model1)
+        if(Base_cr>minCr){
+          if( model0 >  model1){
+            order1<-order2_forth
+          }else{
+            order1<- order2_back
+          }
+          toporders<-rbind(toporders,c(order1 ,minCr))
+          Base_cr<-minCr
+          ardl_converge =F
+        }else{
+          if(any(apply(failed_checks, 1, function(row) all(row == order1)))){
+            ardl_converge =T
+          }else {
+            failed_checks<-rbind(failed_checks,order1)
+          }
+        }
+      }
+    }
+  }
+
+  # toporders[  which.min(toporders[, "criterion_value"]),-ncol(toporders) , drop = FALSE]
+  minValue<-toporders[  which.min(toporders[, "criterion_value"]), , drop = FALSE]
+
+  best_order <- minValue[,-ncol(minValue)]
+  # cnames<-colnames(best_order)
+
+  # best_order<-as.vector(best_order)
+  # names(best_order)<-cnames
+
+
+  # OptLag<-data.frame(c( paste0(best_order,collapse = ","),minValue[,ncol(minValue)])  )
+  # if(!is.function(spec$argsInfo$criterion)){
+  #   colnames(OptLag)<-spec$argsInfo$criterion
+  # }
+  # rownames(OptLag)<-c("lag","value")
+
+
+  MyFormula<-as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
+                      makeShortrunMOdel(spec$extractedInfo$shortRunVars,best_order,spec$extractedInfo$deterministic),sep="+")) )
+  theResults<-lm(MyFormula ,spec$extractedInfo$data)
+  theResults$call <- MyFormula
+
+  # model_tidy <- summary(theResults$formula)$coefficients %>%   as_tibble(rownames = "term")
+  # colnames(model_tidy) <- c("term", "estimate", "std.error", "statistic", "p.value")
+
+  end_time <- Sys.time()
+  spec$timeInfo<-list(
+    start_time=start_time,
+    end_time=end_time,
+    span = difftime(end_time, start_time, units = "secs")
+  )
+  spec$lagInfo<-list(
+    OptLag=best_order,
+    LagCriteria=toporders
+  )
+  fittedVars<-fitted(theResults)
+  k<-length(theResults$coefficients)
+  n<-length(theResults$residuals)
+  spec$estInfo<- list(type="kardlmodel",
+                      method = "quick",
+                      ModelFormula = theResults$call,
+                      k=k ,
+                      n=n,
+                      start=as.numeric(names(fittedVars[1])),
+                      end=as.numeric(names(tail(fittedVars,n=1))),
+                      TimeSpan=n+spec$argsInfo$maxlag+1
+  )
+
+
+  Karamelikli<-lmerge(spec,theResults)
+  class(Karamelikli) <- c("kardl_lm","lm")
+  Karamelikli
+}
+
+# Estimation the model by User-defined lags
+#
+#If the lags of short-run variables are determined by user, the results will be obtained with \code{userDefinedModel}
+# @param inputs All inputs of making model.
+# @param ... Other inputs
+#
+# @return
+#' @export
+#'
+makemodel.user <-function(inputs, ...  ){#model,data,inputs){
+  # spec$argsInfo$mode<-"user"
+  start_time <- Sys.time()
+
+  # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
+  spec<-prepare(inputs)
+  preModel<-makeLongrunMOdel(spec) #retruns LS_longrun   LS_dependent
+
+  MyFormula<- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
+                      makeShortrunMOdel(spec$extractedInfo$shortRunVars,spec$argsInfo$mode,spec$extractedInfo$deterministic),sep="+")) )
+  theResults<- lm(MyFormula ,spec$extractedInfo$data)
+  theResults$call <- MyFormula
+
+    #makeEstimation(spec$extractedInfo$shortRunVars,LagsList=spec$argsInfo$mode,spec$extractedInfo$deterministic,preModel$LS_dependent,preModel$LS_longrun,spec$extractedInfo$data)
+
+
+  # model_tidy <- summary(theResults$formula)$coefficients %>%   as_tibble(rownames = "term")
+  # colnames(model_tidy) <- c("term", "estimate", "std.error", "statistic", "p.value")
+  OptLag<-spec$argsInfo$mode
+  attr( OptLag,"source")<- NULL
+  attr( OptLag,"description")<- NULL
+
+  end_time <- Sys.time()
+
+  spec$timeInfo<-list(
+    start_time=start_time,
+    end_time=end_time,
+    span = difftime(end_time, start_time, units = "secs")
+  )
+  spec$lagInfo<-list(
+    OptLag=OptLag
+  )
+  fittedVars<-fitted(theResults)
+  k<-length(theResults$coefficients) #k
+  n<-length(theResults$residuals)
+  spec$estInfo<- list(
+    type="kardlmodel",
+    method = "user",
+    ModelFormula = theResults$call,
+    k=k ,
+    n=n,
+    start=as.numeric(names(fittedVars[1])),
+    end=as.numeric(names(tail(fittedVars,n=1))),
+    TimeSpan=n+max(OptLag)+1
+  )
+
+
+  Karamelikli<-lmerge(spec,theResults)
+  class(Karamelikli) <- c("kardl_lm","lm")
+  Karamelikli
+}
+
+# Find Optimum Lags level  by maximizing Performance
+#
+# To reduce server load for finding optimum lag, this function can find it.
+# Notice! nothing will be print during estimations.
+# @param inputs All inputs of making model.
+# @param ... Other inputs
+#
+# @return
+#
+#' @export
+makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
+  inputs$mode<-"grid_custom"
+  start_time <- Sys.time()
+  # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
+  spec<-prepare(inputs)
+  # inputs<-prepare(model=model,data=data  ,inputs)
+  # cat("\r",paste0("Note: Performance mode will only have output once all estimations are finished.  Starting of estimation of the model: ",inputs$formulaName))
+
+  preModel<-makeLongrunMOdel(spec) #retruns LS_longrun   LS_dependent
+  batch<-BatchControl(spec)
+  spec$extractedInfo  <- lmerge(batch,spec$extractedInfo)
+
+  OrderForShortRun <- rep(list((spec$argsInfo$maxlag-1):0),spec$extractedInfo$shortrunLength) # I am reversing orders due to alerting about the insufficiency of the degree of freedom.
+  OrderForInd<-list((spec$argsInfo$maxlag-1):1)
+  GeneralOrder<-append(OrderForShortRun,OrderForInd) # p<-append(m,b)
+  LagQueue<-rev(expand.grid(GeneralOrder))  # q<-expand.grid(p)
+
+  if(length(spec$extractedInfo$ASvars)>0 && ! spec$argsInfo$differentAsymLag) {
+    i<-1 # satrt from the second var
+    for (x in  spec$extractedInfo$independentVars){
+      i<-i+1
+      if((x %in% spec$extractedInfo$ASvars)){
+        LagQueue<-cbind(LagQueue[,1:i],LagQueue[,i:ncol(LagQueue)])
+        i<-i+1
+      }
+    }
+  }
+  colnames(LagQueue)<-spec$extractedInfo$shortRunVars
+  ## Note: This part will be updated to reduce RAM requirement to keep huge list. It will be cut by the batch function's return.
+  Mincr<-1000000 # max value for be compared with criteria.
+  OptRow<-0 # The row with contain the most proper lag orders
+
+  for(i in batch$startRow:batch$endRow)  {
+
+    MyFormula<- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
+                      makeShortrunMOdel(spec$extractedInfo$shortRunVars,unlist(LagQueue[i,]),spec$extractedInfo$deterministic),sep="+")) )
+    theResults<- lm(MyFormula ,spec$extractedInfo$data)
+    # theResults<- makeEstimation(spec$extractedInfo$shortRunVars,
+    #                             LagsList=unlist(LagQueue[i,]),
+    #                             spec$extractedInfo$deterministic,
+    #                             preModel$LS_dependent,
+    #                             preModel$LS_longrun,
+    #                             spec$extractedInfo$data)
+
+    cr<-modelCriterion(theResults, spec$argsInfo$criterion, ...)
+    # k<-theResults$k
+    # n<-theResults$n
+    # llh<-logLik(theResults$formula)
+    #
+    # cr<-switch (spec$argsInfo$criterion,"AIC"=((2*k-2*llh)/n),"BIC"=((log(n)*k-2*llh)/n ),"AICc"=(((2 * k * (k + 1))/(n - k - 1))+(2*k-2*llh)/n),"HQ"=((2*log(log(n))*k-2*llh)/n) )
+    if(cr<Mincr){
+      Mincr<-cr
+      OptRow<-i
+    }
+  }
+
+  endLag  <-paste(LagQueue[batch$endRow,],collapse = ",")
+  startLag<-paste(LagQueue[batch$startRow,],collapse = ",")
+  properRow<-1
+  # OptLag<-data.frame(  LagQueue[OptRow,]
+  # rownames(OptLag)<-""
+  finalLags<-data.frame(c( paste0(LagQueue[OptRow,],collapse = ","),Mincr)  )
+  if(!is.function(spec$argsInfo$criterion)){
+    colnames(finalLags)<-spec$argsInfo$criterion
+  }
+  rownames(finalLags)<-c("lag","value")
+  Mincr<-NULL
+
+  MyFormula<- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
+                      makeShortrunMOdel(spec$extractedInfo$shortRunVars,unlist(LagQueue[OptRow,]),spec$extractedInfo$deterministic),sep="+")) )
+  theResults<- lm(MyFormula ,spec$extractedInfo$data)
+  theResults$call <- MyFormula
+  # theResults<- makeEstimation(spec$extractedInfo$shortRunVars,LagsList=unlist(LagQueue[OptRow,]),spec$extractedInfo$deterministic,preModel$LS_dependent,preModel$LS_longrun,spec$extractedInfo$data)
+
+  fittedVars<-fitted(theResults)
+  # model_tidy <- summary(theResults$formula)$coefficients %>%   as_tibble(rownames = "term")
+  # colnames(model_tidy) <- c("term", "estimate", "std.error", "statistic", "p.value")
+
+  properLag <- unlist(LagQueue[OptRow,])
+  MaxLag<-max( properLag)
+  end_time <- Sys.time()
+
+
+
+
+  end_time <- Sys.time()
+  spec$timeInfo<-list(
+    start_time=start_time,
+    end_time=end_time,
+    span = difftime(end_time, start_time, units = "secs")
+  )
+
+  fittedVars<-fitted(theResults)
+  k<-length(theResults$coefficients) #k
+  n<-length(theResults$residuals)
+  spec$estInfo<- list(
+    type="kardlmodel",
+    method = "grid_custom",
+    ModelFormula = theResults$call,
+    k=k ,
+    n=n,
+    start=as.numeric(names(fittedVars[1])),
+    end=as.numeric(names(tail(fittedVars,n=1))),
+    TimeSpan=n+MaxLag+1
+  )
+  spec$lagInfo<-list(
+    OptLag= properLag,
+    allCrLaga = finalLags,
+    properRow=OptRow,
+    LagsFrom=startLag
+  )
+
+  Karamelikli<-lmerge(spec,theResults)
+  class(Karamelikli) <- c("kardl_lm","lm")
+  Karamelikli
+}
+
+# Find Optimum Lags level  by visualization of Estimations
+#
+# Current job status and remained estimations with progress bar.
+# Notice! Users should check the validity of the model and data utilizing this function.
+# Appearance mode will have outputs during estimations.
+#
+# @param inputs All inputs of making model.
+# @param ... Other inputs
+#
+# @return
+#
+#' @export
+makemodel.grid<-function(inputs , ... ){#model ,  data,inputs  ){ # makemodel.default
+  inputs$mode<-"grid"
+
+  start_time <- Sys.time()
+  # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
+  spec<-prepare(inputs)
+  # inputs<-prepare(model=model,data=data  ,inputs)
+  #cat("\r",paste0("Appearance mode will have outputs during estimations. Starting of estimation of the model: ",inputs$formulaName))
+
+  preModel<-makeLongrunMOdel(spec) #retruns LS_longrun   LS_dependent
+  batch<-BatchControl(spec)
+
+  LagCriteria<-matrix(NA,spec$extractedInfo$lagRowsNumber  ,5) # rows: lag , dependent,LongrunTerms, Shortrun terms, AIC, BIC ,SC,HQ
+  colnames(LagCriteria) <- c("lag" , "AIC", "BIC" ,"AICc","HQ")
+  bir<-rep(rep(c(1:(spec$argsInfo$maxlag-1)), each = (spec$argsInfo$maxlag)^(spec$extractedInfo$shortrunLength)),time=1)
+  for (i in 1:spec$extractedInfo$shortrunLength) {
+    r<-rep(rep(c(0:(spec$argsInfo$maxlag-1)), each = (spec$argsInfo$maxlag)^(spec$extractedInfo$shortrunLength-i)),time=(spec$argsInfo$maxlag^i -spec$argsInfo$maxlag^(i-1)) )
+    if(length(spec$extractedInfo$ASvars)>0 && (spec$extractedInfo$independentVars[i] %in% spec$extractedInfo$ASvars)){
+      if(! spec$argsInfo$differentAsymLag) {
+        bir<-cbind(bir,r)
+      }
+    }
+    bir<-cbind(bir,r)
+  }
+  colnames(bir)<-spec$extractedInfo$shortRunVars
+  LagMatrix <-bir[nrow(bir):1,] # I am reversing orders due to alerting about the insufficiency of the degree of freedom.
+  colNum=ncol(LagMatrix)
+  for (i in 1:nrow(LagMatrix)){
+    LagCriteria[i,1] <- paste0(LagMatrix[i,],collapse=",")
+  }
+  for(i in batch$startRow:batch$endRow)  {
+    MyFormula <- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
+                      makeShortrunMOdel(spec$extractedInfo$shortRunVars,unlist(LagMatrix[i,]),spec$extractedInfo$deterministic),sep="+")) )
+    theResults <- lm(MyFormula ,spec$extractedInfo$data)
+    theResults$call <- MyFormula
+    # theResults<- makeEstimation(spec$extractedInfo$shortRunVars,LagsList=unlist(LagMatrix[i,]),spec$extractedInfo$deterministic,preModel$LS_dependent,preModel$LS_longrun,spec$extractedInfo$data)
+
+
+    k<-length(theResults$coefficients) #k
+    n<-length(theResults$residuals)  # T
+    llh<-logLik(theResults)
+    aic<- (2*k-2*llh)/n
+    bic<- (log(n)*k-2*llh)/n
+    hq<- (2*log(log(n))*k-2*llh)/n
+    LagCriteria[i,2]<-aic
+    LagCriteria[i,3]<-bic #BIC(est)
+    LagCriteria[i,4]<- aic + ((2 * k * (k + 1))/(n - k - 1)) # AICc(est)
+    LagCriteria[i,5]<-hq #   -2 * as.numeric(llh) + 2 * k * log(log(n))
+    progressBar(i,batch$endRow,as.character(LagCriteria[i,1]))
+  }
+  cat("\n")
+  endLag  <- LagMatrix[batch$endRow ,]# paste(LagMatrix[batch$startRow,],collapse = ",")
+  startLag<- LagMatrix[batch$startRow ,]#paste(LagMatrix[batch$endRow,],collapse = ",")
+  aicRow<-which(LagCriteria[,2]==min(as.numeric(LagCriteria[,2]), na.rm=T), arr.ind=T)
+  bicRow<-which(LagCriteria[,3]==min(as.numeric(LagCriteria[,3]), na.rm=T), arr.ind=T)
+  aiccRow<-which(LagCriteria[,4]==min(as.numeric(LagCriteria[,4]), na.rm=T), arr.ind=T)
+  hqRow<-which(LagCriteria[,5]==min(as.numeric(LagCriteria[,5]), na.rm=T), arr.ind=T)
+  finalLags<-data.frame("AIC"=c(LagCriteria[aicRow,1],LagCriteria[aicRow,2]),
+                        "BIC"=c(LagCriteria[bicRow,1],LagCriteria[bicRow,3])   ,
+                        "AICc"=c(LagCriteria[aiccRow,1],LagCriteria[aiccRow,4]),
+                        "HQ"=c(LagCriteria[hqRow,1],LagCriteria[hqRow,5])
+  )
+
+  rownames(finalLags)<-c("lag","value")
+  properRow<-switch (spec$argsInfo$criterion,"AIC"=aicRow,"BIC"=bicRow ,"AICc"=aiccRow,"HQ"=hqRow )
+  properLag <-LagMatrix[properRow,]
+  MyFormula <- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
+                      makeShortrunMOdel(spec$extractedInfo$shortRunVars,unlist(properLag),spec$extractedInfo$deterministic),sep="+")) )
+  theResults <- lm(MyFormula ,spec$extractedInfo$data)
+  theResults$call <- MyFormula
+
+  # theResults<- makeEstimation(spec$extractedInfo$shortRunVars,LagsList=unlist(properLag),spec$extractedInfo$deterministic,preModel$LS_dependent,preModel$LS_longrun,spec$extractedInfo$data)
+  k<-length(theResults$coefficients) #k
+  n<-length(theResults$residuals)  # T
+  fittedVars<-fitted(theResults)
+  # model_tidy <- summary(theResults$formula)$coefficients %>%   as_tibble(rownames = "term")
+  # colnames(model_tidy) <- c("term", "estimate", "std.error", "statistic", "p.value")
+
+
+  MaxLag<-max(properLag)
+  end_time<- Sys.time()
+  #cat("\r The collapsed time is: ", secondsToPeriod(as.numeric(difftime(end_time, start_time, units = "secs"))))
+
+  end_time <- Sys.time()
+  spec$timeInfo<-list(
+    start_time=start_time,
+    end_time=end_time,
+    span = difftime(end_time, start_time, units = "secs")
+  )
+
+  fittedVars<-fitted(theResults)
+  spec$estInfo<- list(
+    type="kardlmodel",
+    method = "grid",
+    ModelFormula = theResults$call,
+    k=k ,
+    n=n,
+    start=as.numeric(names(fittedVars[1])),
+    end=as.numeric(names(tail(fittedVars,n=1))),
+    TimeSpan=n+MaxLag+1
+  )
+  spec$lagInfo<-list(
+    OptLag= LagMatrix[properRow,],
+    allCrLaga = finalLags,
+    properRow=properRow,
+    Criterion=inputs$criterion,
+    LagsFrom=startLag,
+    LagsTo=endLag,
+    LagCriteria=LagCriteria,
+    LagMatrix=LagMatrix
+  )
+
+  Karamelikli<-lmerge(spec,theResults)
+  class(Karamelikli) <- c("kardl_lm","lm")
+  Karamelikli
+}
+
+

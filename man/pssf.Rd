@@ -2,12 +2,12 @@
 % Please edit documentation in R/tests.R
 \name{pssf}
 \alias{pssf}
-\title{PSS F Bound test}
+\title{Pesaran et al. (2001) Bounds F-Test for KARDL Models}
 \usage{
-pssf(model, case = 3, signif_level = "auto")
+pssf(kmodel, case = 3, signif_level = "auto")
 }
 \arguments{
-\item{model}{The kardl obejct}
+\item{kmodel}{A fitted KARDL model object of class 'kardl_lm' created using the \code{\link{kardl}} function.}
 
 \item{case}{Numeric or character. Specifies the case of the test to be used in the function.
 Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the function determines the case automatically based on the model's characteristics. Invalid values will result in an error.
@@ -26,27 +26,19 @@ If "auto" is chosen, the function determines the significance level automaticall
 Invalid values will result in an error.}
 }
 \value{
-A list with class "kardl" containing the following components:
+A list with class "htest" containing the following components:
 \itemize{
-\item \code{type:} The type of the test, which is "cointegration".
-\item \code{case:} The case of the test, which is a numeric value (1, 2, 3, 4, or 5).
-\item \code{statistic:} The calculated F-statistic for the test.
-\item \code{k:} The number of long-run variables in the model.
-\item \code{Cont:} The conclusion of the test, indicating whether cointegration is found, inconclusive, or not found.
-\item \code{BoundNum:} A numeric value indicating the result of the test: 1 for cointegration, 0 for inconclusive, and -1 for no cointegration.
-\item \code{siglvl:} The significance level used in the test, which can be "auto", "0.10", "0.1", "0.05", "0.025", or "0.01".
-\item \code{criticalValues:} A numeric vector containing the critical values for the test based on the specified case and significance level.
-\item \code{parameter:} A character vector containing the names of the long-run parameters in the model.
-\item \code{FH0:} The null hypothesis of the test, which is a character string describing the hypothesis being tested.
-\item \code{Fmodel:} The detailed F test results, including the F-statistic, p-value, degrees of freedom, and residual degrees of freedom.
-\item \code{warnings:} A character vector containing any warnings generated during the test, such as issues with the model specification or data length.
-\item \code{method:} The method used for the test.
+\item{statistic:} The calculated F-statistic for the test.
+\item{method:} A character string indicating the method used for the test, which is Bounds F-Test".
+\item{data.name:} A character string giving the name of the data used in the test.
+\item{k:} The number of independent variables in the model.
+\item{notes:} A character vector containing any notes or warnings related to the test results, such as sample size considerations or adjustments made to the case based on model characteristics.
+\item{sig:} The significance level used for the test, either specified by the user or determined automatically.
+\item{alternative: The alternative hypothesis being tested.}
+\item{case:} The case used for the test, either specified by the user or determined automatically based on the model's characteristics.
 }
 }
 \description{
-This function performs the Pesaran et al. F Bound test
-}
-\details{
 This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to assess the presence of a long-term relationship (cointegration) between variables in the context of an autoregressive distributed lag (ARDL) model. The PSS F Bound test examines the joint significance of lagged levels of the variables in the model. It provides critical values for both the upper and lower bounds, which help determine whether the variables are cointegrated. If the calculated F-statistic falls outside these bounds, it indicates the existence of a long-term equilibrium relationship. This test is particularly useful when the underlying data includes a mix of stationary and non-stationary variables.
 }
 \section{Hypothesis testing}{
@@ -76,45 +68,37 @@ The null hypothesis (H0) of the F Bound test is that there is no cointegration a
 }
 
 \examples{
-
 kardl_model<-kardl(imf_example_data,
                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
                    mode=c(1,2,3,0))
-A<-pssf(kardl_model)
-A
-cat(paste0("The F statistics=",A$statistic," where k=",A$k,"."))
-cat(paste0("\nWe found '",A$Cont, "' at ",A$siglvl,". "))
-cat(paste0("\nThe proboblity is = ",sprintf("\%.10f",A$Fmodel[["Pr(>F)"]][2])))
+my_pssF<-pssf(kardl_model)
+# Getting the results of the test.
+my_pssF
+# Getting details of the test.
+my_summary<-summary(my_pssF)
+my_summary
+
+# Getting the critical values of the test.
+my_summary$crit_vals
+
+
+
 
 # Using magrittr :
 
 library(magrittr)
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   mode=c(1,2,3,0)) \%>\% pssf()
+                           mode=c(1,2,3,0)) \%>\% pssf()
 
-# Getting details of the test.
-mySummary<-summary(A)
-mySummary
-
-# Using magrittr:
+# Getting details of the test results using magrittr:
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   mode=c(1,2,3,0)) \%>\% pssf() \%>\% summary()
+                           mode=c(1,2,3,0)) \%>\% pssf() \%>\% summary()
 
-# Critical Values are
-A$criticalValues
-# The null hypothesis :
-A
-
-# getting H0
-mySummary$H0
-
-# Detailed F test
-A$Fmodel
 
 }
 \references{
-Pesaran, M. H., Shin, Y. and Smith, R. (2001), “Bounds Testing Approaches to the Analysis of Level Relationship”, Journal of Applied Econometrics, 16(3), 289-326.
+Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing Approaches to the Analysis of Level Relationship", Journal of Applied Econometrics, 16(3), 289-326.
 }
 \seealso{
-\code{\link{psst}}  \code{\link{banerjee}}  \code{\link{recmt}}  \code{\link{narayan}}
+\code{\link{psst}}  \code{\link{ecm}}  \code{\link{narayan}}
 }

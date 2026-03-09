@@ -1,182 +1,239 @@
 
 #' @export
-summary.kardl<-function(object, saveToFile=FALSE, ...){
-  x <- object
-template<-""
-  switch (x$type,
-    "kardlmodel" =
-      {
-        x$summary=summary(x$model)
-        template<-"summary.kardl.txt"
-        },
-    "cointegration"={
-      template<-"summary.cointegration.txt"
-      x$H0<- paste0("H0: Coef(", paste0(x$parameter,collapse = ") = Coef(" ),") = 0")
-      x$H1<- paste0("H1: Coef(", paste0(x$parameter,collapse = ") \u2260 Coef(" ),")\u2260",  " 0")
-      x$Significant <- names(x$result$star)
-          switch (x$method ,
-                  "Banerjee" ={
-                    x$CointText<-paste0("The coeffient of ECM is ",x$coef," , t=",x$statistic," k=",x$k)
-                  },
-                  "recmt"=      {
-                    # This function was performed in two steps. In the first step, the ECM was calculated and in the second step, the PSS test was performed.
-                    x$CointText<-paste0("Attention: This function was performed in two steps.\nIn the first step, the ECM was calculated and in the second step, the PSS test was performed.\n")
-                    x$CointText<-paste0(x$CointText,"\nThe coeffient of ECM is ",x$coef," , t=",x$statistic," k=",x$k)
-                  },
-                  "Pesarant"= {
-                    x$CointText<- paste0("The t statistics = ",x$statistic," where k = ",x$k,".")
-                  },
-                  "Narayan"= {
-                    x$CointText<-paste0("The F statistics = ",x$statistic," where k = ",x$k,".\nThe proboblity is = ",sprintf("%.10f",x$Fmodel[["Pr(>F)"]][2]))
-                  },
-                  "PesaranF"= {
-                    x$CointText<-paste0("The F statistics = ",x$statistic," where k = ",x$k,". \nThe proboblity is = ",sprintf("%.10f",x$Fmodel[["Pr(>F)"]][2]))
-                  },
-                  "AARDL"=    {
-                    x$CointText<-paste0("AARDL test.\nThe calculated AARDL Wald F is ",x$statistic," and  k=",x$k,"\n The calculated Wald F for PSS is ",x$PF$statistic,"\n The calculated PSS t is ",x$Pt$statistic,"\n")
+#' @method print kardl_mplier
+print.kardl_mplier <- function(x, ...) {
+  cat("kardl Dynamic Multiplier Object\n")
+  cat("Horizon:", x$horizon, "\n")
+  print(x$mpsi)
+}
 
+#' @export
+#' @method summary kardl_mplier
+summary.kardl_mplier <- function(object, ...) {
 
-                    }
-          )
-          #  yaz<-printCointegration(x,saveToFile,...)
-    },
-    "ARCH"={
-      template<-"summary.ARCH.txt"
-    },
-    "asymmetrytest"={
-      template<-"summary.asymmetrytest.txt"
+  out <- list(
+    horizon = object$horizon,
+    summary=summary(object$mpsi)
+  )
+  class(out) <- "summary.kardl_mplier"
+  out
+}
 
-      if(!is.null(x$Lwald)){
-        x$Ltitle<-"Asymmetries in the long run\n"
-        x$LH<-""
-        for (v in 1:length( x$Lhypotheses$H0)) {
-          x$LH<-paste0(x$LH,"H0: ", x$Lhypotheses$H0[v] , "\n")
-          x$LH<-paste0(x$LH,"H1: ", x$Lhypotheses$H1[v] , "\n\n")
+#' @export
+#' @method print summary.kardl_mplier
+print.summary.kardl_mplier <- function(x, ...) {
+  cat("Summary of Dynamic Multipliers\n")
+  cat("Horizon:", x$horizon, "\n\n")
+  print( x$summary)
+}
 
-        }
+#' @export
+#' @method print kardl_boot
+print.kardl_boot <- function(x, ...) {
+  cat("kardl Bootstrap Results\n")
+  cat("Confidence level:", x$level, "%\n")
+  cat("Horizon:", x$horizon, "\n")
+  print(x$mpsi)
+}
+
+#' @export
+#' @method summary kardl_boot
+summary.kardl_boot <- function(object, ...) {
+
+  out <- list(
+    horizon = object$horizon,
+    summary=summary(object$mpsi)
+  )
+  class(out) <- "summary.kardl_boot"
+  out
+}
+
+#' @export
+#' @method print summary.kardl_boot
+print.summary.kardl_boot <- function(x, ...) {
+  cat("Summary of Dynamic Multipliers\n")
+  cat("Horizon:", x$horizon, "\n\n")
+  print( x$summary)
+}
+
+#' @export
+#' @method plot kardl_mplier
+plot.kardl_mplier <- function(x, variables ="all" , ...) {
+  mpsi <- x$mpsi
+  plots<-list()
+
+    if(all(variables == "all")){
+      for (variable in  x$vars$independentVars) {
+        plots[[variable]] <- mplierggplot(mpsi, x$vars,variable)
       }
-      if(!is.null(x$Swald) && !is.null(x$Lwald)){  x$Line<-"\n_____________________________\n" }
-      if(!is.null(x$Swald)){
-        x$Stitle<-"Asymmetries in the short run\n\n"
-        x$SH<-""
-        for (v in 1:length( x$Shypotheses$H0)) {
-          x$SH<-paste0(x$SH,"H0: ", x$Shypotheses$H0[v] , "\n")
-          x$SH<-paste0(x$SH,"H1: ", x$Shypotheses$H1[v] , "\n\n")
-
+    }else{
+      for (variable in variables) {
+        if(! variable %in% x$vars$independentVars){
+          warning(paste0( variable," is not exits among independent variables!"), call.=F)
+        }else{
+          plots[[variable]] <- mplierggplot(mpsi, x$vars,variable)
         }
       }
     }
-  )
-# private function to print the template
-yaz<- printTemplate(x,template,saveToFile,...)
-  class(yaz)<-"kardlPrint"
-  yaz
-}
-
-
-#' @export
-print.kardlPrint<-function(x,limit=NULL,verbose=TRUE ,...){
-  # if limit is number, limit the number of characters printed
-  if(!is.null(limit) && is.numeric(limit) && limit>0 && nchar(x$text)>limit){
-    x$text<-substr(x$text,1,limit)
-    # add ... at the end
-    x$text<-paste0(x$text," ...")
-  }
-  if(isFALSE(verbose)){
-    # remove all empty lines
-    x$text<-gsub("\n\n","\n",x$text)
-    # remove leading and trailing spaces
-    x$text<-gsub("^\n+|\n+$","",x$text)
-    # remove leading and trailing spaces in each line
-    x$text<-gsub("^[ \t]+|[ \t]+$","",x$text)
+  for (p in plots) {
+    print(p)
   }
 
-  cat(x$text,...)
+}
+
+
+#' @export
+#' @method print kardl_symmetric
+print.kardl_symmetric <- function(x, ...) {
+  #print(x$allWald)
+  # cat("\n==============================\n")
+  cat("\n")
+  if (!is.null(x$Lwald) && nrow(x$Lwald) > 0) {
+    #    cat("Long-run tests only:\n")
+    print(x$Lwald, ...)
+    cat("\n")
+  }
+
+  if (!is.null(x$Swald) && nrow(x$Swald) > 0) {
+    # cat("Short-run tests only:\n")
+    print(x$Swald, ...)
+    cat("\n")
+  }
 }
 
 #' @export
-print.writemath<-function(x,...){
-  cat(x)
-}
+#' @method summary kardl_symmetric
+summary.kardl_symmetric <- function(object,level=0.05 ,...) {
+  decision <- list()
+   if(!is.null(object$Lwald)){
+     decision$long_run <-list()
+       for(v in rownames(object$Lwald)){
+         decision$long_run[[v]]<- ifelse( object$Lwald[v,"Pr(>F)"] < level,  paste0("Reject H0 at ",level*100,"% level. Indicating long-run asymmetry for variable ",v,"."),
+                                          paste0("Fail to Reject H0 at ",level*100,"% level. Indicating long-run symmetry for variable ",v,"."))
+       }
+     }
 
-#' @export
-print.kardl<-function(x,saveToFile=FALSE,...){
-  switch (x$type,
-          "kardlmodel" ={
-            yaz<- printTemplate(x,"printkardl.txt",saveToFile,...)
-            },
-          "Cusum"=  {
-            yaz<-list()
-              yaz$text<-paste0("According to the ", x$method," results, the model is ",ifelse(x$Stability=="U","Unstable","Stable"),".")
-
-             },
-          "kardl_longrun"={
-           # returnList <- list(Normalized=x$results, Desc=x$starsDesc)
-             yaz<-printTemplate(x,"printkardl_longrun.txt",saveToFile,...)
-            },
-          "cointegration"={
-            yaz<-list()
-            if(x$method == "recm" ){
-              yaz<- printTemplate(x,"printkardl.txt",saveToFile,...)
-            }
-
-            switch (x$method ,
-                    "Banerjee" ={yaz$text<-paste0(x$method ," test.\nThe coeffient of ECM is ",x$coef," , t=",x$statistic," k=",x$k,"\n")},
-                    "ECM"=      {yaz$text<-paste0(x$method ," test.\nAttention: this function is deprecated.\nThe coeffient of ECM is ",x$coef," , t=",x$statistic," k=",x$k,"\n")},
-                    "Pesarant"= {yaz$text<- paste0("PSS t test. Case: ",x$case,"\nThe t statistics = ",x$statistic," where k = ",x$k,".","\n")},
-                    "recmt"= {yaz$text<-  paste0(yaz$text,"\nRESM test. Case: ",x$case,"\nThe t statistics = ",x$statistic," where k = ",x$k,".","\n")},
-                    "Narayan"= {yaz$text<-paste0(x$method ," F test. Case: ",x$case,"\nThe F statistics = ",x$statistic," where k = ",x$k,". \nThe proboblity is = ",sprintf("%.10f",x$Fmodel[["Pr(>F)"]][2]),"\n")},
-                    "PesaranF"= {yaz$text<-paste0("PSS F test. Case: ",x$case,"\nThe F statistics = ",x$statistic," where k = ",x$k,". \nThe proboblity is = ",sprintf("%.10f",x$Fmodel[["Pr(>F)"]][2]),"\n")},
-                    "AARDL"=    {yaz$text<-paste0("AARDL test.\nThe calculated AARDL Wald F is ",x$statistic," and  k=",x$k,"\n The calculated Wald F for PSS is ",x$PF$statistic,"\n The calculated PSS t is ",x$Pt$statistic,"\n")}
-            )
-            # Checking if there are warnings
-            if (!is.null(x$warnings)) {
-              yaz$text <- paste0(yaz$text, "\nWarnings:\n", paste(x$warnings, collapse = "\n"))
-            }
-          #  yaz<-printCointegration(x,saveToFile,...)
-            },
-          "ARCH"={
-            yaz<-printTemplate(x,"printARCH.txt",saveToFile,...)
-          },
-          "asymmetrytest"={
-            yaz<-list()
-            yaz$text<-""
-            if(!is.null(x$Lwald)){
-              cat("Asymmetries in the long run\n\n")
-              print(x$Lwald[,1:2])
-            }
-            if(!is.null(x$Swald) && !is.null(x$Lwald)){  cat("________________________________\n")}
-            if(!is.null(x$Swald)){
-              cat("Asymmetries in the short run\n\n")
-              print(x$Swald[,1:2])
-            }
-          },
-          "bootstrap"={
-            if (length(x$plots) == 0) {
-              print("The list of plots is empty.")
-            } else {
-            for (variable in x$plots) {
-              print(variable)
-            }
-            }
-            return()
-          },
-         {  yaz<-print(x)} #  Select unnamed element in the case of no match DEFAULT
+   if(!is.null(object$Swald)){
+     decision$short_run <-list()
+     for(v in rownames(object$Swald)){
+       decision$short_run[[v]]<- ifelse( object$Swald[v,"Pr(>F)"] < level,  paste0("Reject H0 at ",level*100,"% level. Indicating short-run asymmetry for variable ",v,"."),
+                                        paste0("Fail to Reject H0 at ",level*100,"% level. Indicating short-run symmetry for variable ",v,"."))
+     }
+   }
+  out <- list(
+    Lwald = object$Lwald,
+    Swald = object$Swald,
+    Lhypotheses = object$Lhypotheses,
+    Shypotheses = object$Shypotheses,
+    decision = decision
   )
-
-  cat(yaz$text)
+  class(out) <- "summary.kardl_symmetric"
+  out
 }
 
-# print function to replace values in the template
-printTemplate<-function(x,templateName,saveToFile,...){
-  file_contents <- readLines(system.file("template", templateName, package = "kardl"))
-  output<- replaceValues(file_contents,x)
-  x$text<-output
-  class(x)<-"kardlFormat"
-  if(isFALSE(isFALSE(saveToFile))){
-    cat(output,file=saveToFile,...)
-  }else{
-    x
+#' @export
+#' @method print summary.kardl_symmetric
+print.summary.kardl_symmetric <- function(x, ...){
+
+  if (!is.null(x$Lwald) && nrow(x$Lwald) > 0) {
+    cat("Long-run symmetry tests:\n\n")
+    for(v in rownames(x$Lwald)){
+      cat("Test for variable: ",v,"\n")
+      cat("F-value: ", x$Lwald[v,"F value"], ", p-value: ", x$Lwald[v,"Pr(>F)"], "\n")
+      cat("Test Decision: ", x$decision$long_run[[v]], "\n")
+      cat("Hypotheses:\n")
+      cat(paste0("H0: ", x$Lhypotheses$H0[[v]], "\n"))
+      cat(paste0("H1: ", x$Lhypotheses$H1[[v]], "\n\n"))
+      # write F value and p-value
+
+    }
+
+  }
+  if(!is.null(x$Swald) && !is.null(x$Lwald)){  cat("\n_____________________________\n") }
+  if (!is.null(x$Swald) && nrow(x$Swald) > 0) {
+    cat("Short-run symmetry tests:\n\n")
+    for(v in rownames(x$Swald)){
+      cat("Test for variable: ",v,"\n")
+      cat("F-value: ", x$Swald[v,"F value"], ", p-value: ", x$Swald[v,"Pr(>F)"], "\n")
+      cat("Test Decision: ", x$decision$short_run[[v]], "\n")
+      cat("Hypotheses:\n")
+      cat(paste0("H0: ", x$Shypotheses$H0[[v]], "\n"))
+      cat(paste0("H1: ", x$Shypotheses$H1[[v]], "\n\n"))
+      # write F value and p-value
+
+    }
+  }
+
+}
+
+
+#' @export
+#' @method summary kardl_test
+summary.kardl_test <- function(object, ...){
+    htestsummary(object,...)
+
+}
+
+#' @export
+#' @method print summary_htest
+print.summary_htest <- function(x, ...){
+  cat(x$method, "\n")
+  cat(names(x$statistic), " = ", unname( x$statistic),"\n")
+  cat("k = ", x$k, "\n")
+
+
+
+  cat("\nHypotheses:\n")
+  cat( paste0("H0: Coef(", paste0(x$varnames,collapse = ") = Coef(" ),") = 0"), "\n")
+  cat(paste0("H1: Coef(", paste0(x$varnames,collapse = ") \u2260 Coef(" ),")\u2260",  " 0"), "\n")
+   # add x$decision
+  cat("\nTest Decision: ", x$decision, "\n")
+  cat("\nCritical Values (Case ",x$case,"):\n")
+  print(x$crit_vals)
+  if (!is.null(x$notes)) {
+    cat("\n\033[1;33mNotes:\033[0m\n")
+    for (note in x$notes) {
+      cat("   \u2022 ", note, "\n", sep = "")
+    }
+    cat("\n")
+  }
+}
+
+#' @export
+#' @method print kardl_long_run
+print.kardl_long_run<- function(x, ...) {
+  cat("Long-run multiplier estimate\n")
+  cat("=================================\n")
+
+  NextMethod()  # continues with normal coefficient printing
+  cat("Note:",attr(x, "note"), "\n\n")
+  invisible(x)
+}
+
+#' @export
+#' @method plot kardl_long_run
+plot.kardl_long_run <- function(x,  ...) {
+  cat("\033[1;33mWARNING: Residual diagnostic plots are meaningless for long-run estimators\033[0m\n")
+  if (interactive()) {
+    ans <- readline("Show plots anyway? (y/n): ")
+    if (tolower(ans) != "y") return(invisible(NULL))
+  }
+  NextMethod("plot")
+}
+
+
+#' @export
+#' @method print kardl_lm
+print.kardl_lm<- function(x, ...) {
+  cat("Optimal lags for each variable (",x$argsInfo$criterion,"):\n")
+  cat(paste(sprintf("%s: %d", names(x$lagInfo$OptLag), x$lagInfo$OptLag), collapse = ", "  ),"\n")
+  NextMethod()  # continues with normal coefficient printing
+  if (!is.null(x$notes)) {
+    cat("\n\033[1;33mNotes:\033[0m\n")
+    for (note in x$notes) {
+      cat("   \u2022 ", note, "\n", sep = "")
+    }
+    cat("\n")
   }
 }
 

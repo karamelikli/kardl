@@ -3,7 +3,7 @@
 
 # Initialize settings in the environment
 .kardl_Settings_env$data<-NULL
-.kardl_Settings_env$model<-NULL
+.kardl_Settings_env$formula<-NULL
 .kardl_Settings_env$maxlag <- 4
 .kardl_Settings_env$mode<-"quick"
 .kardl_Settings_env$criterion <- "AIC"
@@ -17,33 +17,37 @@
 # Store default settings as a list
 .kardl_Settings_env_default <- as.list(.kardl_Settings_env)
 
-#' Function to get or set settings
+#' Function to Set KARDL Package Options
 #'
-#' This function allows you to get or set various options related to the kardl package.
+#' This function allows users to set options for the kardl package. Users can specify named arguments to set options or call the function without arguments to retrieve all current settings.
 #'
-#' @param . If provided, the function will return this value. If not provided or set to `FALSE`, it will return the current settings.
-#' @param ... Named arguments to set options, or no arguments to get all options.
+#' @param . If provided and not `FALSE`, the function will return this value after setting the options. If not provided or set to `FALSE`, it will return the current settings.
+#' @param ... Named arguments corresponding to the options to be set. Valid option names include those defined in the kardl package settings.
+#'
+#' @return If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
+#'
 #'
 #' @export
 #' @examples
 #' # Set options
-#' kardl_set(criterion = "BIC", differentAsymLag = TRUE)
+#' kardl_set(maxlag = 5, mode = "grid")
+#' # Get all options
+#' kardl_get()
 #' # Get specific options
-#' kardl_get("criterion", "differentAsymLag")
-#' # Get all options.
+#' kardl_get("maxlag", "mode")
 #'
-#' # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+#' # Note: In interactive use, avoid calling kardl_get() directly to prevent cluttering the console.
 #'
 #' \donttest{
 #' kardl_get()
 #' }
 #'
-#' # Utilizing the magrittr pipe
+#' # Example with magrittr pipe
 #' library(magrittr)
-#' # Set options and then get them
+#' # Set custom coefficient naming conventions
 #'
 #' MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
-#' kardl_set(ShortCoef = "L___{lag}.d.{varName}")
+#' kardl_set(ShortCoef = "L___{lag}.d.{varName}", formula = MyFormula, data = imf_example_data)
 #' imf_example_data %>%   kardl(MyFormula)
 #'
 #' kardl_reset()
@@ -85,23 +89,27 @@ kardl_set <- function(.=FALSE, ...) {
 
 
 
-#' Function to get settings
+#' Function to Get KARDL Package Options
 #'
-#' This function retrieves options from the kardl package settings.
+#' This function retrieves the current settings of the kardl package. Users can specify option names to get their values or call the function without arguments to retrieve all current settings.
 #'
-#' @param ... Names of the options to retrieve. If none provided, all options are returned.
+#' @param ... Option names to retrieve. If no arguments are provided, all options will be returned.
 #'
 #' @export
 #' @examples
-#' # Get specific options
-#' kardl_get("criterion", "differentAsymLag")
 #'
 #' # Get all options
-#' # Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+#' kardl_get()
+#' # Get specific options
+#' kardl_get("maxlag", "mode")
+#'
+#' # Note: In interactive use, avoid calling kardl_get() directly to prevent cluttering the console.
+#'
 #' a<-kardl_get()
 #' a$AsymSuffix
 #'
-#' @return If no arguments are provided, returns all options as a list. If one option is requested, returns its value directly. If multiple options are requested, returns a list of those options.
+#' @return If no arguments are provided, returns all options as a list. If specific option names are provided, returns their values.
+#'
 #' @seealso \code{\link{kardl_set}}, \code{\link{kardl_reset}}
 #'
 kardl_get <- function(...) {
@@ -133,17 +141,20 @@ kardl_get <- function(...) {
 }
 
 
-#' Function to reset kardl package settings
+#' Function to Reset KARDL Package Options to Default Values
 #'
 #' This function resets all options in the kardl package to their default values.
 #'
 #' @param . If provided and not `FALSE`, the function will return this value after resetting the settings. If not provided or set to `FALSE`, it will return the current settings.
 #'
+#' @return If resetting options, returns the provided value (if any) or invisibly
+#' returns the current settings as a list.
 #' @export
 #' @examples
 #' # Set some options
 #' kardl_set(criterion = "BIC", differentAsymLag = TRUE)
-#' # Reset to default values
+#'
+#' # Reset to default options
 #' kardl_get("criterion")  # Check current settings
 #' kardl_reset()
 #' kardl_get("criterion")  # Check settings after reset
@@ -161,7 +172,8 @@ kardl_get <- function(...) {
 #'
 #' kardl_get(c("LongCoef","differentAsymLag","ShortCoef","batch"))
 #'
-#' @return Returns the default options as a list.
+#' @return If resetting options, returns the provided value (if any) or invisibly
+#' returns the current settings as a list.
 #' @seealso \code{\link{kardl_set}}, \code{\link{kardl_get}}
 #'
 kardl_reset <- function(.=FALSE) {

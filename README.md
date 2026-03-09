@@ -4,13 +4,12 @@
 
 The `kardl` package is an R tool for estimating symmetric and asymmetric Autoregressive Distributed Lag (ARDL) and Nonlinear ARDL (NARDL) models, designed for econometricians and researchers analyzing cointegration and dynamic relationships in time series data. It offers flexible model specifications, allowing users to include deterministic variables, asymmetric effects for short- and long-run dynamics, and trend components. The package supports customizable lag structures, model selection criteria (AIC, BIC, AICc, HQ), and parallel processing for computational efficiency. Key features include:
 
-- **Flexible Formula Specification**: Use `asym()`, `asymL()`, and `asymS()` to model asymmetric effects in short- and long-run dynamics, and `deterministic()` for dummy variables.
+- **Flexible Formula Specification**: Use `Asymmetric()`, `Lasymmetric()`, and `Sasymmetric()` to model asymmetric effects in short- and long-run dynamics, and `deterministic()` for dummy variables.
 - **Lag Optimization**: Choose between automatic lag selection (`"quick"`, `"grid"`, `"grid_custom"`) or user-defined lags.
-- **Dynamic Analysis**: Compute long-run coefficients, perform cointegration tests (PSS F, PSS t, Narayan, Banerjee, ECM), and test for heteroskedasticity (ARCH).
+- **Dynamic Analysis**: Compute long-run coefficients, perform cointegration tests (PSS F, PSS t, Narayan), and ECM estimation.
 
 
 This vignette demonstrates how to use the `kardl()` function to estimate an asymmetric ARDL model, perform diagnostic tests, and visualize results, using economic data from Turkey.
-
 ## Installation
 
 
@@ -57,14 +56,26 @@ The data can be loaded by `readxl` or other data import functions.
 
 ### Step 2: Define the Model Formula
 
-We define the model formula using R's formula syntax, incorporating asymmetric effects and deterministic variables. We use `asym()` for variables with both short- and long-run asymmetry, `deterministic()` for fixed effects, and `trend` for a linear time trend.
+We define the model formula using R's formula syntax, incorporating asymmetric effects and deterministic variables. We use `asymmetric()` for variables with both short- and long-run asymmetry, `Lasymmetric()` for long-run asymmetry, `Sasymmetric()` for short-run asymmetry, and `deterministic()` for fixed dummy variables. The `trend` term includes a linear time trend in the model.
 
-``` r
+```r 
 
 # Define the model formula
-MyFormula <- CPI ~ ER + PPI + asym(ER + PPI) + deterministic(covid) + trend
+MyFormula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend
 
 ```
+Indeed, the formula syntax is flexible, allowing for various combinations of asymmetric and deterministic variables. The following variations of the formula are equivalent and will yield the same model specification:
+
+```r 
+
+sameFormula <- y ~Asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + Deterministic(dummy1) + trend
+sameFormula <- y ~asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + deterministic(dummy1) + trend
+sameFormula <- y ~asym(x1)+sasym(x2+x3)+lasym(x4+x5) + det(dummy1) + trend
+sameFormula <- y ~a(x1)+s(x2+x3)+l(x4+x5) + d(dummy1) + trend
+
+```
+
+
 
 
 ### Step 3: Model Estimation
@@ -74,38 +85,51 @@ We estimate the ARDL model using different `mode` settings to demonstrate flexib
 #### Using `mode = "grid"`
 The `"grid"` mode evaluates all lag combinations up to `maxlag` and provides console feedback.
 
-``` r
+```r 
 
 # Set model options
 kardl_set(criterion = "BIC", differentAsymLag = TRUE, data=imf_example_data)
 # Estimate model with grid mode
-kardl_model <- kardl(data=imf_example_data,model= MyFormula, maxlag = 4, mode = "grid")
+kardl_model <- kardl(data=imf_example_data,formula= MyFormula, maxlag = 4, mode = "grid")
 # View results
 kardl_model
+
+```
+Summary of the model provides detailed information about the estimated coefficients, standard errors, t-values, and significance levels.
+
+```r 
 # Display model summary
 summary(kardl_model)
 
 ```
 
+
 #### Using User-Defined Lags
 
 Specify custom lags to bypass automatic lag selection:
 
-``` r
+```r 
 
 kardl_model2 <- kardl(data=imf_example_data, MyFormula, mode = c(2, 1, 1, 3, 0))
 # View results
-kardl_model2$properLag
+kardl_model2$lagInfo
 
 ```
+```r 
+# Display model summary
+summary(kardl_model2)
+
+```
+
+
 
 #### Using All Variables
 Use the `.` operator to include all variables except the dependent variable:
 
-``` r
+```r 
 
 kardl_set(data=imf_example_data)
-kardl(model =  CPI ~ . + deterministic(covid), mode = "grid")
+kardl(formula =  CPI ~ . + deterministic(covid), mode = "grid")
 
 ```
 
@@ -113,13 +137,13 @@ kardl(model =  CPI ~ . + deterministic(covid), mode = "grid")
 
 The `LagCriteria` component contains lag combinations and their criterion values. We visualize these to compare model selection criteria (AIC, BIC, HQ).
 
-``` r
+```r 
 
 library(dplyr)
 library(tidyr)
 library(ggplot2)
 # Convert LagCriteria to a data frame
-LagCriteria <- as.data.frame(kardl_model[["LagCriteria"]])
+LagCriteria <- as.data.frame(kardl_model$lagInfo$LagCriteria)
 colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
 LagCriteria <- LagCriteria %>% mutate(across(c(AIC, BIC, HQ), as.numeric))
 
@@ -145,11 +169,21 @@ ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Crite
 
 ```
 
+#### Error Correction Model (ECM) Estimation
+
+The `ecm()` function estimates a Restricted ECM for cointegration testing. We specify the same formula and lag structure as in the ARDL model.
+```r 
+ecm_model <- ecm(data=imf_example_data, formula = MyFormula, maxlag = 4, mode = "grid_custom", case = 3, signif_level = "0.05")
+# View results
+summary(ecm_model)
+```
+
+
 ### Step 4: Long-Run Coefficients
 
 We calculate long-run coefficients using `kardl_longrun()`, which standardizes coefficients by dividing them by the negative of the dependent variable’s long-run parameter.
 
-``` r
+```r 
 
 # Long-run coefficients
 mylong <- kardl_longrun(kardl_model)
@@ -157,37 +191,54 @@ mylong
 
 ```
 
+The `summary()` function provides detailed information about the long-run coefficients, including standard errors, t-values, and significance levels.
+
+```r 
+# Summary of long-run coefficients
+summary(mylong)
+
+```
 
 
 ### Step 5: Asymmetry Test
 
-The `asymmetrytest()` function performs Wald tests to assess short- and long-run asymmetry in the model.
+The `symmetrytest()` function performs Wald tests to assess short- and long-run asymmetry in the model.
 
-``` r
+```r 
 
-ast <- imf_example_data %>% kardl(CPI ~ ER + PPI + asym(ER + PPI) + deterministic(covid) + trend, mode = c(1, 2, 3, 0, 1)) %>% asymmetrytest()
+ast <- imf_example_data %>% kardl(CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend, mode = c(1, 2, 3, 0, 1)) %>% symmetrytest()
 ast
-# View long-run hypotheses
-ast$Lhypotheses
-# Detailed results
+```
+
+Summary of the symmetry test provides detailed results for both long-run and short-run asymmetry tests, including F-values, p-values, hypotheses, and test decisions.
+
+```r 
+# Summary of symmetry test
 summary(ast)
 
 ```
 
+
+
 ### Step 6: Cointegration Tests
 
-We perform cointegration tests to assess long-term relationships using `pssf()`, `psst()`, `narayan()`, `banerjee()`, and `recmt()`.
+We perform cointegration tests to assess long-term relationships using `pssf()`, `psst()`, and `narayan()`.
 
 #### PSS F Bound Test
 
 The `pssf()` function tests for cointegration using the Pesaran, Shin, and Smith F Bound test.
 
-``` r
+```r 
 
 A <- kardl_model %>% pssf(case = 3, signif_level = "0.05")
-cat(paste0("The F statistic = ", A$statistic, " where k = ", A$k, "."))
-cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
-A$criticalValues
+A
+
+```
+
+Summary of the PSS F Bound test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.
+
+```r 
+
 summary(A)
 
 ```
@@ -196,79 +247,86 @@ summary(A)
 
 The `psst()` function tests the significance of the lagged dependent variable’s coefficient.
 
-``` r
+```r 
 
 A <- kardl_model %>% psst(case = 3, signif_level = "0.05")
-cat(paste0("The t statistic = ", A$statistic, " where k = ", A$k, "."))
-cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
-A$criticalValues
-summary(A)
+A
 
+```
+Summary of the PSS t Bound test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.
+```r 
+summary(A)
 ```
 
 #### Narayan Test
 
-The `narayan()` function is tailored for small sample sizes.
+The `narayan()` function is tailored for small sample sizes. It tests for cointegration using critical values optimized for small samples.
 
-``` r
+```r 
 
 A <- kardl_model %>% narayan(case = 3, signif_level = "0.05")
-cat(paste0("The F statistic = ", A$statistic, " where k = ", A$k, "."))
-cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
-A$criticalValues
+A
+
+```
+Summary of the Narayan test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.
+
+```r 
 summary(A)
 
 ```
 
-#### Banerjee Test
 
-The `banerjee()` function is designed for small datasets (≤100 observations).
 
-``` r
+### Step 7: Dynamic Multipliers
 
-A <- kardl_model %>% banerjee(signif_level = "0.05")
-cat(paste0("The ECM parameter = ", A$coef, ", k = ", A$k, ", t statistic = ", A$statistic, "."))
-cat(paste0("\nWe found '", A$Cont, "' at ", A$siglvl, "."))
-A$criticalValues
-summary(A)
-
-```
-
-#### Restricted ECM Test
-
-The `recmt()` function tests for cointegration using an Error Correction Model.
-
-``` r
-
-recmt_model <- imf_example_data %>% recmt(MyFormula, mode = "grid_custom", case = 3)
-recmt_model
-# View results
-summary(recmt_model)
+The `mplier()` function calculates dynamic multipliers for the model, showing how changes in independent variables affect the dependent variable over time.
+```r 
+multipliers <- kardl_model %>% mplier()
+# View multipliers of the model
+head(multipliers$mpsi)
+# View long-run multipliers
+head(multipliers$omega)
+# View short-run multipliers
+head(multipliers$lambda)
 
 ```
 
-### Step 7: ARCH Test
-
-The `archtest()` function checks for autoregressive conditional heteroskedasticity in the model residuals.
-
-``` r
-
-arch_result <- archtest(kardl_model$finalModel$model$residuals, q = 2)
-summary(arch_result)
+Plotting dynamic multipliers for specific variables can be done using the `plot()` function, which visualizes the response of the dependent variable to changes in independent variables over time.
+```r 
+plot(multipliers, variables = c("ER", "PPI"))
 
 ```
+
+ 
+ To handle a large number of variables, you can specify a subset of variables to plot or use `variables = "all"` to visualize all dynamic multipliers.
+ 
+ Bootstrap confidence intervals for dynamic multipliers can be calculated using the `bootstrap()` function, which provides robust estimates of uncertainty around the multipliers.
+```r 
+bootstrap_results <- kardl_model %>%   bootstrap(horizon = 12,  replications= 10)
+# View bootstrap summary
+summary(bootstrap_results)
+
+```
+
+Vşsualize bootstrap results for specific variables to understand the variability and confidence intervals of the dynamic multipliers.
+
+```r 
+plot(bootstrap_results, variables = "ER")
+```
+ 
+
 
 ### Step 8: Customizing Asymmetric Variables
 
 We demonstrate how to customize prefixes and suffixes for asymmetric variables using `kardl_set()`.
 
-``` r
+```r 
 
 # Set custom prefixes and suffixes
 kardl_reset()
 kardl_set(AsymPrefix = c("asyP_", "asyN_"), AsymSuffix = c("_PP", "_NN"))
-kardl_custom <- kardl(data=imf_example_data, MyFormula, mode = "grid_custom")
-kardl_custom$properLag
+kardl_custom <- kardl(data=imf_example_data, MyFormula)
+kardl_custom
 
 ```
 
@@ -276,10 +334,10 @@ kardl_custom$properLag
 
 - **`kardl(data, model, maxlag, mode, ...)`**:
   - `data`: A time series dataset (e.g., a data frame with CPI, ER, PPI).
-  - `model`: A formula specifying the long-run equation, e.g., `y ~ x + z + asym(z) + asymL(x2 + x3) + asymS(x3 + x4) + deterministic(dummy1 + dummy2) + trend`. Supports:
-    - `asym()`: Asymmetric effects for both short- and long-run dynamics.
-    - `asymL()`: Long-run asymmetric variables.
-    - `asymS()`: Short-run asymmetric variables.
+  - `formula`: A formula specifying the long-run equation, e.g., `y ~ x + z + asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`. Supports:
+    - `asymmetric()`: Asymmetric effects for both short- and long-run dynamics.
+    - `Lasymmetric()`: Long-run asymmetric variables.
+    - `Sasymmetric()`: Short-run asymmetric variables.
     - `deterministic()`: Fixed dummy variables.
     - `trend`: Linear time trend.
   - `maxlag`: Maximum number of lags (default: 4). Use smaller values (e.g., 2) for small datasets, larger values (e.g., 8) for long-term dependencies.
@@ -290,11 +348,11 @@ kardl_custom$properLag
     - User-defined vector (e.g., `c(1, 2, 4, 5)` or `c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)`).
   - Returns a list with components: `inputs`, `finalModel`, `start_time`, `end_time`, `properLag`, `TimeSpan`, `OptLag`, `LagCriteria`, `type` ("kardlmodel").
 
-- **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC, AICc, HQ), `differentAsymLag`, `AsymPrefix`, `AsymSuffix`, `ShortCoef`, and `LongCoef`. Use `kardl_get()` to retrieve settings and `kardl_reset()` to restore defaults.
+- **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC, AICc, HQ), `differentAsymLag`, `AsymPrefix`, `Sasymuffix`, `ShortCoef`, and `LongCoef`. Use `kardl_get()` to retrieve settings and `kardl_reset()` to restore defaults.
 
 - **`kardl_longrun(model)`**: Calculates standardized long-run coefficients, returning `type` ("kardl_longrun"), `coef`, `delta_se`, `results`, and `starsDesc`.
 
-- **`asymmetrytest(model)`**: Performs Wald tests for short- and long-run asymmetry, returning `Lhypotheses`, `Lwald`, `Shypotheses`, `Swald`, and `type` ("asymmetrytest").
+- **`symmetrytest(model)`**: Performs Wald tests for short- and long-run asymmetry, returning `Lhypotheses`, `Lwald`, `Shypotheses`, `Swald`, and `type` ("symmetrytest").
 
 - **`pssf(model, case, signif_level)`**: Performs the Pesaran, Shin, and Smith F Bound test for cointegration, supporting cases 1–5 and significance levels ("auto", 0.01, 0.025, 0.05, 0.1, 0.10).
 
@@ -302,13 +360,9 @@ kardl_custom$properLag
 
 - **`narayan(model, case, signif_level)`**: Conducts the Narayan test for cointegration, optimized for small samples (cases 2–5).
 
-- **`banerjee(model, signif_level)`**: Performs the Banerjee cointegration test for small datasets (≤100 observations).
+- **`ecm(data, model, maxlag, mode, case, signif_level, ...)`**: Conducts the Restricted ECM test for cointegration, with similar parameters to `kardl()` and case/significance level options.
 
-- **`recmt(data, model, maxlag, mode, case, signif_level, ...)`**: Conducts the Restricted ECM test for cointegration, with similar parameters to `kardl()` and case/significance level options.
-
-- **`archtest(resid, q)`**: Tests for ARCH effects in model residuals, returning `type`, `statistic`, `parameter`, `p.value`, and `Fval`.
-
-For detailed documentation, use `?kardl`, `?kardl_set`, `?kardl_longrun`, `?asymmetrytest`, `?pssf`, `?psst`, `?narayan`, `?banerjee`, `?recmt`, or `?archtest`.
+For detailed documentation, use `?kardl`, `?kardl_set`, `?kardl_longrun`, `?symmetrytest`, `?pssf`, `?psst`, `?narayan`, or `?ecm`.
 
 
 # Options
@@ -321,7 +375,7 @@ The following options are available:
 | Option Name | Default | Description |
 |------------------------|------------------------|------------------------|
 | data | NULL | The data to be used for the model estimation |
-| model | NULL | The formula to be used for the model estimation |
+| formula | NULL | The formula to be used for the model estimation |
 | maxlag | 4 | The maximum number of lags to be considered for the model estimation |
 | mode | "quick" | The mode of the model estimation, can be "quick", "grid", "grid_custom" or a user-defined vector |
 | criterion | "AIC" | The criterion for model selection, can be "AIC", "BIC", "HQ" or a user-defined function |
@@ -352,17 +406,17 @@ When providing the `data`, ensure that: - The dataset is clean and free of missi
 
 ### 2. model
 
-`model` is a formula object specifying the model to be estimated.
+`formula` is a formula object specifying the model to be estimated.
 The default value is `NULL`, which means that the user must provide a model formula when calling the `kardl()` function.
 
 ####      Details
 
 The `model` parameter defines the structure of the ARDL or NARDL model to be estimated.
 It should include the dependent variable on the left side of the formula and the independent variables, asymmetric components, deterministic variables, and trend (if applicable) on the right side.
-The formula can include: - `asym()`: To specify variables with asymmetric effects in both short- and long -run dynamics.
-- `asymL()`: To specify variables with asymmetric effects only in the long-run -dynamics.
-- `asymS()`: To specify variables with asymmetric effects only in the short-run -dynamics.
-- `deterministic()`: To include fixed dummy variables (e.g., seasonal d -ummies, event dummies).
+The formula can include: - `Asymmetric()`: To specify variables with asymmetric effects in both short- and long -run dynamics.
+- `Lasymmetric()`: To specify variables with asymmetric effects only in the long-run -dynamics.
+- `Sasymmetric()`: To specify variables with asymmetric effects only in the short-run -dynamics.
+- `Deterministic()`: To include fixed dummy variables (e.g., seasonal d -ummies, event dummies).
 - `trend`: To include a linear time trend in the model.
 When constructing the `model` formula, ensure that: - All variables used in the formula are present in the `data` provided.
 - The formula is syntactically correct and follows R's formula conventions.

@@ -2,42 +2,59 @@
 % Please edit documentation in R/longrun.R
 \name{kardl_longrun}
 \alias{kardl_longrun}
-\title{Calculating the long-run parameters}
+\title{Calculate long-run multipliers from a KARDL model}
 \usage{
 kardl_longrun(model)
 }
 \arguments{
-\item{model}{the model produced by kardl}
+\item{model}{An object of class \code{kardl} estimated using the \code{kardl} function.}
 }
 \value{
-a list of class kardl with the following elements:
+An object of class \code{kardl_long_run}, which is a list containing:
 \itemize{
-\item type: the type of the model, in this case "kardl_longrun"
-\item coef: the estimated coefficients of the long-run parameters
-\item delta_se: the standard errors of the long-run parameters
-\item results: a data frame with the estimated coefficients, standard errors, t-values, p-values, and significance stars
-\item starsDesc: a description of the significance stars used in the results
+   \item \code{coefficients}: A named vector of long-run multipliers.
+   \item \code{residuals}: A vector of residuals from the long-run model.
+   \item \code{effects}: A vector of effects from the long-run model.
+   \item \code{rank}: The rank of the long-run model.
+   \item \code{fitted.values}: A vector of fitted values from the long-run model.
+   \item \code{assign}: A vector indicating the assignment of coefficients to terms in the long-run model.
+   \item \code{qr}: The QR decomposition of the design matrix of the long-run model.
+   \item \code{df.residual}: The degrees of freedom of the residuals of the long-run model.
+   \item \code{xlevels}: A list of factor levels used in the long-run model.
+   \item \code{call}: The matched call used to create the long-run model.
+   \item \code{terms}: The terms object of the long-run model.
+   \item \code{model}: The data frame used in the long-run model.
 }
 }
 \description{
-All long-run estimated parameters are standardized by dividing them by the negative of the long-run parameter of the dependent variable.
+This function calculates the long-run parameters of a KARDL model estimated using the \code{kardl} function. The long-run parameters are calculated by dividing the negative of the coefficients of the independent variables by the coefficient of the dependent variable. If an intercept is included in the model, it is also standardized by dividing it by the negative of the long-run parameter of the dependent variable.
 }
 \details{
-This function is used to calculate the long-run parameters of a model produced by the \code{kardl} function.
+The function also calculates the standard errors of the long-run multipliers using the delta method, which accounts for the covariance between the coefficients. The fitted values and residuals of the long-run model are calculated based on the original data and the long-run multipliers.
 
-It calculates the long-run multipliers and their standard errors, and returns a list containing the kardl_longrun coefficients, standard errors, and a data frame with the results.
+The function returns an object of class \code{kardl_long_run}, which contains the long-run multipliers, their standard errors, t-statistics, p-values, fitted values, residuals, and other relevant information for further analysis and diagnostics.
+
+Note that the fitted values and residuals from the long-run model are not centered (i.e., they do not have a mean of zero) by design, which means that diagnostic plots and residual-based tests may not be valid for this model. The primary focus of this function is on the estimation of the long-run multipliers and their associated statistics.
+\deqn{LongRunMultiplier_i = -\frac{\beta_i}{\beta_{dep}}}. t-values and p-values are calculated using the standard errors obtained from the delta method, which accounts for the covariance between the coefficients.
 }
 \examples{
 kardl_model<-kardl(imf_example_data,
-                  CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                  mode=c(1,2,3,0))
-kardl_longrun(kardl_model)
+                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                   mode=c(1,2,3,0))
+long<-kardl_longrun(kardl_model)
+
+# Calculate the long-run multipliers
+long
+# Details of the long-run multipliers
+summary(long)
+
 
 # Using magrittr
 library(magrittr)
 
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                  mode=c(1,2,3,0)) \%>\% kardl_longrun()
+                           mode=c(1,2,3,0)) \%>\% kardl_longrun() \%>\% summary()
+
 }
 \seealso{
 \code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}

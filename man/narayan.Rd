@@ -2,15 +2,16 @@
 % Please edit documentation in R/tests.R
 \name{narayan}
 \alias{narayan}
-\title{NARAYAN test}
+\title{Narayan Test}
 \usage{
-narayan(model, case = 3, signif_level = "auto")
+narayan(kmodel, case = 3, signif_level = "auto")
 }
 \arguments{
-\item{model}{The kardl obejct}
+\item{kmodel}{The kardl obejct}
 
 \item{case}{Numeric or character. Specifies the case of the test to be used in the function.
 Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the function determines the case automatically based on the model's characteristics. Invalid values will result in an error.
+
 \itemize{
 \item \code{1}: No intercept and no trend. This case is not supported by the Narayan test.
 \item \code{2}: Restricted intercept and no trend.
@@ -20,27 +21,23 @@ Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the functi
 }}
 
 \item{signif_level}{Character or numeric. Specifies the significance level to be used in the function.
+
 Acceptable values are "auto", "0.10", "0.1", "0.05", "0.025", and "0.01".
 If a numeric value is provided, it will be converted to a character string.
 If "auto" is chosen, the function determines the significance level automatically.
 Invalid values will result in an error.}
 }
 \value{
-A list with class "kardl" containing the following components:
+A list with class "htest" containing the following components:
 \itemize{
-\item \code{type:} The type of the test, which is "cointegration".
-\item \code{case:} The case of the test, which is a numeric value (1, 2, 3, 4, or 5).
-\item \code{statistic:} The calculated F-statistic for the test.
-\item \code{k:} The number of long-run variables in the model.
-\item \code{Cont:} The conclusion of the test, indicating whether cointegration is found, inconclusive, or not found.
-\item \code{BoundNum:} A numeric value indicating the result of the test: 1 for cointegration, 0 for inconclusive, and -1 for no cointegration.
-\item \code{siglvl:} The significance level used in the test, which can be "auto", "0.10", "0.1", "0.05", "0.025", or "0.01".
-\item \code{criticalValues:} A numeric vector containing the critical values for the test based on the specified case and significance level.
-\item \code{parameter:} A character vector containing the names of the long-run parameters in the model.
-\item \code{FH0:} The null hypothesis of the test, which is a character string describing the hypothesis being tested.
-\item \code{Fmodel:} The detailed F test results, including the F-statistic, p-value, degrees of freedom, and residual degrees of freedom.
-\item \code{warnings:} A character vector containing any warnings generated during the test, such as issues with the model specification or data length.
-\item \code{method:} The method used for the test.
+\item{statistic:} The calculated F-statistic for the test.
+\item{method:} A character string indicating the method used for the test, which is Bounds F-Test".
+\item{data.name:} A character string giving the name of the data used in the test.
+\item{k:} The number of independent variables in the model.
+\item{notes:} A character vector containing any notes or warnings related to the test results, such as sample size considerations or adjustments made to the case based on model characteristics.
+\item{sig:} The significance level used for the test, either specified by the user or determined automatically.
+\item{alternative: The alternative hypothesis being tested.}
+\item{case:} The case used for the test, either specified by the user or determined automatically based on the model's characteristics.
 }
 }
 \description{
@@ -73,46 +70,37 @@ The null hypothesis (H0) of the F Bound test is that there is no cointegration a
 }
 
 \examples{
-
 kardl_model<-kardl(imf_example_data,
                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
                    mode=c(1,2,3,0))
-A<-narayan(kardl_model)
-A
-cat(paste0("The F statistics=",A$statistic," where k=",A$k,"."))
-cat(paste0("\nWe found '",A$Cont, "' at ",A$siglvl,"."))
-cat(paste0("\nThe proboblity is = ",sprintf("\%.10f",A$Fmodel[["Pr(>F)"]][2])))
+my_test<-narayan(kardl_model)
+# Getting the results of the test.
+my_test
+# Getting details of the test.
+my_summary<-summary(my_test)
+my_summary
 
-# Utilising magrittr:
+# Getting the critical values of the test.
+my_summary$crit_vals
+
+
+
+
+# Using magrittr :
 
 library(magrittr)
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   mode=c(1,2,3,0)) \%>\% narayan()
+                           mode=c(1,2,3,0)) \%>\% narayan()
 
-
-# Getting details of the test.
-mySummary<-summary(A)
-mySummary
-
-# Utilising magrittr:
+# Getting details of the test results using magrittr:
 imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   mode=c(1,2,3,0)) \%>\% narayan()  \%>\% summary()
+                           mode=c(1,2,3,0)) \%>\% narayan() \%>\% summary()
 
 
-# Critical Values are
-A$criticalValues
-# The null hypothesis :
-A
-
-# getting H0
-mySummary$H0
-
-# Detailed F test
-A$Fmodel
 }
 \references{
 Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. Applied economics, 37(17), 1979-1990.
 }
 \seealso{
-\code{\link{pssf}}  \code{\link{psst}}  \code{\link{banerjee}}  \code{\link{recmt}}
+\code{\link{pssf}}  \code{\link{psst}}  \code{\link{ecm}}
 }

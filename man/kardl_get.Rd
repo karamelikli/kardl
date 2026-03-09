@@ -2,25 +2,28 @@
 % Please edit documentation in R/settings.R
 \name{kardl_get}
 \alias{kardl_get}
-\title{Function to get settings}
+\title{Function to Get KARDL Package Options}
 \usage{
 kardl_get(...)
 }
 \arguments{
-\item{...}{Names of the options to retrieve. If none provided, all options are returned.}
+\item{...}{Option names to retrieve. If no arguments are provided, all options will be returned.}
 }
 \value{
-If no arguments are provided, returns all options as a list. If one option is requested, returns its value directly. If multiple options are requested, returns a list of those options.
+If no arguments are provided, returns all options as a list. If specific option names are provided, returns their values.
 }
 \description{
-This function retrieves options from the kardl package settings.
+This function retrieves the current settings of the kardl package. Users can specify option names to get their values or call the function without arguments to retrieve all current settings.
 }
 \examples{
-# Get specific options
-kardl_get("criterion", "differentAsymLag")
 
 # Get all options
-# Note: In interactive use, avoid calling this directly to prevent cluttering the console.
+kardl_get()
+# Get specific options
+kardl_get("maxlag", "mode")
+
+# Note: In interactive use, avoid calling kardl_get() directly to prevent cluttering the console.
+
 a<-kardl_get()
 a$AsymSuffix
 

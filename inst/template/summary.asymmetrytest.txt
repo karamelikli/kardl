@@ -1,2 +1,0 @@
-{x$Ltitle}{x$LH}{x$Lwald}{x$Line}
-{x$Ltitle}{x$SH}{x$Swald}

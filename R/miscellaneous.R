@@ -1,134 +1,12 @@
 
-
-
-#' Replace Patterns with Evaluated Values
-#'
-#' The \code{replaceValues()} function allows you to replace placeholders in text with variable values or evaluated expressions.
-#' Placeholders are marked by \strong{\{\}} brackets, and the function supports capturing both global and non-global variables,
-#' making it useful for templating and dynamic string generation in R.
-#'
-#'
-#' @param original_text  A string containing expressions within \code{{}} to be evaluated and replaced.
-#' @param x Non-global variables to be evaluated within the function's context.
-#' @param capture_warnings  Logical. If \code{TRUE}, captures errors and warnings during evaluation and continues with replacements.
-#'        If \code{FALSE}, errors and warnings are not captured.
-#' @seealso \code{\link[base]{eval}}, \code{\link[base]{parse}}, \code{\link[base]{gregexpr}}, \code{\link[base]{regmatches}}
-#' @return A string with all placeholders replaced by evaluated values.
-#' @export
-#'
-#' @examples
-#'
-#'  # Basic example with global variables
-#' orjTXT <- "My F value is {thisF} and  its criterion is {CrF}"
-#' thisF <- 2.33
-#' CrF <- 32.43
-#' replaceValues(orjTXT)
-#' cat(replaceValues("The summary ls: {summary(lm(mpg ~ wt + hp, data = mtcars))}\n This is example"))
-#'
-#'  # Nested function example for non-global variables
-#' globalY <- 10
-#' bb <- function(x){
-#'   y <-  x+2;
-#'  secondFunc <- function(x){
-#'    replaceValues("The global value of Y+3 is {globalY+3}.  The non global value is {x}",x)
-#'   }
-#'   secondFunc(y)
-#' }
-#' bb(5)
-#'
-#'
-#'  # Nested variables example. Something like $$ in PHP
-#' FirstVar <- "First"
-#' SecondVar <- "Second"
-#' FirstSecondVar <- "_____________"
-#' orjTXT <- "First var is {FirstVar}. The combinations of var names \"FirstSecondVar\" "
-#' orjTXT <- paste0(orjTXT,"is= {{FirstVar}{SecondVar}Var}. Where SecondVar = {SecondVar} .")
-#' replaceValues( orjTXT)
-#'
-#' # Using mathematical expressions
-#' MyVar = 3
-#' replaceValues( "First var multiplying to 12 is {MyVar*12} and its power is {MyVar^12}.")
-#'
-#' # Using templates from external files
-#' # file_contents <- readLines(system.file("template", templateName, package = getPackageName()))
-#' file_contents <- readLines(system.file("template", "printkardl.txt", package = "kardl"))
-#' data(imf_example_data)
-#'  MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
-#'  kardl_model<-kardl(imf_example_data,MyFormula,mode="quick")
-#' output<- replaceValues(file_contents,kardl_model)
-#' cat(output)
-
-replaceValues <- function(original_text, x=FALSE, capture_warnings = TRUE) {
-  original_text<- paste(original_text, collapse = "\n")
-
-  # variable_names <- gsub("\\{(.+?)\\}", "\\1", regmatches( original_text, gregexpr("\\{(.+?)\\}", original_text, perl = T))[[1]] , perl = T)
-  variable_names <- gsub(
-    "\\{([^\\{]+?)\\}",    # Updated regex: [^\\{] ensures that \code{{} inside the braces is not included
-    "\\1",
-    regmatches(
-      original_text,
-      gregexpr("\\{([^\\{]+?)\\}", original_text, perl = TRUE)
-    )[[1]],
-    perl = TRUE
-  )
-
-  # Create a list with variable names and values
-  newList <- list()
-  for (key in variable_names) {
-    value <- ""
-    # Use tryCatch to evaluate the expression and handle errors/warnings
-    tryCatch({
-      # Attempt to evaluate the expression
-      value <- eval(parse(text = key))
-    }, error = function(e) {
-      # to continue the rest of replacements regardless of accruing any error during execution
-      if (capture_warnings) {
-        warning(paste("Error:", e$message),call. = F)
-      }
-    }, warning = function(w) {
-      if (capture_warnings) {
-        warning(paste("Warning:", w$message),call. = F)
-      }
-    })
-
-    newOutput <-paste(sub("^\\[1\\] ", "", capture.output(value )), collapse = "\n")
-    if (grepl("^\".*\"$", newOutput)) {
-      newOutput<- gsub("^\"|\"$", "", newOutput)
-    }
-    newList[key] <- gsub("\\\\n","\n", newOutput)
-  }
-  for (key in names(newList)) {
-    # to avoiding about intrtsection of regular expression with R commands inside {}
-    original_text <-gsub(gsub("([\\$\\[\\]\\)\\(\\+\\-\\~\\.])", "\\\\\\1",
-                              paste0("\\{",
-                                     gsub("([\\*\\/\\^])", "\\\\\\1",   key) #  For preventing ignorance of mathematical signs
-                                     , "\\}"),
-                              perl = T),
-                         newList[[key]],
-                         original_text,
-                         perl = T)
-  }
-
-  original_text<- gsub("033\\[", "\\\033\\[", original_text)
-  if(grepl("\\{.*\\}", original_text)){
-    original_text <-replaceValues(original_text, x, capture_warnings)
-  }
-  original_text
-}
-
-
-
-
-
-
-#' Merge two lists, accenting the first list.
+#' Merge two lists, giving precedence to the first list for overlapping names
 #'
 #' The first list of values takes precedence. When both lists have items with the same names, the values from the first list will be applied. In merging the two lists, priority is given to the left list, so if there are overlapping items, the corresponding value from the left list will be used in the merged result.
-#' @param first list or vector
-#' @param second list or vector
-#' @param ... other lists or vectors
+#' @param first The first list
+#' @param second The second list
+#' @param ... Additional lists to merge
 #'
-#' @return list
+#' @return A merged list with unique names, prioritizing values from the first list in case of name conflicts.
 #' @export
 #' @seealso  \code{\link[base]{append}}
 #' @examples
@@ -197,117 +75,119 @@ lmerge<-function(first,second,...){
 }
 
 
-#' Extract Variables from a Formula
+#' Parse a formula to detect specific variable patterns
 #'
-#' The \code{parseFormula()} unction extracts and lists variables from specific parts of a formula, especially those within parentheses of specified function types. This enables users to isolate and analyze segments of a model formula, such as variables within custom functions, with an option to ignore case sensitivity in pattern matching.
+#' The \code{parseFormula()} function analyzes a given formula to identify and extract variables that match specified patterns. It is particularly useful for isolating variables enclosed within certain functions or constructs in the formula, such as \code{asym()}, \code{det()}, or any user-defined patterns.
 #'
 #'
-#' @param formula_ The initial formula for the model, typically specified using R's formula syntax (e.g.,  \code{y ~ x + f(x1 + x2)}).
-#' @param matchPattern A string or vector of strings that specifies the function(s) in the formula from which to extract variables. For example, \code{matchPattern = "f()"} will target variables within \code{f(...)} in the formula.
-#' @param ignore.case Logical; if \code{FALSE} (default), pattern matching is case-sensitive; if \code{TRUE}, case is ignored during matching.
+#' @param formula The initial formula for the model, typically specified using R's formula syntax (e.g.,  \code{y ~ x + f(x1 + x2)}).
 #'
-#' A logical value indicating whether pattern matching should be case-sensitive (\code{FALSE}) or case-insensitive (\code{TRUE}).
 #'
 #' @return A list containing:
 #' \itemize{
-#'    \item   Parsed variables: Variables that are located within the specified \code{matchPattern} part of the formula.
-#'    \item   Remaining model: The rest of the formula, excluding the parsed variables.
-#'    }
+#' \item \code{response}: The response variable(s) extracted from the formula.
+#' \item \code{intercept}: A logical value indicating whether the formula includes an intercept (default is TRUE).
+#' \item \code{dot}: A logical value indicating whether the formula includes a dot (.) representing all other variables (default is FALSE).
+#' \item \code{outside}: A vector of variables that are outside any specified patterns. It includes the variables that are not detected within the specified patterns in the formula.
+#' \item \code{inside}: A list where each element corresponds to a detected pattern (e.g., function name) and contains the variables found inside that pattern. For example, if the formula includes \code{asym(x1 + x2)}, the \code{inside} list will have an element named "asym" containing the variables "x1" and "x2". This allows for easy identification of variables that are part of specific constructs in the formula.
+#' }
 #' @export
 #'
-#' @seealso \code{\link{replaceValues}}, \code{\link[stats]{formula}}
+#' @seealso \code{\link[stats]{formula}} and \code{\link[base]{gregexpr}}
 #'
 #' @examples
 #'
-#' # Identify variables within specific functions, such as 'asymS'
-#' parsed<-parseFormula(y ~ x +det(s + d) + asymS(d + s),"asymS()")
-#' parsed
+#' # Parse formulas containing various collection types like ()
+#' formula_ <- y ~ x +det(s -gg- d) + asymS(d2 -rr+ s)-mm(y1+y2+y3)+asym(k1+k2+k3)+trend-huseyin
+#' # Extract variables
+#' parse_formula_vars(formula_)
 #'
-#'  # Parse formulas containing various collection types like () or []
-#' formula_ <- y ~ x +det(s -gg- d) + asymS(d2 -rr+ s)-mm[y1+y2+y3]+asym[k1+k2+k3]+trend-huseyin
 #'
-#' # Extract variables in the 'asymS' function
-#' parseFormula(formula_,"asymS")
-#'
-#' # Use multiple functions to extract variables. If a specified function, such as "uuu",
-#' # is not found, nothing is returned for it
-#' a<-parseFormula(formula_,c("mm","det","uuu"))
-#'
-#'  # To obtain variables not enclosed within any function, specify them directly
-#'  parseFormula(formula_,c("trend","huseyin"))
-#'
-#' # By default, 'parseFormula()' is case-sensitive.
-#' # For case-insensitive matching, set 'ignore.case = TRUE'
-#'
-#' parseFormula(formula_,"asyms", TRUE)
 
-parseFormula<- function(formula_, matchPattern = "asym",ignore.case=FALSE) {
+parse_formula_vars <- function(formula) {
+  if (is.character(formula)) {
+    formula <- as.formula(formula)
+  }
 
-  if(typeof(formula_)=="language"){
-    indVars <- formula_[3]
-    depVar<-formula_[2]
-    txt <- as.character(indVars)
-    detected<-theRest<-c()
-    for (varType in matchPattern) {
-      if(varType == "." ){
-        if("." %in% all.vars(formula_)){
-          detected<-c(detected,".")
-          foundPart1<- sub("^\\s*\\+*","", sub("\\+*\\s*\\.","",indVars))
-          if(trimws(foundPart1) == ""){
-            theRest <- ""}
-          else{
-            theRest <- as.formula(paste0(depVar,"~",foundPart1))
-          }
-        }else{
-          detected<-c(detected,"")
-          theRest <- formula_
-        }
-      }else{
-        thisPatterns<- sub("\\s+$", "",sub("^\\s+", "", sub("[\\[(].*$", "", varType))) # remove ( or [ in addition to trim left and right of the varType
-        # patterns<-c(patterns,thisPatterns)
-        pattern <- paste0("\\s*[\\+\\-]*\\s*",thisPatterns,"(?![\\w\\d])([\\[(](.+?)[\\])])?")
-        m <- gregexpr(pattern, txt,ignore.case ,perl = TRUE)
-        foundPart <- regmatches(txt, m)
-        if(is.na(foundPart[[1]][1])){
-          detected<-c(detected,"")
-          theRest <- formula_
-        }else{
-          theOthers <- regmatches(txt, m, invert = TRUE)[[1]]
-          theRest <- paste(theOthers[theOthers != ""], collapse = '')
-          if(theRest!=""){
-            txt<-theRest
-            theRest<- formula_<-as.formula( paste0(depVar ,"~",theRest))
-          }else{
-            theRest=""
-          }
-          m1 <- gregexpr("[\\[(].+?[\\])]", foundPart[[1]],ignore.case ,perl = TRUE)
-          foundPart1 <- regmatches(foundPart[[1]], m1)
-          if(is.na(foundPart1[[1]][1])){
-            detected <-  c(detected,thisPatterns)
-          }else{
-            theLast <- substr(foundPart1, 2, nchar(foundPart1) - 1)
-            detected <-  c(detected,  trimws(unlist(strsplit(theLast, "[\\+\\-]", perl = TRUE))))
-          }
+  response <- all.vars(formula[[2]])
+  rhs <- formula[[3]]
 
-        }
+  res0 <- list(
+    response  = response,
+    intercept = TRUE,
+    dot       = FALSE,
+    outside   = character(0),
+    inside    = list()
+  )
 
+  parse_rhs <- function(expr, current_fun = NULL, res) {
 
+    # Symbol
+    if (is.symbol(expr)) {
+      v <- as.character(expr)
+
+      if (v == ".") {
+        res$dot <- TRUE
+        return(res)
       }
 
+      if (is.null(current_fun)) {
+        res$outside <- unique(c(res$outside, v))
+      } else {
+        res$inside[[current_fun]] <-
+          unique(c(res$inside[[current_fun]], v))
+      }
+      return(res)
     }
-  }else{
-    detected<-matchPattern<-theRest<-""
-    #   warning("The formula is not well constructed!",call. = F)
-  }
-  listDetect<-detected
-  if(length(detected)>1){
-    listDetect<-unique(detected[detected !=""])
-  }
-  list(detected = listDetect,  theRest =theRest,   matchPattern=matchPattern)
 
+    # Numeric constants (0 or 1)
+    if (is.numeric(expr)) {
+      if (expr == 0) res$intercept <- FALSE
+      return(res)
+    }
+
+    # Call
+    if (is.call(expr)) {
+      fname <- as.character(expr[[1]])
+
+      # +
+      if (fname == "+") {
+        for (i in 2:length(expr)) {
+          res <- parse_rhs(expr[[i]], current_fun, res)
+        }
+        return(res)
+      }
+
+      # -
+      if (fname == "-") {
+        res <- parse_rhs(expr[[2]], current_fun, res)
+        if (length(expr) == 3) {
+          if (is.numeric(expr[[3]]) && expr[[3]] == 1) {
+            res$intercept <- FALSE
+          } else {
+            res <- parse_rhs(expr[[3]], current_fun, res)
+          }
+        }
+        return(res)
+      }
+
+      # Function calls (myu(), hjj(), etc.)
+      if (!(fname %in% c("*", "/", "^", ":"))) {
+        if (is.null(res$inside[[fname]])) {
+          res$inside[[fname]] <- character(0)
+        }
+        for (i in 2:length(expr)) {
+          res <- parse_rhs(expr[[i]], fname, res)
+        }
+        return(res)
+      }
+    }
+
+    res
+  }
+
+  parse_rhs(rhs, NULL, res0)
 }
-
-
 
 
 # Batch Control
@@ -326,19 +206,19 @@ parseFormula<- function(formula_, matchPattern = "asym",ignore.case=FALSE) {
 #   - endRow: The ending row for the current batch.
 #
 
-BatchControl<-function(inputs){
-  if ( inputs$batch =="1/1") {
+
+BatchControl<-function(spec){
+  if ( spec$argsInfo$batch =="1/1") {
     startRow<-1
-    endRow<-inputs$lagRowsNumber # Default: all tasks if batch is NULL
-    batch_size <- inputs$lagRowsNumber
+    endRow<-spec$extractedInfo$lagRowsNumber # Default: all tasks if batch is NULL
+    batch_size <- spec$extractedInfo$lagRowsNumber
   } else
   {
-    if (!grepl("^\\d+/\\d+$", inputs$batch)) {
-      stop("Invalid batch format. Use 'x/y', where x is the batch number and y is the total number of batches.")
+    if (!grepl("^\\d+/\\d+$", spec$argsInfo$batch)) {
+      stop("Invalid batch format. Use 'x/y', where x is the batch number and y is the total number of batches.",call. = FALSE)
     }
-
     # Extract batch number and total batches
-    batch_parts <- as.numeric(strsplit(inputs$batch, "/")[[1]])
+    batch_parts <- as.numeric(strsplit(spec$argsInfo$batch, "/")[[1]])
     current_batch <- batch_parts[1]
     total_batches <- batch_parts[2]
 
@@ -349,10 +229,10 @@ BatchControl<-function(inputs){
     }
 
     # Calculate the range of tasks for the current batch
-    batch_size <- ceiling(inputs$lagRowsNumber / total_batches)
+    batch_size <- ceiling(spec$extractedInfo$lagRowsNumber / total_batches)
     startRow <- (current_batch - 1) * batch_size + 1
-    endRow <- min(current_batch * batch_size, inputs$lagRowsNumber)
-    if(startRow>inputs$lagRowsNumber){
+    endRow <- min(current_batch * batch_size, spec$extractedInfo$lagRowsNumber)
+    if(startRow>spec$extractedInfo$lagRowsNumber){
       startRow<-endRow<-0
     }
     #task_range <- seq(start_task, end_task)
@@ -364,6 +244,7 @@ BatchControl<-function(inputs){
   )
 
 }
+
 
 
 

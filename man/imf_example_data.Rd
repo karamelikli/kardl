@@ -17,11 +17,11 @@ A data frame with 470 rows and 4 variables:
 imf_example_data
 }
 \description{
-This is an example data set used for testing purposes.
+This is an example data set used for testing purposes. It contains monthly data on exchange rates, consumer price index, producer price index, and a dummy variable for the COVID-19 pandemic for Turkey from January 1985 to February 2024.
 }
 \details{
 These data obtained from \pkg{imf.data} package.
-The sample data is not updated and obtained by following codes.:
+The sample data is not updated and obtained by following codes:
 
 \code{install.packages("imf.data")}\cr
 \code{library("imf.data")}\cr
