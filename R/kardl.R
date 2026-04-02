@@ -1,5 +1,3 @@
-Sys.setlocale("LC_TIME", 'en_US.UTF-8');  Sys.setenv(LANG = "en_US.UTF-8");
-
 #' Estimate an ARDL or NARDL model with automatic lag selection
 #'
 #' This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear ARDL (NARDL) model based on the provided data and model formula.
@@ -345,8 +343,9 @@ kardl <- function(data = NULL, formula = NULL,
       attr(kardlVars[[name]], "source") <- "argument"
     }
   }
+  spec<-prepare(kardlVars)
   # inputs<<-kardlVars
-  makemodel(kardlVars,...)
+  makemodel(spec,...)
 }
 
 
@@ -355,15 +354,6 @@ kardl <- function(data = NULL, formula = NULL,
 #'
 #' This function is used to perform the Error Correction Model (ECM) test, which is designed to determine whether there is cointegration in the model. Cointegration indicates a long-term equilibrium relationship between variables, despite short-term deviations. The ECM test helps identify if such a long-term relationship exists by examining the short-run dynamics and adjusting for deviations from equilibrium. If the test confirms cointegration, it suggests that the variables move together over time, maintaining a stable long-term relationship. This is critical for ensuring that the model properly captures both short-term fluctuations and long-term equilibrium behavior.
 #' @inheritParams kardl
-#' @param case An integer specifying the case number for the restricted ECM test. The available cases are:
-#'  \itemize{
-#'  \item \code{case 1}: No constant, no trend.
-#'  \item \code{case 2}: Restricted constant, no trend.
-#'  \item \code{case 3}: Unrestricted constant, no trend.
-#'  \item \code{case 4}: Unrestricted Constant, restricted trend.
-#'  \item \code{case 5}: Unrestricted constant, unrestricted trend.
-#'  }
-#'  The choice of case depends on the specific characteristics of the data and the model being tested. Each case corresponds to different assumptions about the presence of a constant term and a trend in the model, which can affect the interpretation of the test results and the conclusions about cointegration.
 #'
 #' @section Hypothesis testing:
 #' The restricted ECM test, also known as the PSS t Bound test, is a statistical test used to assess the presence of cointegration in a model. Cointegration refers to a long-term equilibrium relationship between two or more time series variables. The PSS t Bound test is based on the work of Pesaran, Shin, and Smith (2001) and is particularly useful for models with small sample sizes.
@@ -554,7 +544,71 @@ kardl <- function(data = NULL, formula = NULL,
 #'    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 #'
 #'
-ecm<-function(data = NULL, formula = NULL,  case=3,
+ecm<-function(data = NULL, formula = NULL,
+              maxlag  = NULL,
+              mode    = NULL,
+              criterion = NULL,
+              differentAsymLag = NULL,
+              batch = NULL,
+              ...  ){
+
+  notesArray<-c()
+  get_proper <-kardl(data, formula =formula,  maxlag = maxlag, mode =mode,criterion = criterion,
+               differentAsymLag = differentAsymLag,   batch = batch,list(...))
+
+EcmData<-get_proper$model
+
+longrunEQ<- paste0(replace_lag_var(.kardl_Settings_env$LongCoef ,get_proper$extractedInfo$dependentVar,1)  ," ~ " , paste0( replace_lag_var(.kardl_Settings_env$LongCoef ,get_proper$extractedInfo$longRunVars[-1],1) ,collapse = " + "))
+longrunEQ<- as.formula(longrunEQ)
+
+  ecmL<-lm(longrunEQ,EcmData)
+  ecmL$call <- longrunEQ
+
+EcmData$EcmRes<-residuals(ecmL)
+
+f <- get_proper$call
+to_remove <- all.vars(longrunEQ)
+tt <- terms(f)
+rhs_terms <- attr(tt, "term.labels")
+new_rhs <- setdiff(rhs_terms, to_remove)
+shortrunEQ <- reformulate(new_rhs, response = as.character(f[[2]]))
+if (attr(tt, "intercept") == 0) {
+  shortrunEQ <- update(shortrunEQ, . ~ . - 1)
+}
+
+shortrunEQ<-update(shortrunEQ, . ~ EcmRes+ . )
+ecmS <-lm( shortrunEQ, EcmData)
+
+
+
+  ecmList<-list(ecm=list(
+    longrunEQ=longrunEQ,
+    shortrunEQ=shortrunEQ,
+    ecmL=ecmL
+  ),
+  argsInfo=get_proper$argsInfo,
+  extractedInfo=get_proper$extractedInfo,
+  timeInfo=get_proper$timeInfo,
+  estInfo=get_proper$estInfo,
+  lagInfo=get_proper$lagInfo
+  )
+
+  ecmList$estInfo$type="ecm"
+  ecmOutput<-lmerge(ecmList,ecmS)
+  if(coef(ecmS)[["EcmRes"]]>=0){
+    notesArray <- c(notesArray, "The coefficient of the error correction term (EcmRes) is non-negative. This may indicate a lack of long-run equilibrium adjustment.")
+  }
+  if(coef(ecmS)[["EcmRes"]] < -1){
+    notesArray <- c(notesArray, "The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship.")
+  }
+
+  ecmOutput$notes<-notesArray
+  class(ecmOutput) <- c("kardl_lm","lm")
+  return(ecmOutput)
+
+}
+
+old_ecm<-function(data = NULL, formula = NULL,  case=3,
               maxlag  = NULL,
               mode    = NULL,
               criterion = NULL,
@@ -770,14 +824,14 @@ modelCriterion<-function(estModel,cr,...){
 
 
 
-makemodel<-function(inputs,...){
+makemodel<-function(spec,...){
 
   myMethod<-T
   # if(is.vector(inputs$mode))
-  if(is.vector(inputs$mode[1]) && is.numeric(inputs$mode) && isFALSE(isFALSE(inputs$mode)) )  {
+  if(is.vector(spec$argsInfo$mode[1]) && is.numeric(spec$argsInfo$mode) && isFALSE(isFALSE(spec$argsInfo$mode)) )  {
     class(myMethod)<- "user"
   }else{
-    class(myMethod)<- match.arg(tolower(inputs$mode) ,c("quick","grid_custom","grid"))
+    class(myMethod)<- match.arg(tolower(spec$argsInfo$mode) ,c("quick","grid_custom","grid"))
   }
   UseMethod("makemodel",myMethod)
 }
@@ -793,12 +847,10 @@ makemodel<-function(inputs,...){
 # @return
 
 #' @export
-makemodel.quick<-function(inputs , ...  ){#model,data,inputs){
-  inputs$mode<-"quick"
+makemodel.quick<-function(spec , ...  ){#model,data,inputs){
   start_time <- Sys.time()
   # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
 
-  spec<-prepare(inputs)
   preModel<-makeLongrunMOdel(spec) #retruns LS_longrun   LS_dependent
 
 
@@ -867,23 +919,9 @@ makemodel.quick<-function(inputs , ...  ){#model,data,inputs){
     }
   }
 
-  # toporders[  which.min(toporders[, "criterion_value"]),-ncol(toporders) , drop = FALSE]
-  minValue<-toporders[  which.min(toporders[, "criterion_value"]), , drop = FALSE]
+   minValue<-toporders[  which.min(toporders[, "criterion_value"]), , drop = FALSE]
 
   best_order <- minValue[,-ncol(minValue)]
-  # cnames<-colnames(best_order)
-
-  # best_order<-as.vector(best_order)
-  # names(best_order)<-cnames
-
-
-  # OptLag<-data.frame(c( paste0(best_order,collapse = ","),minValue[,ncol(minValue)])  )
-  # if(!is.function(spec$argsInfo$criterion)){
-  #   colnames(OptLag)<-spec$argsInfo$criterion
-  # }
-  # rownames(OptLag)<-c("lag","value")
-
-
   MyFormula<-as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
                       makeShortrunMOdel(spec$extractedInfo$shortRunVars,best_order,spec$extractedInfo$deterministic),sep="+")) )
   theResults<-lm(MyFormula ,spec$extractedInfo$data)
@@ -930,12 +968,12 @@ makemodel.quick<-function(inputs , ...  ){#model,data,inputs){
 # @return
 #' @export
 #'
-makemodel.user <-function(inputs, ...  ){#model,data,inputs){
+makemodel.user <-function(spec, ...  ){#model,data,inputs){
   # spec$argsInfo$mode<-"user"
   start_time <- Sys.time()
 
   # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
-  spec<-prepare(inputs)
+
   preModel<-makeLongrunMOdel(spec) #retruns LS_longrun   LS_dependent
 
   MyFormula<- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
@@ -992,11 +1030,11 @@ makemodel.user <-function(inputs, ...  ){#model,data,inputs){
 # @return
 #
 #' @export
-makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
-  inputs$mode<-"grid_custom"
+makemodel.grid_custom<-function(spec, ...  ){ #model ,  data,inputs  ){
+  # inputs$mode<-"grid_custom"
   start_time <- Sys.time()
   # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
-  spec<-prepare(inputs)
+
   # inputs<-prepare(model=model,data=data  ,inputs)
   # cat("\r",paste0("Note: Performance mode will only have output once all estimations are finished.  Starting of estimation of the model: ",inputs$formulaName))
 
@@ -1029,20 +1067,8 @@ makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
     MyFormula<- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,
                       makeShortrunMOdel(spec$extractedInfo$shortRunVars,unlist(LagQueue[i,]),spec$extractedInfo$deterministic),sep="+")) )
     theResults<- lm(MyFormula ,spec$extractedInfo$data)
-    # theResults<- makeEstimation(spec$extractedInfo$shortRunVars,
-    #                             LagsList=unlist(LagQueue[i,]),
-    #                             spec$extractedInfo$deterministic,
-    #                             preModel$LS_dependent,
-    #                             preModel$LS_longrun,
-    #                             spec$extractedInfo$data)
-
     cr<-modelCriterion(theResults, spec$argsInfo$criterion, ...)
-    # k<-theResults$k
-    # n<-theResults$n
-    # llh<-logLik(theResults$formula)
-    #
-    # cr<-switch (spec$argsInfo$criterion,"AIC"=((2*k-2*llh)/n),"BIC"=((log(n)*k-2*llh)/n ),"AICc"=(((2 * k * (k + 1))/(n - k - 1))+(2*k-2*llh)/n),"HQ"=((2*log(log(n))*k-2*llh)/n) )
-    if(cr<Mincr){
+   if(cr<Mincr){
       Mincr<-cr
       OptRow<-i
     }
@@ -1051,8 +1077,7 @@ makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
   endLag  <-paste(LagQueue[batch$endRow,],collapse = ",")
   startLag<-paste(LagQueue[batch$startRow,],collapse = ",")
   properRow<-1
-  # OptLag<-data.frame(  LagQueue[OptRow,]
-  # rownames(OptLag)<-""
+
   finalLags<-data.frame(c( paste0(LagQueue[OptRow,],collapse = ","),Mincr)  )
   if(!is.function(spec$argsInfo$criterion)){
     colnames(finalLags)<-spec$argsInfo$criterion
@@ -1064,12 +1089,7 @@ makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
                       makeShortrunMOdel(spec$extractedInfo$shortRunVars,unlist(LagQueue[OptRow,]),spec$extractedInfo$deterministic),sep="+")) )
   theResults<- lm(MyFormula ,spec$extractedInfo$data)
   theResults$call <- MyFormula
-  # theResults<- makeEstimation(spec$extractedInfo$shortRunVars,LagsList=unlist(LagQueue[OptRow,]),spec$extractedInfo$deterministic,preModel$LS_dependent,preModel$LS_longrun,spec$extractedInfo$data)
-
   fittedVars<-fitted(theResults)
-  # model_tidy <- summary(theResults$formula)$coefficients %>%   as_tibble(rownames = "term")
-  # colnames(model_tidy) <- c("term", "estimate", "std.error", "statistic", "p.value")
-
   properLag <- unlist(LagQueue[OptRow,])
   MaxLag<-max( properLag)
   end_time <- Sys.time()
@@ -1121,12 +1141,12 @@ makemodel.grid_custom<-function(inputs, ...  ){ #model ,  data,inputs  ){
 # @return
 #
 #' @export
-makemodel.grid<-function(inputs , ... ){#model ,  data,inputs  ){ # makemodel.default
-  inputs$mode<-"grid"
+makemodel.grid<-function(spec , ... ){#model ,  data,inputs  ){ # makemodel.default
+  # inputs$mode<-"grid"
 
   start_time <- Sys.time()
   # inputs<-prepare(lmerge(list( model=model,data=data),inputs))
-  spec<-prepare(inputs)
+
   # inputs<-prepare(model=model,data=data  ,inputs)
   #cat("\r",paste0("Appearance mode will have outputs during estimations. Starting of estimation of the model: ",inputs$formulaName))
 
@@ -1226,7 +1246,7 @@ makemodel.grid<-function(inputs , ... ){#model ,  data,inputs  ){ # makemodel.de
     OptLag= LagMatrix[properRow,],
     allCrLaga = finalLags,
     properRow=properRow,
-    Criterion=inputs$criterion,
+    Criterion=spec$argsInfo$criterion,
     LagsFrom=startLag,
     LagsTo=endLag,
     LagCriteria=LagCriteria,

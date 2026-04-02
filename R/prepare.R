@@ -47,32 +47,6 @@ combineVarTypes <-function(inputs,checkInData=TRUE){
 
 
   extractedInfo$Allvars<-c( extractedInfo$dependentVar, extractedInfo$independentVars)
-  # deterministic<-parseFormula(inputs$formula,"deterministic()",T)
-  # deterministic_<-unique(trimws(deterministic$detected));
-  # extractedInfo[["deterministic"]] <- deterministic_[nzchar(deterministic_)]
-  # noConstant<-parseFormula(deterministic$theRest,"- 1",T)
-  # extractedInfo[["noConstant"]] <-ifelse(noConstant$detected=="",F,T)
-  # trend<-parseFormula(noConstant$theRest,"trend",T)
-  # extractedInfo[["trend"]] <-ifelse(trend$detected=="",F,T)
-  # DotVars<-parseFormula(trend$theRest,".",T)
-  # if(!is.null(DotVars$detected) && DotVars$detected=="."){
-  #   completeVars<-colnames(spec$extractedInfo$data)
-  #   completeVars<-completeVars[ ! completeVars %in% deterministic_]
-  # }else{
-  #   completeVars<-c()
-  # }
-  #
-  # Allvars_<-unique(c(  trimws(c(all.vars(DotVars$theRest))),completeVars  ));
-  # #Allvars_<-unique(   trimws(c(all.vars(trend$theRest))));
-  # extractedInfo[["Allvars"]] <-Allvars_[nzchar(Allvars_)]
-  # Asym<-parseFormula(trend$theRest,"asym()",T)
-  # AsymL<-parseFormula(Asym$theRest,"AsymL()",T)
-  # asymS<-parseFormula(AsymL$theRest,"asymS()",T)
-  # ALvars_<-unique(trimws(c(Asym$detected,AsymL$detected)))
-  # extractedInfo[["ALvars"]] <-ALvars_[nzchar(ALvars_)]
-  # ASvars_ <-unique(trimws(c(Asym$detected,asymS$detected)))
-  # extractedInfo[["ASvars"]]<-ASvars_[nzchar(ASvars_)]
-
 
   # stop if any of Allvars is not in the data
   if(length(extractedInfo[["Allvars"]])==0){
@@ -397,18 +371,6 @@ prepare<-function(inputs){
   spec<-CreateNewVars( spec)
   spec
 }
-#
-#
-# makeEstimation<-function(shortRunVars,LagsList,deterministic,LS_dependent,LS_longrun,thisData){
-#
-#   lm(as.formula(paste0(LS_dependent,"~",paste(LS_longrun,makeShortrunMOdel(shortRunVars,LagsList,deterministic),sep="+")) ) ,thisData)
-#
-#   #
-#   # model0$call <- nformula
-#   # k<-length(model0$coefficients) #k
-#   # n<-length(model0$residuals)  # T
-#   # list(fmodel=fmodel, model=model0, n=n,k=k)
-# }
 
 
 makeShortrunMOdel<-function(shortRunVars,LagsList, deterministic){
@@ -433,12 +395,12 @@ makeLongrunMOdel<-function(spec){
     modd<-lapply(spec$extractedInfo$longRunVars,function(i){ replace_lag_var(.kardl_Settings_env$LongCoef ,i,1) # paste0("L1.",i)
     } )
     LS_longrun<-paste(modd, collapse = "+")
+
+
+  }
     if(spec$extractedInfo$noConstant){
       LS_longrun<-paste0(LS_longrun,"-1")
     }
-
-  }
-
 
   LS_dependent<- replace_lag_var(.kardl_Settings_env$ShortCoef,spec$extractedInfo$dependentVar,0) # paste0("L0.d.",spec$extractedInfo$dependentVar)
   list(LS_longrun=LS_longrun,

@@ -81,6 +81,72 @@ plot.kardl_mplier <- function(x, variables ="all" , ...) {
 
 }
 
+#' @import stats
+#' @export
+#' @method  summary kardl_longrun
+summary.kardl_longrun <- function(object, ...) {
+  objcoef <- object$original_model$coefficients
+
+  vcov_matrix = stats::vcov( object$original_model)
+
+  my_dep <- object$depvar
+  my_indep <- object$indepvars
+
+  multipliers_coef <- object$coefficients
+
+  A <- - 1 / objcoef[my_dep]
+
+  lr_var <- sapply(names(multipliers_coef), function(i) {
+    B <- objcoef[i] / (objcoef[my_dep]^2)
+    (A^2) * vcov_matrix[i, i] +
+      2 * A * B * vcov_matrix[i, my_dep] +
+      (B^2) * vcov_matrix[my_dep, my_dep]
+  })
+
+  multipliers_coef_se <- sqrt(as.vector(lr_var))
+  tvals <- multipliers_coef / multipliers_coef_se
+  pvals <- 2 * stats::pt(-abs(tvals), df = stats::df.residual(object$original_model))
+
+  coef_table <- cbind(
+    Estimate = multipliers_coef,
+    `Std. Error` = multipliers_coef_se,
+    `t value` = tvals,
+    `Pr(>|t|)` = pvals
+  )
+
+  ans <- list(
+    call = object$call,
+    coefficients = coef_table,
+    sigma = sqrt(sum(object$residuals^2) / object$df.residual),
+    df = c(object$rank, object$df.residual, length(object$coefficients)),
+    r.squared = NA_real_,
+    adj.r.squared = NA_real_,
+    fstatistic = NA,
+    cov.unscaled = NA,
+    note = attr(object, "note"),
+    estimation_type = attr(object, "estimation_type")
+  )
+
+  class(ans) <- c("summary_kardl_longrun", "summary.lm")
+  ans
+}
+
+#' @export
+#' @method print summary_kardl_longrun
+print.summary_kardl_longrun <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+  cat("\nCall:\n", paste(deparse(x$call), collapse = "\n"), "\n", sep = "")
+
+  cat("\nEstimation type:\n")
+  cat(x$estimation_type, "\n")
+
+  cat("\nCoefficients:\n")
+  printCoefmat(x$coefficients, digits = digits, P.values = TRUE, has.Pvalue = TRUE)
+
+  cat("\nNote:\n")
+  cat(x$note, "\n")
+
+  invisible(x)
+}
 
 #' @export
 #' @method print kardl_symmetric

@@ -897,18 +897,7 @@ htestsummary.narayan<-function(testObj,...){
 
 psst<-function(kmodel,case=3,signif_level = "auto"){
   notesArray<-c()
-  if(inherits(kmodel, "kardl_lm")){
-    if(kmodel$estInfo$type=="ecm"){
-      if(case != kmodel$ecm$case){
-        notesArray <- c(notesArray,
-                        paste0("The model is estimated as an ECM with case ",kmodel$ecm$case,
-                               ". The 'case' argument is ignored and set to ",kmodel$ecm$case,".")
-        )
-      }
-      case<-kmodel$ecm$case
-    }
-
-  }else{
+  if(! inherits(kmodel, "kardl_lm"))  {
     stop("Input object must be of class 'kardl_lm'.",call. = FALSE)
   }
   if(! case %in% c(1,2,3,4,5,"auto")){
@@ -1029,8 +1018,8 @@ htestsummary.psst<-function(testObj,...){
     k<-10
     notes<-c(notes,"The number of regressors exceeds the maximum limit for the critical values table. Using the critical values for 10 regressors.")
   }
-  bu<-data.frame( L = PSSCrVals[k,c(2,4,6,8)],
-                  U = PSSCrVals[k,c(3,5,7,9)]
+  bu<-data.frame( L = PSSCrVals[k+1,c(2,4,6,8)],
+                  U = PSSCrVals[k+1,c(3,5,7,9)]
   )
   rownames(bu)<-c("0.10","0.05","0.025","0.01")
 
