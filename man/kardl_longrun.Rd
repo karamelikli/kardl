@@ -35,10 +35,14 @@ The function also calculates the standard errors of the long-run multipliers usi
 The function returns an object of class \code{kardl_long_run}, which contains the long-run multipliers, their standard errors, t-statistics, p-values, fitted values, residuals, and other relevant information for further analysis and diagnostics.
 
 Note that the fitted values and residuals from the long-run model are not centered (i.e., they do not have a mean of zero) by design, which means that diagnostic plots and residual-based tests may not be valid for this model. The primary focus of this function is on the estimation of the long-run multipliers and their associated statistics.
-\deqn{LRM_i = -\frac{\beta_i}{\beta_{dep}}}. t-values and p-values are calculated using the standard errors obtained from the delta method, which accounts for the covariance between the coefficients.
+
+The long-run multipliers are calculated using the formula:
+\deqn{LRM_i = -\frac{\eta_i}{\eta_0}}.
+
+t-values and p-values are calculated using the standard errors obtained from the delta method, which accounts for the covariance between the coefficients.
 Delta method formula for standard errors of long-run multipliers:
-\deqn{SE(LR_i) = \sqrt{(A^2) \cdot Var(\beta_i) + 2 \cdot A \cdot B \cdot Cov(\beta_i, \beta_{dep}) + (B^2) \cdot Var(\beta_{dep})}} where \deqn{A = \frac{\partial LRM_i}{\partial \beta_i} = -\frac{1}{\beta_{dep}}} and \deqn{B = \frac{\partial LRM_i}{\partial \beta_{dep}} = \frac{\beta_i}{\beta_{dep}^2}} .
-Hence, \eqn{\beta_i} is the coefficient of the independent variable and \eqn{\beta_{dep}} is the coefficient of the dependent variable in the original KARDL model.
+\deqn{SE(LR_i) = \sqrt{(A^2) \cdot Var(\eta_i) + 2 \cdot A \cdot B \cdot Cov(\eta_i, \eta_0) + (B^2) \cdot Var(\eta_0)}} where \deqn{A = \frac{\partial LRM_i}{\partial \eta_i} = -\frac{1}{\eta_0}} and \deqn{B = \frac{\partial LRM_i}{\partial \eta_0} = \frac{\eta_i}{\eta_0^2}} .
+Hence, \eqn{\eta_i} is the coefficient of the independent variable and \eqn{\eta_0} is the coefficient of the dependent variable in the original KARDL model.
 }
 \examples{
 kardl_model<-kardl(imf_example_data,

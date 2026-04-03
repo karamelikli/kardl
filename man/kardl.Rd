@@ -232,7 +232,31 @@ It allows for flexible specification of variables, including deterministic terms
 The function also supports automatic lag selection using various information criteria.
 }
 \details{
-Note: All arguments of this function can be set using \code{\link{kardl_set}} function.
+The general formula for the long-run model is specified as follows:
+\deqn{
+\begin{aligned}
+ \Delta {y}_t =  c  +  \eta _0   {y}_{t-1} + \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }   +\sum_{i=1}^{m} {( \eta ^{+}_i   {x}^{+}_{i,t-1 } + \eta ^{-}_i   {x}^{-}_{i,t-1 } ) }    +  \sum_{i=m+1}^{k} {\eta _i   {x}_{i,t-1 } }
++  \newline  \sum_{i=1}^{m} {\sum_{j=0}^{q^+_i} { \beta^+_{ij}   \Delta {x}^+_{i,t-j} } } + \sum_{i=1}^{m} {\sum_{j=0}^{q^-_i} { \beta^-_{ij}   \Delta {x}^-_{i,t-j} } }  + \sum_{i=m+1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
+\end{aligned}
+ }
+
+Where:
+- \eqn{y_t} is the dependent variable at time t.
+- \eqn{c} is the constant term.
+- \eqn{\eta_0} is the coefficient of the lagged dependent variable.
+- \eqn{\gamma_j} are the coefficients of the lagged differences of the dependent variable.
+- \eqn{\eta^+_i} and \eqn{\eta^-_i} are the coefficients of the positive and negative decompositions of the independent variables, respectively.
+- \eqn{\eta_i} are the coefficients of the independent variables that do not have asymmetric decompositions.
+- \eqn{\beta^+_{ij}} and \eqn{\beta^-_{ij}} are the coefficients of the lagged differences of the positive and negative decompositions of the independent variables, respectively.
+- \eqn{\beta_{ij}} are the coefficients of the lagged differences of the independent variables that do not have asymmetric decompositions.
+- \eqn{e_t} is the error term at time t.
+- \eqn{p} is the maximum lag length for the dependent variable.
+- \eqn{q^+_i} and \eqn{q^-_i} are the maximum lag lengths for the positive and negative decompositions of the independent variables, respectively.
+- \eqn{q_i} is the maximum lag length for the independent variables that do not have asymmetric decompositions.
+- \eqn{m} is the number of independent variables with asymmetric decompositions.
+- \eqn{k} is the total number of independent variables.
+- \eqn{\Delta} denotes the first difference operator.
+- \eqn{x^+_{i,t}} and \eqn{x^-_{i,t}} represent the positive and negative decompositions of the independent variable \eqn{x_i} at time t, respectively.
 }
 \examples{
 

@@ -237,16 +237,16 @@ symmetrytest<-function(kmodel ){
 #'
 #' @return A list with class "htest" containing the following components:
 #' \itemize{
-#' \item{statistic:} The calculated F-statistic for the test.
-#' \item{method:} A character string indicating the method used for the test, which is Bounds F-Test".
-#' \item{data.name:} A character string giving the name of the data used in the test.
-#' \item{k:} The number of independent variables in the model.
-#' \item{notes:} A character vector containing any notes or warnings related to the test results, such as sample size considerations or adjustments made to the case based on model characteristics.
-#' \item{sig:} The significance level used for the test, either specified by the user or determined automatically.
-#' \item{alternative: The alternative hypothesis being tested.}
-#' \item{case:} The case used for the test, either specified by the user or determined automatically based on the model's characteristics.
+#' \item \code{statistic}: The calculated F-statistic for the test.
+#' \item \code{caseTxt}: A character string describing the case used for the test, based on the specified case parameter.
+#' \item \code{alternative}: A character string describing the alternative hypothesis of the test.
+#' \item \code{sample.size}: The number of observations used in the test.
+#' \item \code{varnames}: A character vector containing the names of the dependent variable and independent variables used in the test.
+#' \item \code{k}: The number of independent variables (excluding the dependent variable) included in the test.
+#' \item \code{sig}: The significance level used for the test, either specified by the user or determined automatically.
+#' \item \code{notes}: A character vector containing any notes or warnings related to
+#' the test, such as the suitability of the test for small sample sizes or any adjustments made to the case based on the model's characteristics.
 #' }
-#'
 #' @export
 #' @importFrom car linearHypothesis
 #' @seealso   \code{\link{psst}}  \code{\link{ecm}}  \code{\link{narayan}}
@@ -850,8 +850,6 @@ htestsummary.narayan<-function(testObj,...){
 #' \item{sig: The significance level used for the test, either specified by the user or determined automatically.}
 #' \item{alternative: The alternative hypothesis being tested.}
 #' \item{case: The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
-#'
-#'
 #' }
 #'
 

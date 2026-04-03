@@ -37,8 +37,6 @@ sample size considerations or adjustments made to the case based on model charac
 \item{sig: The significance level used for the test, either specified by the user or determined automatically.}
 \item{alternative: The alternative hypothesis being tested.}
 \item{case: The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
-
-
 }
 }
 \description{
