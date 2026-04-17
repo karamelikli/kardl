@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Huseyin
 Karamelikli and Huseyin Utku Demir</h4>
             
-            <h4 data-toc-skip class="date">2026-04-03</h4>
+            <h4 data-toc-skip class="date">2026-04-17</h4>
       
 
       <div class="d-none name"><code>intro.Rmd</code></div>
@@ -120,7 +120,7 @@ directly from GitHub:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stats"</span>, <span class="st">"msm"</span>, <span class="st">"lmtest"</span>, <span class="st">"nlWaldTest"</span>, <span class="st">"car"</span>, <span class="st">"strucchange"</span>, <span class="st">"utils"</span>,<span class="st">"ggplot2"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># Install kardl from GitHub</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"karamelikli/kardl"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"karamelikli/kardl"</span><span class="op">)</span></span></code></pre></div>
 <p>Load the package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">kardl</span><span class="op">)</span></span></code></pre></div>
@@ -478,14 +478,14 @@ hypotheses, and test decisions.</p>
 <pre><code><span><span class="co">## Long-run symmetry tests:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test for variable:  ER </span></span>
-<span><span class="co">## F-value:  2.164906 , p-value:  0.1418984 </span></span>
+<span><span class="co">## F  statistic:  2.164906 , p-value:  0.1418984 </span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
 <span><span class="co">## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)</span></span>
 <span><span class="co">## H1: - Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test for variable:  PPI </span></span>
-<span><span class="co">## F-value:  0.7152717 , p-value:  0.3981528 </span></span>
+<span><span class="co">## F  statistic:  0.7152717 , p-value:  0.3981528 </span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
 <span><span class="co">## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)</span></span>
@@ -496,14 +496,14 @@ hypotheses, and test decisions.</p>
 <span><span class="co">## Short-run symmetry tests:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test for variable:  ER </span></span>
-<span><span class="co">## F-value:  1.679811 , p-value:  0.1956198 </span></span>
+<span><span class="co">## F  statistic:  1.679811 , p-value:  0.1956198 </span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
 <span><span class="co">## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)</span></span>
 <span><span class="co">## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test for variable:  PPI </span></span>
-<span><span class="co">## F-value:  0.7582018 , p-value:  0.3843603 </span></span>
+<span><span class="co">## F  statistic:  0.7582018 , p-value:  0.3843603 </span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
 <span><span class="co">## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)</span></span>
@@ -551,7 +551,7 @@ cointegration.</p>
 <span><span class="co">## 0.025 3.89 5.07</span></span>
 <span><span class="co">## 0.01  4.40 5.72</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #BBBB00; font-weight: bold;">Notes:</span></span></span>
+<span><span class="co">## Notes:</span></span>
 <span><span class="co">##    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).</span></span></code></pre>
 </div>
 <div class="section level4">
@@ -590,7 +590,7 @@ cointegration.</p>
 <span><span class="co">## 0.025 -3.65 -4.62</span></span>
 <span><span class="co">## 0.01  -3.96 -4.96</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #BBBB00; font-weight: bold;">Notes:</span></span></span>
+<span><span class="co">## Notes:</span></span>
 <span><span class="co">##    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).</span></span></code></pre>
 </div>
 <div class="section level4">
@@ -629,7 +629,7 @@ cointegration.</p>
 <span><span class="co">## 0.05 3.678 4.840</span></span>
 <span><span class="co">## 0.01 4.890 6.164</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## <span style="color: #BBBB00; font-weight: bold;">Notes:</span></span></span>
+<span><span class="co">## Notes:</span></span>
 <span><span class="co">##    • The Narayan F-test is designed for small samples. Your model uses only 469 observations. For greater accuracy with large samples, consider pssf() function. </span></span>
 <span><span class="co">##    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).</span></span>
 <span><span class="co">##    • The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.</span></span></code></pre>
@@ -692,14 +692,14 @@ robust estimates of uncertainty around the multipliers.</p>
 <span><span class="co">##  Mean   : 6   Mean   :0.3467   Mean   :-0.195624   Mean   :0.1511  </span></span>
 <span><span class="co">##  3rd Qu.: 9   3rd Qu.:0.4001   3rd Qu.:-0.090578   3rd Qu.:0.2212  </span></span>
 <span><span class="co">##  Max.   :12   Max.   :0.4277   Max.   : 0.002659   Max.   :0.2517  </span></span>
-<span><span class="co">##     PPI_POS           PPI_NEG             PPI_dif              ER_uCI      </span></span>
+<span><span class="co">##     PPI_POS           PPI_NEG             PPI_dif           ER_CI_upper    </span></span>
 <span><span class="co">##  Min.   :0.04741   Min.   :-0.720251   Min.   :-0.045860   Min.   :0.1558  </span></span>
 <span><span class="co">##  1st Qu.:0.14333   1st Qu.:-0.548660   1st Qu.:-0.033357   1st Qu.:0.2040  </span></span>
 <span><span class="co">##  Median :0.33251   Median :-0.367272   Median :-0.004707   Median :0.2388  </span></span>
 <span><span class="co">##  Mean   :0.36104   Mean   :-0.362996   Mean   :-0.001957   Mean   :0.2449  </span></span>
 <span><span class="co">##  3rd Qu.:0.54395   3rd Qu.:-0.176686   3rd Qu.: 0.024956   3rd Qu.:0.2941  </span></span>
 <span><span class="co">##  Max.   :0.74521   Max.   :-0.005755   Max.   : 0.063809   Max.   :0.3333  </span></span>
-<span><span class="co">##      ER_lCI            PPI_uCI           PPI_lCI        </span></span>
+<span><span class="co">##   ER_CI_lower        PPI_CI_upper      PPI_CI_lower     </span></span>
 <span><span class="co">##  Min.   :-0.13109   Min.   :0.02179   Min.   :-0.19412  </span></span>
 <span><span class="co">##  1st Qu.:-0.02293   1st Qu.:0.04069   1st Qu.:-0.19122  </span></span>
 <span><span class="co">##  Median : 0.05582   Median :0.07289   Median :-0.18770  </span></span>

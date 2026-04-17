@@ -1,6 +1,15 @@
-# KARDL ![](reference/figures/KARDL.png)
+# kardl ![](reference/figures/KARDL.png)
 
-## Introduction
+[![R-CMD-check](https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml)
+[![GitHub
+version](https://img.shields.io/github/v/release/karamelikli/kardl)](https://github.com/karamelikli/kardl/releases)
+[![License:
+GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
+[![CRAN
+downloads](https://cranlogs.r-pkg.org/badges/kardl)](https://cran.r-project.org/package=kardl)
+[![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+
+## Overview
 
 The `kardl` package is an R tool for estimating symmetric and asymmetric
 Autoregressive Distributed Lag (ARDL) and Nonlinear ARDL (NARDL) models,

@@ -1,5 +1,23 @@
 # Changelog
 
+## kardl 1.3.0
+
+### Changes in this version
+
+- **symmetry test:** The symmetry test has been updated to include a new
+  method for calculating the test statistic, Chi-squared, in addition to
+  the existing t-test method.
+- **output update:** Colors in summary output have been removed to
+  improve readability and ensure that the output is clear and accessible
+  to all users, regardless of their display settings or preferences.
+- **lower and upper limits of confidence intervals:** The lower and
+  upper limits of confidence intervals in the summary output have been
+  updated to be more accurate and reflective of the underlying data,
+  providing users with more reliable information for inference.
+- **settings update:** The settings for the model were added to kardl
+  objects, allowing users to easily access and review the configuration
+  of their models.
+
 ## kardl 1.2.1
 
 ### Changes in this version

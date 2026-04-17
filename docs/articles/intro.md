@@ -435,14 +435,14 @@ summary(ast)
     ## Long-run symmetry tests:
     ## 
     ## Test for variable:  ER 
-    ## F-value:  2.164906 , p-value:  0.1418984 
+    ## F  statistic:  2.164906 , p-value:  0.1418984 
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. 
     ## Hypotheses:
     ## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)
     ## H1: - Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)
     ## 
     ## Test for variable:  PPI 
-    ## F-value:  0.7152717 , p-value:  0.3981528 
+    ## F  statistic:  0.7152717 , p-value:  0.3981528 
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
     ## Hypotheses:
     ## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)
@@ -453,14 +453,14 @@ summary(ast)
     ## Short-run symmetry tests:
     ## 
     ## Test for variable:  ER 
-    ## F-value:  1.679811 , p-value:  0.1956198 
+    ## F  statistic:  1.679811 , p-value:  0.1956198 
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. 
     ## Hypotheses:
     ## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)
     ## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)
     ## 
     ## Test for variable:  PPI 
-    ## F-value:  0.7582018 , p-value:  0.3843603 
+    ## F  statistic:  0.7582018 , p-value:  0.3843603 
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI. 
     ## Hypotheses:
     ## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)
@@ -684,14 +684,14 @@ summary(bootstrap_results)
     ##  Mean   : 6   Mean   :0.3467   Mean   :-0.195624   Mean   :0.1511  
     ##  3rd Qu.: 9   3rd Qu.:0.4001   3rd Qu.:-0.090578   3rd Qu.:0.2212  
     ##  Max.   :12   Max.   :0.4277   Max.   : 0.002659   Max.   :0.2517  
-    ##     PPI_POS           PPI_NEG             PPI_dif              ER_uCI      
+    ##     PPI_POS           PPI_NEG             PPI_dif           ER_CI_upper    
     ##  Min.   :0.04741   Min.   :-0.720251   Min.   :-0.045860   Min.   :0.1558  
     ##  1st Qu.:0.14333   1st Qu.:-0.548660   1st Qu.:-0.033357   1st Qu.:0.2040  
     ##  Median :0.33251   Median :-0.367272   Median :-0.004707   Median :0.2388  
     ##  Mean   :0.36104   Mean   :-0.362996   Mean   :-0.001957   Mean   :0.2449  
     ##  3rd Qu.:0.54395   3rd Qu.:-0.176686   3rd Qu.: 0.024956   3rd Qu.:0.2941  
     ##  Max.   :0.74521   Max.   :-0.005755   Max.   : 0.063809   Max.   :0.3333  
-    ##      ER_lCI            PPI_uCI           PPI_lCI        
+    ##   ER_CI_lower        PPI_CI_upper      PPI_CI_lower     
     ##  Min.   :-0.13109   Min.   :0.02179   Min.   :-0.19412  
     ##  1st Qu.:-0.02293   1st Qu.:0.04069   1st Qu.:-0.19122  
     ##  Median : 0.05582   Median :0.07289   Median :-0.18770  

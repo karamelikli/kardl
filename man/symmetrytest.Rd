@@ -4,10 +4,18 @@
 \alias{symmetrytest}
 \title{Symmetry Test for non-linear KARDL Models}
 \usage{
-symmetrytest(kmodel)
+symmetrytest(kmodel, vars = NULL, component = "both", type = "F", ...)
 }
 \arguments{
 \item{kmodel}{The kardl obejct}
+
+\item{vars}{A character vector specifying the names of the variables to be included in the symmetry test. If NULL (the default), all eligible variables will be tested. The variable names should match those used in the KARDL model, and they can be either long-run or short-run variables. If any specified variable is not found in the model, an error will be raised.}
+
+\item{component}{A character string specifying which component(s) of the model to test for symmetry. The options are "both" (default), "shortrun", or "longrun". If "both" is selected, the function will perform symmetry tests for both long-run and short-run variables. If "shortrun" is selected, only short-run variables will be tested, and if "longrun" is selected, only long-run variables will be tested. Invalid values will result in an error.}
+
+\item{type}{A character string specifying the type of test statistic to be used in the Wald tests. The options are "F" (default) or "Chisq". If "F" is selected, the function will perform an F-test, which is appropriate for smaller sample sizes. If "Chisq" is selected, the function will perform a chi-squared test, which is more suitable for larger sample sizes. Invalid values will result in an error.}
+
+\item{...}{Additional arguments to be passed to the underlying test functions, such as \code{\link[nlWaldTest]{nlWaldtest}} for long-run tests or \code{\link[car]{linearHypothesis}} for short-run tests. These arguments can include options for controlling the behavior of the tests, such as specifying the type of test statistic or adjusting for multiple comparisons.}
 }
 \value{
 A list with class "kardl" containing the following components:
@@ -49,41 +57,60 @@ This function evaluates whether the inclusion of a particular variable in the mo
 }
 \examples{
 
-kardl_model<-kardl(imf_example_data,
-                   CPI~Lasym(PPI+ER)+Sas(ER)+deterministic(covid)+trend)
-ast<- symmetrytest(kardl_model)
-ast
-# Detailed results of the test:
-summary(ast)
-# The null hypothesis of the test is that the model is symmetric, while the alternative
-# hypothesis is that the model is asymmetric. The test statistic and p-value are provided
-# in the output. If the p-value is less than a chosen significance level (e.g., 0.05),
-# we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.
+ kardl_model<-kardl(imf_example_data,
+                    CPI~Lasym(PPI+ER)+Sas(ER)+deterministic(covid)+trend)
+ ast<- symmetrytest(kardl_model)
+ ast
+ # Detailed results of the test:
+ summary(ast)
+ # The null hypothesis of the test is that the model is symmetric, while the alternative
+ # hypothesis is that the model is asymmetric. The test statistic and p-value are provided
+ # in the output. If the p-value is less than a chosen significance level (e.g., 0.05),
+ # we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.
 
-# To get symmetry test results in long-run, you can use the following code:
-ast$Lwald
+ # The default significance level is 0.05, but you can specify a different level using the 'level'
+ # argument in the summary function. For example, to use a significance level of 0.01,
+ # you can use the following code:
+ summary(ast, level = 0.01)
 
-# To get symmetry test results in short-run, you can use the following code:
-ast$Swald
+ # To get symmetry test results in long-run, you can use the following code:
+ ast$Lwald
 
-# To get the null and alternative hypotheses of the test in long-run,
-# you can use the following code:
+ # To get symmetry test results in short-run, you can use the following code:
+ ast$Swald
 
-ast$Lhypotheses
+ # To get the null and alternative hypotheses of the test in long-run,
+ # you can use the following code:
 
-# To get the null and alternative hypotheses of the test in short-run,
-# you can use the following code:
+ ast$Lhypotheses
 
-ast$Shypotheses
+ # To get the null and alternative hypotheses of the test in short-run,
+ # you can use the following code:
 
-# Using magrittr package
-library(magrittr)
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER+PPI)+deterministic(covid)+trend,
-                           mode=c(1,0,1,1,0)) \%>\% symmetrytest()
+ ast$Shypotheses
+ # Alternatively, you can also use the symmetrytest function with the component
+ # argument to specify whether you want to test for long-run or short-run symmetry.
+ # For example, to test for long-run symmetry, you can use the following code:
+ symmetrytest(kardl_model, component = "longrun")
+ # To test for short-run symmetry, you can use the following code:
+ symmetrytest(kardl_model, component = "shortrun")
 
-# To get the summary of the symmetry test results in one line, you can use the following code:
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER+PPI)+deterministic(covid)+trend,
-                           mode=c(1,0,1,1,0)) \%>\% symmetrytest() \%>\% summary()
+ # If you want to test for symmetry with respect to a specific variable,
+ # you can use the vars argument in the symmetrytest function. For example,
+ # to test for symmetry with respect to the PPI variable, you can use the following code:
+ symmetrytest(kardl_model, vars = "PPI")
+
+ # To test for symmetry with respect to multiple variables, you can provide
+ # a vector of variable names to the vars argument. For example, to test for
+ # symmetry with respect to both PPI and ER, you can use the following code:
+ symmetrytest(kardl_model, vars = c("PPI", "ER"))
+
+ # Finally, you can also specify the type of test statistic to be used in the
+ # symmetry test. By default, the function uses the Wald test  F statistic,
+ # but you can also choose to use the chi-squared test statistic.
+ # For example, to use the chi-squared test statistic, you can use the following code:
+ symmetrytest(kardl_model, type="Chisq")
+
 
 }
 \references{

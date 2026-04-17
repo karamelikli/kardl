@@ -514,7 +514,7 @@ bootstrap<-function(kmodel,
       }
       dynNames<-colnames(mpsi)
       mpsi<-cbind(mpsi,upperCI,lowerCI)
-      colnames(mpsi)<-c(dynNames,paste0(variable,c("_uCI","_lCI")))
+      colnames(mpsi)<-c(dynNames,paste0(variable,c("_CI_upper","_CI_lower")))
 
     }
   }
@@ -538,8 +538,8 @@ mplierggplot<-function(mpsi,vars, varName  ){
   x_n <- paste0(.kardl_Settings_env$AsymPrefix[2], varName, .kardl_Settings_env$AsymSuffix[2]) # paste0(varName,".NEG")
 
   x_diff<-paste0(varName,"_dif")
-  upperCI<-paste0(varName,"_uCI")
-  lowerCI<-paste0(varName,"_lCI")
+  upperCI<-paste0(varName,"_CI_upper")
+  lowerCI<-paste0(varName,"_CI_lower")
 
   p<- ggplot(mpsi, aes(x=.data$h)) +
     geom_line(aes(y = .data[[x_p]], color = "Positive")) +

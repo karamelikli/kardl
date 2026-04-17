@@ -31,6 +31,11 @@
 #'
 #'
 #' @param kmodel The kardl obejct
+#' @param vars A character vector specifying the names of the variables to be included in the symmetry test. If NULL (the default), all eligible variables will be tested. The variable names should match those used in the KARDL model, and they can be either long-run or short-run variables. If any specified variable is not found in the model, an error will be raised.
+#' @param component A character string specifying which component(s) of the model to test for symmetry. The options are "both" (default), "shortrun", or "longrun". If "both" is selected, the function will perform symmetry tests for both long-run and short-run variables. If "shortrun" is selected, only short-run variables will be tested, and if "longrun" is selected, only long-run variables will be tested. Invalid values will result in an error.
+#' @param type A character string specifying the type of test statistic to be used in the Wald tests. The options are "F" (default) or "Chisq". If "F" is selected, the function will perform an F-test, which is appropriate for smaller sample sizes. If "Chisq" is selected, the function will perform a chi-squared test, which is more suitable for larger sample sizes. Invalid values will result in an error.
+#' @param ... Additional arguments to be passed to the underlying test functions, such as \code{\link[nlWaldTest]{nlWaldtest}} for long-run tests or \code{\link[car]{linearHypothesis}} for short-run tests. These arguments can include options for controlling the behavior of the tests, such as specifying the type of test statistic or adjusting for multiple comparisons.
+#'
 #' @return A list with class "kardl" containing the following components:
 #' \itemize{
 #' \item \code{Lwald:} A data frame containing the Wald test results for the long-run variables, including F-statistic, p-value, degrees of freedom, and residual degrees of freedom.
@@ -45,147 +50,366 @@
 #' @seealso   \code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}, \code{\link{ecm}}, \code{\link{narayan}}
 #' @examples
 #'
-#' kardl_model<-kardl(imf_example_data,
-#'                    CPI~Lasym(PPI+ER)+Sas(ER)+deterministic(covid)+trend)
-#' ast<- symmetrytest(kardl_model)
-#' ast
-#' # Detailed results of the test:
-#' summary(ast)
-#' # The null hypothesis of the test is that the model is symmetric, while the alternative
-#' # hypothesis is that the model is asymmetric. The test statistic and p-value are provided
-#' # in the output. If the p-value is less than a chosen significance level (e.g., 0.05),
-#' # we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.
-#'
-#' # To get symmetry test results in long-run, you can use the following code:
-#' ast$Lwald
-#'
-#' # To get symmetry test results in short-run, you can use the following code:
-#' ast$Swald
-#'
-#' # To get the null and alternative hypotheses of the test in long-run,
-#' # you can use the following code:
-#'
-#' ast$Lhypotheses
-#'
-#' # To get the null and alternative hypotheses of the test in short-run,
-#' # you can use the following code:
-#'
-#' ast$Shypotheses
-#'
-#' # Using magrittr package
-#' library(magrittr)
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER+PPI)+deterministic(covid)+trend,
-#'                            mode=c(1,0,1,1,0)) %>% symmetrytest()
-#'
-#' # To get the summary of the symmetry test results in one line, you can use the following code:
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER+PPI)+deterministic(covid)+trend,
-#'                            mode=c(1,0,1,1,0)) %>% symmetrytest() %>% summary()
-#'
-symmetrytest<-function(kmodel ){
 
-  if(inherits(kmodel, "kardl_lm")){
-    if(kmodel$estInfo$type=="ecm"){
-      stop("Asymmetry test is not suitable for ECM models.",call. = FALSE)
-    }
-    vars<- kmodel$extractedInfo
-  }else{
-    stop("Not suitable input.",call. = FALSE)
-  }
-  kardlWald<-  list()
-  Lwald<-data.frame()
-  LwaldName<-c()
-  Lhypotheses<-list()
-  coefNames<-names(kmodel$coefficients)
-  LongDep<- replace_lag_var(.kardl_Settings_env$LongCoef ,kmodel$extractedInfo$dependentVar,1)  # paste0("L1.",kmodel$extractedInfo$dependentVar)
-  dependentID<-which(LongDep==coefNames)
-  ms_res <- deviance(kmodel) / df.residual(kmodel)
-  if(length(kmodel$extractedInfo$ALvars)>0){
-    LongAs<-data.frame()
-    for (x in kmodel$extractedInfo$ALvars) {
-      POS_param<-replace_lag_var(.kardl_Settings_env$LongCoef ,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]),1)
-      POS_index<-which(POS_param==coefNames)
-      NEG_param<-replace_lag_var(.kardl_Settings_env$LongCoef ,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]),1)
+#'  kardl_model<-kardl(imf_example_data,
+#'                     CPI~Lasym(PPI+ER)+Sas(ER)+deterministic(covid)+trend)
+#'  ast<- symmetrytest(kardl_model)
+#'  ast
+#'  # Detailed results of the test:
+#'  summary(ast)
+#'  # The null hypothesis of the test is that the model is symmetric, while the alternative
+#'  # hypothesis is that the model is asymmetric. The test statistic and p-value are provided
+#'  # in the output. If the p-value is less than a chosen significance level (e.g., 0.05),
+#'  # we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.
+#'
+#'  # The default significance level is 0.05, but you can specify a different level using the 'level'
+#'  # argument in the summary function. For example, to use a significance level of 0.01,
+#'  # you can use the following code:
+#'  summary(ast, level = 0.01)
+#'
+#'  # To get symmetry test results in long-run, you can use the following code:
+#'  ast$Lwald
+#'
+#'  # To get symmetry test results in short-run, you can use the following code:
+#'  ast$Swald
+#'
+#'  # To get the null and alternative hypotheses of the test in long-run,
+#'  # you can use the following code:
+#'
+#'  ast$Lhypotheses
+#'
+#'  # To get the null and alternative hypotheses of the test in short-run,
+#'  # you can use the following code:
+#'
+#'  ast$Shypotheses
+#'  # Alternatively, you can also use the symmetrytest function with the component
+#'  # argument to specify whether you want to test for long-run or short-run symmetry.
+#'  # For example, to test for long-run symmetry, you can use the following code:
+#'  symmetrytest(kardl_model, component = "longrun")
+#'  # To test for short-run symmetry, you can use the following code:
+#'  symmetrytest(kardl_model, component = "shortrun")
+#'
+#'  # If you want to test for symmetry with respect to a specific variable,
+#'  # you can use the vars argument in the symmetrytest function. For example,
+#'  # to test for symmetry with respect to the PPI variable, you can use the following code:
+#'  symmetrytest(kardl_model, vars = "PPI")
+#'
+#'  # To test for symmetry with respect to multiple variables, you can provide
+#'  # a vector of variable names to the vars argument. For example, to test for
+#'  # symmetry with respect to both PPI and ER, you can use the following code:
+#'  symmetrytest(kardl_model, vars = c("PPI", "ER"))
+#'
+#'  # Finally, you can also specify the type of test statistic to be used in the
+#'  # symmetry test. By default, the function uses the Wald test  F statistic,
+#'  # but you can also choose to use the chi-squared test statistic.
+#'  # For example, to use the chi-squared test statistic, you can use the following code:
+#'  symmetrytest(kardl_model, type="Chisq")
+#'
+#'
 
-      NEG_index<-which(NEG_param==coefNames)
-      LongAs<-rbind(LongAs,data.frame(varName=x,POS_param=POS_param,POS_index=POS_index, NEG_param=NEG_param,NEG_index=NEG_index))
-    }
-    Lhypotheses$H0<-list()
-    Lhypotheses$H1<-list()
-    for (v in 1:nrow(LongAs)) {
-      x<-LongAs[v,]
-      Ltest<-paste0("-b[",x$POS_index,"]/b[",dependentID,"]=-b[",x$NEG_index,"]/b[",dependentID,"]")
+symmetrytest <- function(kmodel,
+                         vars = NULL,
+                         component =  "both" ,
+                         type =  "F" ,
+                         ...) {
 
-      Lhypotheses$H0[[x$varName]]<-paste0("- Coef(",x$POS_param,")/Coef(",LongDep,") = - Coef(",x$NEG_param,")/Coef(",LongDep,")")
-      Lhypotheses$H1[[x$varName]]<-paste0("- Coef(",x$POS_param,")/Coef(",LongDep,") \u2260 - Coef(",x$NEG_param,")/Coef(",LongDep,")")
-      newLW<-nlWaldtest(kmodel,Ltest, df2 = T)
-      F_val<-newLW$statistic[["F"]]
-      df1<-newLW$parameter[[1]]
-      SumSq_approx <- F_val * df1 * ms_res
-      MeanSq_approx <- F_val * ms_res
-      Lwald <- rbind(Lwald, data.frame(
-        Df = df1,
-        `Sum of Sq` = SumSq_approx,   # approximation
-        `Mean Sq` = MeanSq_approx,
-        `F value` = F_val,
-        `Pr(>F)` = newLW$p.value,
-        row.names = x$varName,#paste0("Long-run:  ", x$varName),
-        check.names = FALSE
-      ))
+  component <- match.arg(tolower(component),choices = c("both", "shortrun", "longrun"))
+  # to let users input "f" or "chisq" in any case format, we will standardize the input to "F" or "Chisq"
+  newType<-paste0(toupper(substr(type, 1, 1)), tolower( substr(type, 2, nchar(type))))
+  type <- match.arg(newType,choices= c("F", "Chisq"))
 
-
-    }
-    class(Lwald) <- c("anova", "data.frame")
-    attr(Lwald, "note") <- "Long-run tests based on normalized coefficients."
-    attr(Lwald, "heading") <-  c("Symmetry Test Results - Long-run:", "=======================")
-    attr(Lwald, "type") <- "Symmetry Test"
-    attr(Lwald, "method") <- "Wald Test"
-    kardlWald$Lwald<-Lwald
-    kardlWald$Lhypotheses<-Lhypotheses
+  if (!inherits(kmodel, "kardl_lm")) {
+    stop("Not suitable input.", call. = FALSE)
   }
 
+  if (kmodel$estInfo$type == "ecm") {
+    stop("Symmetry test is not suitable for ECM models.", call. = FALSE)
+  }
 
-  Shypotheses<-list()
-  Swald<-data.frame()
-  SwaldName<-c()
-  if(length(kmodel$extractedInfo$ASvars)>0){
-    Shypotheses$H0<-list()
-    Shypotheses$H1<-list()
-    for (v in kmodel$extractedInfo$ASvars) {
-      ceofPOS<-ceofNEG<-NegHyp<-PosHyp<-c();
-      for (i in 0:kmodel$argsInfo$maxlag) {
-        posLagged<-replace_lag_var(.kardl_Settings_env$ShortCoef ,paste0(.kardl_Settings_env$AsymPrefix[1],v,.kardl_Settings_env$AsymSuffix[1]),i)
-        negLagged<-replace_lag_var(.kardl_Settings_env$ShortCoef ,paste0(.kardl_Settings_env$AsymPrefix[2],v,.kardl_Settings_env$AsymSuffix[2]),i)
-        if(posLagged %in% coefNames){ceofPOS<-c(ceofPOS,posLagged) ;PosHyp<-c(PosHyp,paste0("Coef(",posLagged,")"))}
-        if(negLagged %in% coefNames){ceofNEG<-c(ceofNEG,negLagged) ;NegHyp<-c(NegHyp,paste0("Coef(",negLagged,")"))}
+  coefNames <- names(kmodel$coefficients)
+  kardlWald <- list()
+
+  #--------------------------------------------------
+  # Variable selection
+  #--------------------------------------------------
+  all_SR_vars <- kmodel$extractedInfo$ASvars
+  all_LR_vars <- kmodel$extractedInfo$ALvars
+  all_testable_vars <- unique(c(all_SR_vars, all_LR_vars))
+
+  if (is.null(vars)) {
+    selected_vars <- all_testable_vars
+  } else {
+    if (!is.character(vars)) {
+      stop("'vars' must be NULL or a character vector.", call. = FALSE)
+    }
+    bad_vars <- setdiff(vars, all_testable_vars)
+    if (length(bad_vars) > 0) {
+      stop(
+        paste0(
+          "These variables are not available for symmetry testing: ",
+          paste(bad_vars, collapse = ", ")
+        ),
+        call. = FALSE
+      )
+    }
+    selected_vars <- vars
+  }
+
+  selected_SR_vars <- intersect(selected_vars, all_SR_vars)
+  selected_LR_vars <- intersect(selected_vars, all_LR_vars)
+
+  #--------------------------------------------------
+  # Long-run symmetry
+  #--------------------------------------------------
+  if (component %in% c("both", "longrun") && length(selected_LR_vars) > 0) {
+    LWaldList <- list()
+
+    Lwald <- data.frame()
+    Lhypotheses <- list(H0 = list(), H1 = list())
+
+    LongDep <- replace_lag_var(
+      .kardl_Settings_env$LongCoef,
+      kmodel$extractedInfo$dependentVar,
+      1
+    )
+
+    dependentID <- which(LongDep == coefNames)
+
+    if (length(dependentID) == 0) {
+      stop("Long-run dependent variable coefficient was not found.", call. = FALSE)
+    }
+
+    ms_res <- deviance(kmodel) / df.residual(kmodel)
+
+    LongAs <- data.frame()
+
+    for (x in selected_LR_vars) {
+      POS_param <- replace_lag_var(
+        .kardl_Settings_env$LongCoef,
+        paste0(.kardl_Settings_env$AsymPrefix[1], x, .kardl_Settings_env$AsymSuffix[1]),
+        1
+      )
+      NEG_param <- replace_lag_var(
+        .kardl_Settings_env$LongCoef,
+        paste0(.kardl_Settings_env$AsymPrefix[2], x, .kardl_Settings_env$AsymSuffix[2]),
+        1
+      )
+
+      POS_index <- which(POS_param == coefNames)
+      NEG_index <- which(NEG_param == coefNames)
+
+      if (length(POS_index) == 0 || length(NEG_index) == 0) next
+
+      LongAs <- rbind(
+        LongAs,
+        data.frame(
+          varName = x,
+          POS_param = POS_param,
+          POS_index = POS_index,
+          NEG_param = NEG_param,
+          NEG_index = NEG_index,
+          stringsAsFactors = FALSE
+        )
+      )
+    }
+
+    if (nrow(LongAs) > 0) {
+      for (v in seq_len(nrow(LongAs))) {
+        x <- LongAs[v, ]
+
+        Ltest <- paste0(
+          "-b[", x$POS_index, "]/b[", dependentID, "] = -b[", x$NEG_index, "]/b[", dependentID, "]"
+        )
+
+        Lhypotheses$H0[[x$varName]] <- paste0(
+          "- Coef(", x$POS_param, ")/Coef(", LongDep, ") = - Coef(", x$NEG_param, ")/Coef(", LongDep, ")"
+        )
+        Lhypotheses$H1[[x$varName]] <- paste0(
+          "- Coef(", x$POS_param, ")/Coef(", LongDep, ") \u2260 - Coef(", x$NEG_param, ")/Coef(", LongDep, ")"
+        )
+
+
+
+        if (identical(type, "F")) {
+          # include ... in nlWaldtest
+          newLW <- nlWaldtest(kmodel,texts = Ltest, df2 = T, ...)
+          LWaldList[[x$varName]] <- newLW
+          F_val <- unname(newLW$statistic[["F"]])
+          df1 <- unname(newLW$parameter[[1]])
+
+          SumSq_approx <- F_val * df1 * ms_res
+          MeanSq_approx <- F_val * ms_res
+
+          Lwald <- rbind(
+            Lwald,
+            data.frame(
+              Df = df1,
+              `Sum of Sq` = SumSq_approx,
+              `Mean Sq` = MeanSq_approx,
+              `F value` = F_val,
+              `Pr(>F)` = newLW$p.value,
+              row.names = x$varName,
+              check.names = FALSE
+            )
+          )
+        } else {
+          newLW <- nlWaldtest(kmodel,texts = Ltest )
+          LWaldList[[x$varName]] <- newLW
+          chisq_val <- unname(newLW$statistic[[1]])
+          df1 <- unname(newLW$parameter[[1]])
+
+          Lwald <- rbind(
+            Lwald,
+            data.frame(
+              Df = df1,
+              Chisq = chisq_val,
+              `Pr(>Chisq)` = newLW$p.value,
+              row.names = x$varName,
+              check.names = FALSE
+            )
+          )
+
+        }
       }
-      sw<-paste0(paste(ceofPOS,collapse = " + ")," = ",paste(ceofNEG,collapse = " + "))
-      Sh_pos_H0 <- paste(PosHyp,collapse = " + ")
-      Sh_neg_H0 <- paste(NegHyp,collapse = " + ")
-      Shypotheses$H0[[v]]<-paste0(Sh_pos_H0," = ",Sh_neg_H0)
-      Shypotheses$H1[[v]]<-paste0(Sh_pos_H0," \u2260 ",Sh_neg_H0)
-      sw2<- linearHypothesis(kmodel , sw,test="F")
-      Swald <- rbind(Swald, data.frame(
-        Df = sw2[2, 3],
-        `Sum of Sq` = sw2[2, 4],                     # exact
-        `Mean Sq` = sw2[2, 4] / sw2[2, 3],
-        `F value` = sw2[2, 5],
-        `Pr(>F)` = sw2[2, 6],
-        row.names =v, #paste0("Short-run: ", v),
-        check.names = FALSE
-      ))
 
+      if (nrow(Lwald) > 0) {
+        if (identical(type, "F")) {
+          class(Lwald) <- c("anova", "data.frame")
+          attr(Lwald, "note") <- "Long-run tests based on normalized coefficients."
+        }else{
+          class(Lwald) <- c("anova", "data.frame")
+        }
+        attr(Lwald, "heading") <- c(
+          "Symmetry Test Results - Long-run:",
+          "======================="
+        )
+        attr(Lwald, "type") <- "Symmetry Test"
+        attr(Lwald, "method") <- paste("Wald Test", type)
+        attr(Lwald, "signif.legend") <-
+          "Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+
+        kardlWald$Lwald <- Lwald
+        kardlWald$Lhypotheses <- Lhypotheses
+      }
     }
-    class(Swald) <-c("anova", "data.frame")
-    attr(Swald, "heading") <-  c("Symmetry Test Results - Short-run:", "=======================")
-    attr(Swald, "type") <- "Symmetry Test"
-    attr(Swald, "method") <- "Wald Test"
-    kardlWald$Swald<-Swald
-    kardlWald$Shypotheses<-Shypotheses
   }
 
-  class(kardlWald)<-c("kardl_symmetric","list")
-  kardlWald
+  #--------------------------------------------------
+  # Short-run symmetry
+  #--------------------------------------------------
+  if (component %in% c("both", "shortrun") && length(selected_SR_vars) > 0) {
+    SWaldList <- list()
+    Swald <- data.frame()
+    Shypotheses <- list(H0 = list(), H1 = list())
 
+    for (v in selected_SR_vars) {
+      coefPOS <- coefNEG <- NegHyp <- PosHyp <- character(0)
+
+      for (i in 0:kmodel$argsInfo$maxlag) {
+        posLagged <- replace_lag_var(
+          .kardl_Settings_env$ShortCoef,
+          paste0(.kardl_Settings_env$AsymPrefix[1], v, .kardl_Settings_env$AsymSuffix[1]),
+          i
+        )
+        negLagged <- replace_lag_var(
+          .kardl_Settings_env$ShortCoef,
+          paste0(.kardl_Settings_env$AsymPrefix[2], v, .kardl_Settings_env$AsymSuffix[2]),
+          i
+        )
+
+        if (posLagged %in% coefNames) {
+          coefPOS <- c(coefPOS, posLagged)
+          PosHyp <- c(PosHyp, paste0("Coef(", posLagged, ")"))
+        }
+        if (negLagged %in% coefNames) {
+          coefNEG <- c(coefNEG, negLagged)
+          NegHyp <- c(NegHyp, paste0("Coef(", negLagged, ")"))
+        }
+      }
+
+      if (length(coefPOS) == 0 || length(coefNEG) == 0) next
+
+      sw <- paste0(
+        paste(coefPOS, collapse = " + "),
+        " = ",
+        paste(coefNEG, collapse = " + ")
+      )
+
+      Sh_pos_H0 <- paste(PosHyp, collapse = " + ")
+      Sh_neg_H0 <- paste(NegHyp, collapse = " + ")
+
+      Shypotheses$H0[[v]] <- paste0(Sh_pos_H0, " = ", Sh_neg_H0)
+      Shypotheses$H1[[v]] <- paste0(Sh_pos_H0, " \u2260 ", Sh_neg_H0)
+
+      sw2 <- car::linearHypothesis(
+        kmodel,
+        hypothesis.matrix = sw,
+        test = if (identical(type, "F")) "F" else "Chisq" , ...
+      )
+      SWaldList[[v]] <- sw2
+
+      if (identical(type, "F")) {
+        Swald <- rbind(
+          Swald,
+          data.frame(
+            Df = sw2[2, 3],
+            `Sum of Sq` = sw2[2, 4],
+            `Mean Sq` = sw2[2, 4] / sw2[2, 3],
+            `F value` = sw2[2, 5],
+            `Pr(>F)` = sw2[2, 6],
+            row.names = v,
+            check.names = FALSE
+          )
+        )
+      } else {
+        Swald <- rbind(
+          Swald,
+          data.frame(
+            Df = sw2[2, "Df"],
+            `Sum of Sq` = sw2[2, "Sum of Sq"],
+            Chisq = sw2[2, "Chisq"],
+            `Pr(>Chisq)` = sw2[2, "Pr(>Chisq)"],
+            row.names = v,
+            check.names = FALSE
+          )
+        )
+      }
+    }
+
+    if (nrow(Swald) > 0) {
+
+      class(Swald) <- c("anova", "data.frame")
+      attr(Swald, "signif.legend") <-
+          "Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
+      attr(Swald, "heading") <- c(
+        "Symmetry Test Results - Short-run:",
+        "======================="
+      )
+      attr(Swald, "type") <- "Symmetry Test"
+      attr(Swald, "method") <- paste("Wald Test", type)
+
+      kardlWald$Swald <- Swald
+      kardlWald$Shypotheses <- Shypotheses
+    }
+  }
+
+  #--------------------------------------------------
+  # Final checks
+  #--------------------------------------------------
+  if (length(kardlWald) == 0) {
+    stop("No valid symmetry test could be computed for the requested component and variables.",
+         call. = FALSE)
+  }
+
+  kardlWald$LWaldList <- if (exists("LWaldList")) LWaldList else NULL
+  kardlWald$SWaldList <- if (exists("SWaldList")) SWaldList else NULL
+  kardlWald$component <- component
+  kardlWald$vars <- selected_vars
+  kardlWald$type <- type
+  kardlWald$call <- match.call()
+
+  class(kardlWald) <- c("kardl_symmetric", "list")
+  kardlWald
 }
 
 

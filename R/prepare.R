@@ -64,7 +64,7 @@ combineVarTypes <-function(inputs,checkInData=TRUE){
   attr(extractedInfo, "description") <-"This value was extractedInfo from user inputs."
 
 
-  list( argsInfo=inputs , extractedInfo=extractedInfo)
+  list( argsInfo=inputs,settings= kardl_get(c("AsymPrefix","AsymSuffix","LongCoef","ShortCoef")), extractedInfo=extractedInfo)
 }
 
 verifyUserDefinedLags<-function(spec){

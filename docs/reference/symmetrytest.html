@@ -49,7 +49,7 @@ The hypotheses for the short-run variables are:
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@ $$    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kmodel</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kmodel</span>, vars <span class="op">=</span> <span class="cn">NULL</span>, component <span class="op">=</span> <span class="st">"both"</span>, type <span class="op">=</span> <span class="st">"F"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -111,6 +111,22 @@ $$    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
 
 <dl><dt id="arg-kmodel">kmodel<a class="anchor" aria-label="anchor" href="#arg-kmodel"></a></dt>
 <dd><p>The kardl obejct</p></dd>
+
+
+<dt id="arg-vars">vars<a class="anchor" aria-label="anchor" href="#arg-vars"></a></dt>
+<dd><p>A character vector specifying the names of the variables to be included in the symmetry test. If NULL (the default), all eligible variables will be tested. The variable names should match those used in the KARDL model, and they can be either long-run or short-run variables. If any specified variable is not found in the model, an error will be raised.</p></dd>
+
+
+<dt id="arg-component">component<a class="anchor" aria-label="anchor" href="#arg-component"></a></dt>
+<dd><p>A character string specifying which component(s) of the model to test for symmetry. The options are "both" (default), "shortrun", or "longrun". If "both" is selected, the function will perform symmetry tests for both long-run and short-run variables. If "shortrun" is selected, only short-run variables will be tested, and if "longrun" is selected, only long-run variables will be tested. Invalid values will result in an error.</p></dd>
+
+
+<dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
+<dd><p>A character string specifying the type of test statistic to be used in the Wald tests. The options are "F" (default) or "Chisq". If "F" is selected, the function will perform an F-test, which is appropriate for smaller sample sizes. If "Chisq" is selected, the function will perform a chi-squared test, which is more suitable for larger sample sizes. Invalid values will result in an error.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional arguments to be passed to the underlying test functions, such as <code><a href="https://rdrr.io/pkg/nlWaldTest/man/nlWaldtest.html" class="external-link">nlWaldtest</a></code> for long-run tests or <code><a href="https://rdrr.io/pkg/car/man/linearHypothesis.html" class="external-link">linearHypothesis</a></code> for short-run tests. These arguments can include options for controlling the behavior of the tests, such as specifying the type of test statistic or adjusting for multiple comparisons.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -137,16 +153,16 @@ $$    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>,</span></span>
-<span class="r-in"><span>                   <span class="va">CPI</span><span class="op">~</span><span class="fu">Lasym</span><span class="op">(</span><span class="va">PPI</span><span class="op">+</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">Sas</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ast</span><span class="op">&lt;-</span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">ast</span></span></span>
+<span class="r-in"><span> <span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>,</span></span>
+<span class="r-in"><span>                    <span class="va">CPI</span><span class="op">~</span><span class="fu">Lasym</span><span class="op">(</span><span class="va">PPI</span><span class="op">+</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">Sas</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">ast</span><span class="op">&lt;-</span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="va">ast</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -157,52 +173,84 @@ $$    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="co"># Detailed results of the test:</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ast</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="co"># Detailed results of the test:</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ast</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Long-run symmetry tests:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F-value:  0.1320953 , p-value:  0.7164405 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F-value:  4.221689 , p-value:  0.04048856 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F  statistic:  4.221689 , p-value:  0.04048856 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 at 5% level. Indicating long-run asymmetry for variable ER. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(LK1_ER_POS)/Coef(LK1_CPI) = - Coef(LK1_ER_NEG)/Coef(LK1_CPI)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: - Coef(LK1_ER_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_ER_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  PPI </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F  statistic:  0.1320953 , p-value:  0.7164405 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> _____________________________</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Short-run symmetry tests:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F-value:  9.549852 , p-value:  0.002123947 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F  statistic:  9.549852 , p-value:  0.002123947 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 at 5% level. Indicating short-run asymmetry for variable ER. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) = Coef(D0.d.ER_NEG)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) ≠ Coef(D0.d.ER_NEG)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="co"># The null hypothesis of the test is that the model is symmetric, while the alternative</span></span></span>
-<span class="r-in"><span><span class="co"># hypothesis is that the model is asymmetric. The test statistic and p-value are provided</span></span></span>
-<span class="r-in"><span><span class="co"># in the output. If the p-value is less than a chosen significance level (e.g., 0.05),</span></span></span>
-<span class="r-in"><span><span class="co"># we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.</span></span></span>
+<span class="r-in"><span> <span class="co"># The null hypothesis of the test is that the model is symmetric, while the alternative</span></span></span>
+<span class="r-in"><span> <span class="co"># hypothesis is that the model is asymmetric. The test statistic and p-value are provided</span></span></span>
+<span class="r-in"><span> <span class="co"># in the output. If the p-value is less than a chosen significance level (e.g., 0.05),</span></span></span>
+<span class="r-in"><span> <span class="co"># we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># To get symmetry test results in long-run, you can use the following code:</span></span></span>
-<span class="r-in"><span><span class="va">ast</span><span class="op">$</span><span class="va">Lwald</span></span></span>
+<span class="r-in"><span> <span class="co"># The default significance level is 0.05, but you can specify a different level using the 'level'</span></span></span>
+<span class="r-in"><span> <span class="co"># argument in the summary function. For example, to use a significance level of 0.01,</span></span></span>
+<span class="r-in"><span> <span class="co"># you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ast</span>, level <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run symmetry tests:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  ER </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F  statistic:  4.221689 , p-value:  0.04048856 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable ER. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(LK1_ER_POS)/Coef(LK1_CPI) = - Coef(LK1_ER_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: - Coef(LK1_ER_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_ER_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  PPI </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F  statistic:  0.1320953 , p-value:  0.7164405 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PPI. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> _____________________________</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run symmetry tests:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  ER </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F  statistic:  9.549852 , p-value:  0.002123947 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 at 1% level. Indicating short-run asymmetry for variable ER. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) = Coef(D0.d.ER_NEG)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) ≠ Coef(D0.d.ER_NEG)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># To get symmetry test results in long-run, you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="va">ast</span><span class="op">$</span><span class="va">Lwald</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># To get symmetry test results in short-run, you can use the following code:</span></span></span>
-<span class="r-in"><span><span class="va">ast</span><span class="op">$</span><span class="va">Swald</span></span></span>
+<span class="r-in"><span> <span class="co"># To get symmetry test results in short-run, you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="va">ast</span><span class="op">$</span><span class="va">Swald</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq   Mean Sq F value   Pr(&gt;F)   </span>
@@ -210,31 +258,31 @@ $$    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># To get the null and alternative hypotheses of the test in long-run,</span></span></span>
-<span class="r-in"><span><span class="co"># you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="co"># To get the null and alternative hypotheses of the test in long-run,</span></span></span>
+<span class="r-in"><span> <span class="co"># you can use the following code:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">ast</span><span class="op">$</span><span class="va">Lhypotheses</span></span></span>
+<span class="r-in"><span> <span class="va">ast</span><span class="op">$</span><span class="va">Lhypotheses</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $H0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $H0$PPI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "- Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $H0$ER</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "- Coef(LK1_ER_POS)/Coef(LK1_CPI) = - Coef(LK1_ER_NEG)/Coef(LK1_CPI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $H0$PPI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "- Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $H1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $H1$PPI</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "- Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $H1$ER</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "- Coef(LK1_ER_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_ER_NEG)/Coef(LK1_CPI)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $H1$PPI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "- Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># To get the null and alternative hypotheses of the test in short-run,</span></span></span>
-<span class="r-in"><span><span class="co"># you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="co"># To get the null and alternative hypotheses of the test in short-run,</span></span></span>
+<span class="r-in"><span> <span class="co"># you can use the following code:</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">ast</span><span class="op">$</span><span class="va">Shypotheses</span></span></span>
+<span class="r-in"><span> <span class="va">ast</span><span class="op">$</span><span class="va">Shypotheses</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $H0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $H0$ER</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) = Coef(D0.d.ER_NEG)"</span>
@@ -245,66 +293,84 @@ $$    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) ≠ Coef(D0.d.ER_NEG)"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using magrittr package</span></span></span>
-<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span><span class="op">~</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span>,</span></span>
-<span class="r-in"><span>                           mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="co"># Alternatively, you can also use the symmetrytest function with the component</span></span></span>
+<span class="r-in"><span> <span class="co"># argument to specify whether you want to test for long-run or short-run symmetry.</span></span></span>
+<span class="r-in"><span> <span class="co"># For example, to test for long-run symmetry, you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, component <span class="op">=</span> <span class="st">"longrun"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00108422 0.00108422  4.4841 0.03476 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00003435 0.00003435  0.1421 0.70640  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span> <span class="co"># To test for short-run symmetry, you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, component <span class="op">=</span> <span class="st">"shortrun"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq   Mean Sq F value   Pr(&gt;F)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 0.0021074  9.5499 0.002124 **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># If you want to test for symmetry with respect to a specific variable,</span></span></span>
+<span class="r-in"><span> <span class="co"># you can use the vars argument in the symmetrytest function. For example,</span></span></span>
+<span class="r-in"><span> <span class="co"># to test for symmetry with respect to the PPI variable, you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, vars <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 2.9149e-05 2.9149e-05  0.1321 0.7164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># To test for symmetry with respect to multiple variables, you can provide</span></span></span>
+<span class="r-in"><span> <span class="co"># a vector of variable names to the vars argument. For example, to test for</span></span></span>
+<span class="r-in"><span> <span class="co"># symmetry with respect to both PPI and ER, you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PPI"</span>, <span class="st">"ER"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00017740 0.00017740  0.7337 0.39215  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00096021 0.00096021  3.9712 0.04688 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq   Mean Sq F value   Pr(&gt;F)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 0.0021074  9.5499 0.002124 **</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># To get the summary of the symmetry test results in one line, you can use the following code:</span></span></span>
-<span class="r-in"><span><span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span><span class="op">~</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span>,</span></span>
-<span class="r-in"><span>                           mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">0</span>,<span class="fl">1</span>,<span class="fl">1</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run symmetry tests:</span>
+<span class="r-in"><span> <span class="co"># Finally, you can also specify the type of test statistic to be used in the</span></span></span>
+<span class="r-in"><span> <span class="co"># symmetry test. By default, the function uses the Wald test  F statistic,</span></span></span>
+<span class="r-in"><span> <span class="co"># but you can also choose to use the chi-squared test statistic.</span></span></span>
+<span class="r-in"><span> <span class="co"># For example, to use the chi-squared test statistic, you can use the following code:</span></span></span>
+<span class="r-in"><span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, type<span class="op">=</span><span class="st">"Chisq"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F-value:  4.484108 , p-value:  0.03475681 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 at 5% level. Indicating long-run asymmetry for variable ER. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(LK1_ER_POS)/Coef(LK1_CPI) = - Coef(LK1_ER_NEG)/Coef(LK1_CPI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: - Coef(LK1_ER_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_ER_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Chisq Pr(&gt;Chisq)  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 4.2217    0.03991 *</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.1321    0.71627  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F-value:  0.1420743 , p-value:  0.7064044 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq  Chisq Pr(&gt;Chisq)   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 9.5499      0.002 **</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> _____________________________</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run symmetry tests:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F-value:  0.7336693 , p-value:  0.3921503 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(D0.d.ER_POS) = Coef(D0.d.ER_NEG) + Coef(D1.d.ER_NEG)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(D0.d.ER_POS) ≠ Coef(D0.d.ER_NEG) + Coef(D1.d.ER_NEG)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test for variable:  PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F-value:  3.971236 , p-value:  0.04688462 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 at 5% level. Indicating short-run asymmetry for variable PPI. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(D0.d.PPI_POS) + Coef(D1.d.PPI_POS) = Coef(D0.d.PPI_NEG)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(D0.d.PPI_POS) + Coef(D1.d.PPI_POS) ≠ Coef(D0.d.PPI_NEG)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
