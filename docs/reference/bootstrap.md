@@ -1,4 +1,4 @@
-# Produce Bootstrap Confidence Intervals for Dynamic Multipliers
+# Bootstrap Confidence Intervals for Dynamic Multipliers
 
 This function computes bootstrap confidence intervals (CI) for dynamic
 multipliers of a specified variable in a model estimated using the
@@ -82,16 +82,6 @@ values are provided for each variable and at each time horizon.
 ## Examples
 
 ``` r
-library(dplyr)
-#> 
-#> Attaching package: ‘dplyr’
-#> The following objects are masked from ‘package:stats’:
-#> 
-#>     filter, lag
-#> The following objects are masked from ‘package:base’:
-#> 
-#>     intersect, setdiff, setequal, union
-
   # Example usage of the bootstrap function
 
 
@@ -113,7 +103,7 @@ library(dplyr)
 
  # Inspect the first few rows of the dynamic multiplier estimates
   head(boot$mpsi)
-#>   h    ER_POS       ER_NEG     ER_dif    PPI_POS     PPI_NEG PPI_dif
+#>   h  NAER_POS     NAER_NEG     ER_dif  NAPPI_POS   NAPPI_NEG PPI_dif
 #> 1 0 0.1079048 -0.005754563 0.10215020 0.01650164 -0.01650164       0
 #> 2 1 0.2441508 -0.068170052 0.17598074 0.06089675 -0.06089675       0
 #> 3 2 0.3105905 -0.148501449 0.16208908 0.11412494 -0.11412494       0
@@ -133,14 +123,14 @@ library(dplyr)
 #> Summary of Dynamic Multipliers
 #> Horizon: 80 
 #> 
-#>        h          ER_POS           ER_NEG              ER_dif       
+#>        h         NAER_POS         NAER_NEG             ER_dif       
 #>  Min.   : 0   Min.   :0.1079   Min.   :-1.766204   Min.   :-1.0230  
 #>  1st Qu.:20   1st Qu.:0.5034   1st Qu.:-1.582999   1st Qu.:-0.8871  
 #>  Median :40   Median :0.6212   Median :-1.293834   Median :-0.6726  
 #>  Mean   :40   Mean   :0.5868   Mean   :-1.173031   Mean   :-0.5863  
 #>  3rd Qu.:60   3rd Qu.:0.6959   3rd Qu.:-0.837426   3rd Qu.:-0.3340  
 #>  Max.   :80   Max.   :0.7432   Max.   :-0.005755   Max.   : 0.1760  
-#>     PPI_POS          PPI_NEG           PPI_dif   ER_CI_upper     
+#>    NAPPI_POS        NAPPI_NEG          PPI_dif   ER_CI_upper     
 #>  Min.   :0.0165   Min.   :-2.2241   Min.   :0   Min.   :-0.4794  
 #>  1st Qu.:0.9673   1st Qu.:-1.9762   1st Qu.:0   1st Qu.:-0.4269  
 #>  Median :1.5849   Median :-1.5849   Median :0   Median :-0.3310  
@@ -169,11 +159,9 @@ library(dplyr)
 
 
 
- # Using dplyr
- library(dplyr)
+library(magrittr)
 
    imf_example_data %>% kardl( CPI ~ PPI + asym(ER) +trend, maxlag=2) %>%
    bootstrap(replications=5) %>% plot(variable = "ER")
-
 
 ```

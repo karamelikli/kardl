@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -65,7 +65,7 @@
                         <h4 data-toc-skip class="author">Huseyin
 Karamelikli and Huseyin Utku Demir</h4>
             
-            <h4 data-toc-skip class="date">2026-04-17</h4>
+            <h4 data-toc-skip class="date">2026-04-22</h4>
       
 
       <div class="d-none name"><code>intro.Rmd</code></div>
@@ -192,23 +192,23 @@ vector.</p>
 <code class="sourceCode R"><span><span class="co"># View results</span></span>
 <span><span class="va">kardl_model</span></span></code></pre></div>
 <pre><code><span><span class="co">## Optimal lags for each variable ( BIC ):</span></span>
-<span><span class="co">## CPI: 1, ER_POS: 1, ER_NEG: 0, PPI_POS: 3, PPI_NEG: 0 </span></span>
+<span><span class="co">## CPI: 1, NAER_POS: 1, NAER_NEG: 0, NAPPI_POS: 3, NAPPI_NEG: 0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
-<span><span class="co">## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + </span></span>
-<span><span class="co">##     L1.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + L0.d.PPI_POS + </span></span>
-<span><span class="co">##     L1.d.PPI_POS + L2.d.PPI_POS + L3.d.PPI_POS + L0.d.PPI_NEG + </span></span>
-<span><span class="co">##     covid + trend</span></span>
+<span><span class="co">## L0.d.CPI ~ L1.CPI + L1.NAER_POS + L1.NAER_NEG + L1.NAPPI_POS + </span></span>
+<span><span class="co">##     L1.NAPPI_NEG + L1.d.CPI + L0.d.NAER_POS + L1.d.NAER_POS + </span></span>
+<span><span class="co">##     L0.d.NAER_NEG + L0.d.NAPPI_POS + L1.d.NAPPI_POS + L2.d.NAPPI_POS + </span></span>
+<span><span class="co">##     L3.d.NAPPI_POS + L0.d.NAPPI_NEG + covid + trend</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##  (Intercept)        L1.CPI     L1.ER_POS     L1.ER_NEG    L1.PPI_POS  </span></span>
-<span><span class="co">##   -0.0386634    -0.0121524     0.0110491     0.0252653     0.0517031  </span></span>
-<span><span class="co">##   L1.PPI_NEG      L1.d.CPI   L0.d.ER_POS   L1.d.ER_POS   L0.d.ER_NEG  </span></span>
-<span><span class="co">##    0.0451043     0.3340367     0.1111220     0.0937503    -0.0026591  </span></span>
-<span><span class="co">## L0.d.PPI_POS  L1.d.PPI_POS  L2.d.PPI_POS  L3.d.PPI_POS  L0.d.PPI_NEG  </span></span>
-<span><span class="co">##    0.0474102     0.0021468    -0.0519928    -0.0517409     0.0057550  </span></span>
-<span><span class="co">##        covid         trend  </span></span>
-<span><span class="co">##    0.0033275    -0.0002952</span></span></code></pre>
+<span><span class="co">##    (Intercept)          L1.CPI     L1.NAER_POS     L1.NAER_NEG    L1.NAPPI_POS  </span></span>
+<span><span class="co">##     -0.0386634      -0.0121524       0.0110491       0.0252653       0.0517031  </span></span>
+<span><span class="co">##   L1.NAPPI_NEG        L1.d.CPI   L0.d.NAER_POS   L1.d.NAER_POS   L0.d.NAER_NEG  </span></span>
+<span><span class="co">##      0.0451043       0.3340367       0.1111220       0.0937503      -0.0026591  </span></span>
+<span><span class="co">## L0.d.NAPPI_POS  L1.d.NAPPI_POS  L2.d.NAPPI_POS  L3.d.NAPPI_POS  L0.d.NAPPI_NEG  </span></span>
+<span><span class="co">##      0.0474102       0.0021468      -0.0519928      -0.0517409       0.0057550  </span></span>
+<span><span class="co">##          covid           trend  </span></span>
+<span><span class="co">##      0.0033275      -0.0002952</span></span></code></pre>
 <p>Summary of the model provides detailed information about the
 estimated coefficients, standard errors, t-values, and significance
 levels.</p>
@@ -217,34 +217,34 @@ levels.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
-<span><span class="co">## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + </span></span>
-<span><span class="co">##     L1.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + L0.d.PPI_POS + </span></span>
-<span><span class="co">##     L1.d.PPI_POS + L2.d.PPI_POS + L3.d.PPI_POS + L0.d.PPI_NEG + </span></span>
-<span><span class="co">##     covid + trend</span></span>
+<span><span class="co">## L0.d.CPI ~ L1.CPI + L1.NAER_POS + L1.NAER_NEG + L1.NAPPI_POS + </span></span>
+<span><span class="co">##     L1.NAPPI_NEG + L1.d.CPI + L0.d.NAER_POS + L1.d.NAER_POS + </span></span>
+<span><span class="co">##     L0.d.NAER_NEG + L0.d.NAPPI_POS + L1.d.NAPPI_POS + L2.d.NAPPI_POS + </span></span>
+<span><span class="co">##     L3.d.NAPPI_POS + L0.d.NAPPI_NEG + covid + trend</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residuals:</span></span>
 <span><span class="co">##       Min        1Q    Median        3Q       Max </span></span>
 <span><span class="co">## -0.050478 -0.008129 -0.000904  0.006918  0.102836 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##                Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">## (Intercept)  -0.0386634  0.0227251  -1.701 0.089572 .  </span></span>
-<span><span class="co">## L1.CPI       -0.0121524  0.0047287  -2.570 0.010494 *  </span></span>
-<span><span class="co">## L1.ER_POS     0.0110491  0.0051559   2.143 0.032652 *  </span></span>
-<span><span class="co">## L1.ER_NEG     0.0252653  0.0079538   3.177 0.001594 ** </span></span>
-<span><span class="co">## L1.PPI_POS    0.0517031  0.0096244   5.372 1.25e-07 ***</span></span>
-<span><span class="co">## L1.PPI_NEG    0.0451043  0.0107631   4.191 3.35e-05 ***</span></span>
-<span><span class="co">## L1.d.CPI      0.3340367  0.0399191   8.368 7.54e-16 ***</span></span>
-<span><span class="co">## L0.d.ER_POS   0.1111220  0.0180412   6.159 1.63e-09 ***</span></span>
-<span><span class="co">## L1.d.ER_POS   0.0937503  0.0181990   5.151 3.88e-07 ***</span></span>
-<span><span class="co">## L0.d.ER_NEG  -0.0026591  0.0474028  -0.056 0.955291    </span></span>
-<span><span class="co">## L0.d.PPI_POS  0.0474102  0.0160401   2.956 0.003284 ** </span></span>
-<span><span class="co">## L1.d.PPI_POS  0.0021468  0.0144158   0.149 0.881684    </span></span>
-<span><span class="co">## L2.d.PPI_POS -0.0519928  0.0143424  -3.625 0.000322 ***</span></span>
-<span><span class="co">## L3.d.PPI_POS -0.0517409  0.0137160  -3.772 0.000183 ***</span></span>
-<span><span class="co">## L0.d.PPI_NEG  0.0057550  0.0135155   0.426 0.670452    </span></span>
-<span><span class="co">## covid         0.0033275  0.0050899   0.654 0.513621    </span></span>
-<span><span class="co">## trend        -0.0002952  0.0002472  -1.194 0.233112    </span></span>
+<span><span class="co">##                  Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)    -0.0386634  0.0227251  -1.701 0.089572 .  </span></span>
+<span><span class="co">## L1.CPI         -0.0121524  0.0047287  -2.570 0.010494 *  </span></span>
+<span><span class="co">## L1.NAER_POS     0.0110491  0.0051559   2.143 0.032652 *  </span></span>
+<span><span class="co">## L1.NAER_NEG     0.0252653  0.0079538   3.177 0.001594 ** </span></span>
+<span><span class="co">## L1.NAPPI_POS    0.0517031  0.0096244   5.372 1.25e-07 ***</span></span>
+<span><span class="co">## L1.NAPPI_NEG    0.0451043  0.0107631   4.191 3.35e-05 ***</span></span>
+<span><span class="co">## L1.d.CPI        0.3340367  0.0399191   8.368 7.54e-16 ***</span></span>
+<span><span class="co">## L0.d.NAER_POS   0.1111220  0.0180412   6.159 1.63e-09 ***</span></span>
+<span><span class="co">## L1.d.NAER_POS   0.0937503  0.0181990   5.151 3.88e-07 ***</span></span>
+<span><span class="co">## L0.d.NAER_NEG  -0.0026591  0.0474028  -0.056 0.955291    </span></span>
+<span><span class="co">## L0.d.NAPPI_POS  0.0474102  0.0160401   2.956 0.003284 ** </span></span>
+<span><span class="co">## L1.d.NAPPI_POS  0.0021468  0.0144158   0.149 0.881684    </span></span>
+<span><span class="co">## L2.d.NAPPI_POS -0.0519928  0.0143424  -3.625 0.000322 ***</span></span>
+<span><span class="co">## L3.d.NAPPI_POS -0.0517409  0.0137160  -3.772 0.000183 ***</span></span>
+<span><span class="co">## L0.d.NAPPI_NEG  0.0057550  0.0135155   0.426 0.670452    </span></span>
+<span><span class="co">## covid           0.0033275  0.0050899   0.654 0.513621    </span></span>
+<span><span class="co">## trend          -0.0002952  0.0002472  -1.194 0.233112    </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
@@ -262,43 +262,44 @@ levels.</p>
 <span><span class="co"># View results</span></span>
 <span><span class="va">kardl_model2</span><span class="op">$</span><span class="va">lagInfo</span></span></code></pre></div>
 <pre><code><span><span class="co">## $OptLag</span></span>
-<span><span class="co">##     CPI  ER_POS  ER_NEG PPI_POS PPI_NEG </span></span>
-<span><span class="co">##       2       1       1       3       0</span></span></code></pre>
+<span><span class="co">##       CPI  NAER_POS  NAER_NEG NAPPI_POS NAPPI_NEG </span></span>
+<span><span class="co">##         2         1         1         3         0</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Display model summary</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">kardl_model2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
-<span><span class="co">## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + </span></span>
-<span><span class="co">##     L1.d.CPI + L2.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + </span></span>
-<span><span class="co">##     L1.d.ER_NEG + L0.d.PPI_POS + L1.d.PPI_POS + L2.d.PPI_POS + </span></span>
-<span><span class="co">##     L3.d.PPI_POS + L0.d.PPI_NEG + covid + trend</span></span>
+<span><span class="co">## L0.d.CPI ~ L1.CPI + L1.NAER_POS + L1.NAER_NEG + L1.NAPPI_POS + </span></span>
+<span><span class="co">##     L1.NAPPI_NEG + L1.d.CPI + L2.d.CPI + L0.d.NAER_POS + L1.d.NAER_POS + </span></span>
+<span><span class="co">##     L0.d.NAER_NEG + L1.d.NAER_NEG + L0.d.NAPPI_POS + L1.d.NAPPI_POS + </span></span>
+<span><span class="co">##     L2.d.NAPPI_POS + L3.d.NAPPI_POS + L0.d.NAPPI_NEG + covid + </span></span>
+<span><span class="co">##     trend</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residuals:</span></span>
 <span><span class="co">##       Min        1Q    Median        3Q       Max </span></span>
 <span><span class="co">## -0.054516 -0.008329 -0.001178  0.006787  0.104278 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##                Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">## (Intercept)  -0.0382834  0.0226694  -1.689 0.091962 .  </span></span>
-<span><span class="co">## L1.CPI       -0.0123942  0.0047187  -2.627 0.008921 ** </span></span>
-<span><span class="co">## L1.ER_POS     0.0110505  0.0051609   2.141 0.032798 *  </span></span>
-<span><span class="co">## L1.ER_NEG     0.0268623  0.0080054   3.356 0.000860 ***</span></span>
-<span><span class="co">## L1.PPI_POS    0.0532642  0.0096979   5.492 6.67e-08 ***</span></span>
-<span><span class="co">## L1.PPI_NEG    0.0452663  0.0107751   4.201 3.21e-05 ***</span></span>
-<span><span class="co">## L1.d.CPI      0.3750078  0.0444934   8.428 4.88e-16 ***</span></span>
-<span><span class="co">## L2.d.CPI     -0.0865443  0.0423947  -2.041 0.041800 *  </span></span>
-<span><span class="co">## L0.d.ER_POS   0.1119077  0.0179998   6.217 1.16e-09 ***</span></span>
-<span><span class="co">## L1.d.ER_POS   0.0889105  0.0189930   4.681 3.79e-06 ***</span></span>
-<span><span class="co">## L0.d.ER_NEG  -0.0051813  0.0476798  -0.109 0.913515    </span></span>
-<span><span class="co">## L1.d.ER_NEG   0.0047909  0.0475913   0.101 0.919860    </span></span>
-<span><span class="co">## L0.d.PPI_POS  0.0487238  0.0160447   3.037 0.002532 ** </span></span>
-<span><span class="co">## L1.d.PPI_POS -0.0010288  0.0144643  -0.071 0.943329    </span></span>
-<span><span class="co">## L2.d.PPI_POS -0.0544024  0.0143719  -3.785 0.000174 ***</span></span>
-<span><span class="co">## L3.d.PPI_POS -0.0499891  0.0137240  -3.642 0.000302 ***</span></span>
-<span><span class="co">## L0.d.PPI_NEG  0.0056668  0.0134844   0.420 0.674505    </span></span>
-<span><span class="co">## covid         0.0031412  0.0050898   0.617 0.537448    </span></span>
-<span><span class="co">## trend        -0.0003309  0.0002472  -1.338 0.181531    </span></span>
+<span><span class="co">##                  Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)    -0.0382834  0.0226694  -1.689 0.091962 .  </span></span>
+<span><span class="co">## L1.CPI         -0.0123942  0.0047187  -2.627 0.008921 ** </span></span>
+<span><span class="co">## L1.NAER_POS     0.0110505  0.0051609   2.141 0.032798 *  </span></span>
+<span><span class="co">## L1.NAER_NEG     0.0268623  0.0080054   3.356 0.000860 ***</span></span>
+<span><span class="co">## L1.NAPPI_POS    0.0532642  0.0096979   5.492 6.67e-08 ***</span></span>
+<span><span class="co">## L1.NAPPI_NEG    0.0452663  0.0107751   4.201 3.21e-05 ***</span></span>
+<span><span class="co">## L1.d.CPI        0.3750078  0.0444934   8.428 4.88e-16 ***</span></span>
+<span><span class="co">## L2.d.CPI       -0.0865443  0.0423947  -2.041 0.041800 *  </span></span>
+<span><span class="co">## L0.d.NAER_POS   0.1119077  0.0179998   6.217 1.16e-09 ***</span></span>
+<span><span class="co">## L1.d.NAER_POS   0.0889105  0.0189930   4.681 3.79e-06 ***</span></span>
+<span><span class="co">## L0.d.NAER_NEG  -0.0051813  0.0476798  -0.109 0.913515    </span></span>
+<span><span class="co">## L1.d.NAER_NEG   0.0047909  0.0475913   0.101 0.919860    </span></span>
+<span><span class="co">## L0.d.NAPPI_POS  0.0487238  0.0160447   3.037 0.002532 ** </span></span>
+<span><span class="co">## L1.d.NAPPI_POS -0.0010288  0.0144643  -0.071 0.943329    </span></span>
+<span><span class="co">## L2.d.NAPPI_POS -0.0544024  0.0143719  -3.785 0.000174 ***</span></span>
+<span><span class="co">## L3.d.NAPPI_POS -0.0499891  0.0137240  -3.642 0.000302 ***</span></span>
+<span><span class="co">## L0.d.NAPPI_NEG  0.0056668  0.0134844   0.420 0.674505    </span></span>
+<span><span class="co">## covid           0.0031412  0.0050898   0.617 0.537448    </span></span>
+<span><span class="co">## trend          -0.0003309  0.0002472  -1.338 0.181531    </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
@@ -383,20 +384,20 @@ in the ARDL model.</p>
 <span><span class="co">## -0.069034 -0.008966 -0.000360  0.007383  0.098004 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##                Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">## (Intercept)   1.840e-02  2.767e-03   6.650 8.50e-11 ***</span></span>
-<span><span class="co">## EcmRes       -7.988e-03  4.168e-03  -1.916 0.055947 .  </span></span>
-<span><span class="co">## L1.d.CPI      4.566e-01  3.738e-02  12.217  &lt; 2e-16 ***</span></span>
-<span><span class="co">## L0.d.ER_POS   1.237e-01  1.863e-02   6.643 8.86e-11 ***</span></span>
-<span><span class="co">## L1.d.ER_POS   9.888e-02  1.895e-02   5.218 2.76e-07 ***</span></span>
-<span><span class="co">## L0.d.ER_NEG   4.782e-02  4.861e-02   0.984 0.325705    </span></span>
-<span><span class="co">## L0.d.PPI_POS  1.974e-02  1.524e-02   1.296 0.195793    </span></span>
-<span><span class="co">## L1.d.PPI_POS  2.079e-02  1.461e-02   1.423 0.155302    </span></span>
-<span><span class="co">## L2.d.PPI_POS -3.840e-02  1.460e-02  -2.631 0.008815 ** </span></span>
-<span><span class="co">## L3.d.PPI_POS -3.676e-02  1.403e-02  -2.620 0.009085 ** </span></span>
-<span><span class="co">## L0.d.PPI_NEG -6.570e-04  1.387e-02  -0.047 0.962248    </span></span>
-<span><span class="co">## covid         1.182e-02  3.231e-03   3.657 0.000285 ***</span></span>
-<span><span class="co">## trend        -4.622e-05  7.953e-06  -5.812 1.17e-08 ***</span></span>
+<span><span class="co">##                  Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)     1.840e-02  2.767e-03   6.650 8.50e-11 ***</span></span>
+<span><span class="co">## EcmRes         -7.988e-03  4.168e-03  -1.916 0.055947 .  </span></span>
+<span><span class="co">## L1.d.CPI        4.566e-01  3.738e-02  12.217  &lt; 2e-16 ***</span></span>
+<span><span class="co">## L0.d.NAER_POS   1.237e-01  1.863e-02   6.643 8.86e-11 ***</span></span>
+<span><span class="co">## L1.d.NAER_POS   9.888e-02  1.895e-02   5.218 2.76e-07 ***</span></span>
+<span><span class="co">## L0.d.NAER_NEG   4.782e-02  4.861e-02   0.984 0.325705    </span></span>
+<span><span class="co">## L0.d.NAPPI_POS  1.974e-02  1.524e-02   1.296 0.195793    </span></span>
+<span><span class="co">## L1.d.NAPPI_POS  2.079e-02  1.461e-02   1.423 0.155302    </span></span>
+<span><span class="co">## L2.d.NAPPI_POS -3.840e-02  1.460e-02  -2.631 0.008815 ** </span></span>
+<span><span class="co">## L3.d.NAPPI_POS -3.676e-02  1.403e-02  -2.620 0.009085 ** </span></span>
+<span><span class="co">## L0.d.NAPPI_NEG -6.570e-04  1.387e-02  -0.047 0.962248    </span></span>
+<span><span class="co">## covid           1.182e-02  3.231e-03   3.657 0.000285 ***</span></span>
+<span><span class="co">## trend          -4.622e-05  7.953e-06  -5.812 1.17e-08 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
@@ -421,8 +422,8 @@ parameter.</p>
 <span><span class="co">## kardl_longrun(model = kardl_model)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##  L1.ER_POS   L1.ER_NEG  L1.PPI_POS  L1.PPI_NEG  </span></span>
-<span><span class="co">##     0.9092      2.0790      4.2545      3.7115</span></span></code></pre>
+<span><span class="co">##  L1.NAER_POS   L1.NAER_NEG  L1.NAPPI_POS  L1.NAPPI_NEG  </span></span>
+<span><span class="co">##       0.9092        2.0790        4.2545        3.7115</span></span></code></pre>
 <p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function provides detailed information
 about the long-run coefficients, including standard errors, t-values,
 and significance levels.</p>
@@ -437,11 +438,11 @@ and significance levels.</p>
 <span><span class="co">## Long-run multipliers </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##            Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">## L1.ER_POS    0.9092     0.2083   4.364 1.59e-05 ***</span></span>
-<span><span class="co">## L1.ER_NEG    2.0790     0.5669   3.667 0.000275 ***</span></span>
-<span><span class="co">## L1.PPI_POS   4.2545     1.7282   2.462 0.014200 *  </span></span>
-<span><span class="co">## L1.PPI_NEG   3.7115     1.3352   2.780 0.005668 ** </span></span>
+<span><span class="co">##              Estimate Std. Error t value  Pr(&gt;|t|)    </span></span>
+<span><span class="co">## L1.NAER_POS   0.90921    0.20834  4.3640 1.587e-05 ***</span></span>
+<span><span class="co">## L1.NAER_NEG   2.07904    0.56693  3.6672 0.0002747 ***</span></span>
+<span><span class="co">## L1.NAPPI_POS  4.25455    1.72822  2.4618 0.0141998 *  </span></span>
+<span><span class="co">## L1.NAPPI_NEG  3.71155    1.33518  2.7798 0.0056681 ** </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
@@ -478,18 +479,18 @@ hypotheses, and test decisions.</p>
 <pre><code><span><span class="co">## Long-run symmetry tests:</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test for variable:  ER </span></span>
-<span><span class="co">## F  statistic:  2.164906 , p-value:  0.1418984 </span></span>
+<span><span class="co">## F statistic: 2.164906, p-value: 0.1418984</span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
-<span><span class="co">## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)</span></span>
-<span><span class="co">## H1: - Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)</span></span>
+<span><span class="co">## H0: - Coef(L1.NAER_POS)/Coef(L1.CPI) = - Coef(L1.NAER_NEG)/Coef(L1.CPI)</span></span>
+<span><span class="co">## H1: - Coef(L1.NAER_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAER_NEG)/Coef(L1.CPI)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test for variable:  PPI </span></span>
-<span><span class="co">## F  statistic:  0.7152717 , p-value:  0.3981528 </span></span>
+<span><span class="co">## F statistic: 0.7152717, p-value: 0.3981528</span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
-<span><span class="co">## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)</span></span>
-<span><span class="co">## H1: - Coef(L1.PPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.PPI_NEG)/Coef(L1.CPI)</span></span>
+<span><span class="co">## H0: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) = - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)</span></span>
+<span><span class="co">## H1: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## _____________________________</span></span>
@@ -499,15 +500,15 @@ hypotheses, and test decisions.</p>
 <span><span class="co">## F  statistic:  1.679811 , p-value:  0.1956198 </span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)</span></span>
-<span><span class="co">## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)</span></span>
+<span><span class="co">## H0: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) + Coef(L2.d.NAER_POS) = Coef(L0.d.NAER_NEG) + Coef(L1.d.NAER_NEG) + Coef(L2.d.NAER_NEG) + Coef(L3.d.NAER_NEG)</span></span>
+<span><span class="co">## H1: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) + Coef(L2.d.NAER_POS) ≠ Coef(L0.d.NAER_NEG) + Coef(L1.d.NAER_NEG) + Coef(L2.d.NAER_NEG) + Coef(L3.d.NAER_NEG)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test for variable:  PPI </span></span>
 <span><span class="co">## F  statistic:  0.7582018 , p-value:  0.3843603 </span></span>
 <span><span class="co">## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI. </span></span>
 <span><span class="co">## Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)</span></span>
-<span><span class="co">## H1: Coef(L0.d.PPI_POS) ≠ Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)</span></span></code></pre>
+<span><span class="co">## H0: Coef(L0.d.NAPPI_POS) = Coef(L0.d.NAPPI_NEG) + Coef(L1.d.NAPPI_NEG)</span></span>
+<span><span class="co">## H1: Coef(L0.d.NAPPI_POS) ≠ Coef(L0.d.NAPPI_NEG) + Coef(L1.d.NAPPI_NEG)</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="step-6-cointegration-tests">Step 6: Cointegration Tests<a class="anchor" aria-label="anchor" href="#step-6-cointegration-tests"></a>
@@ -539,8 +540,8 @@ cointegration.</p>
 <span><span class="co">## k =  4 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 </span></span>
-<span><span class="co">## H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI_POS) ≠ Coef(L1.PPI_NEG)≠ 0 </span></span>
+<span><span class="co">## H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.NAPPI_POS) = Coef(L1.NAPPI_NEG) = 0 </span></span>
+<span><span class="co">## H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.NAPPI_POS) ≠ Coef(L1.NAPPI_NEG)≠ 0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test Decision:  Reject H0 → Cointegration (at 5% level) </span></span>
 <span><span class="co">## </span></span>
@@ -618,8 +619,8 @@ cointegration.</p>
 <span><span class="co">## k =  4 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 </span></span>
-<span><span class="co">## H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI_POS) ≠ Coef(L1.PPI_NEG)≠ 0 </span></span>
+<span><span class="co">## H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.NAPPI_POS) = Coef(L1.NAPPI_NEG) = 0 </span></span>
+<span><span class="co">## H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.NAPPI_POS) ≠ Coef(L1.NAPPI_NEG)≠ 0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Test Decision:  Reject H0 → Cointegration (at 5% level) </span></span>
 <span><span class="co">## </span></span>
@@ -645,7 +646,7 @@ dependent variable over time.</p>
 <code class="sourceCode R"><span><span class="va">multipliers</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="../reference/mplier.html">mplier</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># View multipliers of the model</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">multipliers</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      h    ER_POS       ER_NEG    ER_dif    PPI_POS      PPI_NEG     PPI_dif</span></span>
+<pre><code><span><span class="co">##      h  NAER_POS     NAER_NEG    ER_dif  NAPPI_POS    NAPPI_NEG     PPI_dif</span></span>
 <span><span class="co">## [1,] 0 0.1111220  0.002659096 0.1137811 0.04741019 -0.005755012  0.04165518</span></span>
 <span><span class="co">## [2,] 1 0.2516899 -0.021750322 0.2299396 0.11652070 -0.052711765  0.06380893</span></span>
 <span><span class="co">## [3,] 2 0.3066352 -0.054904985 0.2517302 0.13790041 -0.112860775  0.02503964</span></span>
@@ -659,7 +660,7 @@ dependent variable over time.</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View short-run multipliers</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">multipliers</span><span class="op">$</span><span class="va">lambda</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##            ER_POS       ER_NEG       PPI_POS     PPI_NEG</span></span>
+<pre><code><span><span class="co">##          NAER_POS     NAER_NEG     NAPPI_POS   NAPPI_NEG</span></span>
 <span><span class="co">## [1,]  0.111122028 -0.002659096  0.0474101941 0.005755012</span></span>
 <span><span class="co">## [2,] -0.006322597  0.027924436  0.0064397124 0.039349293</span></span>
 <span><span class="co">## [3,] -0.093750322  0.000000000 -0.0541396294 0.000000000</span></span>
@@ -685,14 +686,14 @@ robust estimates of uncertainty around the multipliers.</p>
 <pre><code><span><span class="co">## Summary of Dynamic Multipliers</span></span>
 <span><span class="co">## Horizon: 12 </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##        h          ER_POS           ER_NEG              ER_dif      </span></span>
+<span><span class="co">##        h         NAER_POS         NAER_NEG             ER_dif      </span></span>
 <span><span class="co">##  Min.   : 0   Min.   :0.1111   Min.   :-0.396247   Min.   :0.0315  </span></span>
 <span><span class="co">##  1st Qu.: 3   1st Qu.:0.3323   1st Qu.:-0.299717   1st Qu.:0.1004  </span></span>
 <span><span class="co">##  Median : 6   Median :0.3706   Median :-0.197680   Median :0.1484  </span></span>
 <span><span class="co">##  Mean   : 6   Mean   :0.3467   Mean   :-0.195624   Mean   :0.1511  </span></span>
 <span><span class="co">##  3rd Qu.: 9   3rd Qu.:0.4001   3rd Qu.:-0.090578   3rd Qu.:0.2212  </span></span>
 <span><span class="co">##  Max.   :12   Max.   :0.4277   Max.   : 0.002659   Max.   :0.2517  </span></span>
-<span><span class="co">##     PPI_POS           PPI_NEG             PPI_dif           ER_CI_upper    </span></span>
+<span><span class="co">##    NAPPI_POS         NAPPI_NEG            PPI_dif           ER_CI_upper    </span></span>
 <span><span class="co">##  Min.   :0.04741   Min.   :-0.720251   Min.   :-0.045860   Min.   :0.1558  </span></span>
 <span><span class="co">##  1st Qu.:0.14333   1st Qu.:-0.548660   1st Qu.:-0.033357   1st Qu.:0.2040  </span></span>
 <span><span class="co">##  Median :0.33251   Median :-0.367272   Median :-0.004707   Median :0.2388  </span></span>

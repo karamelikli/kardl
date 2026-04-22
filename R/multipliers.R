@@ -297,7 +297,7 @@ mplier<-function(kmodel,horizon=80,minProb=0){
   )
 }
 
-#' Produce Bootstrap Confidence Intervals for Dynamic Multipliers
+#' Bootstrap Confidence Intervals for Dynamic Multipliers
 #'
 #' This function computes bootstrap confidence intervals (CI) for dynamic multipliers
 #' of a specified variable in a model estimated using the \code{kardl} package. The bootstrap method
@@ -339,8 +339,6 @@ mplier<-function(kmodel,horizon=80,minProb=0){
 #'
 #' @examples
 #'
-#' library(dplyr)
-#'
 #'   # Example usage of the bootstrap function
 #'
 #'
@@ -374,8 +372,8 @@ mplier<-function(kmodel,horizon=80,minProb=0){
 #'
 #'
 #'
-#'  # Using dplyr
-#'  library(dplyr)
+#' @examplesIf requireNamespace("magrittr", quietly = TRUE)
+#' library(magrittr)
 #'
 #'    imf_example_data %>% kardl( CPI ~ PPI + asym(ER) +trend, maxlag=2) %>%
 #'    bootstrap(replications=5) %>% plot(variable = "ER")

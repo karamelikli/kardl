@@ -1,4 +1,4 @@
-# Parse a formula to detect specific variable patterns
+# Parse Formula Variables
 
 The `parseFormula()` function analyzes a given formula to identify and
 extract variables that match specified patterns. It is particularly

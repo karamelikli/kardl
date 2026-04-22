@@ -1,4 +1,4 @@
-#' Symmetry Test for non-linear KARDL Models
+#' Symmetry Test for Nonlinear kardl Models
 #'
 #' This function performs symmetry tests on non-linear KARDL models to assess whether the effects of positive and negative changes in independent variables are statistically different.
 #'
@@ -413,7 +413,7 @@ symmetrytest <- function(kmodel,
 }
 
 
-#' Pesaran et al. (2001) Bounds F-Test for KARDL Models
+#' Pesaran, Shin, and Smith Bounds F-Test
 #'
 #' This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to assess the presence of a long-term relationship (cointegration) between variables in the context of an autoregressive distributed lag (ARDL) model. The PSS F Bound test examines the joint significance of lagged levels of the variables in the model. It provides critical values for both the upper and lower bounds, which help determine whether the variables are cointegrated. If the calculated F-statistic falls outside these bounds, it indicates the existence of a long-term equilibrium relationship. This test is particularly useful when the underlying data includes a mix of stationary and non-stationary variables.
 #'
@@ -492,17 +492,20 @@ symmetrytest <- function(kmodel,
 #' my_summary$crit_vals
 #'
 #'
-#'
-#'
 #' # Using magrittr :
 #'
+#' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+#'    imf_example_data %>%
+#'    kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
 #'                            mode=c(1,2,3,0)) %>% pssf()
 #'
-#' # Getting details of the test results using magrittr:
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                            mode=c(1,2,3,0)) %>% pssf() %>% summary()
+#'    # Getting details of the test results using magrittr:
+#'    imf_example_data %>%
+#'    kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+#'                            mode=c(1,2,3,0)) %>%
+#'    pssf() %>% summary()
+#'
 #'
 #'
 pssf<-function(kmodel,case=3,signif_level = "auto"){
@@ -742,7 +745,7 @@ htestsummary<-function(inputs,...){
 
 }
 
-#' Narayan Test
+#' Narayan Bounds Test
 #'
 #' This function performs the Narayan test, which is designed to assess cointegration using critical values specifically tailored for small sample sizes. Unlike traditional cointegration tests that may rely on asymptotic distributions, the Narayan test adjusts for the limitations of small samples, providing more accurate results in such contexts. This makes the test particularly useful for studies with fewer observations, as it accounts for sample size constraints when determining the presence of a long-term equilibrium relationship between variables.
 #'
@@ -793,13 +796,18 @@ htestsummary<-function(inputs,...){
 #'
 #' # Using magrittr :
 #'
+#' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                            mode=c(1,2,3,0)) %>% narayan()
+#'   imf_example_data %>%
+#'   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+#'                         mode=c(1,2,3,0)) %>% narayan()
 #'
-#' # Getting details of the test results using magrittr:
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                            mode=c(1,2,3,0)) %>% narayan() %>% summary()
+#'   # Getting details of the test results using magrittr:
+#'    imf_example_data %>%
+#'    kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+#'                            mode=c(1,2,3,0)) %>%
+#'    narayan() %>% summary()
+#'
 #'
 #'
 narayan<-function(kmodel,case=3,signif_level = "auto"){
@@ -1043,7 +1051,7 @@ htestsummary.narayan<-function(testObj,...){
 }
 
 
-#' PSS t Bound Test
+#' Pesaran, Shin, and Smith t Bounds Test
 #'
 #' This function performs the Pesaran t Bound test
 #'
@@ -1064,16 +1072,16 @@ htestsummary.narayan<-function(testObj,...){
 #'
 #'
 #' @return The function returns an object of class "htest" containing the following components:
-#' \itemize{
-#' \item{statistic: The calculated t-statistic for the test.}
-#' \item{method: A description of the test performed.}
-#' \item{data.name: The name of the data used in the test.}
-#' \item{k: The number of independent variables in the model.}
-#' \item{notes: Any notes or warnings related to the test results, such as
+#' \describe{
+#' \item{statistic}{The calculated t-statistic for the test.}
+#' \item{method}{A description of the test performed.}
+#' \item{data.name}{The name of the data used in the test.}
+#' \item{k}{The number of independent variables in the model.}
+#' \item{notes}{Any notes or warnings related to the test results, such as
 #' sample size considerations or adjustments made to the case based on model characteristics.}
-#' \item{sig: The significance level used for the test, either specified by the user or determined automatically.}
-#' \item{alternative: The alternative hypothesis being tested.}
-#' \item{case: The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
+#' \item{sig}{The significance level used for the test, either specified by the user or determined automatically.}
+#' \item{alternative}{The alternative hypothesis being tested.}
+#' \item{case}{The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
 #' }
 #'
 
@@ -1107,13 +1115,19 @@ htestsummary.narayan<-function(testObj,...){
 #'
 #' # Using magrittr :
 #'
+#' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                            mode=c(1,2,3,0)) %>% psst()
+#'      imf_example_data %>%
+#'      kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+#'                            mode=c(1,2,3,0))    %>%
+#'                            psst()
 #'
-#' # Getting details of the test results using magrittr:
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                            mode=c(1,2,3,0)) %>% psst() %>% summary()
+#'    # Getting details of the test results using magrittr:
+#'    imf_example_data %>%
+#'    kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+#'                            mode=c(1,2,3,0)) %>%
+#'    psst() %>% summary()
+#'
 #'
 #'
 

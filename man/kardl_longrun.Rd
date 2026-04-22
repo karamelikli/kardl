@@ -2,7 +2,7 @@
 % Please edit documentation in R/longrun.R
 \name{kardl_longrun}
 \alias{kardl_longrun}
-\title{Calculate long-run multipliers from a KARDL model}
+\title{Compute Long-Run Multipliers from a kardl Model}
 \usage{
 kardl_longrun(model)
 }
@@ -57,11 +57,13 @@ summary(long)
 
 
 # Using magrittr
+
+\dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\% kardl_longrun() \%>\% summary()
-
+     imf_example_data \%>\%
+     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend, mode=c(1,2,3,0)) \%>\%
+     kardl_longrun() \%>\% summary()
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}

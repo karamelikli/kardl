@@ -4,7 +4,7 @@
 print.kardl_mplier <- function(x, ...) {
   cat("kardl Dynamic Multiplier Object\n")
   cat("Horizon:", x$horizon, "\n")
-  print(x$mpsi)
+  print(x$mpsi, ...)
 }
 
 #' @export
@@ -24,7 +24,8 @@ summary.kardl_mplier <- function(object, ...) {
 print.summary.kardl_mplier <- function(x, ...) {
   cat("Summary of Dynamic Multipliers\n")
   cat("Horizon:", x$horizon, "\n\n")
-  print( x$summary)
+  print( x$summary, ...)
+
 }
 
 #' @export
@@ -33,7 +34,7 @@ print.kardl_boot <- function(x, ...) {
   cat("kardl Bootstrap Results\n")
   cat("Confidence level:", x$level, "%\n")
   cat("Horizon:", x$horizon, "\n")
-  print(x$mpsi)
+  print(x$mpsi, ...)
 }
 
 #' @export
@@ -53,7 +54,7 @@ summary.kardl_boot <- function(object, ...) {
 print.summary.kardl_boot <- function(x, ...) {
   cat("Summary of Dynamic Multipliers\n")
   cat("Horizon:", x$horizon, "\n\n")
-  print( x$summary)
+  print( x$summary, ...)
 }
 
 #' @export
@@ -133,14 +134,14 @@ summary.kardl_longrun <- function(object, ...) {
 
 #' @export
 #' @method print summary_kardl_longrun
-print.summary_kardl_longrun <- function(x, digits = max(3L, getOption("digits") - 3L), ...) {
+print.summary_kardl_longrun <- function(x, ...) {
   cat("\nCall:\n", paste(deparse(x$call), collapse = "\n"), "\n", sep = "")
 
   cat("\nEstimation type:\n")
   cat(x$estimation_type, "\n")
 
   cat("\nCoefficients:\n")
-  printCoefmat(x$coefficients, digits = digits, P.values = TRUE, has.Pvalue = TRUE)
+  printCoefmat(x$coefficients, ...)
 
   cat("\nNote:\n")
   cat(x$note, "\n")
@@ -216,7 +217,11 @@ print.summary.kardl_symmetric <- function(x, ...){
     cat("Long-run symmetry tests:\n\n")
     for(v in rownames(x$Lwald)){
       cat("Test for variable: ",v,"\n")
-      cat(Valtype," statistic: ", x$Lwald[v,testLable], ", p-value: ", x$Lwald[v,pValType], "\n")
+      cat(Valtype, " statistic: ",
+          format(x$Lwald[v, testLable], digits = getOption("digits")),
+          ", p-value: ",
+          format(x$Lwald[v, pValType], digits = getOption("digits")),
+          "\n", sep = "")
       cat("Test Decision: ", x$decision$long_run[[v]], "\n")
       cat("Hypotheses:\n")
       cat(paste0("H0: ", x$Lhypotheses$H0[[v]], "\n"))
@@ -231,7 +236,12 @@ print.summary.kardl_symmetric <- function(x, ...){
     cat("Short-run symmetry tests:\n\n")
     for(v in rownames(x$Swald)){
       cat("Test for variable: ",v,"\n")
-      cat(Valtype," statistic: ", x$Swald[v,testLable], ", p-value: ", x$Swald[v,pValType], "\n")
+
+      cat(Valtype," statistic: ",
+          format(x$Swald[v,testLable], digits = getOption("digits")),
+          ", p-value: ",
+          format(x$Swald[v,pValType], digits = getOption("digits")),
+          "\n")
       cat("Test Decision: ", x$decision$short_run[[v]], "\n")
       cat("Hypotheses:\n")
       cat(paste0("H0: ", x$Shypotheses$H0[[v]], "\n"))
@@ -255,7 +265,7 @@ summary.kardl_test <- function(object, ...){
 #' @method print summary_htest
 print.summary_htest <- function(x, ...){
   cat(x$method, "\n")
-  cat(names(x$statistic), " = ", unname( x$statistic),"\n")
+  cat(names(x$statistic), " = ", format(unname(x$statistic), digits = getOption("digits")),"\n")
   cat("k = ", x$k, "\n")
 
 
@@ -266,7 +276,7 @@ print.summary_htest <- function(x, ...){
    # add x$decision
   cat("\nTest Decision: ", x$decision, "\n")
   cat("\nCritical Values (Case ",x$case,"):\n")
-  print(x$crit_vals)
+  print(x$crit_vals, ...)
   if (!is.null(x$notes)) {
     cat("\nNotes:\n")
     for (note in x$notes) {

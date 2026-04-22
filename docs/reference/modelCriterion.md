@@ -1,4 +1,4 @@
-# Model Selection Criterion
+# Model Selection Criteria
 
 Computes a model selection criterion (AIC, BIC, AICc, or HQ) or applies
 a user-defined function to evaluate a statistical model.
@@ -16,12 +16,12 @@ modelCriterion(estModel, cr, ...)
   An object containing the fitted model. The object should include at
   least:
 
-  - `estModel$model` – the actual fitted model object (e.g., from `lm`,
+  - `estModel$model` - the actual fitted model object (e.g., from `lm`,
     `glm`).
 
-  - `k` – the number of estimated parameters.
+  - `k` - the number of estimated parameters.
 
-  - `n` – the sample size.
+  - `n` - the sample size.
 
 - cr:
 
@@ -66,7 +66,7 @@ The function returns:
 - **"AICc"**: \\ \frac{2k(k+1)}{n - k - 1} + \frac{2k - 2\ell}{n} \\
   Corrected Akaike Information Criterion divided by `n`.
 
-- **"HQ"**: \\ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} \\ Hannan–Quinn
+- **"HQ"**: \\ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} \\ Hannan-Quinn
   Criterion divided by `n`.
 
 where:

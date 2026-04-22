@@ -1,4 +1,4 @@
-# Estimate an ARDL or NARDL model with automatic lag selection
+# Estimate ARDL and NARDL Models with Automatic Lag Selection
 
 This function estimates an Autoregressive Distributed Lag (ARDL) or
 Nonlinear ARDL (NARDL) model based on the provided data and model
@@ -262,28 +262,39 @@ kardl(
 An object of class `kardl_lm` containing the estimated ARDL or NARDL
 model. The object includes the following components:
 
-- **argsInfo**: A list of input arguments used for the estimation. It
-  includes the data, formula, maxlag, mode, criterion, differentAsymLag,
-  and batch settings.
+- argsInfo:
 
-- **extractedInfo**: A list containing extracted information from the
-  input data and formula, such as variable names, deterministic terms,
-  asymmetric variables, and the prepared dataset for estimation.
+  A list of input arguments used for the estimation. It includes the
+  data, formula, maxlag, mode, criterion, differentAsymLag, and batch
+  settings.
 
-- **timeInfo**: A list containing timing information for the estimation
-  process, including start time, end time, and total duration.
+- extractedInfo:
 
-- **lagInfo**: A list containing lag selection information, including
-  the optimal lag configuration and criteria values for different lag
-  combinations.
+  A list containing extracted information from the input data and
+  formula, such as variable names, deterministic terms, asymmetric
+  variables, and the prepared dataset for estimation.
 
-- **estInfo**: A list containing estimation details, such as the type of
-  model, estimation method, model formula, number of parameters (k),
-  number of observations (n), start and end points of the fitted values,
-  and total time span.
+- timeInfo:
 
-- **model**: The fitted linear model object of class `lm` representing
-  the estimated ARDL or NARDL model.
+  A list containing timing information for the estimation process,
+  including start time, end time, and total duration.
+
+- lagInfo:
+
+  A list containing lag selection information, including the optimal lag
+  configuration and criteria values for different lag combinations.
+
+- estInfo:
+
+  A list containing estimation details, such as the type of model,
+  estimation method, model formula, number of parameters (k), number of
+  observations (n), start and end points of the fitted values, and total
+  time span.
+
+- model:
+
+  The fitted linear model object of class `lm` representing the
+  estimated ARDL or NARDL model.
 
 ## Details
 
@@ -330,9 +341,6 @@ respectively.
 ## Examples
 
 ``` r
-suppressPackageStartupMessages(library(dplyr))
-suppressPackageStartupMessages(library(tidyr))
-suppressPackageStartupMessages(library(ggplot2))
 
 # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
 
@@ -342,9 +350,9 @@ kardl_set(formula =CPI~ER+PPI+Asymmetr(ER)+deterministic(covid)+trend ,
 ) # setting the default values of the kardl function
 
 
+# using the grid_custom mode with batch processing
 
-kardl_model_grid<-kardl( mode = "grid")
-#> 
+kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3")
 kardl_model_grid
 #> Optimal lags for each variable ( AIC ):
 #> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
@@ -363,24 +371,6 @@ kardl_model_grid
 #>       6.284e-03        1.649e-02        7.898e-03        9.699e-05  
 #> 
 
-kardl_model<- imf_example_data %>% kardl(mode = "grid_custom")
-kardl_model
-#> Optimal lags for each variable ( AIC ):
-#> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
-#> 
-#> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + 
-#>     L0.d.PPI + covid + trend
-#> 
-#> Coefficients:
-#>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
-#>      -1.945e-01       -1.466e-02        1.080e-02        3.356e-02  
-#>          L1.PPI         L1.d.CPI  L0.d.asyP_ER_PP  L1.d.asyP_ER_PP  
-#>       3.945e-02        3.471e-01        1.073e-01        9.488e-02  
-#> L0.d.asyN_ER_NN         L0.d.PPI            covid            trend  
-#>       6.284e-03        1.649e-02        7.898e-03        9.699e-05  
-#> 
 kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
 
 # Getting the results
@@ -408,83 +398,50 @@ kardl_model2
 #> 
 
 # Getting the summary of the results
-summary(kardl_model)
+summary(kardl_model2)
 #> 
 #> Call:
 #> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + 
-#>     L0.d.PPI + covid + trend
+#>     L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + 
+#>     L0.d.asyN_ER_NN + L1.d.asyN_ER_NN + L0.d.PPI + L1.d.PPI + 
+#>     L2.d.PPI + L3.d.PPI + covid + trend
 #> 
 #> Residuals:
 #>       Min        1Q    Median        3Q       Max 
-#> -0.052720 -0.008916 -0.000817  0.007096  0.106652 
+#> -0.055270 -0.007958 -0.001177  0.006413  0.102447 
 #> 
 #> Coefficients:
 #>                   Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)     -1.945e-01  3.894e-02  -4.994 8.45e-07 ***
-#> L1.CPI          -1.466e-02  3.754e-03  -3.905 0.000109 ***
-#> L1.asyP_ER_PP    1.080e-02  4.771e-03   2.263 0.024083 *  
-#> L1.asyN_ER_NN    3.356e-02  6.189e-03   5.422 9.56e-08 ***
-#> L1.PPI           3.945e-02  9.147e-03   4.313 1.98e-05 ***
-#> L1.d.CPI         3.471e-01  3.958e-02   8.770  < 2e-16 ***
-#> L0.d.asyP_ER_PP  1.073e-01  1.842e-02   5.824 1.09e-08 ***
-#> L1.d.asyP_ER_PP  9.488e-02  1.856e-02   5.113 4.69e-07 ***
-#> L0.d.asyN_ER_NN  6.284e-03  4.779e-02   0.131 0.895446    
-#> L0.d.PPI         1.649e-02  8.627e-03   1.911 0.056572 .  
-#> covid            7.898e-03  3.958e-03   1.996 0.046570 *  
-#> trend            9.699e-05  1.221e-04   0.795 0.427295    
+#> (Intercept)     -2.760e-01  4.805e-02  -5.743 1.72e-08 ***
+#> L1.CPI          -1.745e-02  3.777e-03  -4.620 5.01e-06 ***
+#> L1.asyP_ER_PP    1.566e-02  4.894e-03   3.200 0.001472 ** 
+#> L1.asyN_ER_NN    3.488e-02  6.323e-03   5.517 5.85e-08 ***
+#> L1.PPI           6.005e-02  1.169e-02   5.135 4.21e-07 ***
+#> L1.d.CPI         3.893e-01  4.407e-02   8.833  < 2e-16 ***
+#> L2.d.CPI        -8.462e-02  4.221e-02  -2.005 0.045604 *  
+#> L0.d.asyP_ER_PP  1.062e-01  1.817e-02   5.847 9.62e-09 ***
+#> L1.d.asyP_ER_PP  7.988e-02  1.914e-02   4.174 3.60e-05 ***
+#> L0.d.asyN_ER_NN  1.612e-02  4.721e-02   0.341 0.732959    
+#> L1.d.asyN_ER_NN  1.762e-02  4.773e-02   0.369 0.712125    
+#> L0.d.PPI         2.207e-02  8.615e-03   2.561 0.010751 *  
+#> L1.d.PPI        -1.508e-02  1.100e-02  -1.371 0.170929    
+#> L2.d.PPI        -3.872e-02  1.027e-02  -3.770 0.000185 ***
+#> L3.d.PPI        -3.269e-02  8.718e-03  -3.749 0.000200 ***
+#> covid            7.771e-03  3.919e-03   1.983 0.047998 *  
+#> trend           -5.595e-05  1.314e-04  -0.426 0.670546    
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Residual standard error: 0.01521 on 455 degrees of freedom
-#>   (3 observations deleted due to missingness)
-#> Multiple R-squared:  0.6285, Adjusted R-squared:  0.6195 
-#> F-statistic: 69.98 on 11 and 455 DF,  p-value: < 2.2e-16
-#> 
-
-  # OR
-  imf_example_data %>% kardl(formula=CPI~PPI+Asymmetric(ER)) %>% summary()
-#> 
-#> Call:
-#> L0.d.CPI ~ L1.CPI + L1.PPI + L1.asyP_ER_PP + L1.asyN_ER_NN + 
-#>     L1.d.CPI + L2.d.CPI + L0.d.PPI + L1.d.PPI + L2.d.PPI + L0.d.asyP_ER_PP + 
-#>     L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + L1.d.asyN_ER_NN + L2.d.asyN_ER_NN
-#> 
-#> Residuals:
-#>       Min        1Q    Median        3Q       Max 
-#> -0.057366 -0.008242 -0.000790  0.007316  0.106752 
-#> 
-#> Coefficients:
-#>                  Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)     -0.238034   0.039427  -6.037 3.28e-09 ***
-#> L1.CPI          -0.020463   0.003106  -6.587 1.25e-10 ***
-#> L1.PPI           0.044846   0.009264   4.841 1.78e-06 ***
-#> L1.asyP_ER_PP    0.018696   0.003234   5.781 1.39e-08 ***
-#> L1.asyN_ER_NN    0.035156   0.004826   7.285 1.45e-12 ***
-#> L1.d.CPI         0.407205   0.044646   9.121  < 2e-16 ***
-#> L2.d.CPI        -0.075042   0.042751  -1.755   0.0799 .  
-#> L0.d.PPI         0.019725   0.008544   2.309   0.0214 *  
-#> L1.d.PPI        -0.001436   0.010020  -0.143   0.8861    
-#> L2.d.PPI        -0.018956   0.008707  -2.177   0.0300 *  
-#> L0.d.asyP_ER_PP  0.106151   0.018216   5.827 1.07e-08 ***
-#> L1.d.asyP_ER_PP  0.083465   0.019193   4.349 1.69e-05 ***
-#> L0.d.asyN_ER_NN  0.016979   0.047717   0.356   0.7221    
-#> L1.d.asyN_ER_NN  0.030864   0.048221   0.640   0.5225    
-#> L2.d.asyN_ER_NN  0.038010   0.046474   0.818   0.4139    
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#> 
-#> Residual standard error: 0.01511 on 451 degrees of freedom
+#> Residual standard error: 0.01486 on 449 degrees of freedom
 #>   (4 observations deleted due to missingness)
-#> Multiple R-squared:  0.636,  Adjusted R-squared:  0.6247 
-#> F-statistic: 56.29 on 14 and 451 DF,  p-value: < 2.2e-16
+#> Multiple R-squared:  0.6498, Adjusted R-squared:  0.6373 
+#> F-statistic: 52.06 on 16 and 449 DF,  p-value: < 2.2e-16
 #> 
 
-# using . in the formula means that all variables in the data will be used
+# using '.' in the formula means that all variables in the data will be used
 
-kardl(formula=CPI~.+deterministic(covid),mode = "grid")
-#> 
-#> Optimal lags for each variable ( AIC ):
+kardl(formula=CPI~.+deterministic(covid),criterion = "BIC")
+#> Optimal lags for each variable ( BIC ):
 #> CPI: 1, ER: 1, PPI: 1 
 #> 
 #> Call:
@@ -519,7 +476,7 @@ kardl(imf_example_data,
 #>     -0.002251      -0.019242  
 #> 
 
-# Using another criterion for finding the best lag#'
+# Using another criterion for finding the best lag
 kardl_set(criterion = "HQ") # setting the criterion to HQ
 kardl( mode = "grid_custom")
 #> Optimal lags for each variable ( HQ ):
@@ -574,9 +531,12 @@ dif$lagInfo$OptLag
 #>        CPI asyP_ER_PP asyN_ER_NN 
 #>          1          1          0 
 
-# Setting the preffixes and suffixes for non-linear variables
-kardl_set(AsymPrefix = c("asyP_","asyN_"), AsymSuffix = c("_PP","_NN"))
-kardl()
+# Optional: use magrittr if available
+library(magrittr)
+  kardl_model_pipe <-  imf_example_data %>%
+    kardl(mode = "grid_custom")
+
+  kardl_model_pipe
 #> Optimal lags for each variable ( HQ ):
 #> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
 #> 
@@ -593,34 +553,4 @@ kardl()
 #> L0.d.asyN_ER_NN         L0.d.PPI            covid            trend  
 #>       6.284e-03        1.649e-02        7.898e-03        9.699e-05  
 #> 
-
-# For having the lags plot
-
-#  kardl_model_grid[["LagCriteria"]] is a matrix, convert it to a data frame
-LagCriteria <- as.data.frame(kardl_model_grid$lagInfo$LagCriteria)
-# Rename columns for easier access and convert relevant columns to numeric
-colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
-
-LagCriteria <- LagCriteria %>%  mutate(across(c(AIC, BIC, HQ), as.numeric))
-
-# Pivot the data to a long format excluding AICc
-
- LagCriteria_long <- LagCriteria %>%
-  select(-AICc) %>%
-  pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
-
- # Find the minimum value for each criterion
- min_values <- LagCriteria_long %>%  group_by(Criteria) %>%
-  slice_min(order_by = Value) %>%  ungroup()
-
- # Create the ggplot with lines, highlight minimum values, and add labels
- ggplot2::ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
-  geom_line() +
-  geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
-  geom_text(data = min_values, aes(x = lag, y = Value, label = lag),
-            vjust = 1.5, color = "black", size = 3.5) +
-  labs(title = "Lag Criteria Comparison ", x = "Lag Configuration",  y = "Criteria Value") +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
 ```

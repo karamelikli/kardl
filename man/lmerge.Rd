@@ -2,7 +2,7 @@
 % Please edit documentation in R/miscellaneous.R
 \name{lmerge}
 \alias{lmerge}
-\title{Merge two lists, giving precedence to the first list for overlapping names}
+\title{Merge Lists with Priority to the First Argument}
 \usage{
 lmerge(first, second, ...)
 }
@@ -39,9 +39,10 @@ a<-c(32,34,542,"k"=35)
 b<-c(65,"k"=34)
 
 h1<-lmerge(a, m2)
-unlist( h1)
+print(unlist(h1))
+
 h2<-lmerge(a,b,m2,m3,list("m1.1"=4))
-unlist(h2)
+print(unlist(h2))
 }
 \seealso{
 \code{\link[base]{append}}

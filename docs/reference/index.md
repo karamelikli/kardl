@@ -2,28 +2,26 @@
 
 ## All functions
 
-- [`bootstrap()`](bootstrap.md) : Produce Bootstrap Confidence Intervals
-  for Dynamic Multipliers
-- [`ecm()`](ecm.md) : Perform the Error Correction Model (ECM) test to
-  assess cointegration in the model
+- [`bootstrap()`](bootstrap.md) : Bootstrap Confidence Intervals for
+  Dynamic Multipliers
+- [`ecm()`](ecm.md) : Estimate a Restricted ECM Model
 - [`imf_example_data`](imf_example_data.md) : IMF Example Data
-- [`kardl()`](kardl.md) : Estimate an ARDL or NARDL model with automatic
-  lag selection
-- [`kardl_get()`](kardl_get.md) : Function to Get KARDL Package Options
-- [`kardl_longrun()`](kardl_longrun.md) : Calculate long-run multipliers
-  from a KARDL model
-- [`kardl_reset()`](kardl_reset.md) : Function to Reset KARDL Package
-  Options to Default Values
-- [`kardl_set()`](kardl_set.md) : Function to Set KARDL Package Options
-- [`lmerge()`](lmerge.md) : Merge two lists, giving precedence to the
-  first list for overlapping names
-- [`modelCriterion()`](modelCriterion.md) : Model Selection Criterion
+- [`kardl()`](kardl.md) : Estimate ARDL and NARDL Models with Automatic
+  Lag Selection
+- [`kardl_get()`](kardl_get.md) : Get kardl Package Options
+- [`kardl_longrun()`](kardl_longrun.md) : Compute Long-Run Multipliers
+  from a kardl Model
+- [`kardl_reset()`](kardl_reset.md) : Reset kardl Package Options to
+  Default Values
+- [`kardl_set()`](kardl_set.md) : Set kardl Package Options
+- [`lmerge()`](lmerge.md) : Merge Lists with Priority to the First
+  Argument
+- [`modelCriterion()`](modelCriterion.md) : Model Selection Criteria
 - [`mplier()`](mplier.md) : Compute Dynamic Multipliers for kardl Models
-- [`narayan()`](narayan.md) : Narayan Test
-- [`parse_formula_vars()`](parse_formula_vars.md) : Parse a formula to
-  detect specific variable patterns
-- [`pssf()`](pssf.md) : Pesaran et al. (2001) Bounds F-Test for KARDL
-  Models
-- [`psst()`](psst.md) : PSS t Bound Test
-- [`symmetrytest()`](symmetrytest.md) : Symmetry Test for non-linear
-  KARDL Models
+- [`narayan()`](narayan.md) : Narayan Bounds Test
+- [`parse_formula_vars()`](parse_formula_vars.md) : Parse Formula
+  Variables
+- [`pssf()`](pssf.md) : Pesaran, Shin, and Smith Bounds F-Test
+- [`psst()`](psst.md) : Pesaran, Shin, and Smith t Bounds Test
+- [`symmetrytest()`](symmetrytest.md) : Symmetry Test for Nonlinear
+  kardl Models

@@ -2,7 +2,7 @@
 % Please edit documentation in R/miscellaneous.R
 \name{parse_formula_vars}
 \alias{parse_formula_vars}
-\title{Parse a formula to detect specific variable patterns}
+\title{Parse Formula Variables}
 \usage{
 parse_formula_vars(formula)
 }

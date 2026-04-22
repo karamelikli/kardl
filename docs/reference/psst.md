@@ -1,4 +1,4 @@
-# PSS t Bound Test
+# Pesaran, Shin, and Smith t Bounds Test
 
 This function performs the Pesaran t Bound test
 
@@ -46,25 +46,41 @@ psst(kmodel, case = 3, signif_level = "auto")
 The function returns an object of class "htest" containing the following
 components:
 
-- statistic: The calculated t-statistic for the test.
+- statistic:
 
-- method: A description of the test performed.
+  The calculated t-statistic for the test.
 
-- data.name: The name of the data used in the test.
+- method:
 
-- k: The number of independent variables in the model.
+  A description of the test performed.
 
-- notes: Any notes or warnings related to the test results, such as
-  sample size considerations or adjustments made to the case based on
-  model characteristics.
+- data.name:
 
-- sig: The significance level used for the test, either specified by the
-  user or determined automatically.
+  The name of the data used in the test.
 
-- alternative: The alternative hypothesis being tested.
+- k:
 
-- case: The case used for the test, either specified by the user or
-  determined automatically based on the model's characteristics.
+  The number of independent variables in the model.
+
+- notes:
+
+  Any notes or warnings related to the test results, such as sample size
+  considerations or adjustments made to the case based on model
+  characteristics.
+
+- sig:
+
+  The significance level used for the test, either specified by the user
+  or determined automatically.
+
+- alternative:
+
+  The alternative hypothesis being tested.
+
+- case:
+
+  The case used for the test, either specified by the user or determined
+  automatically based on the model's characteristics.
 
 ## Details
 
@@ -129,8 +145,8 @@ my_summary
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(LK1_CPI) = 0 
-#> H1: Coef(LK1_CPI)≠ 0 
+#> H0: Coef(L1.CPI) = 0 
+#> H1: Coef(L1.CPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 
@@ -159,8 +175,10 @@ my_summary$crit_vals
 # Using magrittr :
 
 library(magrittr)
-imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>% psst()
+     imf_example_data %>%
+     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0))    %>%
+                           psst()
 #> 
 #>  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
@@ -169,16 +187,18 @@ imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
-# Getting details of the test results using magrittr:
-imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>% psst() %>% summary()
+   # Getting details of the test results using magrittr:
+   imf_example_data %>%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0)) %>%
+   psst() %>% summary()
 #> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration 
 #> t  =  -3.871999 
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(LK1_CPI) = 0 
-#> H1: Coef(LK1_CPI)≠ 0 
+#> H0: Coef(L1.CPI) = 0 
+#> H1: Coef(L1.CPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 

@@ -1,4 +1,4 @@
-# Calculate long-run multipliers from a KARDL model
+# Compute Long-Run Multipliers from a kardl Model
 
 This function calculates the long-run parameters of a KARDL model
 estimated using the `kardl` function. The long-run parameters are
@@ -115,10 +115,10 @@ summary(long)
 #> Long-run multipliers 
 #> 
 #> Coefficients:
-#>               Estimate Std. Error t value Pr(>|t|)    
-#> L1.asyP_ER_PP   0.8249     0.1815   4.545 7.06e-06 ***
-#> L1.asyN_ER_NN   2.0830     0.4808   4.332 1.82e-05 ***
-#> L1.PPI          2.6528     0.8472   3.131  0.00186 ** 
+#>               Estimate Std. Error t value  Pr(>|t|)    
+#> L1.asyP_ER_PP  0.82494    0.18150  4.5453 7.064e-06 ***
+#> L1.asyN_ER_NN  2.08297    0.48083  4.3320 1.825e-05 ***
+#> L1.PPI         2.65278    0.84724  3.1311  0.001855 ** 
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
@@ -128,15 +128,11 @@ summary(long)
 
 
 # Using magrittr
-library(magrittr)
-#> 
-#> Attaching package: ‘magrittr’
-#> The following object is masked from ‘package:tidyr’:
-#> 
-#>     extract
 
-imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>% kardl_longrun() %>% summary()
+library(magrittr)
+     imf_example_data %>%
+     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend, mode=c(1,2,3,0)) %>%
+     kardl_longrun() %>% summary()
 #> 
 #> Call:
 #> kardl_longrun(model = .)
@@ -145,10 +141,10 @@ imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
 #> Long-run multipliers 
 #> 
 #> Coefficients:
-#>               Estimate Std. Error t value Pr(>|t|)    
-#> L1.asyP_ER_PP   0.8249     0.1815   4.545 7.06e-06 ***
-#> L1.asyN_ER_NN   2.0830     0.4808   4.332 1.82e-05 ***
-#> L1.PPI          2.6528     0.8472   3.131  0.00186 ** 
+#>               Estimate Std. Error t value  Pr(>|t|)    
+#> L1.asyP_ER_PP  0.82494    0.18150  4.5453 7.064e-06 ***
+#> L1.asyN_ER_NN  2.08297    0.48083  4.3320 1.825e-05 ***
+#> L1.PPI         2.65278    0.84724  3.1311  0.001855 ** 
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 

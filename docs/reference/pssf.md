@@ -1,4 +1,4 @@
-# Pesaran et al. (2001) Bounds F-Test for KARDL Models
+# Pesaran, Shin, and Smith Bounds F-Test
 
 This function performs the Pesaran, Shin, and Smith (PSS) F Bound test
 to assess the presence of a long-term relationship (cointegration)
@@ -147,8 +147,8 @@ my_summary
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(LK1_CPI) = Coef(LK1_ER_POS) = Coef(LK1_ER_NEG) = Coef(LK1_PPI) = 0 
-#> H1: Coef(LK1_CPI) ≠ Coef(LK1_ER_POS) ≠ Coef(LK1_ER_NEG) ≠ Coef(LK1_PPI)≠ 0 
+#> H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.PPI) = 0 
+#> H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.PPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 
@@ -172,12 +172,11 @@ my_summary$crit_vals
 #> 0.01  5.17 6.36
 
 
-
-
 # Using magrittr :
 
 library(magrittr)
-imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+   imf_example_data %>%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
                            mode=c(1,2,3,0)) %>% pssf()
 #> 
 #>  Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration
@@ -187,16 +186,18 @@ imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
-# Getting details of the test results using magrittr:
-imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>% pssf() %>% summary()
+   # Getting details of the test results using magrittr:
+   imf_example_data %>%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0)) %>%
+   pssf() %>% summary()
 #> Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration 
 #> F  =  10.20356 
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(LK1_CPI) = Coef(LK1_ER_POS) = Coef(LK1_ER_NEG) = Coef(LK1_PPI) = 0 
-#> H1: Coef(LK1_CPI) ≠ Coef(LK1_ER_POS) ≠ Coef(LK1_ER_NEG) ≠ Coef(LK1_PPI)≠ 0 
+#> H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.PPI) = 0 
+#> H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.PPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 

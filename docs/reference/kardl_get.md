@@ -1,4 +1,4 @@
-# Function to Get KARDL Package Options
+# Get kardl Package Options
 
 This function retrieves the current settings of the kardl package. Users
 can specify option names to get their values or call the function
@@ -42,7 +42,7 @@ kardl_get()
 #> 
 #> $formula
 #> CPI ~ ER + PPI + Asymmetr(ER) + deterministic(covid) + trend
-#> <environment: 0x5c2c9bf50b90>
+#> <environment: 0x5f3b26dfd828>
 #> 
 #> $ShortCoef
 #> [1] "L{lag}.d.{varName}"
@@ -526,11 +526,11 @@ kardl_get()
 #> 2024-01  3.41222304  7.01402233 5.277860     1
 #> 2024-02  3.43875325  7.05831849 5.300421     1
 #> 
-#> $mode
-#> [1] "quick"
-#> 
 #> $LongCoef
 #> [1] "L{lag}.{varName}"
+#> 
+#> $mode
+#> [1] "quick"
 #> 
 #> $AsymPrefix
 #> [1] "asyP_" "asyN_"

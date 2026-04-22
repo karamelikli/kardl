@@ -1,6 +1,38 @@
 # Changelog
 
+## kardl 1.3.1
+
+### Changes in this version
+
+- **autotest compliance:** Fixed errors in `autotest` example parsing
+  (e.g., `subscript out of bounds`, `recursive indexing failed`).
+  Updated example structures to be atomic and assignment-based,
+  improving automated test generation and reproducibility.
+- **Print method improvements:** Standard output handling in print
+  methods has been revised. Functions now rely on standard R messaging
+  mechanisms instead of direct console output calls, improving
+  compatibility with CRAN checks and allowing users to control output
+  behavior more effectively.
+- **Documentation fixes:** Corrected Rd syntax issues such as mismatched
+  braces, non-ASCII characters, and inconsistent list environments
+  (`\itemize{}` vs `\describe{}`). Improved clarity and consistency
+  across help pages.
+- **Examples refactored:** Rewrote examples to avoid fragile constructs
+  such as chained pipelines (`%>%`) without proper imports, standalone
+  expressions, and state-dependent workflows. Examples now follow a
+  minimal and deterministic structure.
+- **Function interface refinement:** Updated function signatures (e.g.,
+  removal of nonstandard argument names such as `.`) to improve
+  compatibility with automated tools and standard R practices.
+- **Dependency handling:** Improved handling of suggested packages in
+  examples using `@examplesIf`, ensuring optional dependencies (e.g.,
+  `magrittr`, `dplyr`) do not break checks.
+- **Minor fixes and cleanup:** General code cleanup, improved
+  formatting, and consistency updates across the package.
+
 ## kardl 1.3.0
+
+CRAN release: 2026-04-18
 
 ### Changes in this version
 

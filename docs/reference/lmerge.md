@@ -1,4 +1,4 @@
-# Merge two lists, giving precedence to the first list for overlapping names
+# Merge Lists with Priority to the First Argument
 
 The first list of values takes precedence. When both lists have items
 with the same names, the values from the first list will be applied. In
@@ -112,13 +112,14 @@ a<-c(32,34,542,"k"=35)
 b<-c(65,"k"=34)
 
 h1<-lmerge(a, m2)
-unlist( h1)
+print(unlist(h1))
 #>                                                       k            m1 
 #>          "32"          "34"         "542"          "35"         "kk2" 
 #> m1.2.3.m1.1.1  m1.2.3.m.1.4  m1.2.3.m.1.5  m1.2.3.m.1.6  m1.2.3.m.1.7 
 #>         "333"         "918"         "982"         "981"         "928" 
+
 h2<-lmerge(a,b,m2,m3,list("m1.1"=4))
-unlist(h2)
+print(unlist(h2))
 #>                                                       k               
 #>          "32"          "34"         "542"          "35"          "65" 
 #>            m1 m1.2.3.m1.1.1  m1.2.3.m.1.4  m1.2.3.m.1.5  m1.2.3.m.1.6 

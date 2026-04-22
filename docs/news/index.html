@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -42,7 +42,27 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.3.0" id="kardl-130">kardl 1.3.0<a class="anchor" aria-label="anchor" href="#kardl-130"></a></h2>
+<h2 class="pkg-version" data-toc-text="1.3.1" id="kardl-131">kardl 1.3.1<a class="anchor" aria-label="anchor" href="#kardl-131"></a></h2>
+<div class="section level3">
+<h3 id="changes-in-this-version-1-3-1">Changes in this version<a class="anchor" aria-label="anchor" href="#changes-in-this-version-1-3-1"></a></h3>
+<ul><li>
+<strong>autotest compliance:</strong> Fixed errors in <code>autotest</code> example parsing (e.g., <code>subscript out of bounds</code>, <code>recursive indexing failed</code>). Updated example structures to be atomic and assignment-based, improving automated test generation and reproducibility.</li>
+<li>
+<strong>Print method improvements:</strong> Standard output handling in print methods has been revised. Functions now rely on standard R messaging mechanisms instead of direct console output calls, improving compatibility with CRAN checks and allowing users to control output behavior more effectively.</li>
+<li>
+<strong>Documentation fixes:</strong> Corrected Rd syntax issues such as mismatched braces, non-ASCII characters, and inconsistent list environments (<code>\itemize{}</code> vs <code>\describe{}</code>). Improved clarity and consistency across help pages.</li>
+<li>
+<strong>Examples refactored:</strong> Rewrote examples to avoid fragile constructs such as chained pipelines (<code>%&gt;%</code>) without proper imports, standalone expressions, and state-dependent workflows. Examples now follow a minimal and deterministic structure.</li>
+<li>
+<strong>Function interface refinement:</strong> Updated function signatures (e.g., removal of nonstandard argument names such as <code>.</code>) to improve compatibility with automated tools and standard R practices.</li>
+<li>
+<strong>Dependency handling:</strong> Improved handling of suggested packages in examples using <code>@examplesIf</code>, ensuring optional dependencies (e.g., <code>magrittr</code>, <code>dplyr</code>) do not break checks.</li>
+<li>
+<strong>Minor fixes and cleanup:</strong> General code cleanup, improved formatting, and consistency updates across the package.</li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.3.0" id="kardl-130">kardl 1.3.0<a class="anchor" aria-label="anchor" href="#kardl-130"></a></h2><p class="text-muted">CRAN release: 2026-04-18</p>
 <div class="section level3">
 <h3 id="changes-in-this-version-1-3-0">Changes in this version<a class="anchor" aria-label="anchor" href="#changes-in-this-version-1-3-0"></a></h3>
 <ul><li>

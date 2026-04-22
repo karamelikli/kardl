@@ -1,4 +1,4 @@
-# Narayan Test
+# Narayan Bounds Test
 
 This function performs the Narayan test, which is designed to assess
 cointegration using critical values specifically tailored for small
@@ -146,8 +146,8 @@ my_summary
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(LK1_CPI) = Coef(LK1_ER_POS) = Coef(LK1_ER_NEG) = Coef(LK1_PPI) = 0 
-#> H1: Coef(LK1_CPI) ≠ Coef(LK1_ER_POS) ≠ Coef(LK1_ER_NEG) ≠ Coef(LK1_PPI)≠ 0 
+#> H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.PPI) = 0 
+#> H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.PPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 
@@ -176,8 +176,9 @@ my_summary$crit_vals
 # Using magrittr :
 
 library(magrittr)
-imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>% narayan()
+  imf_example_data %>%
+  kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                        mode=c(1,2,3,0)) %>% narayan()
 #> 
 #>  Narayan F Test for Cointegration
 #> 
@@ -186,16 +187,18 @@ imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
-# Getting details of the test results using magrittr:
-imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>% narayan() %>% summary()
+  # Getting details of the test results using magrittr:
+   imf_example_data %>%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0)) %>%
+   narayan() %>% summary()
 #> Narayan F Test for Cointegration 
 #> F  =  10.20356 
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(LK1_CPI) = Coef(LK1_ER_POS) = Coef(LK1_ER_NEG) = Coef(LK1_PPI) = 0 
-#> H1: Coef(LK1_CPI) ≠ Coef(LK1_ER_POS) ≠ Coef(LK1_ER_NEG) ≠ Coef(LK1_PPI)≠ 0 
+#> H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.PPI) = 0 
+#> H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.PPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 

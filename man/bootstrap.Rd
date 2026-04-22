@@ -2,7 +2,7 @@
 % Please edit documentation in R/multipliers.R
 \name{bootstrap}
 \alias{bootstrap}
-\title{Produce Bootstrap Confidence Intervals for Dynamic Multipliers}
+\title{Bootstrap Confidence Intervals for Dynamic Multipliers}
 \usage{
 bootstrap(kmodel, horizon = 80, replications = 100, level = 95, minProb = 0)
 }
@@ -46,8 +46,6 @@ and lower confidence intervals. These values are provided for each variable and 
 }
 \examples{
 
-library(dplyr)
-
   # Example usage of the bootstrap function
 
 
@@ -81,13 +79,13 @@ library(dplyr)
 
 
 
- # Using dplyr
- library(dplyr)
+\dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
+library(magrittr)
 
    imf_example_data \%>\% kardl( CPI ~ PPI + asym(ER) +trend, maxlag=2) \%>\%
    bootstrap(replications=5) \%>\% plot(variable = "ER")
 
-
+\dontshow{\}) # examplesIf}
 }
 \seealso{
 \code{\link{mplier}} for calculating dynamic multipliers

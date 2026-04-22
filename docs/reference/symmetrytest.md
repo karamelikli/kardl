@@ -1,4 +1,4 @@
-# Symmetry Test for non-linear KARDL Models
+# Symmetry Test for Nonlinear kardl Models
 
 The symmetry test is a statistical procedure used to assess the presence
 of symmetry in the relationship between variables in a model. It is
@@ -166,18 +166,18 @@ applications, 281-314.
 #> Long-run symmetry tests:
 #> 
 #> Test for variable:  ER 
-#> F  statistic:  4.221689 , p-value:  0.04048856 
+#> F statistic: 4.221689, p-value: 0.04048856
 #> Test Decision:  Reject H0 at 5% level. Indicating long-run asymmetry for variable ER. 
 #> Hypotheses:
-#> H0: - Coef(LK1_ER_POS)/Coef(LK1_CPI) = - Coef(LK1_ER_NEG)/Coef(LK1_CPI)
-#> H1: - Coef(LK1_ER_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_ER_NEG)/Coef(LK1_CPI)
+#> H0: - Coef(L1.NAER_POS)/Coef(L1.CPI) = - Coef(L1.NAER_NEG)/Coef(L1.CPI)
+#> H1: - Coef(L1.NAER_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAER_NEG)/Coef(L1.CPI)
 #> 
 #> Test for variable:  PPI 
-#> F  statistic:  0.1320953 , p-value:  0.7164405 
+#> F statistic: 0.1320953, p-value: 0.7164405
 #> Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
 #> Hypotheses:
-#> H0: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)
-#> H1: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)
+#> H0: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) = - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)
+#> H1: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)
 #> 
 #> 
 #> _____________________________
@@ -187,8 +187,8 @@ applications, 281-314.
 #> F  statistic:  9.549852 , p-value:  0.002123947 
 #> Test Decision:  Reject H0 at 5% level. Indicating short-run asymmetry for variable ER. 
 #> Hypotheses:
-#> H0: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) = Coef(D0.d.ER_NEG)
-#> H1: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) ≠ Coef(D0.d.ER_NEG)
+#> H0: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) = Coef(L0.d.NAER_NEG)
+#> H1: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) ≠ Coef(L0.d.NAER_NEG)
 #> 
  # The null hypothesis of the test is that the model is symmetric, while the alternative
  # hypothesis is that the model is asymmetric. The test statistic and p-value are provided
@@ -202,18 +202,18 @@ applications, 281-314.
 #> Long-run symmetry tests:
 #> 
 #> Test for variable:  ER 
-#> F  statistic:  4.221689 , p-value:  0.04048856 
+#> F statistic: 4.221689, p-value: 0.04048856
 #> Test Decision:  Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable ER. 
 #> Hypotheses:
-#> H0: - Coef(LK1_ER_POS)/Coef(LK1_CPI) = - Coef(LK1_ER_NEG)/Coef(LK1_CPI)
-#> H1: - Coef(LK1_ER_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_ER_NEG)/Coef(LK1_CPI)
+#> H0: - Coef(L1.NAER_POS)/Coef(L1.CPI) = - Coef(L1.NAER_NEG)/Coef(L1.CPI)
+#> H1: - Coef(L1.NAER_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAER_NEG)/Coef(L1.CPI)
 #> 
 #> Test for variable:  PPI 
-#> F  statistic:  0.1320953 , p-value:  0.7164405 
+#> F statistic: 0.1320953, p-value: 0.7164405
 #> Test Decision:  Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PPI. 
 #> Hypotheses:
-#> H0: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)
-#> H1: - Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)
+#> H0: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) = - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)
+#> H1: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)
 #> 
 #> 
 #> _____________________________
@@ -223,8 +223,8 @@ applications, 281-314.
 #> F  statistic:  9.549852 , p-value:  0.002123947 
 #> Test Decision:  Reject H0 at 1% level. Indicating short-run asymmetry for variable ER. 
 #> Hypotheses:
-#> H0: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) = Coef(D0.d.ER_NEG)
-#> H1: Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) ≠ Coef(D0.d.ER_NEG)
+#> H0: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) = Coef(L0.d.NAER_NEG)
+#> H1: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) ≠ Coef(L0.d.NAER_NEG)
 #> 
 
  # To get symmetry test results in long-run, you can use the following code:
@@ -252,18 +252,18 @@ applications, 281-314.
  ast$Lhypotheses
 #> $H0
 #> $H0$ER
-#> [1] "- Coef(LK1_ER_POS)/Coef(LK1_CPI) = - Coef(LK1_ER_NEG)/Coef(LK1_CPI)"
+#> [1] "- Coef(L1.NAER_POS)/Coef(L1.CPI) = - Coef(L1.NAER_NEG)/Coef(L1.CPI)"
 #> 
 #> $H0$PPI
-#> [1] "- Coef(LK1_PPI_POS)/Coef(LK1_CPI) = - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)"
+#> [1] "- Coef(L1.NAPPI_POS)/Coef(L1.CPI) = - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)"
 #> 
 #> 
 #> $H1
 #> $H1$ER
-#> [1] "- Coef(LK1_ER_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_ER_NEG)/Coef(LK1_CPI)"
+#> [1] "- Coef(L1.NAER_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAER_NEG)/Coef(L1.CPI)"
 #> 
 #> $H1$PPI
-#> [1] "- Coef(LK1_PPI_POS)/Coef(LK1_CPI) ≠ - Coef(LK1_PPI_NEG)/Coef(LK1_CPI)"
+#> [1] "- Coef(L1.NAPPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)"
 #> 
 #> 
 
@@ -273,12 +273,12 @@ applications, 281-314.
  ast$Shypotheses
 #> $H0
 #> $H0$ER
-#> [1] "Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) = Coef(D0.d.ER_NEG)"
+#> [1] "Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) = Coef(L0.d.NAER_NEG)"
 #> 
 #> 
 #> $H1
 #> $H1$ER
-#> [1] "Coef(D0.d.ER_POS) + Coef(D1.d.ER_POS) ≠ Coef(D0.d.ER_NEG)"
+#> [1] "Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) ≠ Coef(L0.d.NAER_NEG)"
 #> 
 #> 
  # Alternatively, you can also use the symmetrytest function with the component

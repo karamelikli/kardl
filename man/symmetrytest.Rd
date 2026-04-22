@@ -2,7 +2,7 @@
 % Please edit documentation in R/tests.R
 \name{symmetrytest}
 \alias{symmetrytest}
-\title{Symmetry Test for non-linear KARDL Models}
+\title{Symmetry Test for Nonlinear kardl Models}
 \usage{
 symmetrytest(kmodel, vars = NULL, component = "both", type = "F", ...)
 }

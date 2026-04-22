@@ -2,7 +2,7 @@
 % Please edit documentation in R/tests.R
 \name{psst}
 \alias{psst}
-\title{PSS t Bound Test}
+\title{Pesaran, Shin, and Smith t Bounds Test}
 \usage{
 psst(kmodel, case = 3, signif_level = "auto")
 }
@@ -27,16 +27,16 @@ Invalid values will result in an error.}
 }
 \value{
 The function returns an object of class "htest" containing the following components:
-\itemize{
-\item{statistic: The calculated t-statistic for the test.}
-\item{method: A description of the test performed.}
-\item{data.name: The name of the data used in the test.}
-\item{k: The number of independent variables in the model.}
-\item{notes: Any notes or warnings related to the test results, such as
+\describe{
+\item{statistic}{The calculated t-statistic for the test.}
+\item{method}{A description of the test performed.}
+\item{data.name}{The name of the data used in the test.}
+\item{k}{The number of independent variables in the model.}
+\item{notes}{Any notes or warnings related to the test results, such as
 sample size considerations or adjustments made to the case based on model characteristics.}
-\item{sig: The significance level used for the test, either specified by the user or determined automatically.}
-\item{alternative: The alternative hypothesis being tested.}
-\item{case: The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
+\item{sig}{The significance level used for the test, either specified by the user or determined automatically.}
+\item{alternative}{The alternative hypothesis being tested.}
+\item{case}{The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
 }
 }
 \description{
@@ -78,15 +78,21 @@ my_summary$crit_vals
 
 # Using magrittr :
 
+\dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\% psst()
+     imf_example_data \%>\%
+     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0))    \%>\%
+                           psst()
 
-# Getting details of the test results using magrittr:
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\% psst() \%>\% summary()
+   # Getting details of the test results using magrittr:
+   imf_example_data \%>\%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0)) \%>\%
+   psst() \%>\% summary()
 
 
+\dontshow{\}) # examplesIf}
 }
 \references{
 Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing Approaches to the Analysis of Level Relationship", Journal of Applied Econometrics, 16(3), 289-326.

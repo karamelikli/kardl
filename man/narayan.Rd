@@ -2,7 +2,7 @@
 % Please edit documentation in R/tests.R
 \name{narayan}
 \alias{narayan}
-\title{Narayan Test}
+\title{Narayan Bounds Test}
 \usage{
 narayan(kmodel, case = 3, signif_level = "auto")
 }
@@ -89,15 +89,20 @@ my_summary$crit_vals
 
 # Using magrittr :
 
+\dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\% narayan()
+  imf_example_data \%>\%
+  kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                        mode=c(1,2,3,0)) \%>\% narayan()
 
-# Getting details of the test results using magrittr:
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\% narayan() \%>\% summary()
+  # Getting details of the test results using magrittr:
+   imf_example_data \%>\%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0)) \%>\%
+   narayan() \%>\% summary()
 
 
+\dontshow{\}) # examplesIf}
 }
 \references{
 Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. Applied economics, 37(17), 1979-1990.

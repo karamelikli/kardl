@@ -1,5 +1,5 @@
 
-#' Merge two lists, giving precedence to the first list for overlapping names
+#' Merge Lists with Priority to the First Argument
 #'
 #' The first list of values takes precedence. When both lists have items with the same names, the values from the first list will be applied. In merging the two lists, priority is given to the left list, so if there are overlapping items, the corresponding value from the left list will be used in the merged result.
 #' @param first The first list
@@ -29,10 +29,10 @@
 #' b<-c(65,"k"=34)
 #'
 #' h1<-lmerge(a, m2)
-#' unlist( h1)
+#' print(unlist(h1))
+#'
 #' h2<-lmerge(a,b,m2,m3,list("m1.1"=4))
-#' unlist(h2)
-
+#' print(unlist(h2))
 
 lmerge<-function(first,second,...){
   a<-first;
@@ -75,7 +75,7 @@ lmerge<-function(first,second,...){
 }
 
 
-#' Parse a formula to detect specific variable patterns
+#' Parse Formula Variables
 #'
 #' The \code{parseFormula()} function analyzes a given formula to identify and extract variables that match specified patterns. It is particularly useful for isolating variables enclosed within certain functions or constructs in the formula, such as \code{asym()}, \code{det()}, or any user-defined patterns.
 #'

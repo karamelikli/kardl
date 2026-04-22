@@ -1,6 +1,6 @@
 
 
-#' Calculate long-run multipliers from a KARDL model
+#' Compute Long-Run Multipliers from a kardl Model
 #'
 #' This function calculates the long-run parameters of a KARDL model estimated using the \code{kardl} function. The long-run parameters are calculated by dividing the negative of the coefficients of the independent variables by the coefficient of the dependent variable. If an intercept is included in the model, it is also standardized by dividing it by the negative of the long-run parameter of the dependent variable.
 #'
@@ -56,10 +56,12 @@
 #'
 #'
 #' # Using magrittr
-#' library(magrittr)
 #'
-#' imf_example_data %>% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                            mode=c(1,2,3,0)) %>% kardl_longrun() %>% summary()
+#' @examplesIf requireNamespace("magrittr", quietly = TRUE)
+#' library(magrittr)
+#'      imf_example_data %>%
+#'      kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend, mode=c(1,2,3,0)) %>%
+#'      kardl_longrun() %>% summary()
 #'
 
 kardl_longrun <- function(model) {

@@ -124,23 +124,23 @@ kardl_model
 ```
 
     ## Optimal lags for each variable ( BIC ):
-    ## CPI: 1, ER_POS: 1, ER_NEG: 0, PPI_POS: 3, PPI_NEG: 0 
+    ## CPI: 1, NAER_POS: 1, NAER_NEG: 0, NAPPI_POS: 3, NAPPI_NEG: 0 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + 
-    ##     L1.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + L0.d.PPI_POS + 
-    ##     L1.d.PPI_POS + L2.d.PPI_POS + L3.d.PPI_POS + L0.d.PPI_NEG + 
-    ##     covid + trend
+    ## L0.d.CPI ~ L1.CPI + L1.NAER_POS + L1.NAER_NEG + L1.NAPPI_POS + 
+    ##     L1.NAPPI_NEG + L1.d.CPI + L0.d.NAER_POS + L1.d.NAER_POS + 
+    ##     L0.d.NAER_NEG + L0.d.NAPPI_POS + L1.d.NAPPI_POS + L2.d.NAPPI_POS + 
+    ##     L3.d.NAPPI_POS + L0.d.NAPPI_NEG + covid + trend
     ## 
     ## Coefficients:
-    ##  (Intercept)        L1.CPI     L1.ER_POS     L1.ER_NEG    L1.PPI_POS  
-    ##   -0.0386634    -0.0121524     0.0110491     0.0252653     0.0517031  
-    ##   L1.PPI_NEG      L1.d.CPI   L0.d.ER_POS   L1.d.ER_POS   L0.d.ER_NEG  
-    ##    0.0451043     0.3340367     0.1111220     0.0937503    -0.0026591  
-    ## L0.d.PPI_POS  L1.d.PPI_POS  L2.d.PPI_POS  L3.d.PPI_POS  L0.d.PPI_NEG  
-    ##    0.0474102     0.0021468    -0.0519928    -0.0517409     0.0057550  
-    ##        covid         trend  
-    ##    0.0033275    -0.0002952
+    ##    (Intercept)          L1.CPI     L1.NAER_POS     L1.NAER_NEG    L1.NAPPI_POS  
+    ##     -0.0386634      -0.0121524       0.0110491       0.0252653       0.0517031  
+    ##   L1.NAPPI_NEG        L1.d.CPI   L0.d.NAER_POS   L1.d.NAER_POS   L0.d.NAER_NEG  
+    ##      0.0451043       0.3340367       0.1111220       0.0937503      -0.0026591  
+    ## L0.d.NAPPI_POS  L1.d.NAPPI_POS  L2.d.NAPPI_POS  L3.d.NAPPI_POS  L0.d.NAPPI_NEG  
+    ##      0.0474102       0.0021468      -0.0519928      -0.0517409       0.0057550  
+    ##          covid           trend  
+    ##      0.0033275      -0.0002952
 
 Summary of the model provides detailed information about the estimated
 coefficients, standard errors, t-values, and significance levels.
@@ -152,34 +152,34 @@ summary(kardl_model)
 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + 
-    ##     L1.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + L0.d.PPI_POS + 
-    ##     L1.d.PPI_POS + L2.d.PPI_POS + L3.d.PPI_POS + L0.d.PPI_NEG + 
-    ##     covid + trend
+    ## L0.d.CPI ~ L1.CPI + L1.NAER_POS + L1.NAER_NEG + L1.NAPPI_POS + 
+    ##     L1.NAPPI_NEG + L1.d.CPI + L0.d.NAER_POS + L1.d.NAER_POS + 
+    ##     L0.d.NAER_NEG + L0.d.NAPPI_POS + L1.d.NAPPI_POS + L2.d.NAPPI_POS + 
+    ##     L3.d.NAPPI_POS + L0.d.NAPPI_NEG + covid + trend
     ## 
     ## Residuals:
     ##       Min        1Q    Median        3Q       Max 
     ## -0.050478 -0.008129 -0.000904  0.006918  0.102836 
     ## 
     ## Coefficients:
-    ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  -0.0386634  0.0227251  -1.701 0.089572 .  
-    ## L1.CPI       -0.0121524  0.0047287  -2.570 0.010494 *  
-    ## L1.ER_POS     0.0110491  0.0051559   2.143 0.032652 *  
-    ## L1.ER_NEG     0.0252653  0.0079538   3.177 0.001594 ** 
-    ## L1.PPI_POS    0.0517031  0.0096244   5.372 1.25e-07 ***
-    ## L1.PPI_NEG    0.0451043  0.0107631   4.191 3.35e-05 ***
-    ## L1.d.CPI      0.3340367  0.0399191   8.368 7.54e-16 ***
-    ## L0.d.ER_POS   0.1111220  0.0180412   6.159 1.63e-09 ***
-    ## L1.d.ER_POS   0.0937503  0.0181990   5.151 3.88e-07 ***
-    ## L0.d.ER_NEG  -0.0026591  0.0474028  -0.056 0.955291    
-    ## L0.d.PPI_POS  0.0474102  0.0160401   2.956 0.003284 ** 
-    ## L1.d.PPI_POS  0.0021468  0.0144158   0.149 0.881684    
-    ## L2.d.PPI_POS -0.0519928  0.0143424  -3.625 0.000322 ***
-    ## L3.d.PPI_POS -0.0517409  0.0137160  -3.772 0.000183 ***
-    ## L0.d.PPI_NEG  0.0057550  0.0135155   0.426 0.670452    
-    ## covid         0.0033275  0.0050899   0.654 0.513621    
-    ## trend        -0.0002952  0.0002472  -1.194 0.233112    
+    ##                  Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    -0.0386634  0.0227251  -1.701 0.089572 .  
+    ## L1.CPI         -0.0121524  0.0047287  -2.570 0.010494 *  
+    ## L1.NAER_POS     0.0110491  0.0051559   2.143 0.032652 *  
+    ## L1.NAER_NEG     0.0252653  0.0079538   3.177 0.001594 ** 
+    ## L1.NAPPI_POS    0.0517031  0.0096244   5.372 1.25e-07 ***
+    ## L1.NAPPI_NEG    0.0451043  0.0107631   4.191 3.35e-05 ***
+    ## L1.d.CPI        0.3340367  0.0399191   8.368 7.54e-16 ***
+    ## L0.d.NAER_POS   0.1111220  0.0180412   6.159 1.63e-09 ***
+    ## L1.d.NAER_POS   0.0937503  0.0181990   5.151 3.88e-07 ***
+    ## L0.d.NAER_NEG  -0.0026591  0.0474028  -0.056 0.955291    
+    ## L0.d.NAPPI_POS  0.0474102  0.0160401   2.956 0.003284 ** 
+    ## L1.d.NAPPI_POS  0.0021468  0.0144158   0.149 0.881684    
+    ## L2.d.NAPPI_POS -0.0519928  0.0143424  -3.625 0.000322 ***
+    ## L3.d.NAPPI_POS -0.0517409  0.0137160  -3.772 0.000183 ***
+    ## L0.d.NAPPI_NEG  0.0057550  0.0135155   0.426 0.670452    
+    ## covid           0.0033275  0.0050899   0.654 0.513621    
+    ## trend          -0.0002952  0.0002472  -1.194 0.233112    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -199,8 +199,8 @@ kardl_model2$lagInfo
 ```
 
     ## $OptLag
-    ##     CPI  ER_POS  ER_NEG PPI_POS PPI_NEG 
-    ##       2       1       1       3       0
+    ##       CPI  NAER_POS  NAER_NEG NAPPI_POS NAPPI_NEG 
+    ##         2         1         1         3         0
 
 ``` r
 # Display model summary
@@ -209,36 +209,37 @@ summary(kardl_model2)
 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + 
-    ##     L1.d.CPI + L2.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + 
-    ##     L1.d.ER_NEG + L0.d.PPI_POS + L1.d.PPI_POS + L2.d.PPI_POS + 
-    ##     L3.d.PPI_POS + L0.d.PPI_NEG + covid + trend
+    ## L0.d.CPI ~ L1.CPI + L1.NAER_POS + L1.NAER_NEG + L1.NAPPI_POS + 
+    ##     L1.NAPPI_NEG + L1.d.CPI + L2.d.CPI + L0.d.NAER_POS + L1.d.NAER_POS + 
+    ##     L0.d.NAER_NEG + L1.d.NAER_NEG + L0.d.NAPPI_POS + L1.d.NAPPI_POS + 
+    ##     L2.d.NAPPI_POS + L3.d.NAPPI_POS + L0.d.NAPPI_NEG + covid + 
+    ##     trend
     ## 
     ## Residuals:
     ##       Min        1Q    Median        3Q       Max 
     ## -0.054516 -0.008329 -0.001178  0.006787  0.104278 
     ## 
     ## Coefficients:
-    ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  -0.0382834  0.0226694  -1.689 0.091962 .  
-    ## L1.CPI       -0.0123942  0.0047187  -2.627 0.008921 ** 
-    ## L1.ER_POS     0.0110505  0.0051609   2.141 0.032798 *  
-    ## L1.ER_NEG     0.0268623  0.0080054   3.356 0.000860 ***
-    ## L1.PPI_POS    0.0532642  0.0096979   5.492 6.67e-08 ***
-    ## L1.PPI_NEG    0.0452663  0.0107751   4.201 3.21e-05 ***
-    ## L1.d.CPI      0.3750078  0.0444934   8.428 4.88e-16 ***
-    ## L2.d.CPI     -0.0865443  0.0423947  -2.041 0.041800 *  
-    ## L0.d.ER_POS   0.1119077  0.0179998   6.217 1.16e-09 ***
-    ## L1.d.ER_POS   0.0889105  0.0189930   4.681 3.79e-06 ***
-    ## L0.d.ER_NEG  -0.0051813  0.0476798  -0.109 0.913515    
-    ## L1.d.ER_NEG   0.0047909  0.0475913   0.101 0.919860    
-    ## L0.d.PPI_POS  0.0487238  0.0160447   3.037 0.002532 ** 
-    ## L1.d.PPI_POS -0.0010288  0.0144643  -0.071 0.943329    
-    ## L2.d.PPI_POS -0.0544024  0.0143719  -3.785 0.000174 ***
-    ## L3.d.PPI_POS -0.0499891  0.0137240  -3.642 0.000302 ***
-    ## L0.d.PPI_NEG  0.0056668  0.0134844   0.420 0.674505    
-    ## covid         0.0031412  0.0050898   0.617 0.537448    
-    ## trend        -0.0003309  0.0002472  -1.338 0.181531    
+    ##                  Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)    -0.0382834  0.0226694  -1.689 0.091962 .  
+    ## L1.CPI         -0.0123942  0.0047187  -2.627 0.008921 ** 
+    ## L1.NAER_POS     0.0110505  0.0051609   2.141 0.032798 *  
+    ## L1.NAER_NEG     0.0268623  0.0080054   3.356 0.000860 ***
+    ## L1.NAPPI_POS    0.0532642  0.0096979   5.492 6.67e-08 ***
+    ## L1.NAPPI_NEG    0.0452663  0.0107751   4.201 3.21e-05 ***
+    ## L1.d.CPI        0.3750078  0.0444934   8.428 4.88e-16 ***
+    ## L2.d.CPI       -0.0865443  0.0423947  -2.041 0.041800 *  
+    ## L0.d.NAER_POS   0.1119077  0.0179998   6.217 1.16e-09 ***
+    ## L1.d.NAER_POS   0.0889105  0.0189930   4.681 3.79e-06 ***
+    ## L0.d.NAER_NEG  -0.0051813  0.0476798  -0.109 0.913515    
+    ## L1.d.NAER_NEG   0.0047909  0.0475913   0.101 0.919860    
+    ## L0.d.NAPPI_POS  0.0487238  0.0160447   3.037 0.002532 ** 
+    ## L1.d.NAPPI_POS -0.0010288  0.0144643  -0.071 0.943329    
+    ## L2.d.NAPPI_POS -0.0544024  0.0143719  -3.785 0.000174 ***
+    ## L3.d.NAPPI_POS -0.0499891  0.0137240  -3.642 0.000302 ***
+    ## L0.d.NAPPI_NEG  0.0056668  0.0134844   0.420 0.674505    
+    ## covid           0.0031412  0.0050898   0.617 0.537448    
+    ## trend          -0.0003309  0.0002472  -1.338 0.181531    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -329,20 +330,20 @@ summary(ecm_model)
     ## -0.069034 -0.008966 -0.000360  0.007383  0.098004 
     ## 
     ## Coefficients:
-    ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   1.840e-02  2.767e-03   6.650 8.50e-11 ***
-    ## EcmRes       -7.988e-03  4.168e-03  -1.916 0.055947 .  
-    ## L1.d.CPI      4.566e-01  3.738e-02  12.217  < 2e-16 ***
-    ## L0.d.ER_POS   1.237e-01  1.863e-02   6.643 8.86e-11 ***
-    ## L1.d.ER_POS   9.888e-02  1.895e-02   5.218 2.76e-07 ***
-    ## L0.d.ER_NEG   4.782e-02  4.861e-02   0.984 0.325705    
-    ## L0.d.PPI_POS  1.974e-02  1.524e-02   1.296 0.195793    
-    ## L1.d.PPI_POS  2.079e-02  1.461e-02   1.423 0.155302    
-    ## L2.d.PPI_POS -3.840e-02  1.460e-02  -2.631 0.008815 ** 
-    ## L3.d.PPI_POS -3.676e-02  1.403e-02  -2.620 0.009085 ** 
-    ## L0.d.PPI_NEG -6.570e-04  1.387e-02  -0.047 0.962248    
-    ## covid         1.182e-02  3.231e-03   3.657 0.000285 ***
-    ## trend        -4.622e-05  7.953e-06  -5.812 1.17e-08 ***
+    ##                  Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)     1.840e-02  2.767e-03   6.650 8.50e-11 ***
+    ## EcmRes         -7.988e-03  4.168e-03  -1.916 0.055947 .  
+    ## L1.d.CPI        4.566e-01  3.738e-02  12.217  < 2e-16 ***
+    ## L0.d.NAER_POS   1.237e-01  1.863e-02   6.643 8.86e-11 ***
+    ## L1.d.NAER_POS   9.888e-02  1.895e-02   5.218 2.76e-07 ***
+    ## L0.d.NAER_NEG   4.782e-02  4.861e-02   0.984 0.325705    
+    ## L0.d.NAPPI_POS  1.974e-02  1.524e-02   1.296 0.195793    
+    ## L1.d.NAPPI_POS  2.079e-02  1.461e-02   1.423 0.155302    
+    ## L2.d.NAPPI_POS -3.840e-02  1.460e-02  -2.631 0.008815 ** 
+    ## L3.d.NAPPI_POS -3.676e-02  1.403e-02  -2.620 0.009085 ** 
+    ## L0.d.NAPPI_NEG -6.570e-04  1.387e-02  -0.047 0.962248    
+    ## covid           1.182e-02  3.231e-03   3.657 0.000285 ***
+    ## trend          -4.622e-05  7.953e-06  -5.812 1.17e-08 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -368,8 +369,8 @@ mylong
     ## kardl_longrun(model = kardl_model)
     ## 
     ## Coefficients:
-    ##  L1.ER_POS   L1.ER_NEG  L1.PPI_POS  L1.PPI_NEG  
-    ##     0.9092      2.0790      4.2545      3.7115
+    ##  L1.NAER_POS   L1.NAER_NEG  L1.NAPPI_POS  L1.NAPPI_NEG  
+    ##       0.9092        2.0790        4.2545        3.7115
 
 The [`summary()`](https://rdrr.io/r/base/summary.html) function provides
 detailed information about the long-run coefficients, including standard
@@ -388,11 +389,11 @@ summary(mylong)
     ## Long-run multipliers 
     ## 
     ## Coefficients:
-    ##            Estimate Std. Error t value Pr(>|t|)    
-    ## L1.ER_POS    0.9092     0.2083   4.364 1.59e-05 ***
-    ## L1.ER_NEG    2.0790     0.5669   3.667 0.000275 ***
-    ## L1.PPI_POS   4.2545     1.7282   2.462 0.014200 *  
-    ## L1.PPI_NEG   3.7115     1.3352   2.780 0.005668 ** 
+    ##              Estimate Std. Error t value  Pr(>|t|)    
+    ## L1.NAER_POS   0.90921    0.20834  4.3640 1.587e-05 ***
+    ## L1.NAER_NEG   2.07904    0.56693  3.6672 0.0002747 ***
+    ## L1.NAPPI_POS  4.25455    1.72822  2.4618 0.0141998 *  
+    ## L1.NAPPI_NEG  3.71155    1.33518  2.7798 0.0056681 ** 
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
@@ -435,18 +436,18 @@ summary(ast)
     ## Long-run symmetry tests:
     ## 
     ## Test for variable:  ER 
-    ## F  statistic:  2.164906 , p-value:  0.1418984 
+    ## F statistic: 2.164906, p-value: 0.1418984
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. 
     ## Hypotheses:
-    ## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)
-    ## H1: - Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)
+    ## H0: - Coef(L1.NAER_POS)/Coef(L1.CPI) = - Coef(L1.NAER_NEG)/Coef(L1.CPI)
+    ## H1: - Coef(L1.NAER_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAER_NEG)/Coef(L1.CPI)
     ## 
     ## Test for variable:  PPI 
-    ## F  statistic:  0.7152717 , p-value:  0.3981528 
+    ## F statistic: 0.7152717, p-value: 0.3981528
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
     ## Hypotheses:
-    ## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)
-    ## H1: - Coef(L1.PPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.PPI_NEG)/Coef(L1.CPI)
+    ## H0: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) = - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)
+    ## H1: - Coef(L1.NAPPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.NAPPI_NEG)/Coef(L1.CPI)
     ## 
     ## 
     ## _____________________________
@@ -456,15 +457,15 @@ summary(ast)
     ## F  statistic:  1.679811 , p-value:  0.1956198 
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. 
     ## Hypotheses:
-    ## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)
-    ## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)
+    ## H0: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) + Coef(L2.d.NAER_POS) = Coef(L0.d.NAER_NEG) + Coef(L1.d.NAER_NEG) + Coef(L2.d.NAER_NEG) + Coef(L3.d.NAER_NEG)
+    ## H1: Coef(L0.d.NAER_POS) + Coef(L1.d.NAER_POS) + Coef(L2.d.NAER_POS) ≠ Coef(L0.d.NAER_NEG) + Coef(L1.d.NAER_NEG) + Coef(L2.d.NAER_NEG) + Coef(L3.d.NAER_NEG)
     ## 
     ## Test for variable:  PPI 
     ## F  statistic:  0.7582018 , p-value:  0.3843603 
     ## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI. 
     ## Hypotheses:
-    ## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)
-    ## H1: Coef(L0.d.PPI_POS) ≠ Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)
+    ## H0: Coef(L0.d.NAPPI_POS) = Coef(L0.d.NAPPI_NEG) + Coef(L1.d.NAPPI_NEG)
+    ## H1: Coef(L0.d.NAPPI_POS) ≠ Coef(L0.d.NAPPI_NEG) + Coef(L1.d.NAPPI_NEG)
 
 ### Step 6: Cointegration Tests
 
@@ -502,8 +503,8 @@ summary(A)
     ## k =  4 
     ## 
     ## Hypotheses:
-    ## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 
-    ## H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI_POS) ≠ Coef(L1.PPI_NEG)≠ 0 
+    ## H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.NAPPI_POS) = Coef(L1.NAPPI_NEG) = 0 
+    ## H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.NAPPI_POS) ≠ Coef(L1.NAPPI_NEG)≠ 0 
     ## 
     ## Test Decision:  Reject H0 → Cointegration (at 5% level) 
     ## 
@@ -593,8 +594,8 @@ summary(A)
     ## k =  4 
     ## 
     ## Hypotheses:
-    ## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 
-    ## H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI_POS) ≠ Coef(L1.PPI_NEG)≠ 0 
+    ## H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.NAPPI_POS) = Coef(L1.NAPPI_NEG) = 0 
+    ## H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.NAPPI_POS) ≠ Coef(L1.NAPPI_NEG)≠ 0 
     ## 
     ## Test Decision:  Reject H0 → Cointegration (at 5% level) 
     ## 
@@ -621,7 +622,7 @@ multipliers <- kardl_model %>% mplier()
 head(multipliers$mpsi)
 ```
 
-    ##      h    ER_POS       ER_NEG    ER_dif    PPI_POS      PPI_NEG     PPI_dif
+    ##      h  NAER_POS     NAER_NEG    ER_dif  NAPPI_POS    NAPPI_NEG     PPI_dif
     ## [1,] 0 0.1111220  0.002659096 0.1137811 0.04741019 -0.005755012  0.04165518
     ## [2,] 1 0.2516899 -0.021750322 0.2299396 0.11652070 -0.052711765  0.06380893
     ## [3,] 2 0.3066352 -0.054904985 0.2517302 0.13790041 -0.112860775  0.02503964
@@ -641,7 +642,7 @@ head(multipliers$omega)
 head(multipliers$lambda)
 ```
 
-    ##            ER_POS       ER_NEG       PPI_POS     PPI_NEG
+    ##          NAER_POS     NAER_NEG     NAPPI_POS   NAPPI_NEG
     ## [1,]  0.111122028 -0.002659096  0.0474101941 0.005755012
     ## [2,] -0.006322597  0.027924436  0.0064397124 0.039349293
     ## [3,] -0.093750322  0.000000000 -0.0541396294 0.000000000
@@ -677,14 +678,14 @@ summary(bootstrap_results)
     ## Summary of Dynamic Multipliers
     ## Horizon: 12 
     ## 
-    ##        h          ER_POS           ER_NEG              ER_dif      
+    ##        h         NAER_POS         NAER_NEG             ER_dif      
     ##  Min.   : 0   Min.   :0.1111   Min.   :-0.396247   Min.   :0.0315  
     ##  1st Qu.: 3   1st Qu.:0.3323   1st Qu.:-0.299717   1st Qu.:0.1004  
     ##  Median : 6   Median :0.3706   Median :-0.197680   Median :0.1484  
     ##  Mean   : 6   Mean   :0.3467   Mean   :-0.195624   Mean   :0.1511  
     ##  3rd Qu.: 9   3rd Qu.:0.4001   3rd Qu.:-0.090578   3rd Qu.:0.2212  
     ##  Max.   :12   Max.   :0.4277   Max.   : 0.002659   Max.   :0.2517  
-    ##     PPI_POS           PPI_NEG             PPI_dif           ER_CI_upper    
+    ##    NAPPI_POS         NAPPI_NEG            PPI_dif           ER_CI_upper    
     ##  Min.   :0.04741   Min.   :-0.720251   Min.   :-0.045860   Min.   :0.1558  
     ##  1st Qu.:0.14333   1st Qu.:-0.548660   1st Qu.:-0.033357   1st Qu.:0.2040  
     ##  Median :0.33251   Median :-0.367272   Median :-0.004707   Median :0.2388  

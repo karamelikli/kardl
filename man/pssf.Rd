@@ -2,7 +2,7 @@
 % Please edit documentation in R/tests.R
 \name{pssf}
 \alias{pssf}
-\title{Pesaran et al. (2001) Bounds F-Test for KARDL Models}
+\title{Pesaran, Shin, and Smith Bounds F-Test}
 \usage{
 pssf(kmodel, case = 3, signif_level = "auto")
 }
@@ -83,19 +83,22 @@ my_summary
 my_summary$crit_vals
 
 
-
-
 # Using magrittr :
 
+\dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+   imf_example_data \%>\%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
                            mode=c(1,2,3,0)) \%>\% pssf()
 
-# Getting details of the test results using magrittr:
-imf_example_data \%>\% kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\% pssf() \%>\% summary()
+   # Getting details of the test results using magrittr:
+   imf_example_data \%>\%
+   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                           mode=c(1,2,3,0)) \%>\%
+   pssf() \%>\% summary()
 
 
+\dontshow{\}) # examplesIf}
 }
 \references{
 Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing Approaches to the Analysis of Level Relationship", Journal of Applied Econometrics, 16(3), 289-326.

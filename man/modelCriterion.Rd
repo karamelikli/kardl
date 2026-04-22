@@ -2,16 +2,16 @@
 % Please edit documentation in R/kardl.R
 \name{modelCriterion}
 \alias{modelCriterion}
-\title{Model Selection Criterion}
+\title{Model Selection Criteria}
 \usage{
 modelCriterion(estModel, cr, ...)
 }
 \arguments{
 \item{estModel}{An object containing the fitted model. The object should include at least:
 \itemize{
-\item \code{estModel$model} – the actual fitted model object (e.g., from \code{lm}, \code{glm}).
-\item \code{k} – the number of estimated parameters.
-\item \code{n} – the sample size.
+\item \code{estModel$model} - the actual fitted model object (e.g., from \code{lm}, \code{glm}).
+\item \code{k} - the number of estimated parameters.
+\item \code{n} - the sample size.
 }}
 
 \item{cr}{A character string specifying the criterion to compute.
@@ -43,7 +43,7 @@ The function returns:
 \item \strong{"AIC"}:  \eqn{ \frac{2k - 2\ell}{n} } Akaike Information Criterion divided by \code{n}.
 \item \strong{"BIC"}:  \eqn{ \frac{\log(n) \cdot k - 2\ell}{n} } Bayesian Information Criterion divided by \code{n}.
 \item \strong{"AICc"}: \eqn{ \frac{2k(k+1)}{n - k - 1} + \frac{2k - 2\ell}{n} } Corrected Akaike Information Criterion divided by \code{n}.
-\item \strong{"HQ"}: \eqn{ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} } Hannan–Quinn Criterion divided by \code{n}.
+\item \strong{"HQ"}: \eqn{ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} } Hannan-Quinn Criterion divided by \code{n}.
 }
 
 where:
