@@ -224,9 +224,9 @@ symmetrytest <- function(kmodel,
         Lhypotheses$H0[[x$varName]] <- paste0(
           "- Coef(", x$POS_param, ")/Coef(", LongDep, ") = - Coef(", x$NEG_param, ")/Coef(", LongDep, ")"
         )
-        Lhypotheses$H1[[x$varName]] <- paste0(
+        Lhypotheses$H1[[x$varName]] <- enc2utf8(paste0(
           "- Coef(", x$POS_param, ")/Coef(", LongDep, ") \u2260 - Coef(", x$NEG_param, ")/Coef(", LongDep, ")"
-        )
+        ))
 
 
 
@@ -339,7 +339,7 @@ symmetrytest <- function(kmodel,
       Sh_neg_H0 <- paste(NegHyp, collapse = " + ")
 
       Shypotheses$H0[[v]] <- paste0(Sh_pos_H0, " = ", Sh_neg_H0)
-      Shypotheses$H1[[v]] <- paste0(Sh_pos_H0, " \u2260 ", Sh_neg_H0)
+      Shypotheses$H1[[v]] <- enc2utf8(paste0(Sh_pos_H0, " \u2260 ", Sh_neg_H0))
 
       sw2 <- car::linearHypothesis(
         kmodel,
