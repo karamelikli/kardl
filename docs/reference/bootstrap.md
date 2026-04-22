@@ -103,7 +103,7 @@ values are provided for each variable and at each time horizon.
 
  # Inspect the first few rows of the dynamic multiplier estimates
   head(boot$mpsi)
-#>   h  NAER_POS     NAER_NEG     ER_dif  NAPPI_POS   NAPPI_NEG PPI_dif
+#>   h    ER_POS       ER_NEG     ER_dif    PPI_POS     PPI_NEG PPI_dif
 #> 1 0 0.1079048 -0.005754563 0.10215020 0.01650164 -0.01650164       0
 #> 2 1 0.2441508 -0.068170052 0.17598074 0.06089675 -0.06089675       0
 #> 3 2 0.3105905 -0.148501449 0.16208908 0.11412494 -0.11412494       0
@@ -123,14 +123,14 @@ values are provided for each variable and at each time horizon.
 #> Summary of Dynamic Multipliers
 #> Horizon: 80 
 #> 
-#>        h         NAER_POS         NAER_NEG             ER_dif       
+#>        h          ER_POS           ER_NEG              ER_dif       
 #>  Min.   : 0   Min.   :0.1079   Min.   :-1.766204   Min.   :-1.0230  
 #>  1st Qu.:20   1st Qu.:0.5034   1st Qu.:-1.582999   1st Qu.:-0.8871  
 #>  Median :40   Median :0.6212   Median :-1.293834   Median :-0.6726  
 #>  Mean   :40   Mean   :0.5868   Mean   :-1.173031   Mean   :-0.5863  
 #>  3rd Qu.:60   3rd Qu.:0.6959   3rd Qu.:-0.837426   3rd Qu.:-0.3340  
 #>  Max.   :80   Max.   :0.7432   Max.   :-0.005755   Max.   : 0.1760  
-#>    NAPPI_POS        NAPPI_NEG          PPI_dif   ER_CI_upper     
+#>     PPI_POS          PPI_NEG           PPI_dif   ER_CI_upper     
 #>  Min.   :0.0165   Min.   :-2.2241   Min.   :0   Min.   :-0.4794  
 #>  1st Qu.:0.9673   1st Qu.:-1.9762   1st Qu.:0   1st Qu.:-0.4269  
 #>  Median :1.5849   Median :-1.5849   Median :0   Median :-0.3310  

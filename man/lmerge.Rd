@@ -19,30 +19,38 @@ A merged list with unique names, prioritizing values from the first list in case
 \description{
 The first list of values takes precedence. When both lists have items with the same names, the values from the first list will be applied. In merging the two lists, priority is given to the left list, so if there are overlapping items, the corresponding value from the left list will be used in the merged result.
 }
+\details{
+The \code{lmerge()} function is designed to merge multiple lists while giving precedence to the values in the first list.
+This function is particularly useful when you want to combine settings or parameters from multiple sources while ensuring that the primary source (the first list) takes priority over others.
+
+For right merge, a user can simply swap the order of the lists to give priority to the second list. For example, \code{lmerge(b, a)} will prioritize values from list \code{b} over those in list \code{a}.
+}
 \examples{
 
 a<-list("a"="first a","b"="second a","c"=list("w"=12,"k"=c(1,3,6)))
 b<-list("a"="first b","b"="second b","d"=14,"e"=45)
-theResult<- lmerge(a,b)
-unlist(theResult)
+myMerged<- lmerge(a,b)
+unlist(myMerged)
 
 # for right merge
-lmerge(b,a)
+myMerged<- lmerge(b,a)
+unlist(myMerged)
 
-# Unisted return
-theResult<- lmerge(a,b,c("v1"=11,22,3,"v5"=5))
-theResult
+# for more than two lists
+myMerged<- lmerge(a,b,c("v1"=11,22,3,"v5"=5))
+unlist(myMerged)
 
+# for more than two lists with nested lists
 m2<-list("m1"="kk2","m1.2.3"=list("m1.1.1"=333,"m.1.4"=918,"m.1.5"=982,"m.1.6"=981,"m.1.7"=928))
 m3<-list("m1"="kk23","m2.3"=2233,"m1.2.4"=list("m1.1.1"=333444,"m.1.5"=982,"m.1.6"=91,"m.1.7"=928))
 a<-c(32,34,542,"k"=35)
 b<-c(65,"k"=34)
 
 h1<-lmerge(a, m2)
-print(unlist(h1))
+unlist(h1)
 
 h2<-lmerge(a,b,m2,m3,list("m1.1"=4))
-print(unlist(h2))
+unlist(h2)
 }
 \seealso{
 \code{\link[base]{append}}

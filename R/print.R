@@ -225,7 +225,7 @@ print.summary.kardl_symmetric <- function(x, ...){
       cat("Test Decision: ", x$decision$long_run[[v]], "\n")
       cat("Hypotheses:\n")
       cat(paste0("H0: ", x$Lhypotheses$H0[[v]], "\n"))
-      cat(paste0("H1: ", x$Lhypotheses$H1[[v]], "\n\n"))
+      cat(paste0("H1: ",enc2utf8( x$Lhypotheses$H1[[v]]), "\n\n"))
       # write F value and p-value
 
     }
@@ -245,7 +245,7 @@ print.summary.kardl_symmetric <- function(x, ...){
       cat("Test Decision: ", x$decision$short_run[[v]], "\n")
       cat("Hypotheses:\n")
       cat(paste0("H0: ", x$Shypotheses$H0[[v]], "\n"))
-      cat(paste0("H1: ", x$Shypotheses$H1[[v]], "\n\n"))
+      cat(paste0("H1: ", enc2utf8(x$Shypotheses$H1[[v]]), "\n\n"))
       # write F value and p-value
 
     }

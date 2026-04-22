@@ -176,14 +176,14 @@ a specification tailored to the empirical analysis.</p></dd>
         A numeric vector of lag values specified by the user, allowing full customization of the lag
         structure used in model estimation. When a user-defined vector is provided (e.g., `c(1, 2, 4, 5)`),
         the function skips the lag optimization process and directly uses the specified lags.</p>
-<p>- Users can define lag values directly as a numeric vector. For example:
+<p>Users can define lag values directly as a numeric vector. For example:
           <code>mode = c(1, 2, 4, 5)</code> assigns lags of 1, 2, 4, and 5 to variables in the specified order.
-        - Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
+         Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
           <code>mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code> assigns lags to variables explicitly.
-        - Ensure that the lags are correctly designated by verifying the result using
+         Ensure that the lags are correctly designated by verifying the result using
           <code>kardl_model$properLag</code> after estimation.</p>
 <p><strong><em>Attention!</em></strong>
-        -A function-based criterion or user-defined function can be specified
+        A function-based criterion or user-defined function can be specified
          for model selection, but this is only supported for <code>mode = "grid_custom"</code>
          and <code>mode = "quick"</code>. The <code>mode = "grid"</code> option is restricted to
          predefined criteria (e.g., AIC or BIC). For more information on available criteria,
@@ -230,11 +230,9 @@ If a user utilize grid or grid_custom mode and want to split the lag search into
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list containing the results of the restricted ECM test, including:</p><ul><li><p><code>ecm</code>: The estimated ECM model objects including:</p><ul><li><p><code>case</code>: The case number used in the test (1, 2, 3, 4, or 5).</p></li>
-<li><p><code>EcmResLagged</code>: The lagged error correction term used in the ECM model.</p></li>
+    <p>A list containing the results of the restricted ECM test, including:</p><ul><li><p><code>ecm</code>: The estimated ECM model objects including:</p><ul><li><p><code>longrunEQ</code>: The estimated long-run model equation object.</p></li>
+<li><p><code>shortrunEQ</code>: The estimated short-run model equation</p></li>
 <li><p><code>ecmL</code>: The estimated long-run model object.</p></li>
-<li><p><code>shortrunEQ</code>: The estimated short-run model equation object.</p></li>
-<li><p><code>longrunEQ</code>: The estimated long-run model equation object.</p></li>
 </ul></li>
 <li><p><strong>argsInfo</strong>: A list of input arguments used for the estimation. It includes the data, formula, maxlag, mode, criterion, differentAsymLag, and batch settings.</p></li>
 <li><p><strong>extractedInfo</strong>: A list containing extracted information from the input data and formula, such as variable names, deterministic terms, asymmetric variables, and the prepared dataset for estimation.</p></li>
@@ -298,6 +296,21 @@ $$
 $$</p>
     </div>
     <div class="section level2">
+    <h2 id="notation-of-reported-coefficients">Notation of reported coefficients<a class="anchor" aria-label="anchor" href="#notation-of-reported-coefficients"></a></h2>
+
+
+
+<p>In the reported coefficients, the prefix <code>L</code> denotes lagged variables,
+where the accompanying number indicates the lag order, and <code>.d.</code> denotes
+first differences. Accordingly, <code>L1.PPI</code> represents the first lag of the
+level of <code>PPI</code> (long-run component), while <code>L3.d.PPI</code> denotes the
+third lag of the first-differenced <code>PPI</code> (short-run component).</p>
+<p>In addition, the suffixes <code>_POS</code> and <code>_NEG</code> indicate the positive
+and negative partial sum components of a variable, respectively. This notation
+is used by default and remains valid unless modified through the
+<code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="kardl.html">kardl</a></code> <code><a href="pssf.html">pssf</a></code>  <code><a href="psst.html">psst</a></code>   <code>ecm</code>  <code><a href="narayan.html">narayan</a></code></p></div>
     </div>
@@ -317,18 +330,18 @@ $$</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">ecm_model_grid</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, NAER_POS: 2, NAER_NEG: 0, PPI: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1.861e-02     -1.384e-02      4.448e-01     -4.173e-02      1.149e-01  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.NAER_POS  L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI       L1.d.PPI  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     9.347e-02      9.679e-03      4.914e-02      6.999e-03      2.102e-02  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      L2.d.PPI          covid          trend  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    -5.382e-03      5.425e-03     -4.375e-05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.861e-02   -1.384e-02    4.448e-01   -4.173e-02    1.149e-01    9.347e-02  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI        covid  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9.679e-03    4.914e-02    6.999e-03    2.102e-02   -5.382e-03    5.425e-03  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       trend  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -4.375e-05  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Checking the cointegration test results using Pesaran t test</span></span></span>
@@ -368,16 +381,16 @@ $$</p>
 <span class="r-in"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span><span class="va">imf_example_data</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span>, criterion <span class="op">=</span> <span class="st">"HQ"</span>, batch <span class="op">=</span> <span class="st">"2/3"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ecm_model</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, NAER_POS: 2, NAER_NEG: 0, PPI: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, ER_POS: 2, ER_NEG: 0, PPI: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (Intercept)         EcmRes       L1.d.CPI  L0.d.NAER_POS  L1.d.NAER_POS  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1.815e-02     -1.394e-02      4.154e-01      1.168e-01      9.272e-02  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI          covid          trend  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     6.635e-03      4.541e-02     -1.953e-03      4.998e-03     -4.241e-05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L2.d.ER_POS  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.815e-02   -1.394e-02    4.154e-01    1.168e-01    9.272e-02    6.635e-03  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.ER_NEG     L0.d.PPI        covid        trend  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.541e-02   -1.953e-03    4.998e-03   -4.241e-05  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Estimating the model with user-defined lag values</span></span></span>
@@ -386,18 +399,18 @@ $$</p>
 <span class="r-in"><span><span class="co"># Getting the results</span></span></span>
 <span class="r-in"><span><span class="va">ecm_model2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, NAER_POS: 1, NAER_NEG: 1, PPI: 3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 1, ER_NEG: 1, PPI: 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1.879e-02     -1.421e-02      4.480e-01     -2.922e-02      1.150e-01  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.NAER_POS  L0.d.NAER_NEG  L1.d.NAER_NEG       L0.d.PPI       L1.d.PPI  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     8.085e-02      3.857e-02      7.378e-02      5.352e-03      1.761e-02  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      L2.d.PPI       L3.d.PPI          covid          trend  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    -1.359e-02     -1.685e-02      4.482e-03     -4.053e-05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.879e-02   -1.421e-02    4.480e-01   -2.922e-02    1.150e-01    8.085e-02  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.ER_NEG  L1.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI     L3.d.PPI  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3.857e-02    7.378e-02    5.352e-03    1.761e-02   -1.359e-02   -1.685e-02  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       covid        trend  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4.482e-03   -4.053e-05  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting the summary of the results</span></span></span>
@@ -411,21 +424,21 @@ $$</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.066291 -0.008125 -0.000967  0.007027  0.099847 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)    1.879e-02  2.512e-03   7.482 3.84e-13 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EcmRes        -1.421e-02  3.752e-03  -3.787 0.000173 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.CPI       4.480e-01  4.453e-02  10.059  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.CPI      -2.922e-02  4.264e-02  -0.685 0.493482    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.NAER_POS  1.150e-01  1.847e-02   6.227 1.09e-09 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.NAER_POS  8.085e-02  1.986e-02   4.072 5.51e-05 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.NAER_NEG  3.857e-02  4.845e-02   0.796 0.426383    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.NAER_NEG  7.378e-02  4.806e-02   1.535 0.125395    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.PPI       5.352e-03  8.254e-03   0.648 0.517029    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.PPI       1.761e-02  9.115e-03   1.932 0.053946 .  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.PPI      -1.359e-02  9.214e-03  -1.475 0.140875    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L3.d.PPI      -1.685e-02  8.365e-03  -2.014 0.044618 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> covid          4.482e-03  3.747e-03   1.196 0.232270    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> trend         -4.053e-05  8.226e-06  -4.928 1.17e-06 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  1.879e-02  2.512e-03   7.482 3.84e-13 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> EcmRes      -1.421e-02  3.752e-03  -3.787 0.000173 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.CPI     4.480e-01  4.453e-02  10.059  &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.CPI    -2.922e-02  4.264e-02  -0.685 0.493482    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.ER_POS  1.150e-01  1.847e-02   6.227 1.09e-09 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.ER_POS  8.085e-02  1.986e-02   4.072 5.51e-05 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.ER_NEG  3.857e-02  4.845e-02   0.796 0.426383    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.ER_NEG  7.378e-02  4.806e-02   1.535 0.125395    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.PPI     5.352e-03  8.254e-03   0.648 0.517029    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.PPI     1.761e-02  9.115e-03   1.932 0.053946 .  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.PPI    -1.359e-02  9.214e-03  -1.475 0.140875    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L3.d.PPI    -1.685e-02  8.365e-03  -2.014 0.044618 *  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> covid        4.482e-03  3.747e-03   1.196 0.232270    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trend       -4.053e-05  8.226e-06  -4.928 1.17e-06 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -445,19 +458,19 @@ $$</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -0.068335 -0.008206 -0.001157  0.006550  0.098538 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                 Estimate Std. Error t value Pr(&gt;|t|)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)    1.751e-02  2.375e-03   7.373 8.00e-13 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> EcmRes        -1.718e-02  3.055e-03  -5.623 3.28e-08 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.CPI       4.530e-01  4.451e-02  10.178  &lt; 2e-16 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.CPI      -3.108e-02  4.261e-02  -0.730   0.4661    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.PPI       5.638e-03  8.274e-03   0.681   0.4960    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.PPI       1.746e-02  9.135e-03   1.912   0.0565 .  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.PPI      -1.351e-02  9.235e-03  -1.463   0.1442    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L3.d.PPI      -1.668e-02  8.385e-03  -1.990   0.0472 *  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.NAER_POS  1.157e-01  1.851e-02   6.250 9.46e-10 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.NAER_POS  8.638e-02  1.905e-02   4.535 7.39e-06 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.NAER_NEG  6.431e-02  4.695e-02   1.370   0.1714    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> trend         -3.565e-05  6.225e-06  -5.726 1.87e-08 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               Estimate Std. Error t value Pr(&gt;|t|)    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)  1.751e-02  2.375e-03   7.373 8.00e-13 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> EcmRes      -1.718e-02  3.055e-03  -5.623 3.28e-08 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.CPI     4.530e-01  4.451e-02  10.178  &lt; 2e-16 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.CPI    -3.108e-02  4.261e-02  -0.730   0.4661    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.PPI     5.638e-03  8.274e-03   0.681   0.4960    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.PPI     1.746e-02  9.135e-03   1.912   0.0565 .  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.PPI    -1.351e-02  9.235e-03  -1.463   0.1442    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L3.d.PPI    -1.668e-02  8.385e-03  -1.990   0.0472 *  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.ER_POS  1.157e-01  1.851e-02   6.250 9.46e-10 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.ER_POS  8.638e-02  1.905e-02   4.535 7.39e-06 ***</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.ER_NEG  6.431e-02  4.695e-02   1.370   0.1714    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> trend       -3.565e-05  6.225e-06  -5.726 1.87e-08 ***</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -469,50 +482,48 @@ $$</p>
 <span class="r-in"><span><span class="co"># For increasing the performance of finding the most fitted lag vector</span></span></span>
 <span class="r-in"><span><span class="fu">ecm</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, NAER_POS: 2, NAER_NEG: 0, PPI: 2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1.861e-02     -1.384e-02      4.448e-01     -4.173e-02      1.149e-01  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.NAER_POS  L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI       L1.d.PPI  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     9.347e-02      9.679e-03      4.914e-02      6.999e-03      2.102e-02  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      L2.d.PPI          covid          trend  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    -5.382e-03      5.425e-03     -4.375e-05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.861e-02   -1.384e-02    4.448e-01   -4.173e-02    1.149e-01    9.347e-02  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI        covid  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9.679e-03    4.914e-02    6.999e-03    2.102e-02   -5.382e-03    5.425e-03  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       trend  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -4.375e-05  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Setting max lag instead of default value [4]</span></span></span>
 <span class="r-in"><span><span class="fu">ecm</span><span class="op">(</span>maxlag <span class="op">=</span> <span class="fl">2</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, NAER_POS: 1, NAER_NEG: 0, PPI: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, ER_POS: 1, ER_NEG: 0, PPI: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (Intercept)         EcmRes       L1.d.CPI  L0.d.NAER_POS  L1.d.NAER_POS  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1.778e-02     -1.396e-02      4.200e-01      1.170e-01      9.431e-02  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.NAER_NEG       L0.d.PPI          covid          trend  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     4.268e-02     -1.735e-03      4.758e-03     -4.099e-05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L0.d.ER_NEG  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.778e-02   -1.396e-02    4.200e-01    1.170e-01    9.431e-02    4.268e-02  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    L0.d.PPI        covid        trend  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  -1.735e-03    4.758e-03   -4.099e-05  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using another criterion for finding the best lag</span></span></span>
 <span class="r-in"><span><span class="fu">ecm</span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"HQ"</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, NAER_POS: 2, NAER_NEG: 0, PPI: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     1.905e-02     -1.444e-02      4.362e-01     -4.183e-02      1.178e-01  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L1.d.NAER_POS  L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI          covid  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     9.046e-02      9.602e-03      4.823e-02     -1.485e-03      5.218e-03  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         trend  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    -4.422e-05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1.905e-02   -1.444e-02    4.362e-01   -4.183e-02    1.178e-01    9.046e-02  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI        covid        trend  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   9.602e-03    4.823e-02   -1.485e-03    5.218e-03   -4.422e-05  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For using different lag values for positive and negative decompositions</span></span></span>
@@ -521,14 +532,14 @@ $$</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">diffAsymLags</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">diffAsymLags</span><span class="op">$</span><span class="va">lagInfo</span><span class="op">$</span><span class="va">OptLag</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      CPI NAER_POS NAER_NEG      PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        2        2        2        2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    CPI ER_POS ER_NEG    PPI </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2      2      2      2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Setting different lags for positive and negative decompositions</span></span></span>
 <span class="r-in"><span><span class="va">sameAsymLags</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span>differentAsymLag <span class="op">=</span> <span class="cn">TRUE</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sameAsymLags</span><span class="op">$</span><span class="va">lagInfo</span><span class="op">$</span><span class="va">OptLag</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      CPI NAER_POS NAER_NEG      PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        2        2        0        2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    CPI ER_POS ER_NEG    PPI </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      2      2      0      2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Setting the prefixes and suffixes for nonlinear variables</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_reset.html">kardl_reset</a></span><span class="op">(</span><span class="op">)</span></span></span>

@@ -27,6 +27,10 @@ kardl_get("maxlag", "mode")
 a<-kardl_get()
 a$AsymSuffix
 
+# To reset options and then get a default option:
+mydefaults <- kardl_reset()
+mydefaults$maxlag
+
 }
 \seealso{
 \code{\link{kardl_set}}, \code{\link{kardl_reset}}

@@ -146,8 +146,8 @@ my_summary
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.PPI)≠ 0 
+#> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
+#> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 
@@ -197,8 +197,8 @@ library(magrittr)
 #> k =  3 
 #> 
 #> Hypotheses:
-#> H0: Coef(L1.CPI) = Coef(L1.NAER_POS) = Coef(L1.NAER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Coef(L1.CPI) ≠ Coef(L1.NAER_POS) ≠ Coef(L1.NAER_NEG) ≠ Coef(L1.PPI)≠ 0 
+#> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
+#> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 
 #> 
 #> Test Decision:  Reject H0 → Cointegration (at 1% level) 
 #> 

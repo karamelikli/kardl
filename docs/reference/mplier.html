@@ -131,7 +131,7 @@ Otherwise, the same dynamic path is used.</p>
 <span class="r-in"><span> <span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span><span class="op">~</span><span class="va">ER</span> <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">m</span><span class="op">&lt;-</span><span class="fu">mplier</span><span class="op">(</span><span class="va">kardl_model</span>,<span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h  NAER_POS   NAER_NEG ER_dif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      h    ER_POS     ER_NEG ER_dif</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0 0.1011301 -0.1011301      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1 0.2430853 -0.2430853      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 2 0.3149552 -0.3149552      0</span>
@@ -146,7 +146,7 @@ Otherwise, the same dynamic path is used.</p>
 <span class="r-in"><span> <span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span><span class="op">~</span><span class="fu">lasym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">m</span><span class="op">&lt;-</span><span class="fu">mplier</span><span class="op">(</span><span class="va">kardl_model</span>,<span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h  NAER_POS   NAER_NEG ER_dif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      h    ER_POS     ER_NEG ER_dif</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0 0.1016347 -0.1016347      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1 0.2438260 -0.2438260      0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 2 0.3149033 -0.3149033      0</span>
@@ -161,7 +161,7 @@ Otherwise, the same dynamic path is used.</p>
 <span class="r-in"><span> <span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span><span class="op">~</span><span class="fu">sasym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">m</span><span class="op">&lt;-</span><span class="fu">mplier</span><span class="op">(</span><span class="va">kardl_model</span>,<span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h  NAER_POS    NAER_NEG     ER_dif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      h    ER_POS      ER_NEG     ER_dif</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0 0.1168062 -0.02760744 0.08919873</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1 0.2613810 -0.04554608 0.21583495</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 2 0.3275027 -0.04989274 0.27760999</span>
@@ -176,7 +176,7 @@ Otherwise, the same dynamic path is used.</p>
 <span class="r-in"><span> <span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span><span class="op">~</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">m</span><span class="op">&lt;-</span><span class="fu">mplier</span><span class="op">(</span><span class="va">kardl_model</span>,<span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h  NAER_POS    NAER_NEG      ER_dif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      h    ER_POS      ER_NEG      ER_dif</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0 0.1148948 -0.03765414  0.07724068</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1 0.2574646 -0.13534259  0.12212202</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 2 0.3218792 -0.24609073  0.07578847</span>
@@ -193,7 +193,7 @@ Otherwise, the same dynamic path is used.</p>
 <span class="r-in"><span> <span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span><span class="op">~</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">m</span><span class="op">&lt;-</span><span class="fu">mplier</span><span class="op">(</span><span class="va">kardl_model</span>,<span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h  NAPPI_POS   NAPPI_NEG PPI_dif  NAER_POS    NAER_NEG     ER_dif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      h    PPI_POS     PPI_NEG PPI_dif    ER_POS      ER_NEG     ER_dif</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0 0.02132813 -0.02132813       0 0.1063165 -0.03176480 0.07455172</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1 0.07315202 -0.07315202       0 0.2435925 -0.08346931 0.16012314</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 2 0.11052625 -0.11052625       0 0.3036652 -0.13943921 0.16422600</span>
@@ -203,7 +203,7 @@ Otherwise, the same dynamic path is used.</p>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">omega</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1.37561845 -0.47712514  0.07968277</span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">lambda</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         NAPPI_POS    NAPPI_NEG     NAER_POS    NAER_NEG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           PPI_POS      PPI_NEG       ER_POS      ER_NEG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.021328127  0.021328127  0.106316519 0.031764799</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.022484531  0.022484531 -0.008975032 0.008008269</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.023739497 -0.023739497 -0.078040265 0.000000000</span>

@@ -42,7 +42,7 @@ kardl_get()
 #> 
 #> $formula
 #> CPI ~ ER + PPI + Asymmetr(ER) + deterministic(covid) + trend
-#> <environment: 0x5f3b26dfd828>
+#> <environment: 0x5c2a03c3b568>
 #> 
 #> $ShortCoef
 #> [1] "L{lag}.d.{varName}"

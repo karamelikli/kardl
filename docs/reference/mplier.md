@@ -115,7 +115,7 @@ separately. Otherwise, the same dynamic path is used.
  kardl_model<-kardl(imf_example_data, CPI~ER )
  m<-mplier(kardl_model,40)
  head(m$mpsi)
-#>      h  NAER_POS   NAER_NEG ER_dif
+#>      h    ER_POS     ER_NEG ER_dif
 #> [1,] 0 0.1011301 -0.1011301      0
 #> [2,] 1 0.2430853 -0.2430853      0
 #> [3,] 2 0.3149552 -0.3149552      0
@@ -130,7 +130,7 @@ separately. Otherwise, the same dynamic path is used.
  kardl_model<-kardl(imf_example_data, CPI~lasym(ER) )
  m<-mplier(kardl_model,40)
  head(m$mpsi)
-#>      h  NAER_POS   NAER_NEG ER_dif
+#>      h    ER_POS     ER_NEG ER_dif
 #> [1,] 0 0.1016347 -0.1016347      0
 #> [2,] 1 0.2438260 -0.2438260      0
 #> [3,] 2 0.3149033 -0.3149033      0
@@ -145,7 +145,7 @@ separately. Otherwise, the same dynamic path is used.
  kardl_model<-kardl(imf_example_data, CPI~sasym(ER) )
  m<-mplier(kardl_model,40)
  head(m$mpsi)
-#>      h  NAER_POS    NAER_NEG     ER_dif
+#>      h    ER_POS      ER_NEG     ER_dif
 #> [1,] 0 0.1168062 -0.02760744 0.08919873
 #> [2,] 1 0.2613810 -0.04554608 0.21583495
 #> [3,] 2 0.3275027 -0.04989274 0.27760999
@@ -160,7 +160,7 @@ separately. Otherwise, the same dynamic path is used.
  kardl_model<-kardl(imf_example_data, CPI~asym(ER) )
  m<-mplier(kardl_model,40)
  head(m$mpsi)
-#>      h  NAER_POS    NAER_NEG      ER_dif
+#>      h    ER_POS      ER_NEG      ER_dif
 #> [1,] 0 0.1148948 -0.03765414  0.07724068
 #> [2,] 1 0.2574646 -0.13534259  0.12212202
 #> [3,] 2 0.3218792 -0.24609073  0.07578847
@@ -177,7 +177,7 @@ separately. Otherwise, the same dynamic path is used.
  kardl_model<-kardl(imf_example_data, CPI~PPI+asym(ER) )
  m<-mplier(kardl_model,40)
  head(m$mpsi)
-#>      h  NAPPI_POS   NAPPI_NEG PPI_dif  NAER_POS    NAER_NEG     ER_dif
+#>      h    PPI_POS     PPI_NEG PPI_dif    ER_POS      ER_NEG     ER_dif
 #> [1,] 0 0.02132813 -0.02132813       0 0.1063165 -0.03176480 0.07455172
 #> [2,] 1 0.07315202 -0.07315202       0 0.2435925 -0.08346931 0.16012314
 #> [3,] 2 0.11052625 -0.11052625       0 0.3036652 -0.13943921 0.16422600
@@ -187,7 +187,7 @@ separately. Otherwise, the same dynamic path is used.
  head(m$omega)
 #> [1]  1.37561845 -0.47712514  0.07968277
  head(m$lambda)
-#>         NAPPI_POS    NAPPI_NEG     NAER_POS    NAER_NEG
+#>           PPI_POS      PPI_NEG       ER_POS      ER_NEG
 #> [1,]  0.021328127  0.021328127  0.106316519 0.031764799
 #> [2,]  0.022484531  0.022484531 -0.008975032 0.008008269
 #> [3,] -0.023739497 -0.023739497 -0.078040265 0.000000000

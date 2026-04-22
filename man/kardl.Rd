@@ -211,7 +211,7 @@ If a user utilize grid or grid_custom mode and want to split the lag search into
       For example, "2/5" indicates that the current batch is the second out of a total of five batches.
       The default value is "1/1", meaning that the entire lag search is performed in a single batch.}
 
-\item{...}{Additional arguments that can be passed to the function. These arguments can be used to}
+\item{...}{Additional arguments that can be passed to the function. These arguments can be used to specify other settings or parameters that are not explicitly defined in the main arguments.}
 }
 \value{
 An object of class \code{kardl_lm} containing the estimated ARDL or NARDL model.

@@ -4,17 +4,10 @@
 \alias{kardl_reset}
 \title{Reset kardl Package Options to Default Values}
 \usage{
-kardl_reset(value = FALSE)
-}
-\arguments{
-\item{value}{If provided and not `FALSE`, the function will return this value after resetting the settings. If not provided or set to `FALSE`, it will return the current settings.}
+kardl_reset()
 }
 \value{
-If resetting options, returns the provided value (if any) or invisibly
-returns the current settings as a list.
-
-If resetting options, returns the provided value (if any) or invisibly
-returns the current settings as a list.
+A list of the default settings after reset, returned invisibly.
 }
 \description{
 This function resets all options in the kardl package to their default values.

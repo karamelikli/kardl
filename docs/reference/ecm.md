@@ -177,20 +177,20 @@ ecm(
     \`c(1, 2, 4, 5)\`), the function skips the lag optimization process
     and directly uses the specified lags.
 
-    \- Users can define lag values directly as a numeric vector. For
+    Users can define lag values directly as a numeric vector. For
     example: `mode = c(1, 2, 4, 5)` assigns lags of 1, 2, 4, and 5 to
-    variables in the specified order. - Alternatively, lag values can be
+    variables in the specified order. Alternatively, lag values can be
     assigned to variables by name for clarity and control. For example:
     `mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)` assigns lags to
-    variables explicitly. - Ensure that the lags are correctly
-    designated by verifying the result using `kardl_model$properLag`
-    after estimation.
+    variables explicitly. Ensure that the lags are correctly designated
+    by verifying the result using `kardl_model$properLag` after
+    estimation.
 
-    ***Attention!*** -A function-based criterion or user-defined
-    function can be specified for model selection, but this is only
-    supported for `mode = "grid_custom"` and `mode = "quick"`. The
-    `mode = "grid"` option is restricted to predefined criteria (e.g.,
-    AIC or BIC). For more information on available criteria, see the
+    ***Attention!*** A function-based criterion or user-defined function
+    can be specified for model selection, but this is only supported for
+    `mode = "grid_custom"` and `mode = "quick"`. The `mode = "grid"`
+    option is restricted to predefined criteria (e.g., AIC or BIC). For
+    more information on available criteria, see the
     [`modelCriterion`](modelCriterion.md) function documentation. - When
     using a numeric vector, ensure the order of lag values matches the
     variables in your formula. - If using named vectors, double-check
@@ -262,16 +262,11 @@ A list containing the results of the restricted ECM test, including:
 
 - `ecm`: The estimated ECM model objects including:
 
-  - `case`: The case number used in the test (1, 2, 3, 4, or 5).
+  - `longrunEQ`: The estimated long-run model equation object.
 
-  - `EcmResLagged`: The lagged error correction term used in the ECM
-    model.
+  - `shortrunEQ`: The estimated short-run model equation
 
   - `ecmL`: The estimated long-run model object.
-
-  - `shortrunEQ`: The estimated short-run model equation object.
-
-  - `longrunEQ`: The estimated long-run model equation object.
 
 - **argsInfo**: A list of input arguments used for the estimation. It
   includes the data, formula, maxlag, mode, criterion, differentAsymLag,
@@ -378,6 +373,19 @@ The Error Correction Model (ECM) is specified as follows: \$\$
 \Delta x\_{i,t-j} + \theta (y\_{t-1} - \sum\_{i=1}^{k} \alpha_i
 x\_{i,t-1} ) + e_t \end{aligned} \$\$
 
+## Notation of reported coefficients
+
+In the reported coefficients, the prefix `L` denotes lagged variables,
+where the accompanying number indicates the lag order, and `.d.` denotes
+first differences. Accordingly, `L1.PPI` represents the first lag of the
+level of `PPI` (long-run component), while `L3.d.PPI` denotes the third
+lag of the first-differenced `PPI` (short-run component).
+
+In addition, the suffixes `_POS` and `_NEG` indicate the positive and
+negative partial sum components of a variable, respectively. This
+notation is used by default and remains valid unless modified through
+the [`kardl_set()`](kardl_set.md) function.
+
 ## See also
 
 [`kardl`](kardl.md) [`pssf`](pssf.md) [`psst`](psst.md) `ecm`
@@ -398,18 +406,18 @@ ecm_model_grid <- ecm(mode = "grid")
 #> 
 ecm_model_grid
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, NAER_POS: 2, NAER_NEG: 0, PPI: 2 
+#> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 
 #> 
 #> Call:
 #> lm(formula = shortrunEQ, data = EcmData)
 #> 
 #> Coefficients:
-#>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  
-#>     1.861e-02     -1.384e-02      4.448e-01     -4.173e-02      1.149e-01  
-#> L1.d.NAER_POS  L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI       L1.d.PPI  
-#>     9.347e-02      9.679e-03      4.914e-02      6.999e-03      2.102e-02  
-#>      L2.d.PPI          covid          trend  
-#>    -5.382e-03      5.425e-03     -4.375e-05  
+#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
+#>   1.861e-02   -1.384e-02    4.448e-01   -4.173e-02    1.149e-01    9.347e-02  
+#> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI        covid  
+#>   9.679e-03    4.914e-02    6.999e-03    2.102e-02   -5.382e-03    5.425e-03  
+#>       trend  
+#>  -4.375e-05  
 #> 
 
 # Checking the cointegration test results using Pesaran t test
@@ -449,16 +457,16 @@ summary(psst(ecm_model_grid))
 ecm_model <- ecm(imf_example_data, mode = "grid_custom", criterion = "HQ", batch = "2/3")
 ecm_model
 #> Optimal lags for each variable ( HQ ):
-#> CPI: 1, NAER_POS: 2, NAER_NEG: 0, PPI: 0 
+#> CPI: 1, ER_POS: 2, ER_NEG: 0, PPI: 0 
 #> 
 #> Call:
 #> lm(formula = shortrunEQ, data = EcmData)
 #> 
 #> Coefficients:
-#>   (Intercept)         EcmRes       L1.d.CPI  L0.d.NAER_POS  L1.d.NAER_POS  
-#>     1.815e-02     -1.394e-02      4.154e-01      1.168e-01      9.272e-02  
-#> L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI          covid          trend  
-#>     6.635e-03      4.541e-02     -1.953e-03      4.998e-03     -4.241e-05  
+#> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L2.d.ER_POS  
+#>   1.815e-02   -1.394e-02    4.154e-01    1.168e-01    9.272e-02    6.635e-03  
+#> L0.d.ER_NEG     L0.d.PPI        covid        trend  
+#>   4.541e-02   -1.953e-03    4.998e-03   -4.241e-05  
 #> 
 
 # Estimating the model with user-defined lag values
@@ -467,18 +475,18 @@ ecm_model2 <- ecm(mode = c(2, 1, 1, 3))
 # Getting the results
 ecm_model2
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, NAER_POS: 1, NAER_NEG: 1, PPI: 3 
+#> CPI: 2, ER_POS: 1, ER_NEG: 1, PPI: 3 
 #> 
 #> Call:
 #> lm(formula = shortrunEQ, data = EcmData)
 #> 
 #> Coefficients:
-#>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  
-#>     1.879e-02     -1.421e-02      4.480e-01     -2.922e-02      1.150e-01  
-#> L1.d.NAER_POS  L0.d.NAER_NEG  L1.d.NAER_NEG       L0.d.PPI       L1.d.PPI  
-#>     8.085e-02      3.857e-02      7.378e-02      5.352e-03      1.761e-02  
-#>      L2.d.PPI       L3.d.PPI          covid          trend  
-#>    -1.359e-02     -1.685e-02      4.482e-03     -4.053e-05  
+#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
+#>   1.879e-02   -1.421e-02    4.480e-01   -2.922e-02    1.150e-01    8.085e-02  
+#> L0.d.ER_NEG  L1.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI     L3.d.PPI  
+#>   3.857e-02    7.378e-02    5.352e-03    1.761e-02   -1.359e-02   -1.685e-02  
+#>       covid        trend  
+#>   4.482e-03   -4.053e-05  
 #> 
 
 # Getting the summary of the results
@@ -492,21 +500,21 @@ summary(ecm_model2)
 #> -0.066291 -0.008125 -0.000967  0.007027  0.099847 
 #> 
 #> Coefficients:
-#>                 Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)    1.879e-02  2.512e-03   7.482 3.84e-13 ***
-#> EcmRes        -1.421e-02  3.752e-03  -3.787 0.000173 ***
-#> L1.d.CPI       4.480e-01  4.453e-02  10.059  < 2e-16 ***
-#> L2.d.CPI      -2.922e-02  4.264e-02  -0.685 0.493482    
-#> L0.d.NAER_POS  1.150e-01  1.847e-02   6.227 1.09e-09 ***
-#> L1.d.NAER_POS  8.085e-02  1.986e-02   4.072 5.51e-05 ***
-#> L0.d.NAER_NEG  3.857e-02  4.845e-02   0.796 0.426383    
-#> L1.d.NAER_NEG  7.378e-02  4.806e-02   1.535 0.125395    
-#> L0.d.PPI       5.352e-03  8.254e-03   0.648 0.517029    
-#> L1.d.PPI       1.761e-02  9.115e-03   1.932 0.053946 .  
-#> L2.d.PPI      -1.359e-02  9.214e-03  -1.475 0.140875    
-#> L3.d.PPI      -1.685e-02  8.365e-03  -2.014 0.044618 *  
-#> covid          4.482e-03  3.747e-03   1.196 0.232270    
-#> trend         -4.053e-05  8.226e-06  -4.928 1.17e-06 ***
+#>               Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept)  1.879e-02  2.512e-03   7.482 3.84e-13 ***
+#> EcmRes      -1.421e-02  3.752e-03  -3.787 0.000173 ***
+#> L1.d.CPI     4.480e-01  4.453e-02  10.059  < 2e-16 ***
+#> L2.d.CPI    -2.922e-02  4.264e-02  -0.685 0.493482    
+#> L0.d.ER_POS  1.150e-01  1.847e-02   6.227 1.09e-09 ***
+#> L1.d.ER_POS  8.085e-02  1.986e-02   4.072 5.51e-05 ***
+#> L0.d.ER_NEG  3.857e-02  4.845e-02   0.796 0.426383    
+#> L1.d.ER_NEG  7.378e-02  4.806e-02   1.535 0.125395    
+#> L0.d.PPI     5.352e-03  8.254e-03   0.648 0.517029    
+#> L1.d.PPI     1.761e-02  9.115e-03   1.932 0.053946 .  
+#> L2.d.PPI    -1.359e-02  9.214e-03  -1.475 0.140875    
+#> L3.d.PPI    -1.685e-02  8.365e-03  -2.014 0.044618 *  
+#> covid        4.482e-03  3.747e-03   1.196 0.232270    
+#> trend       -4.053e-05  8.226e-06  -4.928 1.17e-06 ***
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
@@ -526,19 +534,19 @@ summary(ecm(imf_example_data, CPI ~ PPI + asym(ER) + trend, case = 4))
 #> -0.068335 -0.008206 -0.001157  0.006550  0.098538 
 #> 
 #> Coefficients:
-#>                 Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)    1.751e-02  2.375e-03   7.373 8.00e-13 ***
-#> EcmRes        -1.718e-02  3.055e-03  -5.623 3.28e-08 ***
-#> L1.d.CPI       4.530e-01  4.451e-02  10.178  < 2e-16 ***
-#> L2.d.CPI      -3.108e-02  4.261e-02  -0.730   0.4661    
-#> L0.d.PPI       5.638e-03  8.274e-03   0.681   0.4960    
-#> L1.d.PPI       1.746e-02  9.135e-03   1.912   0.0565 .  
-#> L2.d.PPI      -1.351e-02  9.235e-03  -1.463   0.1442    
-#> L3.d.PPI      -1.668e-02  8.385e-03  -1.990   0.0472 *  
-#> L0.d.NAER_POS  1.157e-01  1.851e-02   6.250 9.46e-10 ***
-#> L1.d.NAER_POS  8.638e-02  1.905e-02   4.535 7.39e-06 ***
-#> L0.d.NAER_NEG  6.431e-02  4.695e-02   1.370   0.1714    
-#> trend         -3.565e-05  6.225e-06  -5.726 1.87e-08 ***
+#>               Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept)  1.751e-02  2.375e-03   7.373 8.00e-13 ***
+#> EcmRes      -1.718e-02  3.055e-03  -5.623 3.28e-08 ***
+#> L1.d.CPI     4.530e-01  4.451e-02  10.178  < 2e-16 ***
+#> L2.d.CPI    -3.108e-02  4.261e-02  -0.730   0.4661    
+#> L0.d.PPI     5.638e-03  8.274e-03   0.681   0.4960    
+#> L1.d.PPI     1.746e-02  9.135e-03   1.912   0.0565 .  
+#> L2.d.PPI    -1.351e-02  9.235e-03  -1.463   0.1442    
+#> L3.d.PPI    -1.668e-02  8.385e-03  -1.990   0.0472 *  
+#> L0.d.ER_POS  1.157e-01  1.851e-02   6.250 9.46e-10 ***
+#> L1.d.ER_POS  8.638e-02  1.905e-02   4.535 7.39e-06 ***
+#> L0.d.ER_NEG  6.431e-02  4.695e-02   1.370   0.1714    
+#> trend       -3.565e-05  6.225e-06  -5.726 1.87e-08 ***
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
@@ -550,50 +558,48 @@ summary(ecm(imf_example_data, CPI ~ PPI + asym(ER) + trend, case = 4))
 # For increasing the performance of finding the most fitted lag vector
 ecm(mode = "grid_custom")
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, NAER_POS: 2, NAER_NEG: 0, PPI: 2 
+#> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 
 #> 
 #> Call:
 #> lm(formula = shortrunEQ, data = EcmData)
 #> 
 #> Coefficients:
-#>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  
-#>     1.861e-02     -1.384e-02      4.448e-01     -4.173e-02      1.149e-01  
-#> L1.d.NAER_POS  L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI       L1.d.PPI  
-#>     9.347e-02      9.679e-03      4.914e-02      6.999e-03      2.102e-02  
-#>      L2.d.PPI          covid          trend  
-#>    -5.382e-03      5.425e-03     -4.375e-05  
+#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
+#>   1.861e-02   -1.384e-02    4.448e-01   -4.173e-02    1.149e-01    9.347e-02  
+#> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI        covid  
+#>   9.679e-03    4.914e-02    6.999e-03    2.102e-02   -5.382e-03    5.425e-03  
+#>       trend  
+#>  -4.375e-05  
 #> 
 
 # Setting max lag instead of default value [4]
 ecm(maxlag = 2, mode = "grid_custom")
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 1, NAER_POS: 1, NAER_NEG: 0, PPI: 0 
+#> CPI: 1, ER_POS: 1, ER_NEG: 0, PPI: 0 
 #> 
 #> Call:
 #> lm(formula = shortrunEQ, data = EcmData)
 #> 
 #> Coefficients:
-#>   (Intercept)         EcmRes       L1.d.CPI  L0.d.NAER_POS  L1.d.NAER_POS  
-#>     1.778e-02     -1.396e-02      4.200e-01      1.170e-01      9.431e-02  
-#> L0.d.NAER_NEG       L0.d.PPI          covid          trend  
-#>     4.268e-02     -1.735e-03      4.758e-03     -4.099e-05  
+#> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L0.d.ER_NEG  
+#>   1.778e-02   -1.396e-02    4.200e-01    1.170e-01    9.431e-02    4.268e-02  
+#>    L0.d.PPI        covid        trend  
+#>  -1.735e-03    4.758e-03   -4.099e-05  
 #> 
 
 # Using another criterion for finding the best lag
 ecm(criterion = "HQ", mode = "grid_custom")
 #> Optimal lags for each variable ( HQ ):
-#> CPI: 2, NAER_POS: 2, NAER_NEG: 0, PPI: 0 
+#> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 0 
 #> 
 #> Call:
 #> lm(formula = shortrunEQ, data = EcmData)
 #> 
 #> Coefficients:
-#>   (Intercept)         EcmRes       L1.d.CPI       L2.d.CPI  L0.d.NAER_POS  
-#>     1.905e-02     -1.444e-02      4.362e-01     -4.183e-02      1.178e-01  
-#> L1.d.NAER_POS  L2.d.NAER_POS  L0.d.NAER_NEG       L0.d.PPI          covid  
-#>     9.046e-02      9.602e-03      4.823e-02     -1.485e-03      5.218e-03  
-#>         trend  
-#>    -4.422e-05  
+#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
+#>   1.905e-02   -1.444e-02    4.362e-01   -4.183e-02    1.178e-01    9.046e-02  
+#> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI        covid        trend  
+#>   9.602e-03    4.823e-02   -1.485e-03    5.218e-03   -4.422e-05  
 #> 
 
 # For using different lag values for positive and negative decompositions
@@ -602,14 +608,14 @@ kardl_set(differentAsymLag = FALSE)
 
 diffAsymLags <- ecm(mode = "grid_custom")
 diffAsymLags$lagInfo$OptLag
-#>      CPI NAER_POS NAER_NEG      PPI 
-#>        2        2        2        2 
+#>    CPI ER_POS ER_NEG    PPI 
+#>      2      2      2      2 
 
 # Setting different lags for positive and negative decompositions
 sameAsymLags <- ecm(differentAsymLag = TRUE, mode = "grid_custom")
 sameAsymLags$lagInfo$OptLag
-#>      CPI NAER_POS NAER_NEG      PPI 
-#>        2        2        0        2 
+#>    CPI ER_POS ER_NEG    PPI 
+#>      2      2      0      2 
 
 # Setting the prefixes and suffixes for nonlinear variables
 kardl_reset()

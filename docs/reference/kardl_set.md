@@ -67,7 +67,7 @@ kardl_get()
 #> [1] "grid"
 #> 
 #> $AsymPrefix
-#> character(0)
+#> NULL
 #> 
 # Get specific options
 kardl_get("maxlag", "mode")
@@ -113,7 +113,7 @@ kardl_get()
 #> [1] "grid"
 #> 
 #> $AsymPrefix
-#> character(0)
+#> NULL
 #> 
 # }
 
@@ -155,7 +155,7 @@ kardl_get()
 #> [1] "quick"
 #> 
 #> $AsymPrefix
-#> character(0)
+#> NULL
 #> 
 
 ```

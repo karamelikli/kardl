@@ -178,20 +178,20 @@ kardl(
     \`c(1, 2, 4, 5)\`), the function skips the lag optimization process
     and directly uses the specified lags.
 
-    \- Users can define lag values directly as a numeric vector. For
+    Users can define lag values directly as a numeric vector. For
     example: `mode = c(1, 2, 4, 5)` assigns lags of 1, 2, 4, and 5 to
-    variables in the specified order. - Alternatively, lag values can be
+    variables in the specified order. Alternatively, lag values can be
     assigned to variables by name for clarity and control. For example:
     `mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)` assigns lags to
-    variables explicitly. - Ensure that the lags are correctly
-    designated by verifying the result using `kardl_model$properLag`
-    after estimation.
+    variables explicitly. Ensure that the lags are correctly designated
+    by verifying the result using `kardl_model$properLag` after
+    estimation.
 
-    ***Attention!*** -A function-based criterion or user-defined
-    function can be specified for model selection, but this is only
-    supported for `mode = "grid_custom"` and `mode = "quick"`. The
-    `mode = "grid"` option is restricted to predefined criteria (e.g.,
-    AIC or BIC). For more information on available criteria, see the
+    ***Attention!*** A function-based criterion or user-defined function
+    can be specified for model selection, but this is only supported for
+    `mode = "grid_custom"` and `mode = "quick"`. The `mode = "grid"`
+    option is restricted to predefined criteria (e.g., AIC or BIC). For
+    more information on available criteria, see the
     [`modelCriterion`](modelCriterion.md) function documentation. - When
     using a numeric vector, ensure the order of lag values matches the
     variables in your formula. - If using named vectors, double-check
@@ -308,29 +308,65 @@ The general formula for the long-run model is specified as follows: \$\$
 {x}^-\_{i,t-j} } } + \sum\_{i=m+1}^{k} {\sum\_{j=0}^{q_i} { \beta\_{ij}
 \Delta {x}\_{i,t-j} } }+ e_t \end{aligned} \$\$
 
-Where: - \\y_t\\ is the dependent variable at time t. - \\c\\ is the
-constant term. - \\\eta_0\\ is the coefficient of the lagged dependent
-variable. - \\\gamma_j\\ are the coefficients of the lagged differences
-of the dependent variable. - \\\eta^+\_i\\ and \\\eta^-\_i\\ are the
-coefficients of the positive and negative decompositions of the
-independent variables, respectively. - \\\eta_i\\ are the coefficients
-of the independent variables that do not have asymmetric
-decompositions. - \\\beta^+\_{ij}\\ and \\\beta^-\_{ij}\\ are the
-coefficients of the lagged differences of the positive and negative
-decompositions of the independent variables, respectively. -
-\\\beta\_{ij}\\ are the coefficients of the lagged differences of the
-independent variables that do not have asymmetric decompositions. -
-\\e_t\\ is the error term at time t. - \\p\\ is the maximum lag length
-for the dependent variable. - \\q^+\_i\\ and \\q^-\_i\\ are the maximum
-lag lengths for the positive and negative decompositions of the
-independent variables, respectively. - \\q_i\\ is the maximum lag length
-for the independent variables that do not have asymmetric
-decompositions. - \\m\\ is the number of independent variables with
-asymmetric decompositions. - \\k\\ is the total number of independent
-variables. - \\\Delta\\ denotes the first difference operator. -
-\\x^+\_{i,t}\\ and \\x^-\_{i,t}\\ represent the positive and negative
-decompositions of the independent variable \\x_i\\ at time t,
-respectively.
+Where:
+
+- \\y_t\\ is the dependent variable at time t.
+
+- \\c\\ is the constant term.
+
+- \\\eta_0\\ is the coefficient of the lagged dependent variable.
+
+- \\\gamma_j\\ are the coefficients of the lagged differences of the
+  dependent variable.
+
+- \\\eta^+\_i\\ and \\\eta^-\_i\\ are the coefficients of the positive
+  and negative decompositions of the independent variables,
+  respectively.
+
+- \\\eta_i\\ are the coefficients of the independent variables that do
+  not have asymmetric decompositions.
+
+- \\\beta^+\_{ij}\\ and \\\beta^-\_{ij}\\ are the coefficients of the
+  lagged differences of the positive and negative decompositions of the
+  independent variables, respectively.
+
+- \\\beta\_{ij}\\ are the coefficients of the lagged differences of the
+  independent variables that do not have asymmetric decompositions.
+
+- \\e_t\\ is the error term at time t.
+
+- \\p\\ is the maximum lag length for the dependent variable.
+
+- \\q^+\_i\\ and \\q^-\_i\\ are the maximum lag lengths for the positive
+  and negative decompositions of the independent variables,
+  respectively.
+
+- \\q_i\\ is the maximum lag length for the independent variables that
+  do not have asymmetric decompositions.
+
+- \\m\\ is the number of independent variables with asymmetric
+  decompositions.
+
+- \\k\\ is the total number of independent variables.
+
+- \\\Delta\\ denotes the first difference operator.
+
+- \\x^+\_{i,t}\\ and \\x^-\_{i,t}\\ represent the positive and negative
+  decompositions of the independent variable \\x_i\\ at time t,
+  respectively.
+
+## Notation of reported coefficients
+
+In the reported coefficients, the prefix `L` denotes lagged variables,
+where the accompanying number indicates the lag order, and `.d.` denotes
+first differences. Accordingly, `L1.PPI` represents the first lag of the
+level of `PPI` (long-run component), while `L3.d.PPI` denotes the third
+lag of the first-differenced `PPI` (short-run component).
+
+In addition, the suffixes `_POS` and `_NEG` indicate the positive and
+negative partial sum components of a variable, respectively. This
+notation is used by default and remains valid unless modified through
+the [`kardl_set()`](kardl_set.md) function.
 
 ## See also
 

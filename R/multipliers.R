@@ -25,8 +25,8 @@
 #'
 #' @param kmodel An object of class \code{kardl_lm} produced by the \code{kardl} function.
 #' @param horizon Integer. Number of periods ahead for which dynamic multipliers are computed.
-#' @param minProb Numeric. Threshold for coefficient significance. Coefficients with
-#' p-values greater than this value are set to zero.
+#' @param minProb Numeric. Minimum p-value threshold for including coefficients in the calculation. Coefficients with p-values above this threshold will be set to zero. Default is \code{0} (no threshold).
+#' This parameter allows users to control the inclusion of coefficients in the calculation based on their statistical significance. Setting a threshold can help focus the analysis on more relevant variables, but it may also exclude potentially important effects if set too stringently.
 #'
 #' @return A list of class \code{kardl_mplier} containing:
 #' \itemize{

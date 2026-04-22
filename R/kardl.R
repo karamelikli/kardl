@@ -243,7 +243,7 @@
 #'       For example, "2/5" indicates that the current batch is the second out of a total of five batches.
 #'       The default value is "1/1", meaning that the entire lag search is performed in a single batch.
 #'
-#' @param ... Additional arguments that can be passed to the function. These arguments can be used to
+#' @param ... Additional arguments that can be passed to the function. These arguments can be used to specify other settings or parameters that are not explicitly defined in the main arguments.
 #'
 #'@return An object of class \code{kardl_lm} containing the estimated ARDL or NARDL model.
 #' The object includes the following components:
@@ -658,7 +658,7 @@ ecmS <-lm( shortrunEQ, EcmData)
 #' }
 #' @param cr A character string specifying the criterion to compute.
 #'           Options are \code{"AIC"}, \code{"BIC"}, \code{"AICc"}, and \code{"HQ"}. Alternatively,
-#'           a user-defined function can be provided.
+#'           a user-defined function can be provided. See details below for more information on using custom criteria.
 #' @param ... Additional arguments passed to the user-defined criterion function if \code{cr} is a function.
 #'
 #' @return A numeric value representing the selected criterion, normalized by the sample size if one of the predefined options is used.
@@ -693,23 +693,28 @@ ecmS <-lm( shortrunEQ, EcmData)
 #' @seealso \code{\link{kardl}}
 #' @examples
 #'
-#' # Example usage of modelCriterion function with a linear model
+#' # Example usage of modelCriterion function with a simple linear model
 #' mylm<- lm(mpg ~ wt + hp, data = mtcars)
 #' modelCriterion(mylm, AIC )
-#' modelCriterion(mylm, "BIC" )
-#' mm<-AIC(mylm)
-#'  class(mm) == class(modelCriterion(mylm, "AIC"))
+#' modelCriterion(mylm, "AIC" )
 #'
 #'  # Example usage of modelCriterion function with a kardl model
 #'  kardl_model <- kardl(imf_example_data,
 #'                       CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
 #'                       mode = c(1, 2, 3, 0))
+#'
+#'  # Using AIC as the kardl package's built-in criterion function which is different from the base R AIC function.
 #'  modelCriterion(kardl_model, "AIC")
+#'
+#'  # Using the base R AIC function directly on the fitted model object
 #'  modelCriterion(kardl_model, AIC)
+#'  # Using the base R AIC function outside of modelCriterion to compute AIC for the fitted model
 #'  AIC(kardl_model)
+#'
+#'  # Using BIC as the criterion for the kardl model which is different from the base R BIC function.
 #'  modelCriterion(kardl_model, "BIC")
 #'
-#'  # Using a custom criterion function
+#'  # Using a custom criterion function that divides AIC by the sample size
 #'  my_cr_fun <- function(mod, ...) { AIC(mod) / length(mod$model[[1]]) }
 #'  modelCriterion(kardl_model, my_cr_fun)
 #'

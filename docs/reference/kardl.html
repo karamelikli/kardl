@@ -182,14 +182,14 @@ a specification tailored to the empirical analysis.</p></dd>
         A numeric vector of lag values specified by the user, allowing full customization of the lag
         structure used in model estimation. When a user-defined vector is provided (e.g., `c(1, 2, 4, 5)`),
         the function skips the lag optimization process and directly uses the specified lags.</p>
-<p>- Users can define lag values directly as a numeric vector. For example:
+<p>Users can define lag values directly as a numeric vector. For example:
           <code>mode = c(1, 2, 4, 5)</code> assigns lags of 1, 2, 4, and 5 to variables in the specified order.
-        - Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
+         Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
           <code>mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code> assigns lags to variables explicitly.
-        - Ensure that the lags are correctly designated by verifying the result using
+         Ensure that the lags are correctly designated by verifying the result using
           <code>kardl_model$properLag</code> after estimation.</p>
 <p><strong><em>Attention!</em></strong>
-        -A function-based criterion or user-defined function can be specified
+        A function-based criterion or user-defined function can be specified
          for model selection, but this is only supported for <code>mode = "grid_custom"</code>
          and <code>mode = "quick"</code>. The <code>mode = "grid"</code> option is restricted to
          predefined criteria (e.g., AIC or BIC). For more information on available criteria,
@@ -266,23 +266,37 @@ $$
 +  \newline  \sum_{i=1}^{m} {\sum_{j=0}^{q^+_i} { \beta^+_{ij}   \Delta {x}^+_{i,t-j} } } + \sum_{i=1}^{m} {\sum_{j=0}^{q^-_i} { \beta^-_{ij}   \Delta {x}^-_{i,t-j} } }  + \sum_{i=m+1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
 \end{aligned}
  $$</p>
-<p>Where:
-- \(y_t\) is the dependent variable at time t.
-- \(c\) is the constant term.
-- \(\eta_0\) is the coefficient of the lagged dependent variable.
-- \(\gamma_j\) are the coefficients of the lagged differences of the dependent variable.
-- \(\eta^+_i\) and \(\eta^-_i\) are the coefficients of the positive and negative decompositions of the independent variables, respectively.
-- \(\eta_i\) are the coefficients of the independent variables that do not have asymmetric decompositions.
-- \(\beta^+_{ij}\) and \(\beta^-_{ij}\) are the coefficients of the lagged differences of the positive and negative decompositions of the independent variables, respectively.
-- \(\beta_{ij}\) are the coefficients of the lagged differences of the independent variables that do not have asymmetric decompositions.
-- \(e_t\) is the error term at time t.
-- \(p\) is the maximum lag length for the dependent variable.
-- \(q^+_i\) and \(q^-_i\) are the maximum lag lengths for the positive and negative decompositions of the independent variables, respectively.
-- \(q_i\) is the maximum lag length for the independent variables that do not have asymmetric decompositions.
-- \(m\) is the number of independent variables with asymmetric decompositions.
-- \(k\) is the total number of independent variables.
-- \(\Delta\) denotes the first difference operator.
-- \(x^+_{i,t}\) and \(x^-_{i,t}\) represent the positive and negative decompositions of the independent variable \(x_i\) at time t, respectively.</p>
+<p>Where:</p><ul><li><p>\(y_t\) is the dependent variable at time t.</p></li>
+<li><p>\(c\) is the constant term.</p></li>
+<li><p>\(\eta_0\) is the coefficient of the lagged dependent variable.</p></li>
+<li><p>\(\gamma_j\) are the coefficients of the lagged differences of the dependent variable.</p></li>
+<li><p>\(\eta^+_i\) and \(\eta^-_i\) are the coefficients of the positive and negative decompositions of the independent variables, respectively.</p></li>
+<li><p>\(\eta_i\) are the coefficients of the independent variables that do not have asymmetric decompositions.</p></li>
+<li><p>\(\beta^+_{ij}\) and \(\beta^-_{ij}\) are the coefficients of the lagged differences of the positive and negative decompositions of the independent variables, respectively.</p></li>
+<li><p>\(\beta_{ij}\) are the coefficients of the lagged differences of the independent variables that do not have asymmetric decompositions.</p></li>
+<li><p>\(e_t\) is the error term at time t.</p></li>
+<li><p>\(p\) is the maximum lag length for the dependent variable.</p></li>
+<li><p>\(q^+_i\) and \(q^-_i\) are the maximum lag lengths for the positive and negative decompositions of the independent variables, respectively.</p></li>
+<li><p>\(q_i\) is the maximum lag length for the independent variables that do not have asymmetric decompositions.</p></li>
+<li><p>\(m\) is the number of independent variables with asymmetric decompositions.</p></li>
+<li><p>\(k\) is the total number of independent variables.</p></li>
+<li><p>\(\Delta\) denotes the first difference operator.</p></li>
+<li><p>\(x^+_{i,t}\) and \(x^-_{i,t}\) represent the positive and negative decompositions of the independent variable \(x_i\) at time t, respectively.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="notation-of-reported-coefficients">Notation of reported coefficients<a class="anchor" aria-label="anchor" href="#notation-of-reported-coefficients"></a></h2>
+
+
+
+<p>In the reported coefficients, the prefix <code>L</code> denotes lagged variables,
+where the accompanying number indicates the lag order, and <code>.d.</code> denotes
+first differences. Accordingly, <code>L1.PPI</code> represents the first lag of the
+level of <code>PPI</code> (long-run component), while <code>L3.d.PPI</code> denotes the
+third lag of the first-differenced <code>PPI</code> (short-run component).</p>
+<p>In addition, the suffixes <code>_POS</code> and <code>_NEG</code> indicate the positive
+and negative partial sum components of a variable, respectively. This notation
+is used by default and remains valid unless modified through the
+<code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
