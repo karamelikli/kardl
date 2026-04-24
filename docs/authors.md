@@ -10,12 +10,17 @@
 
 ## Citation
 
+Source:
+[`DESCRIPTION`](https://github.com/karamelikli/kardl/blob/HEAD/DESCRIPTION)
+
 Karamelikli H, Demir H (2026). *kardl: Make Symmetric and Asymmetric
-ARDL Estimations*. R package version 1.3.1.
+ARDL Estimations*. R package version 1.3.1,
+<https://github.com/karamelikli/kardl>.
 
     @Manual{,
       title = {kardl: Make Symmetric and Asymmetric ARDL Estimations},
       author = {Huseyin Karamelikli and Huseyin Utku Demir},
       year = {2026},
       note = {R package version 1.3.1},
+      url = {https://github.com/karamelikli/kardl},
     }
