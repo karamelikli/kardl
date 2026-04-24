@@ -23,8 +23,13 @@ mplier(kmodel, horizon = 80, minProb = 0)
 
 - minProb:
 
-  Numeric. Threshold for coefficient significance. Coefficients with
-  p-values greater than this value are set to zero.
+  Numeric. Minimum p-value threshold for including coefficients in the
+  calculation. Coefficients with p-values above this threshold will be
+  set to zero. Default is `0` (no threshold). This parameter allows
+  users to control the inclusion of coefficients in the calculation
+  based on their statistical significance. Setting a threshold can help
+  focus the analysis on more relevant variables, but it may also exclude
+  potentially important effects if set too stringently.
 
 ## Value
 
@@ -106,12 +111,14 @@ separately. Otherwise, the same dynamic path is used.
 ## Examples
 
 ``` r
+
 # This example demonstrates how to use the mplier function to calculate dynamic multipliers
 # from a model estimated using the kardl package. The example includes fitting a model with
 # the kardl function, calculating the multipliers, and visualizing the results using both
 # base R plotting and ggplot2.
 
  # Calculating dynamic multipliers for a linear model in short and long run (NN)
+
  kardl_model<-kardl(imf_example_data, CPI~ER )
  m<-mplier(kardl_model,40)
  head(m$mpsi)

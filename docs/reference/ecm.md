@@ -77,6 +77,7 @@ ecm(
 
   - They can be freely combined within a single formula, for example:
 
+
           y ~ . +
             Asymmetric(z) +
             Lasymmetric(x2 + x3) +
@@ -254,7 +255,8 @@ ecm(
 - ...:
 
   Additional arguments that can be passed to the function. These
-  arguments can be used to
+  arguments can be used to specify other settings or parameters that are
+  not explicitly defined in the main arguments.
 
 ## Value
 
@@ -394,6 +396,7 @@ the [`kardl_set()`](kardl_set.md) function.
 ## Examples
 
 ``` r
+
 # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
 kardl_set(
   formula = CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
@@ -636,60 +639,4 @@ customizedNames
 #>        L1.d.PPI         L2.d.PPI         L3.d.PPI  
 #>        0.019350        -0.013874        -0.017945  
 #> 
-
-# Optional plotting example requiring suggested packages
-if (requireNamespace("dplyr", quietly = TRUE) &&
-    requireNamespace("tidyr", quietly = TRUE) &&
-    requireNamespace("ggplot2", quietly = TRUE)) {
-
-  LagCriteria <-  ecm_model_grid$lagInfo$LagCriteria
-  colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
-
-  LagCriteria <- dplyr::mutate(
-    LagCriteria,
-    dplyr::across(c(AIC, BIC, HQ), as.numeric)
-  )
-
-  LagCriteria_long <- LagCriteria |>
-    dplyr::select(-AICc) |>
-    tidyr::pivot_longer(
-      cols = c(AIC, BIC, HQ),
-      names_to = "Criteria",
-      values_to = "Value"
-    )
-
-  min_values <- LagCriteria_long |>
-    dplyr::group_by(Criteria) |>
-    dplyr::slice_min(order_by = Value) |>
-    dplyr::ungroup()
-
-  ggplot2::ggplot(
-    LagCriteria_long,
-    ggplot2::aes(x = lag, y = Value, color = Criteria, group = Criteria)
-  ) +
-    ggplot2::geom_line() +
-    ggplot2::geom_point(
-      data = min_values,
-      ggplot2::aes(x = lag, y = Value),
-      color = "red",
-      size = 3,
-      shape = 8
-    ) +
-    ggplot2::geom_text(
-      data = min_values,
-      ggplot2::aes(x = lag, y = Value, label = lag),
-      vjust = 1.5,
-      color = "black",
-      size = 3.5
-    ) +
-    ggplot2::labs(
-      title = "Lag Criteria Comparison",
-      x = "Lag Configuration",
-      y = "Criteria Value"
-    ) +
-    ggplot2::theme_minimal() +
-    ggplot2::theme(
-      axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)
-    )
-}
 ```

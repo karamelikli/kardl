@@ -20,15 +20,15 @@
 #' a<-list("a"="first a","b"="second a","c"=list("w"=12,"k"=c(1,3,6)))
 #' b<-list("a"="first b","b"="second b","d"=14,"e"=45)
 #' myMerged<- lmerge(a,b)
-#' unlist(myMerged)
+#' print(unlist(myMerged))
 #'
 #' # for right merge
 #' myMerged<- lmerge(b,a)
-#' unlist(myMerged)
+#' print(unlist(myMerged))
 #'
 #' # for more than two lists
 #' myMerged<- lmerge(a,b,c("v1"=11,22,3,"v5"=5))
-#' unlist(myMerged)
+#' print(unlist(myMerged))
 #'
 #' # for more than two lists with nested lists
 #' m2<-list("m1"="kk2","m1.2.3"=list("m1.1.1"=333,"m.1.4"=918,"m.1.5"=982,"m.1.6"=981,"m.1.7"=928))
@@ -37,10 +37,11 @@
 #' b<-c(65,"k"=34)
 #'
 #' h1<-lmerge(a, m2)
-#' unlist(h1)
+#' print(unlist(h1))
 #'
 #' h2<-lmerge(a,b,m2,m3,list("m1.1"=4))
-#' unlist(h2)
+#' print(unlist(h2))
+#'
 
 lmerge<-function(first,second,...){
   a<-first;

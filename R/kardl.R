@@ -276,7 +276,7 @@
 #'
 #' # using the grid_custom mode with batch processing
 #'
-#' kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3")
+#' kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3",criterion = "BIC")
 #' kardl_model_grid
 #'
 #' kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
@@ -289,7 +289,8 @@
 #'
 #' # using '.' in the formula means that all variables in the data will be used
 #'
-#' kardl(formula=CPI~.+deterministic(covid),criterion = "BIC")
+#' fit_bic <- kardl(formula=CPI~.+deterministic(covid))
+#' fit_bic
 #'
 #' # Setting max lag instead of default value [4]
 #' kardl(imf_example_data,
@@ -524,61 +525,7 @@ kardl <- function(data = NULL, formula = NULL,
 #' customizedNames <- ecm(imf_example_data, CPI ~ ER + PPI + asym(ER))
 #' customizedNames
 #'
-#' # Optional plotting example requiring suggested packages
-#' if (requireNamespace("dplyr", quietly = TRUE) &&
-#'     requireNamespace("tidyr", quietly = TRUE) &&
-#'     requireNamespace("ggplot2", quietly = TRUE)) {
-#'
-#'   LagCriteria <-  ecm_model_grid$lagInfo$LagCriteria
-#'   colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
-#'
-#'   LagCriteria <- dplyr::mutate(
-#'     LagCriteria,
-#'     dplyr::across(c(AIC, BIC, HQ), as.numeric)
-#'   )
-#'
-#'   LagCriteria_long <- LagCriteria |>
-#'     dplyr::select(-AICc) |>
-#'     tidyr::pivot_longer(
-#'       cols = c(AIC, BIC, HQ),
-#'       names_to = "Criteria",
-#'       values_to = "Value"
-#'     )
-#'
-#'   min_values <- LagCriteria_long |>
-#'     dplyr::group_by(Criteria) |>
-#'     dplyr::slice_min(order_by = Value) |>
-#'     dplyr::ungroup()
-#'
-#'   ggplot2::ggplot(
-#'     LagCriteria_long,
-#'     ggplot2::aes(x = lag, y = Value, color = Criteria, group = Criteria)
-#'   ) +
-#'     ggplot2::geom_line() +
-#'     ggplot2::geom_point(
-#'       data = min_values,
-#'       ggplot2::aes(x = lag, y = Value),
-#'       color = "red",
-#'       size = 3,
-#'       shape = 8
-#'     ) +
-#'     ggplot2::geom_text(
-#'       data = min_values,
-#'       ggplot2::aes(x = lag, y = Value, label = lag),
-#'       vjust = 1.5,
-#'       color = "black",
-#'       size = 3.5
-#'     ) +
-#'     ggplot2::labs(
-#'       title = "Lag Criteria Comparison",
-#'       x = "Lag Configuration",
-#'       y = "Criteria Value"
-#'     ) +
-#'     ggplot2::theme_minimal() +
-#'     ggplot2::theme(
-#'       axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)
-#'     )
-#' }
+
 ecm<-function(data = NULL, formula = NULL,
               maxlag  = NULL,
               mode    = NULL,
@@ -703,7 +650,8 @@ ecmS <-lm( shortrunEQ, EcmData)
 #'                       CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
 #'                       mode = c(1, 2, 3, 0))
 #'
-#'  # Using AIC as the kardl package's built-in criterion function which is different from the base R AIC function.
+#'  # Using AIC as the kardl package's built-in criterion function which is different
+#'  # from the base R AIC function.
 #'  modelCriterion(kardl_model, "AIC")
 #'
 #'  # Using the base R AIC function directly on the fitted model object
@@ -736,7 +684,7 @@ modelCriterion<-function(estModel,cr,...){
 
 makemodel<-function(spec,...){
 
-  myMethod<-T
+  myMethod<-"quick"
   # if(is.vector(inputs$mode))
   if(is.vector(spec$argsInfo$mode[1]) && is.numeric(spec$argsInfo$mode) && isFALSE(isFALSE(spec$argsInfo$mode)) )  {
     class(myMethod)<- "user"
@@ -1104,10 +1052,10 @@ makemodel.grid<-function(spec , ... ){#model ,  data,inputs  ){ # makemodel.defa
   cat("\n")
   endLag  <- LagMatrix[batch$endRow ,]# paste(LagMatrix[batch$startRow,],collapse = ",")
   startLag<- LagMatrix[batch$startRow ,]#paste(LagMatrix[batch$endRow,],collapse = ",")
-  aicRow<-which(LagCriteria[,2]==min(as.numeric(LagCriteria[,2]), na.rm=T), arr.ind=T)
-  bicRow<-which(LagCriteria[,3]==min(as.numeric(LagCriteria[,3]), na.rm=T), arr.ind=T)
-  aiccRow<-which(LagCriteria[,4]==min(as.numeric(LagCriteria[,4]), na.rm=T), arr.ind=T)
-  hqRow<-which(LagCriteria[,5]==min(as.numeric(LagCriteria[,5]), na.rm=T), arr.ind=T)
+  aicRow<-which(LagCriteria[,2]==min(as.numeric(LagCriteria[,2]), na.rm=T), arr.ind=T)[1]
+  bicRow<-which(LagCriteria[,3]==min(as.numeric(LagCriteria[,3]), na.rm=T), arr.ind=T)[1]
+  aiccRow<-which(LagCriteria[,4]==min(as.numeric(LagCriteria[,4]), na.rm=T), arr.ind=T)[1]
+  hqRow<-which(LagCriteria[,5]==min(as.numeric(LagCriteria[,5]), na.rm=T), arr.ind=T)[1]
   finalLags<-data.frame("AIC"=c(LagCriteria[aicRow,1],LagCriteria[aicRow,2]),
                         "BIC"=c(LagCriteria[bicRow,1],LagCriteria[bicRow,3])   ,
                         "AICc"=c(LagCriteria[aiccRow,1],LagCriteria[aiccRow,4]),

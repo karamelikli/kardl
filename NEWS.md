@@ -1,7 +1,8 @@
 # kardl 1.3.1
 ## Changes in this version
 
-- **autotest compliance:** Fixed errors in `autotest` example parsing (e.g., `subscript out of bounds`, `recursive indexing failed`). Updated example structures to be atomic and assignment-based, improving automated test generation and reproducibility.
+- **autotest compliance:** Fixed errors and warnings in `autotest` example parsing (e.g., `subscript out of bounds`, `recursive indexing failed`). Updated example structures to be atomic and assignment-based, improving automated test generation and reproducibility.
+- **kardl_reset updated:** The `kardl_reset()` function has been updated. Exclude argument is now optional and defaults to `NULL`, allowing users to reset all settings except those explicitly specified.
 - **Print method improvements:** Standard output handling in print methods has been revised. Functions now rely on standard R messaging mechanisms instead of direct console output calls, improving compatibility with CRAN checks and allowing users to control output behavior more effectively.
 - **Documentation fixes:** Corrected Rd syntax issues such as mismatched braces, non-ASCII characters, and inconsistent list environments (`\itemize{}` vs `\describe{}`). Improved clarity and consistency across help pages.
 - **Examples refactored:** Rewrote examples to avoid fragile constructs such as chained pipelines (`%>%`) without proper imports, standalone expressions, and state-dependent workflows. Examples now follow a minimal and deterministic structure.

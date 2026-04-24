@@ -37,9 +37,12 @@ psst(kmodel, case = 3, signif_level = "auto")
   Character or numeric. Specifies the significance level to be used in
   the function. Acceptable values are "auto", "0.10", "0.1", "0.05",
   "0.025", and "0.01". If a numeric value is provided, it will be
-  converted to a character string. If "auto" is chosen, the function
-  determines the significance level automatically. Invalid values will
-  result in an error.
+  converted to a character string.
+
+  When `"auto"` is selected, the function determines the significance
+  level sequentially, starting from the most stringent level (`"0.01"`)
+  and proceeding to `"0.025"`, `"0.05"`, and `"0.10"` until a suitable
+  level is identified. Invalid values will result in an error.
 
 ## Value
 
@@ -124,6 +127,7 @@ Econometrics, 16(3), 289-326.
 ## Examples
 
 ``` r
+
 kardl_model<-kardl(imf_example_data,
                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
                    mode=c(1,2,3,0))

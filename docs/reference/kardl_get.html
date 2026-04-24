@@ -84,7 +84,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $formula</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI ~ ER + PPI + Asymmetr(ER) + deterministic(covid) + trend</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c2a03c3b568&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5e2b0468ab28&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $ShortCoef</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L{lag}.d.{varName}"</span>
@@ -591,6 +591,11 @@
 <span class="r-in"><span><span class="va">a</span><span class="op">&lt;-</span><span class="fu">kardl_get</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">a</span><span class="op">$</span><span class="va">AsymSuffix</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "_PP" "_NN"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To reset options and then get a default option:</span></span></span>
+<span class="r-in"><span><span class="va">mydefaults</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl_reset.html">kardl_reset</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">mydefaults</span><span class="op">$</span><span class="va">maxlag</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

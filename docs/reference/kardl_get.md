@@ -29,6 +29,7 @@ option names are provided, returns their values.
 ## Examples
 
 ``` r
+
 # Get all options
 kardl_get()
 #> $batch
@@ -42,7 +43,7 @@ kardl_get()
 #> 
 #> $formula
 #> CPI ~ ER + PPI + Asymmetr(ER) + deterministic(covid) + trend
-#> <environment: 0x5c2a03c3b568>
+#> <environment: 0x5e2b0468ab28>
 #> 
 #> $ShortCoef
 #> [1] "L{lag}.d.{varName}"
@@ -549,4 +550,9 @@ kardl_get("maxlag", "mode")
 a<-kardl_get()
 a$AsymSuffix
 #> [1] "_PP" "_NN"
+
+# To reset options and then get a default option:
+mydefaults <- kardl_reset()
+mydefaults$maxlag
+#> [1] 4
 ```

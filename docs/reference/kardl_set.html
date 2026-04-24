@@ -61,7 +61,7 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.</p>
+    <p>All current settings as a list after applying any updates from the provided named arguments invisibly.</p>
 <p>If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.</p>
     </div>
     <div class="section level2">
@@ -71,43 +71,16 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Set options</span></span></span>
-<span class="r-in"><span><span class="fu">kardl_set</span><span class="op">(</span>maxlag <span class="op">=</span> <span class="fl">5</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># Get all options</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="kardl_get.html">kardl_get</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $batch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1/1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $AsymSuffix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "_POS" "_NEG"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Get default options</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="kardl_get.html">kardl_get</a></span><span class="op">(</span><span class="st">"maxlag"</span>, <span class="st">"mode"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $maxlag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $formula</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ShortCoef</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L{lag}.d.{varName}"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $differentAsymLag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $criterion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "AIC"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $LongCoef</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L{lag}.{varName}"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mode</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grid"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "quick"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $AsymPrefix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># Set options</span></span></span>
+<span class="r-in"><span><span class="fu">kardl_set</span><span class="op">(</span>maxlag <span class="op">=</span> <span class="fl">5</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Get specific options</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_get.html">kardl_get</a></span><span class="op">(</span><span class="st">"maxlag"</span>, <span class="st">"mode"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $maxlag</span>
@@ -117,86 +90,17 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grid"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Note: In interactive use, avoid calling kardl_get() directly to prevent cluttering the console.</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="kardl_get.html">kardl_get</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $batch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1/1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $AsymSuffix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "_POS" "_NEG"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $maxlag</span>
+<span class="r-in"><span><span class="co"># To have the updated settings available in the global environment, assign the output to a variable:</span></span></span>
+<span class="r-in"><span><span class="va">MySettings</span><span class="op">&lt;-</span> <span class="fu">kardl_set</span><span class="op">(</span>LongCoef <span class="op">=</span> <span class="st">"LongRun_{varName}"</span>, ShortCoef <span class="op">=</span> <span class="st">"ShortRun_{varName}"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Now MySettings contains the updated settings, and the kardl package</span></span></span>
+<span class="r-in"><span><span class="co"># will use these settings for subsequent operations.</span></span></span>
+<span class="r-in"><span><span class="va">MySettings</span><span class="op">$</span><span class="va">LongCoef</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "LongRun_{varName}"</span>
+<span class="r-in"><span><span class="va">MySettings</span><span class="op">$</span><span class="va">maxlag</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $formula</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ShortCoef</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L{lag}.d.{varName}"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $differentAsymLag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $criterion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "AIC"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $LongCoef</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L{lag}.{varName}"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $mode</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "grid"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $AsymPrefix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Set custom coefficient naming conventions</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">MyFormula</span><span class="op">&lt;-</span><span class="va">CPI</span><span class="op">~</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span></span></span>
-<span class="r-in"><span><span class="fu">kardl_set</span><span class="op">(</span>ShortCoef <span class="op">=</span> <span class="st">"L___{lag}.d.{varName}"</span>, formula <span class="op">=</span> <span class="va">MyFormula</span>, data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Reset to defaults after demonstrating custom settings</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_reset.html">kardl_reset</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="kardl_get.html">kardl_get</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $batch</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "1/1"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $AsymSuffix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "_POS" "_NEG"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $maxlag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $formula</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ShortCoef</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L{lag}.d.{varName}"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $differentAsymLag</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $criterion</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "AIC"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $LongCoef</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L{lag}.{varName}"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $mode</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "quick"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $AsymPrefix</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

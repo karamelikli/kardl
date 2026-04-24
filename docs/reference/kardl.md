@@ -78,6 +78,7 @@ kardl(
 
   - They can be freely combined within a single formula, for example:
 
+
           y ~ . +
             Asymmetric(z) +
             Lasymmetric(x2 + x3) +
@@ -255,7 +256,8 @@ kardl(
 - ...:
 
   Additional arguments that can be passed to the function. These
-  arguments can be used to
+  arguments can be used to specify other settings or parameters that are
+  not explicitly defined in the main arguments.
 
 ## Value
 
@@ -378,6 +380,7 @@ the [`kardl_set()`](kardl_set.md) function.
 
 ``` r
 
+
 # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
 
 kardl_set(formula =CPI~ER+PPI+Asymmetr(ER)+deterministic(covid)+trend ,
@@ -388,9 +391,9 @@ kardl_set(formula =CPI~ER+PPI+Asymmetr(ER)+deterministic(covid)+trend ,
 
 # using the grid_custom mode with batch processing
 
-kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3")
+kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3",criterion = "BIC")
 kardl_model_grid
-#> Optimal lags for each variable ( AIC ):
+#> Optimal lags for each variable ( BIC ):
 #> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
 #> 
 #> Call:
@@ -476,8 +479,9 @@ summary(kardl_model2)
 
 # using '.' in the formula means that all variables in the data will be used
 
-kardl(formula=CPI~.+deterministic(covid),criterion = "BIC")
-#> Optimal lags for each variable ( BIC ):
+fit_bic <- kardl(formula=CPI~.+deterministic(covid))
+fit_bic
+#> Optimal lags for each variable ( AIC ):
 #> CPI: 1, ER: 1, PPI: 1 
 #> 
 #> Call:

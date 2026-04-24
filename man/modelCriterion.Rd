@@ -67,7 +67,8 @@ modelCriterion(mylm, "AIC" )
                       CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
                       mode = c(1, 2, 3, 0))
 
- # Using AIC as the kardl package's built-in criterion function which is different from the base R AIC function.
+ # Using AIC as the kardl package's built-in criterion function which is different
+ # from the base R AIC function.
  modelCriterion(kardl_model, "AIC")
 
  # Using the base R AIC function directly on the fitted model object

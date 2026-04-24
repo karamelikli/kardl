@@ -287,7 +287,7 @@ kardl_set(formula =CPI~ER+PPI+Asymmetr(ER)+deterministic(covid)+trend ,
 
 # using the grid_custom mode with batch processing
 
-kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3")
+kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3",criterion = "BIC")
 kardl_model_grid
 
 kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
@@ -300,7 +300,8 @@ summary(kardl_model2)
 
 # using '.' in the formula means that all variables in the data will be used
 
-kardl(formula=CPI~.+deterministic(covid),criterion = "BIC")
+fit_bic <- kardl(formula=CPI~.+deterministic(covid))
+fit_bic
 
 # Setting max lag instead of default value [4]
 kardl(imf_example_data,

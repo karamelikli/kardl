@@ -72,6 +72,12 @@
     <p>A merged list with unique names, prioritizing values from the first list in case of name conflicts.</p>
     </div>
     <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The <code>lmerge()</code> function is designed to merge multiple lists while giving precedence to the values in the first list.
+This function is particularly useful when you want to combine settings or parameters from multiple sources while ensuring that the primary source (the first list) takes priority over others.</p>
+<p>For right merge, a user can simply swap the order of the lists to give priority to the second list. For example, <code>lmerge(b, a)</code> will prioritize values from list <code>b</code> over those in list <code>a</code>.</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="https://rdrr.io/r/base/append.html" class="external-link">append</a></code></p></div>
     </div>
@@ -81,72 +87,30 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">a</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">=</span><span class="st">"first a"</span>,<span class="st">"b"</span><span class="op">=</span><span class="st">"second a"</span>,<span class="st">"c"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"w"</span><span class="op">=</span><span class="fl">12</span>,<span class="st">"k"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">3</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">b</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"a"</span><span class="op">=</span><span class="st">"first b"</span>,<span class="st">"b"</span><span class="op">=</span><span class="st">"second b"</span>,<span class="st">"d"</span><span class="op">=</span><span class="fl">14</span>,<span class="st">"e"</span><span class="op">=</span><span class="fl">45</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">theResult</span><span class="op">&lt;-</span> <span class="fu">lmerge</span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">theResult</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">myMerged</span><span class="op">&lt;-</span> <span class="fu">lmerge</span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">myMerged</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          a          b        c.w       c.k1       c.k2       c.k3          d </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  "first a" "second a"       "12"        "1"        "3"        "6"       "14" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          e </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       "45" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># for right merge</span></span></span>
-<span class="r-in"><span><span class="fu">lmerge</span><span class="op">(</span><span class="va">b</span>,<span class="va">a</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "first b"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "second b"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $c$w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $c$k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 3 6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">myMerged</span><span class="op">&lt;-</span> <span class="fu">lmerge</span><span class="op">(</span><span class="va">b</span>,<span class="va">a</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">myMerged</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          a          b          d          e        c.w       c.k1       c.k2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  "first b" "second b"       "14"       "45"       "12"        "1"        "3" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       c.k3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        "6" </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Unisted return</span></span></span>
-<span class="r-in"><span><span class="va">theResult</span><span class="op">&lt;-</span> <span class="fu">lmerge</span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"v1"</span><span class="op">=</span><span class="fl">11</span>,<span class="fl">22</span>,<span class="fl">3</span>,<span class="st">"v5"</span><span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">theResult</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $a</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "first a"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $b</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "second a"</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $c</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $c$w</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $c$k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1 3 6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $e</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $v1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $v5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="co"># for more than two lists</span></span></span>
+<span class="r-in"><span><span class="va">myMerged</span><span class="op">&lt;-</span> <span class="fu">lmerge</span><span class="op">(</span><span class="va">a</span>,<span class="va">b</span>,<span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"v1"</span><span class="op">=</span><span class="fl">11</span>,<span class="fl">22</span>,<span class="fl">3</span>,<span class="st">"v5"</span><span class="op">=</span><span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unlist.html" class="external-link">unlist</a></span><span class="op">(</span><span class="va">myMerged</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          a          b        c.w       c.k1       c.k2       c.k3          d </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  "first a" "second a"       "12"        "1"        "3"        "6"       "14" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          e         v1                               v5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       "45"       "11"       "22"        "3"        "5" </span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># for more than two lists with nested lists</span></span></span>
 <span class="r-in"><span><span class="va">m2</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"m1"</span><span class="op">=</span><span class="st">"kk2"</span>,<span class="st">"m1.2.3"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"m1.1.1"</span><span class="op">=</span><span class="fl">333</span>,<span class="st">"m.1.4"</span><span class="op">=</span><span class="fl">918</span>,<span class="st">"m.1.5"</span><span class="op">=</span><span class="fl">982</span>,<span class="st">"m.1.6"</span><span class="op">=</span><span class="fl">981</span>,<span class="st">"m.1.7"</span><span class="op">=</span><span class="fl">928</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">m3</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"m1"</span><span class="op">=</span><span class="st">"kk23"</span>,<span class="st">"m2.3"</span><span class="op">=</span><span class="fl">2233</span>,<span class="st">"m1.2.4"</span><span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"m1.1.1"</span><span class="op">=</span><span class="fl">333444</span>,<span class="st">"m.1.5"</span><span class="op">=</span><span class="fl">982</span>,<span class="st">"m.1.6"</span><span class="op">=</span><span class="fl">91</span>,<span class="st">"m.1.7"</span><span class="op">=</span><span class="fl">928</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">a</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">32</span>,<span class="fl">34</span>,<span class="fl">542</span>,<span class="st">"k"</span><span class="op">=</span><span class="fl">35</span><span class="op">)</span></span></span>
@@ -169,6 +133,7 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "928"        "2233"      "333444"         "982"          "91" </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  m1.2.4.m.1.7          m1.1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         "928"           "4" </span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

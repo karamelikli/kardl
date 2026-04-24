@@ -84,6 +84,7 @@ Otherwise, the same dynamic path is used.
 # base R plotting and ggplot2.
 
  # Calculating dynamic multipliers for a linear model in short and long run (NN)
+
  kardl_model<-kardl(imf_example_data, CPI~ER )
  m<-mplier(kardl_model,40)
  head(m$mpsi)

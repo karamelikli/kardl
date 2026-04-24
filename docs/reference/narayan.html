@@ -71,10 +71,12 @@ Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the functi
 
 
 <dt id="arg-signif-level">signif_level<a class="anchor" aria-label="anchor" href="#arg-signif-level"></a></dt>
-<dd><p>Character or numeric. Specifies the significance level to be used in the function.</p>
-<p>Acceptable values are "auto", "0.10", "0.1", "0.05", "0.025", and "0.01".
-If a numeric value is provided, it will be converted to a character string.
-If "auto" is chosen, the function determines the significance level automatically.
+<dd><p>Character or numeric. Specifies the significance level to be used in the function.
+Acceptable values are "auto", "0.10", "0.1", "0.05", "0.025", and "0.01".
+If a numeric value is provided, it will be converted to a character string.</p>
+<p>When <code>"auto"</code> is selected, the function determines the significance level
+sequentially, starting from the most stringent level (<code>"0.01"</code>) and proceeding
+to <code>"0.025"</code>, <code>"0.05"</code>, and <code>"0.10"</code> until a suitable level is identified.
 Invalid values will result in an error.</p></dd>
 
 </dl></div>

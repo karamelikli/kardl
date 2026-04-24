@@ -19,8 +19,8 @@ kardl_set(...)
 
 ## Value
 
-If no arguments are provided, returns all options as a list. If named
-arguments are provided, sets those options and returns the updated list.
+All current settings as a list after applying any updates from the
+provided named arguments invisibly.
 
 If no arguments are provided, returns all options as a list. If named
 arguments are provided, sets those options and returns the updated list.
@@ -32,43 +32,16 @@ arguments are provided, sets those options and returns the updated list.
 ## Examples
 
 ``` r
-# Set options
-kardl_set(maxlag = 5, mode = "grid")
-# Get all options
-kardl_get()
-#> $batch
-#> [1] "1/1"
-#> 
-#> $AsymSuffix
-#> [1] "_POS" "_NEG"
-#> 
+# Get default options
+kardl_get("maxlag", "mode")
 #> $maxlag
-#> [1] 5
-#> 
-#> $formula
-#> NULL
-#> 
-#> $ShortCoef
-#> [1] "L{lag}.d.{varName}"
-#> 
-#> $differentAsymLag
-#> [1] TRUE
-#> 
-#> $criterion
-#> [1] "AIC"
-#> 
-#> $data
-#> NULL
-#> 
-#> $LongCoef
-#> [1] "L{lag}.{varName}"
+#> [1] 4
 #> 
 #> $mode
-#> [1] "grid"
+#> [1] "quick"
 #> 
-#> $AsymPrefix
-#> NULL
-#> 
+# Set options
+kardl_set(maxlag = 5, mode = "grid")
 # Get specific options
 kardl_get("maxlag", "mode")
 #> $maxlag
@@ -78,84 +51,15 @@ kardl_get("maxlag", "mode")
 #> [1] "grid"
 #> 
 
-# Note: In interactive use, avoid calling kardl_get() directly to prevent cluttering the console.
-
-# \donttest{
-kardl_get()
-#> $batch
-#> [1] "1/1"
-#> 
-#> $AsymSuffix
-#> [1] "_POS" "_NEG"
-#> 
-#> $maxlag
+# To have the updated settings available in the global environment, assign the output to a variable:
+MySettings<- kardl_set(LongCoef = "LongRun_{varName}", ShortCoef = "ShortRun_{varName}")
+# Now MySettings contains the updated settings, and the kardl package
+# will use these settings for subsequent operations.
+MySettings$LongCoef
+#> [1] "LongRun_{varName}"
+MySettings$maxlag
 #> [1] 5
-#> 
-#> $formula
-#> NULL
-#> 
-#> $ShortCoef
-#> [1] "L{lag}.d.{varName}"
-#> 
-#> $differentAsymLag
-#> [1] TRUE
-#> 
-#> $criterion
-#> [1] "AIC"
-#> 
-#> $data
-#> NULL
-#> 
-#> $LongCoef
-#> [1] "L{lag}.{varName}"
-#> 
-#> $mode
-#> [1] "grid"
-#> 
-#> $AsymPrefix
-#> NULL
-#> 
-# }
 
-# Set custom coefficient naming conventions
-
-MyFormula<-CPI~ER+PPI+asym(ER)+deterministic(covid)+trend
-kardl_set(ShortCoef = "L___{lag}.d.{varName}", formula = MyFormula, data = imf_example_data)
-
+# Reset to defaults after demonstrating custom settings
 kardl_reset()
-kardl_get()
-#> $batch
-#> [1] "1/1"
-#> 
-#> $AsymSuffix
-#> [1] "_POS" "_NEG"
-#> 
-#> $maxlag
-#> [1] 4
-#> 
-#> $formula
-#> NULL
-#> 
-#> $ShortCoef
-#> [1] "L{lag}.d.{varName}"
-#> 
-#> $differentAsymLag
-#> [1] TRUE
-#> 
-#> $criterion
-#> [1] "AIC"
-#> 
-#> $data
-#> NULL
-#> 
-#> $LongCoef
-#> [1] "L{lag}.{varName}"
-#> 
-#> $mode
-#> [1] "quick"
-#> 
-#> $AsymPrefix
-#> NULL
-#> 
-
 ```

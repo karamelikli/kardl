@@ -82,6 +82,7 @@ values are provided for each variable and at each time horizon.
 ## Examples
 
 ``` r
+
   # Example usage of the bootstrap function
 
 

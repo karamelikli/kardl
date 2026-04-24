@@ -51,6 +51,7 @@ A list containing:
 ## Examples
 
 ``` r
+
 # Parse formulas containing various collection types like ()
 formula_ <- y ~ x +det(s -gg- d) + asymS(d2 -rr+ s)-mm(y1+y2+y3)+asym(k1+k2+k3)+trend-huseyin
 # Extract variables

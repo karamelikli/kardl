@@ -102,8 +102,8 @@ long
 #> kardl_longrun(model = kardl_model)
 #> 
 #> Coefficients:
-#> L1.asyP_ER_PP  L1.asyN_ER_NN         L1.PPI  
-#>        0.8249         2.0830         2.6528  
+#> L1.ER_POS  L1.ER_NEG     L1.PPI  
+#>    0.8249     2.0830     2.6528  
 #> 
 # Details of the long-run multipliers
 summary(long)
@@ -115,10 +115,10 @@ summary(long)
 #> Long-run multipliers 
 #> 
 #> Coefficients:
-#>               Estimate Std. Error t value  Pr(>|t|)    
-#> L1.asyP_ER_PP  0.82494    0.18150  4.5453 7.064e-06 ***
-#> L1.asyN_ER_NN  2.08297    0.48083  4.3320 1.825e-05 ***
-#> L1.PPI         2.65278    0.84724  3.1311  0.001855 ** 
+#>           Estimate Std. Error t value  Pr(>|t|)    
+#> L1.ER_POS  0.82494    0.18150  4.5453 7.064e-06 ***
+#> L1.ER_NEG  2.08297    0.48083  4.3320 1.825e-05 ***
+#> L1.PPI     2.65278    0.84724  3.1311  0.001855 ** 
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
@@ -141,10 +141,10 @@ library(magrittr)
 #> Long-run multipliers 
 #> 
 #> Coefficients:
-#>               Estimate Std. Error t value  Pr(>|t|)    
-#> L1.asyP_ER_PP  0.82494    0.18150  4.5453 7.064e-06 ***
-#> L1.asyN_ER_NN  2.08297    0.48083  4.3320 1.825e-05 ***
-#> L1.PPI         2.65278    0.84724  3.1311  0.001855 ** 
+#>           Estimate Std. Error t value  Pr(>|t|)    
+#> L1.ER_POS  0.82494    0.18150  4.5453 7.064e-06 ***
+#> L1.ER_NEG  2.08297    0.48083  4.3320 1.825e-05 ***
+#> L1.PPI     2.65278    0.84724  3.1311  0.001855 ** 
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 

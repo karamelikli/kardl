@@ -68,7 +68,7 @@ to evaluate a statistical model.</p>
 <dt id="arg-cr">cr<a class="anchor" aria-label="anchor" href="#arg-cr"></a></dt>
 <dd><p>A character string specifying the criterion to compute.
 Options are <code>"AIC"</code>, <code>"BIC"</code>, <code>"AICc"</code>, and <code>"HQ"</code>. Alternatively,
-a user-defined function can be provided.</p></dd>
+a user-defined function can be provided. See details below for more information on using custom criteria.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -105,30 +105,35 @@ In particular, the values returned by this function are adjusted by dividing by 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Example usage of modelCriterion function with a linear model</span></span></span>
+<span class="r-in"><span><span class="co"># Example usage of modelCriterion function with a simple linear model</span></span></span>
 <span class="r-in"><span><span class="va">mylm</span><span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">mpg</span> <span class="op">~</span> <span class="va">wt</span> <span class="op">+</span> <span class="va">hp</span>, data <span class="op">=</span> <span class="va">mtcars</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">modelCriterion</span><span class="op">(</span><span class="va">mylm</span>, <span class="va">AIC</span> <span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 156.6523</span>
-<span class="r-in"><span><span class="fu">modelCriterion</span><span class="op">(</span><span class="va">mylm</span>, <span class="st">"BIC"</span> <span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.970298</span>
-<span class="r-in"><span><span class="va">mm</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">mylm</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">mm</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu">modelCriterion</span><span class="op">(</span><span class="va">mylm</span>, <span class="st">"AIC"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] TRUE</span>
+<span class="r-in"><span><span class="fu">modelCriterion</span><span class="op">(</span><span class="va">mylm</span>, <span class="st">"AIC"</span> <span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.832886</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># Example usage of modelCriterion function with a kardl model</span></span></span>
 <span class="r-in"><span> <span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>,</span></span>
 <span class="r-in"><span>                      <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
 <span class="r-in"><span>                      mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Using AIC as the kardl package's built-in criterion function which is different</span></span></span>
+<span class="r-in"><span> <span class="co"># from the base R AIC function.</span></span></span>
 <span class="r-in"><span> <span class="fu">modelCriterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="st">"AIC"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.499093</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Using the base R AIC function directly on the fitted model object</span></span></span>
 <span class="r-in"><span> <span class="fu">modelCriterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="va">AIC</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2555.078</span>
+<span class="r-in"><span> <span class="co"># Using the base R AIC function outside of modelCriterion to compute AIC for the fitted model</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2555.078</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span> <span class="co"># Using BIC as the criterion for the kardl model which is different from the base R BIC function.</span></span></span>
 <span class="r-in"><span> <span class="fu">modelCriterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="st">"BIC"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.356571</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># Using a custom criterion function</span></span></span>
+<span class="r-in"><span> <span class="co"># Using a custom criterion function that divides AIC by the sample size</span></span></span>
 <span class="r-in"><span> <span class="va">my_cr_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mod</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span> <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="va">model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span> <span class="op">}</span></span></span>
 <span class="r-in"><span> <span class="fu">modelCriterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="va">my_cr_fun</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.494792</span>

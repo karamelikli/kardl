@@ -141,6 +141,7 @@ applications, 281-314.
 ## Examples
 
 ``` r
+
  kardl_model<-kardl(imf_example_data,
                     CPI~Lasym(PPI+ER)+Sas(ER)+deterministic(covid)+trend)
  ast<- symmetrytest(kardl_model)

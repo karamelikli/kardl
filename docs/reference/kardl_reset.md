@@ -1,29 +1,24 @@
 # Reset kardl Package Options to Default Values
 
-This function resets all options in the kardl package to their default
-values.
+This function resets kardl package options to their default values.
 
 ## Usage
 
 ``` r
-kardl_reset(value = FALSE)
+kardl_reset(exclude = NULL)
 ```
 
 ## Arguments
 
-- value:
+- exclude:
 
-  If provided and not \`FALSE\`, the function will return this value
-  after resetting the settings. If not provided or set to \`FALSE\`, it
-  will return the current settings.
+  Character vector of setting names that should not be reset. These
+  settings retain their current values. By default, all settings are
+  reset.
 
 ## Value
 
-If resetting options, returns the provided value (if any) or invisibly
-returns the current settings as a list.
-
-If resetting options, returns the provided value (if any) or invisibly
-returns the current settings as a list.
+A list of the settings after reset, returned invisibly.
 
 ## See also
 
@@ -32,15 +27,17 @@ returns the current settings as a list.
 ## Examples
 
 ``` r
-# Set some options
-kardl_set(criterion = "BIC", differentAsymLag = TRUE)
+kardl_set(criterion = "BIC", differentAsymLag = FALSE)
 
-# Reset to default options
-before <- kardl_get("criterion")
-out <-kardl_reset()
-after <- kardl_get("criterion")
-cat("Before reset:", before, "\n")
-#> Before reset: BIC 
-cat("After reset:", after, "\n")
-#> After reset: AIC 
+# Reset all settings to defaults except "criterion"
+kardl_reset(exclude = "criterion")
+
+# Get the current settings to verify the reset
+print(kardl_get("criterion"))
+#> [1] "BIC"
+
+# This will show "BIC" since it was excluded from the reset,
+#while other settings will be reset to their defaults.
+print(kardl_get("differentAsymLag"))
+#> [1] TRUE
 ```

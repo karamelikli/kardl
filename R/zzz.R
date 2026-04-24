@@ -46,9 +46,13 @@ local({
 #'
 #' # To have the updated settings available in the global environment, assign the output to a variable:
 #' MySettings<- kardl_set(LongCoef = "LongRun_{varName}", ShortCoef = "ShortRun_{varName}")
-#' # Now MySettings contains the updated settings, and the kardl package will use these settings for subsequent operations.
+#' # Now MySettings contains the updated settings, and the kardl package
+#' # will use these settings for subsequent operations.
 #' MySettings$LongCoef
 #' MySettings$maxlag
+#'
+#' # Reset to defaults after demonstrating custom settings
+#' kardl_reset()
 #'
 #' @return If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
 #' @seealso  \code{\link{kardl_get}}, \code{\link{kardl_reset}}
@@ -141,34 +145,51 @@ kardl_get <- function(...) {
 
 #' Reset kardl Package Options to Default Values
 #'
-#' This function resets all options in the kardl package to their default values.
+#' This function resets kardl package options to their default values.
 #'
-#' @return A list of the default settings after reset, returned invisibly.
+#' @param exclude Character vector of setting names that should not be reset.
+#' These settings retain their current values. By default, all settings are reset.
+#'
+#' @return A list of the settings after reset, returned invisibly.
 #' @export
 #' @seealso \code{\link{kardl_set}}, \code{\link{kardl_get}}
 #' @examples
+#' kardl_set(criterion = "BIC", differentAsymLag = FALSE)
 #'
-#' # Set some options
-#' kardl_set(criterion = "BIC", differentAsymLag = TRUE)
+#' # Reset all settings to defaults except "criterion"
+#' kardl_reset(exclude = "criterion")
 #'
-#' # Reset to default options
-#' before <- kardl_get("criterion")
-#' out <-kardl_reset()
-#' after <- kardl_get("criterion")
-#' cat("Before reset:", before, "\n")
-#' cat("After reset:", after, "\n")
+#' # Get the current settings to verify the reset
+#' print(kardl_get("criterion"))
+#'
+#' # This will show "BIC" since it was excluded from the reset,
+#' #while other settings will be reset to their defaults.
+#' print(kardl_get("differentAsymLag"))
 
-kardl_reset <- function() {
-  # Reinitialize the environment with default settings
-  # Completely reset the environment to a clean state
-  rm(list = ls(envir = .kardl_Settings_env, all.names = TRUE),
-     envir = .kardl_Settings_env)
+kardl_reset <- function(exclude = NULL) {
+  # Validate input
+  if (!is.null(exclude) && !is.character(exclude)) {
+    stop("`exclude` must be a character vector of setting names.")
+  }
 
-  # Repopulate from defaults
-  for (nm in names(.kardl_Settings_env_default)) {
+  # Get all setting names
+  all_names <- names(.kardl_Settings_env_default)
+
+  # Check validity of exclude
+  if (!is.null(exclude)) {
+    invalid <- setdiff(exclude, all_names)
+    if (length(invalid) > 0) {
+      stop("Invalid setting(s) in `exclude`: ", paste(invalid, collapse = ", "))
+    }
+  }
+
+  to_reset <- setdiff(all_names, exclude)
+  rm(list = to_reset, envir = .kardl_Settings_env)
+
+  # Repopulate defaults only for those
+  for (nm in to_reset) {
     .kardl_Settings_env[[nm]] <- .kardl_Settings_env_default[[nm]]
   }
 
-
-    return(invisible(as.list(.kardl_Settings_env)))
- }
+  invisible(as.list(.kardl_Settings_env))
+}

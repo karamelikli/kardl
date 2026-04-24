@@ -31,6 +31,18 @@ lmerge(first, second, ...)
 A merged list with unique names, prioritizing values from the first list
 in case of name conflicts.
 
+## Details
+
+The `lmerge()` function is designed to merge multiple lists while giving
+precedence to the values in the first list. This function is
+particularly useful when you want to combine settings or parameters from
+multiple sources while ensuring that the primary source (the first list)
+takes priority over others.
+
+For right merge, a user can simply swap the order of the lists to give
+priority to the second list. For example, `lmerge(b, a)` will prioritize
+values from list `b` over those in list `a`.
+
 ## See also
 
 [`append`](https://rdrr.io/r/base/append.html)
@@ -38,74 +50,33 @@ in case of name conflicts.
 ## Examples
 
 ``` r
+
 a<-list("a"="first a","b"="second a","c"=list("w"=12,"k"=c(1,3,6)))
 b<-list("a"="first b","b"="second b","d"=14,"e"=45)
-theResult<- lmerge(a,b)
-unlist(theResult)
+myMerged<- lmerge(a,b)
+print(unlist(myMerged))
 #>          a          b        c.w       c.k1       c.k2       c.k3          d 
 #>  "first a" "second a"       "12"        "1"        "3"        "6"       "14" 
 #>          e 
 #>       "45" 
 
 # for right merge
-lmerge(b,a)
-#> $a
-#> [1] "first b"
-#> 
-#> $b
-#> [1] "second b"
-#> 
-#> $d
-#> [1] 14
-#> 
-#> $e
-#> [1] 45
-#> 
-#> $c
-#> $c$w
-#> [1] 12
-#> 
-#> $c$k
-#> [1] 1 3 6
-#> 
-#> 
+myMerged<- lmerge(b,a)
+print(unlist(myMerged))
+#>          a          b          d          e        c.w       c.k1       c.k2 
+#>  "first b" "second b"       "14"       "45"       "12"        "1"        "3" 
+#>       c.k3 
+#>        "6" 
 
-# Unisted return
-theResult<- lmerge(a,b,c("v1"=11,22,3,"v5"=5))
-theResult
-#> $a
-#> [1] "first a"
-#> 
-#> $b
-#> [1] "second a"
-#> 
-#> $c
-#> $c$w
-#> [1] 12
-#> 
-#> $c$k
-#> [1] 1 3 6
-#> 
-#> 
-#> $d
-#> [1] 14
-#> 
-#> $e
-#> [1] 45
-#> 
-#> $v1
-#> [1] 11
-#> 
-#> [[7]]
-#> [1] 22
-#> 
-#> [[8]]
-#> [1] 3
-#> 
-#> $v5
-#> [1] 5
-#> 
+# for more than two lists
+myMerged<- lmerge(a,b,c("v1"=11,22,3,"v5"=5))
+print(unlist(myMerged))
+#>          a          b        c.w       c.k1       c.k2       c.k3          d 
+#>  "first a" "second a"       "12"        "1"        "3"        "6"       "14" 
+#>          e         v1                               v5 
+#>       "45"       "11"       "22"        "3"        "5" 
 
+# for more than two lists with nested lists
 m2<-list("m1"="kk2","m1.2.3"=list("m1.1.1"=333,"m.1.4"=918,"m.1.5"=982,"m.1.6"=981,"m.1.7"=928))
 m3<-list("m1"="kk23","m2.3"=2233,"m1.2.4"=list("m1.1.1"=333444,"m.1.5"=982,"m.1.6"=91,"m.1.7"=928))
 a<-c(32,34,542,"k"=35)

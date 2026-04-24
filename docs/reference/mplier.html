@@ -70,8 +70,8 @@ linearity and asymmetry in both short-run and long-run dynamics.</p>
 
 
 <dt id="arg-minprob">minProb<a class="anchor" aria-label="anchor" href="#arg-minprob"></a></dt>
-<dd><p>Numeric. Threshold for coefficient significance. Coefficients with
-p-values greater than this value are set to zero.</p></dd>
+<dd><p>Numeric. Minimum p-value threshold for including coefficients in the calculation. Coefficients with p-values above this threshold will be set to zero. Default is <code>0</code> (no threshold).
+This parameter allows users to control the inclusion of coefficients in the calculation based on their statistical significance. Setting a threshold can help focus the analysis on more relevant variables, but it may also exclude potentially important effects if set too stringently.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -128,6 +128,7 @@ Otherwise, the same dynamic path is used.</p>
 <span class="r-in"><span><span class="co"># base R plotting and ggplot2.</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="co"># Calculating dynamic multipliers for a linear model in short and long run (NN)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span> <span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span><span class="op">~</span><span class="va">ER</span> <span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="va">m</span><span class="op">&lt;-</span><span class="fu">mplier</span><span class="op">(</span><span class="va">kardl_model</span>,<span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">m</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></span>

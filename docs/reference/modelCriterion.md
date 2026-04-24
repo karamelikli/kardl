@@ -27,7 +27,8 @@ modelCriterion(estModel, cr, ...)
 
   A character string specifying the criterion to compute. Options are
   `"AIC"`, `"BIC"`, `"AICc"`, and `"HQ"`. Alternatively, a user-defined
-  function can be provided.
+  function can be provided. See details below for more information on
+  using custom criteria.
 
 - ...:
 
@@ -87,30 +88,36 @@ additional arguments passed through `...`.
 ## Examples
 
 ``` r
-# Example usage of modelCriterion function with a linear model
+
+# Example usage of modelCriterion function with a simple linear model
 mylm<- lm(mpg ~ wt + hp, data = mtcars)
 modelCriterion(mylm, AIC )
 #> [1] 156.6523
-modelCriterion(mylm, "BIC" )
-#> [1] 4.970298
-mm<-AIC(mylm)
- class(mm) == class(modelCriterion(mylm, "AIC"))
-#> [1] TRUE
+modelCriterion(mylm, "AIC" )
+#> [1] 4.832886
 
  # Example usage of modelCriterion function with a kardl model
  kardl_model <- kardl(imf_example_data,
                       CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
                       mode = c(1, 2, 3, 0))
+
+ # Using AIC as the kardl package's built-in criterion function which is different
+ # from the base R AIC function.
  modelCriterion(kardl_model, "AIC")
 #> [1] -5.499093
+
+ # Using the base R AIC function directly on the fitted model object
  modelCriterion(kardl_model, AIC)
 #> [1] -2555.078
+ # Using the base R AIC function outside of modelCriterion to compute AIC for the fitted model
  AIC(kardl_model)
 #> [1] -2555.078
+
+ # Using BIC as the criterion for the kardl model which is different from the base R BIC function.
  modelCriterion(kardl_model, "BIC")
 #> [1] -5.356571
 
- # Using a custom criterion function
+ # Using a custom criterion function that divides AIC by the sample size
  my_cr_fun <- function(mod, ...) { AIC(mod) / length(mod$model[[1]]) }
  modelCriterion(kardl_model, my_cr_fun)
 #> [1] -5.494792

@@ -39,6 +39,7 @@ data from Turkey. \## Installation
 
 ``` r
 
+
 install.packages("kardl")
 library(kardl)
 ```
@@ -47,6 +48,7 @@ Alternatively, you can use the `devtools` package to load directly from
 GitHub:
 
 ``` r
+
 
 # Install required packages
 install.packages(c("stats", "msm", "lmtest", "nlWaldTest", "car", "strucchange", "utils"))
@@ -58,6 +60,7 @@ devtools::install_github("karamelikli/kardl")
 Load the package:
 
 ``` r
+
 
 library(kardl)
 ```
@@ -93,6 +96,7 @@ linear time trend in the model.
 
 ``` r
 
+
 # Define the model formula
 MyFormula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend
 ```
@@ -103,6 +107,7 @@ variations of the formula are equivalent and will yield the same model
 specification:
 
 ``` r
+
 
 sameFormula <- y ~Asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + Deterministic(dummy1) + trend
 sameFormula <- y ~asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + deterministic(dummy1) + trend
@@ -124,6 +129,7 @@ provides console feedback.
 
 ``` r
 
+
 # Set model options
 kardl_set(criterion = "BIC", differentAsymLag = TRUE, data=imf_example_data)
 # Estimate model with grid mode
@@ -136,6 +142,7 @@ Summary of the model provides detailed information about the estimated
 coefficients, standard errors, t-values, and significance levels.
 
 ``` r
+
 # Display model summary
 summary(kardl_model)
 ```
@@ -146,12 +153,14 @@ Specify custom lags to bypass automatic lag selection:
 
 ``` r
 
+
 kardl_model2 <- kardl(data=imf_example_data, MyFormula, mode = c(2, 1, 1, 3, 0))
 # View results
 kardl_model2$lagInfo
 ```
 
 ``` r
+
 # Display model summary
 summary(kardl_model2)
 ```
@@ -162,6 +171,7 @@ Use the `.` operator to include all variables except the dependent
 variable:
 
 ``` r
+
 
 kardl_set(data=imf_example_data)
 kardl(formula =  CPI ~ . + deterministic(covid), mode = "grid")
@@ -174,6 +184,7 @@ criterion values. We visualize these to compare model selection criteria
 (AIC, BIC, HQ).
 
 ``` r
+
 
 library(dplyr)
 library(tidyr)
@@ -211,6 +222,7 @@ cointegration testing. We specify the same formula and lag structure as
 in the ARDL model.
 
 ``` r
+
 ecm_model <- ecm(data=imf_example_data, formula = MyFormula, maxlag = 4, mode = "grid_custom")
 # View results
 summary(ecm_model)
@@ -225,6 +237,7 @@ variable’s long-run parameter.
 
 ``` r
 
+
 # Long-run coefficients
 mylong <- kardl_longrun(kardl_model)
 mylong
@@ -235,6 +248,7 @@ detailed information about the long-run coefficients, including standard
 errors, t-values, and significance levels.
 
 ``` r
+
 # Summary of long-run coefficients
 summary(mylong)
 ```
@@ -246,6 +260,7 @@ tests to assess short- and long-run asymmetry in the model.
 
 ``` r
 
+
 ast <- imf_example_data %>% kardl(CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend, mode = c(1, 2, 3, 0, 1)) %>% symmetrytest()
 ast
 ```
@@ -255,6 +270,7 @@ and short-run asymmetry tests, including F-values, p-values, hypotheses,
 and test decisions.
 
 ``` r
+
 # Summary of symmetry test
 summary(ast)
 ```
@@ -272,6 +288,7 @@ the Pesaran, Shin, and Smith F Bound test.
 
 ``` r
 
+
 A <- kardl_model %>% pssf(case = 3, signif_level = "0.05")
 A
 ```
@@ -281,6 +298,7 @@ test statistic, critical values, hypotheses, and decision regarding
 cointegration.
 
 ``` r
+
 
 summary(A)
 ```
@@ -292,6 +310,7 @@ lagged dependent variable’s coefficient.
 
 ``` r
 
+
 A <- kardl_model %>% psst(case = 3, signif_level = "0.05")
 A
 ```
@@ -301,6 +320,7 @@ test statistic, critical values, hypotheses, and decision regarding
 cointegration.
 
 ``` r
+
 summary(A)
 ```
 
@@ -312,6 +332,7 @@ for small samples.
 
 ``` r
 
+
 A <- kardl_model %>% narayan(case = 3, signif_level = "0.05")
 A
 ```
@@ -321,6 +342,7 @@ statistic, critical values, hypotheses, and decision regarding
 cointegration.
 
 ``` r
+
 summary(A)
 ```
 
@@ -331,6 +353,7 @@ multipliers for the model, showing how changes in independent variables
 affect the dependent variable over time.
 
 ``` r
+
 multipliers <- kardl_model %>% mplier()
 # View multipliers of the model
 head(multipliers$mpsi)
@@ -346,6 +369,7 @@ which visualizes the response of the dependent variable to changes in
 independent variables over time.
 
 ``` r
+
 plot(multipliers, variables = c("ER", "PPI"))
 ```
 
@@ -358,6 +382,7 @@ using the [`bootstrap()`](reference/bootstrap.md) function, which
 provides robust estimates of uncertainty around the multipliers.
 
 ``` r
+
 bootstrap_results <- kardl_model %>%   bootstrap(horizon = 12,  replications= 10)
 # View bootstrap summary
 summary(bootstrap_results)
@@ -367,6 +392,7 @@ Vşsualize bootstrap results for specific variables to understand the
 variability and confidence intervals of the dynamic multipliers.
 
 ``` r
+
 plot(bootstrap_results, variables = "ER")
 ```
 
@@ -376,6 +402,7 @@ We demonstrate how to customize prefixes and suffixes for asymmetric
 variables using [`kardl_set()`](reference/kardl_set.md).
 
 ``` r
+
 
 # Set custom prefixes and suffixes
 kardl_reset()
@@ -632,6 +659,7 @@ analysis and the characteristics of your data.
 
 ``` r
 
+
 kardl_set(criterion = "AIC")
 kardl(data, MyFormula)
 ```
@@ -639,6 +667,7 @@ kardl(data, MyFormula)
 ##### Using BIC for lag selection
 
 ``` r
+
 
 kardl_set(criterion = "BIC")
 kardl(data, MyFormula)
@@ -648,6 +677,7 @@ kardl(data, MyFormula)
 
 ``` r
 
+
 kardl_set(criterion = "AICc")
 data %>% kardl(MyFormula)
 ```
@@ -655,6 +685,7 @@ data %>% kardl(MyFormula)
 ##### Using HQ criterion
 
 ``` r
+
 
 kardl_set(criterion = "HQ")
 kardl(data, MyFormula)
@@ -697,6 +728,7 @@ This parameter is particularly useful when:
 
 ``` r
 
+
 kadrl_set(differentAsymLag = FALSE)
 kardl(data, MyFormula)
 ```
@@ -704,6 +736,7 @@ kardl(data, MyFormula)
 ##### Assigning different lags for positive and negative components
 
 ``` r
+
 
 kardl_set(differentAsymLag = TRUE)
 kardl(data, MyFormula)
@@ -755,6 +788,7 @@ example:
 
 ``` r
 
+
 kardl_set( AsymPrefix = c())
 ```
 
@@ -762,12 +796,14 @@ kardl_set( AsymPrefix = c())
 
 ``` r
 
+
 kardl_set(AsymPrefix = c("POS_", "NEG_"))
 ```
 
 #### Combining prefixes with suffixes
 
 ``` r
+
 
 kardl_set( AsymPrefix = c("Change_", "Fall_"), AsymSuffix = c("_High", "_Low"))
 ```
@@ -919,6 +955,7 @@ extensive lag structures or large numbers of variables.
 ##### Default batch size (no batching)
 
 ``` r
+
 kardl_set(batch = "1/1")
 kardl(data, MyFormula)
 ```
@@ -926,6 +963,7 @@ kardl(data, MyFormula)
 ##### Using a batch size of 2 out of 4
 
 ``` r
+
 kardl_set(batch = "2/4")
 kardl(data, MyFormula)
 ```
@@ -933,6 +971,7 @@ kardl(data, MyFormula)
 ##### Using a batch size of 3 out of 6
 
 ``` r
+
 kardl_set(batch = "3/6")
 kardl(data, MyFormula)
 ```

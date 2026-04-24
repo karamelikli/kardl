@@ -231,7 +231,7 @@ If a user utilize grid or grid_custom mode and want to split the lag search into
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments that can be passed to the function. These arguments can be used to</p></dd>
+<dd><p>Additional arguments that can be passed to the function. These arguments can be used to specify other settings or parameters that are not explicitly defined in the main arguments.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -317,9 +317,9 @@ is used by default and remains valid unless modified through the
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using the grid_custom mode with batch processing</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">kardl_model_grid</span><span class="op">&lt;-</span><span class="fu">kardl</span><span class="op">(</span> mode <span class="op">=</span> <span class="st">"grid_custom"</span>,batch <span class="op">=</span> <span class="st">"2/3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">kardl_model_grid</span><span class="op">&lt;-</span><span class="fu">kardl</span><span class="op">(</span> mode <span class="op">=</span> <span class="st">"grid_custom"</span>,batch <span class="op">=</span> <span class="st">"2/3"</span>,criterion <span class="op">=</span> <span class="st">"BIC"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">kardl_model_grid</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( BIC ):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
@@ -405,8 +405,9 @@ is used by default and remains valid unless modified through the
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using '.' in the formula means that all variables in the data will be used</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">kardl</span><span class="op">(</span>formula<span class="op">=</span><span class="va">CPI</span><span class="op">~</span><span class="va">.</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span>,criterion <span class="op">=</span> <span class="st">"BIC"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( BIC ):</span>
+<span class="r-in"><span><span class="va">fit_bic</span> <span class="op">&lt;-</span> <span class="fu">kardl</span><span class="op">(</span>formula<span class="op">=</span><span class="va">CPI</span><span class="op">~</span><span class="va">.</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">fit_bic</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, ER: 1, PPI: 1 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
