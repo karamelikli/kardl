@@ -44,7 +44,7 @@
 #'
 
 lmerge<-function(first,second,...){
-  a<-first;
+  a<-first
   b<-second
   otherArgs<-list(...)
   for (v in 1:length(a)) {

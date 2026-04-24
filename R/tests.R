@@ -655,7 +655,7 @@ htestsummary.pssf<-function(testObj,...){
 
 
 
-  MatName=c("k","0.10L","0.10U","0.05L","0.05U","0.025L","0.025U","0.01L","0.01U")
+  MatName <- c("k","0.10L","0.10U","0.05L","0.05U","0.025L","0.025U","0.01L","0.01U")
   PSSCrVals<-t(matrix(crVals,9,11))
 
 
@@ -673,24 +673,24 @@ htestsummary.pssf<-function(testObj,...){
     numericDec<-1
 
     if(PF>=bu[4,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 1% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 1% level)"
       sig<-"0.01"
     }else if(PF>=bu[3,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 2.5% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 2.5% level)"
       sig<-"0.025"
     }else if(PF>=bu[2,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 5% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 5% level)"
       sig<-"0.05"
     }else if(PF>=bu[1,"U"]){
-      decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)";
+      decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)"
       sig<-"0.10"
     }else{
       sig<-""
       if(PF>=bu[1,"L"]){
-        decision<-"Inconclusive";
+        decision<-"Inconclusive"
         numericDec=0
       }else{
-        decision<-"Fail to reject H0 \u2192 No Cointegration";
+        decision<-"Fail to reject H0 \u2192 No Cointegration"
         numericDec=-1
       }
     }
@@ -699,15 +699,16 @@ htestsummary.pssf<-function(testObj,...){
     buRow<-switch (signif_level,"0.1"=1, "0.10"=1,"0.05"=2,"0.025"=3,"0.01"=4)
     if(PF>=bu[buRow,"U"]){
       if(buRow==1){
-        decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)";
+        decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)"
       }else {
-        decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="2.5%","4"="0.01")," level)");
+        decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="2.5%","4"="0.01")," level)")
       }
       numericDec=1
     }else if(PF>=bu[buRow,"L"]){
-      decision<-"Inconclusive";numericDec=0
+      decision<-"Inconclusive"
+      numericDec<-0
     }else{
-      decision<-"Fail to reject H0 \u2192 No Cointegration";
+      decision<-"Fail to reject H0 \u2192 No Cointegration"
       numericDec=-1
     }
   }
@@ -993,21 +994,21 @@ htestsummary.narayan<-function(testObj,...){
     numericDec<-1
 
     if(PF>=bu[3,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 1% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 1% level)"
       sig<-"0.01"
     }else if(PF>=bu[2,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 5% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 5% level)"
       sig<-"0.05"
     }else if(PF>=bu[1,"U"]){
-      decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)";
+      decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)"
       sig<-"0.10"
     }else{
       sig<-""
       if(PF>=bu[1,"L"]){
-        decision<-"Inconclusive";
+        decision<-"Inconclusive"
         numericDec=0
       }else{
-        decision<-"Fail to reject H0 \u2192 No Cointegration";
+        decision<-"Fail to reject H0 \u2192 No Cointegration"
         numericDec=-1
       }
     }
@@ -1016,15 +1017,16 @@ htestsummary.narayan<-function(testObj,...){
     buRow<-switch (signif_level,"0.1"=1, "0.10"=1,"0.05"=2,"0.01"=3)
     if(PF>=bu[buRow,"U"]){
       if(buRow==1){
-        decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)";
+        decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)"
       }else {
-        decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="0.01")," level)");
+        decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="0.01")," level)")
       }
       numericDec=1
     }else if(PF>=bu[buRow,"L"]){
-      decision<-"Inconclusive";numericDec=0
+      decision<-"Inconclusive"
+      numericDec<-0
     }else{
-      decision<-"Fail to reject H0 \u2192 No Cointegration";
+      decision<-"Fail to reject H0 \u2192 No Cointegration"
       numericDec=-1
     }
   }
@@ -1251,7 +1253,7 @@ htestsummary.psst<-function(testObj,...){
 
   PSSCrVals<-t(matrix(crVals,8,11))
   PSSCrVals<-cbind(0:10,PSSCrVals)
-  MatName=c("k","0.10L","0.10U","0.05L","0.05U","0.025L","0.025U","0.01L","0.01U")
+  MatName <- c("k","0.10L","0.10U","0.05L","0.05U","0.025L","0.025U","0.01L","0.01U")
   colnames(PSSCrVals)<-MatName
 
   if(k>10){
@@ -1269,24 +1271,24 @@ htestsummary.psst<-function(testObj,...){
     numericDec<-1
 
     if(Pt>=bu[4,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 1% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 1% level)"
       sig<-"0.01"
     }else if(Pt>=bu[3,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 2.5% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 2.5% level)"
       sig<-"0.025"
     }else if(Pt>=bu[2,"U"]){
-      decision<-"Reject H0 \u2192 Cointegration (at 5% level)";
+      decision<-"Reject H0 \u2192 Cointegration (at 5% level)"
       sig<-"0.05"
     }else if(Pt>=bu[1,"U"]){
-      decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)";
+      decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)"
       sig<-"0.10"
     }else{
       sig<-""
       if(Pt>=bu[1,"L"]){
-        decision<-"Inconclusive";
+        decision<-"Inconclusive"
         numericDec=0
       }else{
-        decision<-"Fail to reject H0 \u2192 No Cointegration";
+        decision<-"Fail to reject H0 \u2192 No Cointegration"
         numericDec=-1
       }
     }
@@ -1295,16 +1297,17 @@ htestsummary.psst<-function(testObj,...){
     buRow<-switch (signif_level,"0.1"=1, "0.10"=1,"0.05"=2,"0.025"=3,"0.01"=4)
     if(Pt>=bu[buRow,"U"]){
       if(buRow==1){
-        decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)";
+        decision<-"Reject H0 \u2192 Weak evidence of cointegration (at 10% level)"
       }else {
-        decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="2.5%","4"="0.01")," level)");
+        decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="2.5%","4"="0.01")," level)")
       }
-      numericDec=1
+      numericDec<-1
     }else if(Pt>=bu[buRow,"L"]){
-      decision<-"Inconclusive";numericDec=0
+      decision<-"Inconclusive"
+      numericDec<-0
     }else{
-      decision<-"Fail to reject H0 \u2192 No Cointegration";
-      numericDec=-1
+      decision<-"Fail to reject H0 \u2192 No Cointegration"
+      numericDec<- -1
     }
   }
 
@@ -1329,6 +1332,8 @@ htestsummary.psst<-function(testObj,...){
     notes=notes
   ), class = "summary_htest")
 }
+
+
 
 
 

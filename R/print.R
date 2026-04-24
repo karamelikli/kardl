@@ -1,14 +1,17 @@
 
 #' @export
 #' @method print kardl_mplier
+#' @noRd
 print.kardl_mplier <- function(x, ...) {
   cat("kardl Dynamic Multiplier Object\n")
   cat("Horizon:", x$horizon, "\n")
   print(x$mpsi, ...)
+  invisible(x)
 }
 
 #' @export
 #' @method summary kardl_mplier
+#' @noRd
 summary.kardl_mplier <- function(object, ...) {
 
   out <- list(
@@ -21,24 +24,28 @@ summary.kardl_mplier <- function(object, ...) {
 
 #' @export
 #' @method print summary.kardl_mplier
+#' @noRd
 print.summary.kardl_mplier <- function(x, ...) {
   cat("Summary of Dynamic Multipliers\n")
   cat("Horizon:", x$horizon, "\n\n")
   print( x$summary, ...)
-
+  invisible(x)
 }
 
 #' @export
 #' @method print kardl_boot
+#' @noRd
 print.kardl_boot <- function(x, ...) {
   cat("kardl Bootstrap Results\n")
   cat("Confidence level:", x$level, "%\n")
   cat("Horizon:", x$horizon, "\n")
   print(x$mpsi, ...)
+  invisible(x)
 }
 
 #' @export
 #' @method summary kardl_boot
+#' @noRd
 summary.kardl_boot <- function(object, ...) {
 
   out <- list(
@@ -51,14 +58,17 @@ summary.kardl_boot <- function(object, ...) {
 
 #' @export
 #' @method print summary.kardl_boot
+#' @noRd
 print.summary.kardl_boot <- function(x, ...) {
   cat("Summary of Dynamic Multipliers\n")
   cat("Horizon:", x$horizon, "\n\n")
   print( x$summary, ...)
+  invisible(x)
 }
 
 #' @export
 #' @method plot kardl_mplier
+#' @noRd
 plot.kardl_mplier <- function(x, variables ="all" , ...) {
   mpsi <- x$mpsi
   plots<-list()
@@ -85,10 +95,11 @@ plot.kardl_mplier <- function(x, variables ="all" , ...) {
 #' @import stats
 #' @export
 #' @method  summary kardl_longrun
+#' @noRd
 summary.kardl_longrun <- function(object, ...) {
   objcoef <- object$original_model$coefficients
 
-  vcov_matrix = stats::vcov( object$original_model)
+  vcov_matrix <- stats::vcov( object$original_model)
 
   my_dep <- object$depvar
   my_indep <- object$indepvars
@@ -134,6 +145,7 @@ summary.kardl_longrun <- function(object, ...) {
 
 #' @export
 #' @method print summary_kardl_longrun
+#' @noRd
 print.summary_kardl_longrun <- function(x, ...) {
   cat("\nCall:\n", paste(deparse(x$call), collapse = "\n"), "\n", sep = "")
 
@@ -151,6 +163,7 @@ print.summary_kardl_longrun <- function(x, ...) {
 
 #' @export
 #' @method print kardl_symmetric
+#' @noRd
 print.kardl_symmetric <- function(x, ...) {
   #print(x$allWald)
   # cat("\n==============================\n")
@@ -166,10 +179,12 @@ print.kardl_symmetric <- function(x, ...) {
     print(x$Swald, ...)
     cat("\n")
   }
+  invisible(x)
 }
 
 #' @export
 #' @method summary kardl_symmetric
+#' @noRd
 summary.kardl_symmetric <- function(object,level=0.05 ,...) {
   decision <- list()
   pValType<-ifelse(object$type == "Chisq","Pr(>Chisq)", "Pr(>F)")
@@ -202,6 +217,7 @@ summary.kardl_symmetric <- function(object,level=0.05 ,...) {
 
 #' @export
 #' @method print summary.kardl_symmetric
+#' @noRd
 print.summary.kardl_symmetric <- function(x, ...){
   if(x$type == "Chisq"){
     pValType <- "Pr(>Chisq)"
@@ -250,12 +266,14 @@ print.summary.kardl_symmetric <- function(x, ...){
 
     }
   }
+  invisible(x)
 
 }
 
 
 #' @export
 #' @method summary kardl_test
+#' @noRd
 summary.kardl_test <- function(object, ...){
     htestsummary(object,...)
 
@@ -263,6 +281,7 @@ summary.kardl_test <- function(object, ...){
 
 #' @export
 #' @method print summary_htest
+#' @noRd
 print.summary_htest <- function(x, ...){
   cat(x$method, "\n")
   cat(names(x$statistic), " = ", format(unname(x$statistic), digits = getOption("digits")),"\n")
@@ -284,10 +303,12 @@ print.summary_htest <- function(x, ...){
     }
     cat("\n")
   }
+  invisible(x)
 }
 
 #' @export
 #' @method print kardl_long_run
+#' @noRd
 print.kardl_long_run<- function(x, ...) {
   cat("Long-run multiplier estimate\n")
   cat("=================================\n")
@@ -299,6 +320,7 @@ print.kardl_long_run<- function(x, ...) {
 
 #' @export
 #' @method plot kardl_long_run
+#' @noRd
 plot.kardl_long_run <- function(x,  ...) {
   cat("WARNING: Residual diagnostic plots are meaningless for long-run estimators\n")
   if (interactive()) {
@@ -311,6 +333,7 @@ plot.kardl_long_run <- function(x,  ...) {
 
 #' @export
 #' @method print kardl_lm
+#' @noRd
 print.kardl_lm<- function(x, ...) {
   cat("Optimal lags for each variable (",x$argsInfo$criterion,"):\n")
   cat(paste(sprintf("%s: %d", names(x$lagInfo$OptLag), x$lagInfo$OptLag), collapse = ", "  ),"\n")
@@ -322,5 +345,6 @@ print.kardl_lm<- function(x, ...) {
     }
     cat("\n")
   }
+  invisible(x)
 }
 

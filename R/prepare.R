@@ -10,12 +10,12 @@ combineVarTypes <-function(inputs,checkInData=TRUE){
     stop("The model should be a valid model without any \" or '. For y~x+z ", call. = FALSE)
   }
   extractedInfo<-list()
-  parse_formula_vars(inputs$formula) -> parseFormula
-  extractedInfo[["noConstant"]] <-ifelse(parseFormula$intercept==FALSE,TRUE,FALSE)
+  parseFormula <-   parse_formula_vars(inputs$formula)
+  extractedInfo[["noConstant"]] <-ifelse(!parseFormula$intercept,TRUE,FALSE)
   extractedInfo[["trend"]] <- ifelse("trend" %in% parseFormula$outside ,TRUE,FALSE)
 
 
-  choices = c("asymmetric","sasymmetric","lasymmetric","deterministic")
+  choices <- c("asymmetric","sasymmetric","lasymmetric","deterministic")
   names(parseFormula$inside) <- tolower( names(parseFormula$inside))
   matched <- vapply(
     names(parseFormula$inside),
@@ -72,7 +72,7 @@ verifyUserDefinedLags<-function(spec){
   if(typeof(spec$argsInfo$mode)!= "double"){
     stop("User-defined value should have valid vector. For example: c(1,0,1)", call. = FALSE)
   }
-  if(all(spec$argsInfo$mode==floor(spec$argsInfo$mode)) != TRUE){
+  if(!all(spec$argsInfo$mode==floor(spec$argsInfo$mode)) ){
     stop(paste0("User-defined should have valid numeric and non-decimal. Your pattern is ",paste(spec$argsInfo$mode,collapse = ","),". For example: 1,0,1 "), call. = FALSE)
   }
 
@@ -203,14 +203,15 @@ detectVars <-function(spec){
     }else{
       ## c(paste0(AsymPrefix[1],i,inputs$AsymSuffix[1])
       ##  baslik<-c(baslik,paste0(x,".NEG"));baslik<-c(baslik,paste0(x,".POS"));
-      baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]));
-      baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]));
+      baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]))
+      baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]))
       #   if(DifferentAsymLag) {} else baslik<-c(baslik,x)
     }
     if(!(x %in% spec$extractedInfo$ALvars)){
       baslik2<-c(baslik2,x)
     }else{
-      baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]));baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]));
+      baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]))
+      baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]))
     }
   }
   shortRunVars<-baslik

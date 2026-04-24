@@ -49,3 +49,5 @@ Author: Huseyin Karamelikli [aut, cre] (ORCID:
     <https://orcid.org/0000-0002-9140-0362>)
 Depends: R (>= 3.5.0)
 Config/testthat/edition: 3
+URL: https://github.com/karamelikli/kardl
+BugReports: https://github.com/karamelikli/kardl/issues

@@ -338,7 +338,7 @@ kardl <- function(data = NULL, formula = NULL,
   myNames <- names(kardlVars)
   for (i in 1:length(kardlVars)) {
     name <- myNames[i]
-    if(nzchar(name)==FALSE) {
+    if(!nzchar(name)) {
       kardlVars[[i]] <- NULL
       next
     }
@@ -575,7 +575,7 @@ ecmS <-lm( shortrunEQ, EcmData)
   lagInfo=get_proper$lagInfo
   )
 
-  ecmList$estInfo$type="ecm"
+  ecmList$estInfo$type<-"ecm"
   ecmOutput<-lmerge(ecmList,ecmS)
   if(coef(ecmS)[["EcmRes"]]>=0){
     notesArray <- c(notesArray, "The coefficient of the error correction term (EcmRes) is non-negative. This may indicate a lack of long-run equilibrium adjustment.")
@@ -739,7 +739,7 @@ makemodel.quick<-function(spec , ...  ){#model,data,inputs){
     order1 <- rep(i, Xlength)
     Base_cr <- myEst(order1)
     toporders<-rbind(toporders,c(order1 ,Base_cr))
-    while (ardl_converge == FALSE) {
+    while (!ardl_converge ) {
       for(j in 1:(Xlength-1)) {
         order2_back <- order1
         order2_forth <- order1
@@ -1025,7 +1025,7 @@ makemodel.grid<-function(spec , ... ){#model ,  data,inputs  ){ # makemodel.defa
   }
   colnames(bir)<-spec$extractedInfo$shortRunVars
   LagMatrix <-bir[nrow(bir):1,] # I am reversing orders due to alerting about the insufficiency of the degree of freedom.
-  colNum=ncol(LagMatrix)
+  colNum<-ncol(LagMatrix)
   for (i in 1:nrow(LagMatrix)){
     LagCriteria[i,1] <- paste0(LagMatrix[i,],collapse=",")
   }
