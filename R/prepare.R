@@ -82,7 +82,7 @@ verifyUserDefinedLags<-function(spec){
   for (i in seq_along(spec$extractedInfo$Allvars)) {
     if(spec$extractedInfo$Allvars[i] %in% spec$extractedInfo$ASvars){
       nlist[i+j]<-paste0(.kardl_Settings_env$AsymPrefix[1],spec$extractedInfo$Allvars[i],.kardl_Settings_env$AsymSuffix[1])
-      j=j+1
+      j <- j+1
       nlist[i+j]<-paste0(.kardl_Settings_env$AsymPrefix[2],spec$extractedInfo$Allvars[i],.kardl_Settings_env$AsymSuffix[2])
     }else{
       nlist[i+j]<- spec$extractedInfo$Allvars[i]

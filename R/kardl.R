@@ -765,10 +765,10 @@ makemodel.quick<-function(spec , ...  ){#model,data,inputs){
           }
           toporders<-rbind(toporders,c(order1 ,minCr))
           Base_cr<-minCr
-          ardl_converge =F
+          ardl_converge <- FALSE
         }else{
           if(any(apply(failed_checks, 1, function(row) all(row == order1)))){
-            ardl_converge =T
+            ardl_converge <- TRUE
           }else {
             failed_checks<-rbind(failed_checks,order1)
           }
