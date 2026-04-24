@@ -146,7 +146,7 @@ symmetrytest <- function(kmodel,
     if (length(bad_vars) > 0) {
       stop(
         "These variables are not available for symmetry testing: ",
-        paste(bad_vars, collapse = ", "),
+        toString(bad_vars),
         call. = FALSE
       )
     }

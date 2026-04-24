@@ -108,12 +108,12 @@ summary.kardl_longrun <- function(object, ...) {
 
   A <- - 1 / objcoef[my_dep]
 
-  lr_var <- sapply(names(multipliers_coef), function(i) {
+  lr_var <- vapply(names(multipliers_coef), function(i) {
     B <- objcoef[i] / (objcoef[my_dep]^2)
     (A^2) * vcov_matrix[i, i] +
       2 * A * B * vcov_matrix[i, my_dep] +
       (B^2) * vcov_matrix[my_dep, my_dep]
-  })
+  }, numeric(1))
 
   multipliers_coef_se <- sqrt(as.vector(lr_var))
   tvals <- multipliers_coef / multipliers_coef_se
@@ -290,8 +290,8 @@ print.summary_htest <- function(x, ...){
 
 
   cat("\nHypotheses:\n")
-  cat( paste0("H0: Coef(", paste0(x$varnames,collapse = ") = Coef(" ),") = 0"), "\n")
-  cat(paste0("H1: Coef(", paste0(x$varnames,collapse = ") \u2260 Coef(" ),")\u2260",  " 0"), "\n")
+  cat( paste0("H0: Coef(", paste(x$varnames,collapse = ") = Coef(" ),") = 0"), "\n")
+  cat(paste0("H1: Coef(", paste(x$varnames,collapse = ") \u2260 Coef(" ),")\u2260",  " 0"), "\n")
    # add x$decision
   cat("\nTest Decision: ", x$decision, "\n")
   cat("\nCritical Values (Case ",x$case,"):\n")
@@ -336,7 +336,7 @@ plot.kardl_long_run <- function(x,  ...) {
 #' @noRd
 print.kardl_lm<- function(x, ...) {
   cat("Optimal lags for each variable (",x$argsInfo$criterion,"):\n")
-  cat(paste(sprintf("%s: %d", names(x$lagInfo$OptLag), x$lagInfo$OptLag), collapse = ", "  ),"\n")
+  cat(toString(sprintf("%s: %d", names(x$lagInfo$OptLag), x$lagInfo$OptLag)),"\n")
   NextMethod()  # continues with normal coefficient printing
   if (!is.null(x$notes)) {
     cat("\nNotes:\n")

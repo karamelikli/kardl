@@ -19,13 +19,12 @@ kardl(
 \item{data}{The data of analysis}
 
 \item{formula}{A formula specifying the long-run model equation. This formula defines the relationships
-       between the dependent variable and explanatory variables, including options for deterministic terms,
-       asymmetric variables, and a trend component.
+between the dependent variable and explanatory variables, including options for deterministic terms,
+asymmetric variables, and a trend component.
 
-       Example formula:
-       \code{y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
-
-
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   Example formula:
+   \code{y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
+}\if{html}{\out{</div>}}
 
 \strong{\emph{Details}}
 
@@ -68,7 +67,7 @@ rules:
 
 \itemize{
 \item They can be freely combined within a single formula, for example:
-  \preformatted{
+\preformatted{
   y ~ . +
     Asymmetric(z) +
     Lasymmetric(x2 + x3) +
@@ -78,49 +77,49 @@ rules:
   }
 
 \item They must not be nested within one another. Valid usage:
-  \code{y ~ x + deterministic(dummy) + Asymmetric(z)}.
-  Invalid usage (to be avoided):
-  \code{y ~ x + deterministic(Asymmetric(z))} or
-  \code{y ~ x + Asymmetric(deterministic(dummy))}.
+\code{y ~ x + deterministic(dummy) + Asymmetric(z)}.
+Invalid usage (to be avoided):
+\code{y ~ x + deterministic(Asymmetric(z))} or
+\code{y ~ x + Asymmetric(deterministic(dummy))}.
 
 \item Where applicable, arguments are validated internally using
-  \code{match.arg()}. Consequently, abbreviated inputs are accepted
-  provided they uniquely identify a valid option. For example, if
-  \code{"asymmetric"} is an admissible value, specifying \code{"a"}
-  is sufficient. For clarity and reproducibility, however, full
-  argument names are recommended.
+\code{match.arg()}. Consequently, abbreviated inputs are accepted
+provided they uniquely identify a valid option. For example, if
+\code{"asymmetric"} is an admissible value, specifying \code{"a"}
+is sufficient. For clarity and reproducibility, however, full
+argument names are recommended.
 }
 
 These components may therefore be combined flexibly to construct
 a specification tailored to the empirical analysis.}
 
 \item{maxlag}{An integer specifying the maximum number of lags to be considered for the model.
-       The default value is \code{4}. This parameter sets an upper limit on the lag length during
-       the model estimation process.
-
+The default value is \code{4}. This parameter sets an upper limit on the lag length during
+the model estimation process.
 
 \strong{\emph{details}}
 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   The \code{maxlag} parameter is crucial for defining the maximum lag length that the model
+   will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
+   It controls the computational effort and helps prevent overfitting by restricting the search
+   space for lag selection.
+}\if{html}{\out{</div>}}
 
-       The \code{maxlag} parameter is crucial for defining the maximum lag length that the model
-       will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
-       It controls the computational effort and helps prevent overfitting by restricting the search
-       space for lag selection.
 \itemize{
 \item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
 \item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
 }
 
-       Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
-       context of the analysis:
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
+   context of the analysis:
+}\if{html}{\out{</div>}}
+
 \itemize{
 \item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
 \item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
 }
 
-
 \strong{\emph{examples}}
-
 
 Using the default maximum lag (4)
 
@@ -135,81 +134,83 @@ Increasing the maximum lag to 8 for datasets with longer dependencies
 \code{kardl(data, MyFormula, maxlag = 8)}}
 
 \item{mode}{Specifies the mode of estimation and output control. This parameter determines how
-       the function handles lag estimation and what kind of feedback or control is provided during
-       the process. The available options are:
+the function handles lag estimation and what kind of feedback or control is provided during
+the process. The available options are:
 
 \itemize{
 \item \strong{"quick"} (default):
-        Displays progress and messages in the console while the function estimates the optimal lag values.
-        This mode is suitable for interactive use or for users who want to monitor the estimation process
-        in real-time. It provides detailed feedback for debugging or observation but may use additional
-        resources due to verbose output.
+Displays progress and messages in the console while the function estimates the optimal lag values.
+This mode is suitable for interactive use or for users who want to monitor the estimation process
+in real-time. It provides detailed feedback for debugging or observation but may use additional
+resources due to verbose output.
 
 \item \strong{"grid"} :
-        Displays progress and messages in the console while the function estimates the optimal lag values.
-        This mode is suitable for interactive use or for users who want to monitor the estimation process
-        in real-time. It provides detailed feedback for debugging or observation but may use additional
-        resources due to verbose output.
+Displays progress and messages in the console while the function estimates the optimal lag values.
+This mode is suitable for interactive use or for users who want to monitor the estimation process
+in real-time. It provides detailed feedback for debugging or observation but may use additional
+resources due to verbose output.
 
 \item \strong{"grid_custom"}:
-        Suppresses most or all console output, prioritizing faster execution and reduced resource usage
-        on PCs or servers. This mode is recommended for high-performance scenarios, batch processing,
-        or when the estimation process does not require user monitoring. Suitable for large-scale or
-        repeated runs where output is unnecessary.
+Suppresses most or all console output, prioritizing faster execution and reduced resource usage
+on PCs or servers. This mode is recommended for high-performance scenarios, batch processing,
+or when the estimation process does not require user monitoring. Suitable for large-scale or
+repeated runs where output is unnecessary.
 
 \item \strong{User-defined vector}:
-        A numeric vector of lag values specified by the user, allowing full customization of the lag
-        structure used in model estimation. When a user-defined vector is provided (e.g., `c(1, 2, 4, 5)`),
-        the function skips the lag optimization process and directly uses the specified lags.
+A numeric vector of lag values specified by the user, allowing full customization of the lag
+structure used in model estimation. When a user-defined vector is provided (e.g., \code{c(1, 2, 4, 5)}),
+the function skips the lag optimization process and directly uses the specified lags.
 
-         Users can define lag values directly as a numeric vector. For example:
-          \code{mode = c(1, 2, 4, 5)} assigns lags of 1, 2, 4, and 5 to variables in the specified order.
-         Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
-          \code{mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)} assigns lags to variables explicitly.
-         Ensure that the lags are correctly designated by verifying the result using
-          \code{kardl_model$properLag} after estimation.
+\if{html}{\out{<div class="sourceCode">}}\preformatted{     Users can define lag values directly as a numeric vector. For example:
+      \code{mode = c(1, 2, 4, 5)} assigns lags of 1, 2, 4, and 5 to variables in the specified order.
+     Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
+      \code{mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)} assigns lags to variables explicitly.
+     Ensure that the lags are correctly designated by verifying the result using
+      \code{kardl_model$properLag} after estimation.
 
-        \strong{\emph{Attention!}}
-        A function-based criterion or user-defined function can be specified
-         for model selection, but this is only supported for \code{mode = "grid_custom"}
-         and \code{mode = "quick"}. The \code{mode = "grid"} option is restricted to
-         predefined criteria (e.g., AIC or BIC). For more information on available criteria,
-         see the \code{\link{modelCriterion}} function documentation.
-        - When using a numeric vector, ensure the order of lag values matches the variables in your formula.
-        - If using named vectors, double-check the variable names to avoid mismatches or unintended results.
-        - This mode bypasses the automatic lag optimization and assumes the user-defined lags are correct.
+    \\strong\{\\emph\{Attention!\}\}
+    A function-based criterion or user-defined function can be specified
+     for model selection, but this is only supported for \code{mode = "grid_custom"}
+     and \code{mode = "quick"}. The \code{mode = "grid"} option is restricted to
+     predefined criteria (e.g., AIC or BIC). For more information on available criteria,
+     see the \code{\link{modelCriterion}} function documentation.
+    - When using a numeric vector, ensure the order of lag values matches the variables in your formula.
+    - If using named vectors, double-check the variable names to avoid mismatches or unintended results.
+    - This mode bypasses the automatic lag optimization and assumes the user-defined lags are correct.
+}\if{html}{\out{</div>}}
+
 }
 
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   The `mode` parameter provides flexibility for different use cases:
+   - Use `"grid"` mode for debugging or interactive use where progress visibility is important.
+   - Use `"grid_custom"` mode to minimize overhead in computationally intensive tasks.
+   - Specify a user-defined vector to customize the lag structure based on prior knowledge or analysis.
 
-       The `mode` parameter provides flexibility for different use cases:
-       - Use `"grid"` mode for debugging or interactive use where progress visibility is important.
-       - Use `"grid_custom"` mode to minimize overhead in computationally intensive tasks.
-       - Specify a user-defined vector to customize the lag structure based on prior knowledge or analysis.
-
-       Selecting the appropriate mode can improve the efficiency and usability of the function depending
-       on the user's requirements and the computational environment.}
+   Selecting the appropriate mode can improve the efficiency and usability of the function depending
+   on the user's requirements and the computational environment.
+}\if{html}{\out{</div>}}}
 
 \item{criterion}{A string specifying the information criterion to be used for selecting the optimal lag structure.
-      The available options are:
+The available options are:
 \itemize{
 \item \strong{"AIC"}: Akaike Information Criterion (default). This criterion balances model fit and complexity,
-      favoring models that explain the data well with fewer parameters.
+favoring models that explain the data well with fewer parameters.
 \item \strong{"BIC"}: Bayesian Information Criterion. This criterion imposes a stronger penalty for model complexity
-      than AIC, making it more conservative in selecting models with fewer parameters.
+than AIC, making it more conservative in selecting models with fewer parameters.
 \item \strong{"AICc"}: Corrected Akaike Information Criterion. This is an adjusted version of AIC that accounts for small sample sizes,
-      making it more suitable when the number of observations is limited relative to the number of parameters.
+making it more suitable when the number of observations is limited relative to the number of parameters.
 \item \strong{"HQ"}: Hannan-Quinn Information Criterion. This criterion provides a compromise between AIC and BIC,
-      favoring models that balance fit and complexity without being overly conservative.
+favoring models that balance fit and complexity without being overly conservative.
 }
-      The criterion can be specified as a string (e.g., \code{"AIC"}) or as a user-defined function that takes a fitted model object.
-      Please visit the \code{\link{modelCriterion}} function documentation for more details on using custom criteria.}
+The criterion can be specified as a string (e.g., \code{"AIC"}) or as a user-defined function that takes a fitted model object.
+Please visit the \code{\link{modelCriterion}} function documentation for more details on using custom criteria.}
 
 \item{differentAsymLag}{A logical value indicating whether to allow different lag lengths for positive and negative decompositions.}
 
 \item{batch}{A string specifying the batch processing configuration in the format "current_batch/total_batches".
 If a user utilize grid or grid_custom mode and want to split the lag search into multiple batches, this parameter can be used to define the current batch and the total number of batches.
-      For example, "2/5" indicates that the current batch is the second out of a total of five batches.
-      The default value is "1/1", meaning that the entire lag search is performed in a single batch.}
+For example, "2/5" indicates that the current batch is the second out of a total of five batches.
+The default value is "1/1", meaning that the entire lag search is performed in a single batch.}
 
 \item{...}{Additional arguments that can be passed to the function. These arguments can be used to specify other settings or parameters that are not explicitly defined in the main arguments.}
 }

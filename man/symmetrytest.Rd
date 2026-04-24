@@ -44,10 +44,10 @@ The hypotheses for the long-run variables are:
 \deqn{    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
  }
 
- The hypotheses for the short-run variables are:
-  \deqn{
+The hypotheses for the short-run variables are:
+\deqn{
   H_{0}: \sum_{j = 0}^{q}{\beta^{+}_{j}} = \sum_{j = 0}^{m}{\beta^{-}_{j}} }
-  \deqn{H_{1}: \sum_{j = 0}^{q}{\beta^{+}_{j}} \neq \sum_{j = 0}^{m}{\beta^{-}_{j}}
+\deqn{H_{1}: \sum_{j = 0}^{q}{\beta^{+}_{j}} \neq \sum_{j = 0}^{m}{\beta^{-}_{j}}
   }
 }
 \details{

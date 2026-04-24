@@ -84,13 +84,11 @@ MyFormula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + tren
 ```
 Indeed, the formula syntax is flexible, allowing for various combinations of asymmetric and deterministic variables. The following variations of the formula are equivalent and will yield the same model specification:
 
-```r 
-
+```{r eval=FALSE}
 sameFormula <- y ~Asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + Deterministic(dummy1) + trend
 sameFormula <- y ~asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + deterministic(dummy1) + trend
 sameFormula <- y ~asym(x1)+sasym(x2+x3)+lasym(x4+x5) + det(dummy1) + trend
 sameFormula <- y ~a(x1)+s(x2+x3)+l(x4+x5) + d(dummy1) + trend
-
 ```
 
 

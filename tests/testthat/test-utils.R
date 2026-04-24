@@ -1,8 +1,8 @@
 test_that("model Criterion functions work correctly", {
   mylm<- lm(mpg ~ wt + hp, data = mtcars)
 
-   expect_equal(modelCriterion(mylm,AIC), stats::AIC(mylm))
-   expect_equal(modelCriterion(mylm,BIC), stats::BIC(mylm))
+   expect_identical(modelCriterion(mylm,AIC), stats::AIC(mylm))
+   expect_identical(modelCriterion(mylm,BIC), stats::BIC(mylm))
 
   # Not strictly necessary to test formulas, but good to know `parse_formula_vars` runs
   formula <- y ~ x + z + asymmetric(z) + Lasymmetric(x1+x2) + Sasymmetric(x3+x4+x5) + deterministic(d1) + trend
@@ -45,9 +45,9 @@ test_that("lmerge prioritises first list", {
   a <- list(x = 1, y = 2)
   b <- list(x = 99, z = 3)
   result <- lmerge(a, b)
-  expect_equal(result$x, 1)   # a wins
-  expect_equal(result$z, 3)   # only in b
-  expect_equal(result$y, 2)   # only in a
+  expect_identical(result$x, 1)   # a wins
+  expect_identical(result$z, 3)   # only in b
+  expect_identical(result$y, 2)   # only in a
 })
 
 test_that("lmerge works with more than two lists", {
@@ -55,16 +55,16 @@ test_that("lmerge works with more than two lists", {
   b <- list(y = 2)
   cc <- list(z = 3, x = 100)
   result <- lmerge(a, b, cc)
-  expect_equal(result$x, 1)   # a wins over cc
-  expect_equal(result$z, 3)
+  expect_identical(result$x, 1)   # a wins over cc
+  expect_identical(result$z, 3)
 })
 
 test_that("lmerge handles named vectors", {
   a <- c(k = 1)
   b <- c(k = 99, m = 5)
   result <- lmerge(a, b)
-  expect_equal(result[["k"]], 1)
-  expect_equal(result[["m"]], 5)
+  expect_identical(result[["k"]], 1)
+  expect_identical(result[["m"]], 5)
 })
 
 # ── BatchControl ──────────────────────────────────────────────────────────────
@@ -78,8 +78,8 @@ test_that("BatchControl returns full range for '1/1'", {
     extractedInfo = list(lagRowsNumber = 100)
   )
   res <- BatchControl(fake_spec)
-  expect_equal(res$startRow, 1)
-  expect_equal(res$endRow, 100)
+  expect_identical(res$startRow, 1)
+  expect_identical(res$endRow, 100)
 })
 
 test_that("BatchControl splits correctly for '2/4'", {
@@ -88,8 +88,8 @@ test_that("BatchControl splits correctly for '2/4'", {
     extractedInfo = list(lagRowsNumber = 100)
   )
   res <- BatchControl(fake_spec)
-  expect_equal(res$startRow, 26)
-  expect_equal(res$endRow, 50)
+  expect_identical(res$startRow, 26)
+  expect_identical(res$endRow, 50)
 })
 
 test_that("BatchControl warns and defaults to batch 1 when batch number out of range", {

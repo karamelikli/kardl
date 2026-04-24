@@ -7,7 +7,7 @@ test_that("Post-estimation tests run correctly", {
   # Test kardl_longrun
   lr <- kardl_longrun(model)
   expect_s3_class(lr, c("kardl_long_run","lm"))
-  expect_true(length(lr$coef) > 0)
+  expect_gt(length(lr$coef), 0)
 
   # Test symmetrytest
   # Need an asymmetric model for meaningful symmetry test, but function should run anyway
@@ -15,31 +15,31 @@ test_that("Post-estimation tests run correctly", {
   st <- symmetrytest(symm_model)
   expect_s3_class(st, c("kardl_symmetric","list"))
   expect_s3_class(st$Lwald, c("anova","data.frame"))
-  expect_equal(st$Lwald$Df, 1)
+  expect_identical(st$Lwald$Df, 1L)
 
   # Test pssf
   pf <- pssf(model, case = 3, signif_level = "auto")
   expect_s3_class(pf,c("kardl_test", "htest" ))
-  expect_equal(pf$type, "cointegration")
-  expect_true(!is.null(pf$statistic))
+  expect_identical(pf$type, "cointegration")
+  expect_false(is.null(pf$statistic))
 
   # Test psst
   pt <- psst(model, case = 3, signif_level = "auto")
   expect_s3_class(pt,c("kardl_test", "htest" ))
-  expect_equal(pt$type, "cointegration")
-  expect_true(!is.null(pt$statistic))
+  expect_identical(pt$type, "cointegration")
+  expect_false(is.null(pt$statistic))
 
   # Test narayan
   nr <- narayan(model, case = 3, signif_level = "auto")
   expect_s3_class(nr,c("kardl_test", "htest" ))
-  expect_equal(nr$type, "cointegration")
-  expect_true(!is.null(nr$statistic))
+  expect_identical(nr$type, "cointegration")
+  expect_false(is.null(nr$statistic))
 
   # Test mplier
   mp <- mplier(symm_model,horizon = 38)
   expect_s3_class(mp, "kardl_mplier" )
-  expect_equal(mp$horizon, 38)
-  expect_true(!is.null(mp$mpsi))
+  expect_identical(mp$horizon, 38)
+  expect_false(is.null(mp$mpsi))
 
   # Test ecm
   ec <- ecm(data = imf_example_data, formula = formula, mode = "quick", case = 3, signif_level = "auto")
@@ -53,7 +53,7 @@ test_that("symmetrytest with component = 'longrun' only works", {
                  mode = c(1, 1, 1, 1))
   st <- symmetrytest(model, component = "longrun")
   expect_s3_class(st, "kardl_symmetric")
-  expect_true(!is.null(st$Lwald))
+  expect_false(is.null(st$Lwald))
   expect_null(st$Swald)
 })
 
@@ -64,7 +64,7 @@ test_that("symmetrytest with component = 'shortrun' only works", {
   st <- symmetrytest(model, component = "shortrun")
   expect_s3_class(st, "kardl_symmetric")
   expect_null(st$Lwald)
-  expect_true(!is.null(st$Swald))
+  expect_false(is.null(st$Swald))
 })
 
 test_that("symmetrytest with type = 'Chisq' works", {
@@ -73,7 +73,7 @@ test_that("symmetrytest with type = 'Chisq' works", {
                  mode = c(1, 1, 1, 1))
   st <- symmetrytest(model, type = "Chisq")
   expect_s3_class(st, "kardl_symmetric")
-  expect_equal(st$type, "Chisq")
+  expect_identical(st$type, "Chisq")
   expect_true("Pr(>Chisq)" %in% colnames(st$Lwald))
 })
 
@@ -83,7 +83,7 @@ test_that("symmetrytest with specific vars argument works", {
                  mode = c(1, 1, 1, 1))
   st <- symmetrytest(model, vars = "ER")
   expect_s3_class(st, "kardl_symmetric")
-  expect_equal(rownames(st$Lwald), "ER")
+  expect_identical(rownames(st$Lwald), "ER")
 })
 
 test_that("symmetrytest errors on bad vars", {
@@ -160,7 +160,7 @@ test_that("psst with trend model auto-adjusts to case 5", {
   model <- kardl(imf_example_data, CPI ~ ER + PPI + trend, mode = c(1, 1, 1))
   pt <- psst(model, case = 3)
   expect_s3_class(pt, "kardl_test")
-  expect_equal(pt$case, 5)  # auto-adjusted because model has trend
+  expect_identical(pt$case, 5)  # auto-adjusted because model has trend
 })
 
 test_that("psst errors on invalid case", {
@@ -205,7 +205,7 @@ test_that("mplier with minProb > 0 works", {
                  mode = c(1, 1, 1, 1))
   mp <- mplier(model, horizon = 10, minProb = 0.1)
   expect_s3_class(mp, "kardl_mplier")
-  expect_equal(nrow(mp$mpsi), 11)
+  expect_identical(nrow(mp$mpsi), 11L)
 })
 
 test_that("mplier errors on non-kardl_lm input", {
@@ -234,9 +234,9 @@ test_that("bootstrap with asymmetric model works", {
                  mode = c(1, 1, 1))
   bt <- bootstrap(model, horizon = 10, replications = 5, level = 95)
   expect_s3_class(bt, "kardl_boot")
-  expect_equal(bt$level, 95)
-  expect_equal(bt$horizon, 10)
-  expect_true(!is.null(bt$mpsi))
+  expect_identical(bt$level, 95)
+  expect_identical(bt$horizon, 10)
+  expect_false(is.null(bt$mpsi))
 })
 
 test_that("bootstrap errors on non-kardl_lm input", {

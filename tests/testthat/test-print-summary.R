@@ -24,7 +24,7 @@ test_that("summary_kardl_longrun works (class is kardl_longrun)", {
   # summary dispatches correctly via summary.kardl_longrun
   sm <- summary(lr)
   expect_s3_class(sm, "summary_kardl_longrun")
-  expect_true(!is.null(sm$coefficients))
+  expect_false(is.null(sm$coefficients))
 
   expect_output(print(sm), "Estimation type")
   expect_output(print(sm), "Coefficients")

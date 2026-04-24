@@ -285,8 +285,8 @@ progressBar<-function(current, total,additionalStrings="",
 
   theFirstTimes<-floor(persentage*totalLines/100)
   theSecondTimes<-totalLines-theFirstTimes # floor((100-persentage)*totalLines/100)
-  theFirstPart<-paste0( rep("#",times=theFirstTimes)  ,collapse = "")
-  theSecondPart<-paste0(rep(" ",times=theSecondTimes),collapse = "")
+  theFirstPart<-strrep("#", theFirstTimes)
+  theSecondPart<-strrep(" ", theSecondTimes)
   txt <- sprintf("%% %s [ %s%s%s ] %s/%s %s",
                  persentage, theFirstPart, animate, theSecondPart,
                  current, total, additionalStrings)
@@ -314,9 +314,9 @@ replace_lag_var <- function(string, varName, new_lag) {
   }
 
   # If varName is a vector, return a vector of replaced strings
-  result <- sapply(varName, function(var) {
+  result <- vapply(varName, function(var) {
     gsub("{varName}", var, gsub("{lag}", new_lag, string, fixed = TRUE), fixed = TRUE)
-  })
+  }, character(1))
 
   return(result)
 }

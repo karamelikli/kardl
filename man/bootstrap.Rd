@@ -16,7 +16,7 @@ The horizon defines the time frame for the analysis (e.g., 40 periods).}
 \item{replications}{An integer indicating the number of bootstrap replications to perform.
 Higher values increase accuracy but also computational time. Default is \code{100}.}
 
-\item{level}{A numeric value specifying the confidence level for the intervals (e.g., 95 for 95% confidence).
+\item{level}{A numeric value specifying the confidence level for the intervals (e.g., 95 for 95\% confidence).
 Default is \code{90}.}
 
 \item{minProb}{A numeric value specifying the minimum p-value threshold for including coefficients in the bootstrap.

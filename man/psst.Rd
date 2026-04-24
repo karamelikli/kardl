@@ -52,13 +52,12 @@ This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which is
 
 The PSS t Bound test evaluates the null hypothesis that the long-run coefficients of the model are equal to zero against the alternative hypothesis that at least one of them is non-zero. The test is conducted under different cases, depending on the model specification.
 
-
- \deqn{
+\deqn{
   \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  + \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +   \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+ \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
 }
 
-  \deqn{\mathbf{H_{0}:} \eta_0   = 0}
-  \deqn{\mathbf{H_{1}:} \eta_{0}  \neq 0}
+\deqn{\mathbf{H_{0}:} \eta_0   = 0}
+\deqn{\mathbf{H_{1}:} \eta_{0}  \neq 0}
 }
 
 \examples{

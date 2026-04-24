@@ -201,20 +201,20 @@ detectVars <-function(spec){
   baslik<-c(spec$extractedInfo$dependentVar)
   baslik2<-c(spec$extractedInfo$dependentVar)
   for (x in  spec$extractedInfo$independentVars){
-    if(!(x %in% spec$extractedInfo$ASvars)){
-      baslik<-c(baslik,x)
-    }else{
+    if(x %in% spec$extractedInfo$ASvars){
       ## c(paste0(AsymPrefix[1],i,inputs$AsymSuffix[1])
       ##  baslik<-c(baslik,paste0(x,".NEG"));baslik<-c(baslik,paste0(x,".POS"));
       baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]))
       baslik<-c(baslik,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]))
       #   if(DifferentAsymLag) {} else baslik<-c(baslik,x)
-    }
-    if(!(x %in% spec$extractedInfo$ALvars)){
-      baslik2<-c(baslik2,x)
     }else{
+      baslik<-c(baslik,x)
+    }
+    if(x %in% spec$extractedInfo$ALvars){
       baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[1],x,.kardl_Settings_env$AsymSuffix[1]))
       baslik2<-c(baslik2,paste0(.kardl_Settings_env$AsymPrefix[2],x,.kardl_Settings_env$AsymSuffix[2]))
+    }else{
+      baslik2<-c(baslik2,x)
     }
   }
   shortRunVars<-baslik

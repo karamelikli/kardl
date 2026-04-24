@@ -68,7 +68,7 @@ kardl_set <- function(...) {
   if (length(args) > 0 && !is.null(names(args))) {
     invalid <- setdiff(names(args), names(.kardl_Settings_env_default))
     if (length(invalid) > 0) {
-      stop(sprintf("Invalid option(s): %s", paste(invalid, collapse = ", ")),
+      stop(sprintf("Invalid option(s): %s", toString(invalid)),
            call. = FALSE)
     }
 
@@ -124,7 +124,7 @@ kardl_get <- function(...) {
   # Check for invalid names
   invalid <- setdiff(names_requested, names(.kardl_Settings_env_default))
   if (length(invalid) > 0) {
-    stop(sprintf("Option(s) not found: %s", paste(invalid, collapse = ", ")),
+    stop(sprintf("Option(s) not found: %s", toString(invalid)),
          call. = FALSE)
   }
 
@@ -179,7 +179,7 @@ kardl_reset <- function(exclude = NULL) {
   if (!is.null(exclude)) {
     invalid <- setdiff(exclude, all_names)
     if (length(invalid) > 0) {
-      stop("Invalid setting(s) in `exclude`: ", paste(invalid, collapse = ", "))
+      stop("Invalid setting(s) in `exclude`: ", toString(invalid))
     }
   }
 

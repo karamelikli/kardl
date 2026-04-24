@@ -540,7 +540,7 @@ ecm<-function(data = NULL, formula = NULL,
 
 EcmData<-get_proper$model
 
-longrunEQ<- paste0(replace_lag_var(.kardl_Settings_env$LongCoef ,get_proper$extractedInfo$dependentVar,1)  ," ~ " , paste0( replace_lag_var(.kardl_Settings_env$LongCoef ,get_proper$extractedInfo$longRunVars[-1],1) ,collapse = " + "))
+longrunEQ<- paste0(replace_lag_var(.kardl_Settings_env$LongCoef ,get_proper$extractedInfo$dependentVar,1)  ," ~ " , paste( replace_lag_var(.kardl_Settings_env$LongCoef ,get_proper$extractedInfo$longRunVars[-1],1) ,collapse = " + "))
 longrunEQ<- as.formula(longrunEQ)
 
   ecmL<-lm(longrunEQ,EcmData)
@@ -936,7 +936,7 @@ makemodel.grid_custom<-function(spec, ...  ){ #model ,  data,inputs  ){
   startLag<-paste(LagQueue[batch$startRow,],collapse = ",")
   properRow<-1
 
-  finalLags<-data.frame(c( paste0(LagQueue[OptRow,],collapse = ","),Mincr)  )
+  finalLags<-data.frame(c( paste(LagQueue[OptRow,],collapse = ","),Mincr)  )
   if(!is.function(spec$argsInfo$criterion)){
     colnames(finalLags)<-spec$argsInfo$criterion
   }
@@ -1027,7 +1027,7 @@ makemodel.grid<-function(spec , ... ){#model ,  data,inputs  ){ # makemodel.defa
   LagMatrix <-bir[rev(seq_len(nrow(bir))),] # I am reversing orders due to alerting about the insufficiency of the degree of freedom.
   colNum<-ncol(LagMatrix)
   for (i in seq_len(nrow(LagMatrix))){
-    LagCriteria[i,1] <- paste0(LagMatrix[i,],collapse=",")
+    LagCriteria[i,1] <- paste(LagMatrix[i,],collapse=",")
   }
   for(i in batch$startRow:batch$endRow)  {
     MyFormula <- as.formula(paste0(preModel$LS_dependent,"~",paste(preModel$LS_longrun,

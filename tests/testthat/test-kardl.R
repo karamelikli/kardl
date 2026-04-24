@@ -5,9 +5,9 @@ test_that("kardl model estimates correctly in quick mode", {
   model <- kardl(data = imf_example_data, formula = formula, mode = "quick", maxlag = 2)
 
   expect_s3_class(model, "kardl_lm")
-  expect_true(!is.null(model))
+  expect_false(is.null(model))
   expect_s3_class(model, "lm")
-  expect_equal(model$estInfo$type, "kardlmodel")
+  expect_identical(model$estInfo$type, "kardlmodel")
 })
 
 test_that("kardl model estimates correctly with custom lags", {
@@ -17,7 +17,7 @@ test_that("kardl model estimates correctly with custom lags", {
   model <- kardl(data = imf_example_data, formula = formula, mode = c(2, 1, 1,  0))
 
   expect_s3_class(model, "kardl_lm")
-  expect_true(!is.null(model$lagInfo$OptLag))
+  expect_false(is.null(model$lagInfo$OptLag))
 })
 
 test_that("kardl with grid_custom mode works", {
@@ -25,7 +25,7 @@ test_that("kardl with grid_custom mode works", {
   model <- kardl(imf_example_data, CPI ~ ER + PPI, mode = "grid_custom", maxlag = 2)
 
   expect_s3_class(model, "kardl_lm")
-  expect_equal(model$estInfo$method, "grid_custom")
+  expect_identical(model$estInfo$method, "grid_custom")
 })
 
 test_that("kardl with grid_custom mode and BIC criterion works", {
@@ -34,7 +34,7 @@ test_that("kardl with grid_custom mode and BIC criterion works", {
                  maxlag = 2, criterion = "BIC")
 
   expect_s3_class(model, "kardl_lm")
-  expect_true(!is.null(model$lagInfo$OptLag))
+  expect_false(is.null(model$lagInfo$OptLag))
 })
 
 test_that("kardl with grid mode works", {
@@ -42,8 +42,8 @@ test_that("kardl with grid mode works", {
   model <- kardl(imf_example_data, CPI ~ ER + PPI, mode = "grid", maxlag = 2)
 
   expect_s3_class(model, "kardl_lm")
-  expect_equal(model$estInfo$method, "grid")
-  expect_true(!is.null(model$lagInfo$LagCriteria))
+  expect_identical(model$estInfo$method, "grid")
+  expect_false(is.null(model$lagInfo$LagCriteria))
 })
 
 test_that("kardl with dot formula works", {
@@ -58,8 +58,8 @@ test_that("kardl with lasymmetric produces correct structure", {
   kardl_reset()
   model <- kardl(imf_example_data, CPI ~ lasymmetric(ER), mode = c(1, 1))
   expect_s3_class(model, "kardl_lm")
-  expect_true(length(model$extractedInfo$ALvars) > 0)
-  expect_equal(length(model$extractedInfo$ASvars), 0)
+  expect_gt(length(model$extractedInfo$ALvars), 0)
+  expect_length(model$extractedInfo$ASvars, 0)
 })
 
 test_that("kardl with sasymmetric produces correct structure", {
@@ -67,8 +67,8 @@ test_that("kardl with sasymmetric produces correct structure", {
   model <- kardl(imf_example_data, CPI ~ PPI + sasymmetric(ER),
                  mode = c(1, 1, 1, 1))
   expect_s3_class(model, "kardl_lm")
-  expect_true(length(model$extractedInfo$ASvars) > 0)
-  expect_equal(length(model$extractedInfo$ALvars), 0)
+  expect_gt(length(model$extractedInfo$ASvars), 0)
+  expect_length(model$extractedInfo$ALvars, 0)
 })
 
 test_that("kardl grid_custom with batch processing works", {
@@ -92,31 +92,31 @@ test_that("modelCriterion works with all built-in criteria", {
   aicc <- modelCriterion(mylm, "AICc")
   hq   <- modelCriterion(mylm, "HQ")
 
-  expect_true(is.numeric(aic))
-  expect_true(is.numeric(bic))
-  expect_true(is.numeric(aicc))
-  expect_true(is.numeric(hq))
+  expect_type(aic, "double")
+  expect_type(bic, "double")
+  expect_type(aicc, "double")
+  expect_type(hq, "double")
 })
 
 test_that("modelCriterion works with a user-defined function", {
   mylm <- lm(mpg ~ wt + hp, data = mtcars)
   my_fn <- function(mod, ...) stats::AIC(mod)
   result <- modelCriterion(mylm, my_fn)
-  expect_equal(result, stats::AIC(mylm))
+  expect_identical(result, stats::AIC(mylm))
 })
 
 test_that("ecm model estimates correctly", {
   kardl_reset()
   ec <- ecm(imf_example_data, CPI ~ ER + PPI + trend, mode = c(1, 1, 1))
   expect_s3_class(ec, "kardl_lm")
-  expect_equal(ec$estInfo$type, "ecm")
+  expect_identical(ec$estInfo$type, "ecm")
 })
 
 test_that("ecm summary works", {
   kardl_reset()
   ec <- ecm(imf_example_data, CPI ~ ER + PPI + trend, mode = c(1, 1, 1))
   sm <- summary(ec)
-  expect_true(!is.null(sm$coefficients))
+  expect_false(is.null(sm$coefficients))
 })
 
 test_that("ecm model with notes when ECM coeff is non-negative or < -1", {

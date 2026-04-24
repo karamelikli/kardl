@@ -7,10 +7,10 @@
 \format{
 A data frame with 470 rows and 4 variables:
 \describe{
-  \item{ER}{Numeric. Exchange rate of Turkey.}
-  \item{CPI}{Numeric. CPI of Turkey.}
-  \item{PPI}{Numeric. PPI of Turkey.}
-  \item{covid}{Integer.Covid19 dummy variable.}
+\item{ER}{Numeric. Exchange rate of Turkey.}
+\item{CPI}{Numeric. CPI of Turkey.}
+\item{PPI}{Numeric. PPI of Turkey.}
+\item{covid}{Integer.Covid19 dummy variable.}
 }
 }
 \usage{
