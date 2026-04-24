@@ -93,7 +93,7 @@ kardl_longrun <- function(model) {
   qty <- qr.qty(qr_X, mydata[, my_dep])
   eff <- numeric(length(mydata[, my_dep]))
   eff[qr_X$pivot[1:qr_X$rank]] <- qty[1:qr_X$rank]
-  eff[-(1:ncol(qr_X$qr))] <- qty[-(1:qr_X$rank)]
+  eff[-seq_len(ncol(qr_X$qr))] <- qty[-(1:qr_X$rank)]
   names(eff) <- names(multipliers_coef)
 
   my_terms <- as.formula(

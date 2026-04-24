@@ -11,8 +11,8 @@ combineVarTypes <-function(inputs,checkInData=TRUE){
   }
   extractedInfo<-list()
   parseFormula <-   parse_formula_vars(inputs$formula)
-  extractedInfo[["noConstant"]] <-ifelse(!parseFormula$intercept,TRUE,FALSE)
-  extractedInfo[["trend"]] <- ifelse("trend" %in% parseFormula$outside ,TRUE,FALSE)
+  extractedInfo[["noConstant"]] <- !parseFormula$intercept
+  extractedInfo[["trend"]] <- "trend" %in% parseFormula$outside
 
 
   choices <- c("asymmetric","sasymmetric","lasymmetric","deterministic")
@@ -55,7 +55,7 @@ combineVarTypes <-function(inputs,checkInData=TRUE){
   if(checkInData){
     for (x in extractedInfo[["Allvars"]]) {
       if(!(x %in% colnames(inputs$data))){
-        stop(paste("The variable: ", (x), " not found in the data file's vars list!"), call. = FALSE)
+        stop("The variable: ", x, " not found in the data file's vars list!", call. = FALSE)
       }
     }
   }
@@ -73,13 +73,13 @@ verifyUserDefinedLags<-function(spec){
     stop("User-defined value should have valid vector. For example: c(1,0,1)", call. = FALSE)
   }
   if(!all(spec$argsInfo$mode==floor(spec$argsInfo$mode)) ){
-    stop(paste0("User-defined should have valid numeric and non-decimal. Your pattern is ",paste(spec$argsInfo$mode,collapse = ","),". For example: 1,0,1 "), call. = FALSE)
+    stop("User-defined should have valid numeric and non-decimal. Your pattern is ", paste(spec$argsInfo$mode, collapse = ","), ". For example: 1,0,1 ", call. = FALSE)
   }
 
 
   nlist<-c()
   j<-0
-  for (i in 1:length(spec$extractedInfo$Allvars)) {
+  for (i in seq_along(spec$extractedInfo$Allvars)) {
     if(spec$extractedInfo$Allvars[i] %in% spec$extractedInfo$ASvars){
       nlist[i+j]<-paste0(.kardl_Settings_env$AsymPrefix[1],spec$extractedInfo$Allvars[i],.kardl_Settings_env$AsymSuffix[1])
       j=j+1
@@ -89,13 +89,16 @@ verifyUserDefinedLags<-function(spec){
     }
   }
   if(length(spec$argsInfo$mode)!=length(spec$extractedInfo$Allvars )+length(spec$extractedInfo$ASvars)){
-    stop(paste0("User-defined should match with short-run variables. User defined lags vector must has exactly ",length(spec$extractedInfo$Allvars )+length(spec$extractedInfo$ASvars)," element. Your pattern is ",paste(spec$argsInfo$mode,collapse = ","),". Please define by this order: ",paste(nlist,collapse = ",")), call. = FALSE)
+    stop("User-defined should match with short-run variables. User defined lags vector must has exactly ",
+         length(spec$extractedInfo$Allvars) + length(spec$extractedInfo$ASvars),
+         " element. Your pattern is ", paste(spec$argsInfo$mode, collapse = ","),
+         ". Please define by this order: ", paste(nlist, collapse = ","), call. = FALSE)
   }
 
   # If user defines by her order, the order should be redefined
   if (!is.null(names(spec$argsInfo$mode))) {
     yenisi <- c()
-    for (i in 1:length(nlist)) {
+    for (i in seq_along(nlist)) {
       yenisi[nlist[i]] <- spec$argsInfo$mode[nlist[i]]
     }
     spec$argsInfo$mode <- yenisi
@@ -104,10 +107,10 @@ verifyUserDefinedLags<-function(spec){
   }
 
   if(spec$argsInfo$mode[1]<1){
-    stop(paste0("User-defined should start with a digit greater than zero. Your pattern is ",paste(spec$argsInfo$mode,collapse = ","),". For example: 1,0,1 "), call. = FALSE)
+    stop("User-defined should start with a digit greater than zero. Your pattern is ", paste(spec$argsInfo$mode, collapse = ","), ". For example: 1,0,1 ", call. = FALSE)
   }
   if(all(spec$argsInfo$mode>=0)!=T){
-    stop(paste0("User-defined should containt only positive values. Your pattern is ",paste(spec$argsInfo$mode,collapse = ","),". For example: 1,0,1 "), call. = FALSE)
+    stop("User-defined should containt only positive values. Your pattern is ", paste(spec$argsInfo$mode, collapse = ","), ". For example: 1,0,1 ", call. = FALSE)
   }
 
 
@@ -137,7 +140,7 @@ CheckInputs<-function(spec){
 
   if(!is.function(spec$argsInfo$criterion) ){
     if(typeof(spec$argsInfo$criterion) != "character" && !spec$argsInfo$criterion %in% c("AIC","BIC","AICc","HQ")  ){
-      stop(paste0("The entered criterion should be a function or one of the defined criteria here. The defined criteria are  AIC , BIC , AICc , HQ "), call. = FALSE)
+      stop("The entered criterion should be a function or one of the defined criteria here. The defined criteria are  AIC , BIC , AICc , HQ ", call. = FALSE)
     }
   }
 
@@ -145,7 +148,7 @@ CheckInputs<-function(spec){
   #   stop(paste0("Error: The entered trend should be a logical value. TRUE/FALSE ."))
   # }
   if(typeof(spec$argsInfo$differentAsymLag)!= "logical"){
-    stop(paste0("The entered DifferentAsymLag should be a logical value. TRUE/FALSE ."), call. = FALSE)
+    stop("The entered DifferentAsymLag should be a logical value. TRUE/FALSE .", call. = FALSE)
   }
   if(!all(spec$argsInfo$mode %in% c("grid_custom","grid","quick") )){
     # The predefined option for user-defined is false. Then here, we check just if it is not false.
@@ -162,7 +165,7 @@ CheckInputs<-function(spec){
   }
   # Check whether are digit or not
   if(!grepl("^([1-9])[0-9]*$", spec$argsInfo$maxlag, perl = T)){
-    stop(paste0("The entered maxlag should be a digit. You entered: ",spec$argsInfo$maxlag), call. = FALSE)
+    stop("The entered maxlag should be a digit. You entered: ", spec$argsInfo$maxlag, call. = FALSE)
   }
   # if(!grepl("^([1-9])[0-9]*$", inputs$dataTimeSeriesFrequency, perl = T)){
   #   stop(paste0("Error: The entered dataTimeSeriesFrequency should be a digit."))
@@ -177,21 +180,21 @@ detectVars <-function(spec){
   AllAsymVars<-unique(c(spec$extractedInfo$ALvars,spec$extractedInfo$ASvars))
   if(length(spec$extractedInfo$ASvars)>0){
     for (x in spec$extractedInfo$ASvars ){
-      if(!(x %in% spec$extractedInfo$independentVars )){stop(paste("Attention! The Short-run asymmetric variable: ", (x), " not found in the main vars list!"), call. = FALSE)}
+      if(!(x %in% spec$extractedInfo$independentVars )){stop("Attention! The Short-run asymmetric variable: ", x, " not found in the main vars list!", call. = FALSE)}
     }
   }
   if(length(spec$extractedInfo$ALvars)>0){
     for (x in spec$extractedInfo$ALvars ){
-      if(!(x %in% spec$extractedInfo$independentVars)){stop(paste("Attention! The Long-run asymmetric variable: ", (x), " not found in the main vars list!"), call. = FALSE)}
+      if(!(x %in% spec$extractedInfo$independentVars)){stop("Attention! The Long-run asymmetric variable: ", x, " not found in the main vars list!", call. = FALSE)}
     }
   }
   for (x in spec$extractedInfo$Allvars ){
-    if(!(x %in% colnames(spec$argsInfo$data))){stop(paste("Attention! The variable: ", (x), " not found in the data file's vars list!"), call. = FALSE)}
+    if(!(x %in% colnames(spec$argsInfo$data))){stop("Attention! The variable: ", x, " not found in the data file's vars list!", call. = FALSE)}
   }
   if(length(spec$extractedInfo$deterministic)>0){
     for (x in spec$extractedInfo$deterministic ){
-      if((x %in% spec$extractedInfo$Allvars)){stop(paste("Attention! The external variable: ", (x), "  FOUND in the main vars list! The exegenious variables should be excluded from the main list"), call. = FALSE)}
-      if(!(x %in% colnames(spec$argsInfo$data))){stop(paste("Attention! The variable: ", (x), " not found in the data file's vars list!"), call. = FALSE)}
+      if((x %in% spec$extractedInfo$Allvars)){stop("Attention! The external variable: ", x, "  FOUND in the main vars list! The exegenious variables should be excluded from the main list", call. = FALSE)}
+      if(!(x %in% colnames(spec$argsInfo$data))){stop("Attention! The variable: ", x, " not found in the data file's vars list!", call. = FALSE)}
     }
   }
 
@@ -265,7 +268,7 @@ CreateNewVars <-function( spec){
       pos<-data3[,"KARAMELpos"]
       neg<-data3[,"KARAMELneg"]
       gecici<-data3[,"gecici"]
-      for (i in 1:nrow(tempData)) {
+      for (i in seq_len(nrow(tempData))) {
         if(is.na(gecici[i])){
           pos[i]<-neg[i]<-NA
         }
@@ -335,7 +338,7 @@ CreateNewVars <-function( spec){
   if(spec$extractedInfo$trend ){
     spec$extractedInfo$deterministic<-c(spec$extractedInfo$deterministic,"trend")
     if( ! "trend" %in% colnames(tempData)){
-      trend1<-seq(nrow(tempData))
+      trend1<-seq_len(nrow(tempData))
       tempData<-cbind(tempData,trend=c(trend1))
       varAdlari<-c(varAdlari,"trend")
       colnames(tempData)<-varAdlari
@@ -376,8 +379,8 @@ prepare<-function(inputs){
 
 makeShortrunMOdel<-function(shortRunVars,LagsList, deterministic){
   modd1<-c()
-  for (j in 1:length(shortRunVars)){ ## to enhancing the performance it can be used shortRunVarsLength instead of length(shortRunVars) to avoiding recalcuting length at each loop.
-    start<-ifelse(j<2,1,0)
+  for (j in seq_along(shortRunVars)){ ## to enhancing the performance it can be used shortRunVarsLength instead of length(shortRunVars) to avoiding recalcuting length at each loop.
+    start<-as.numeric(j<2)
     # modd1<-c(modd1,lapply(start:LagsList[j], function(i,y){sprintf(paste0("L%d.d.",y),i)},y=spec$extractedInfo$shortRunVars[j]))
     # Using for loop has better performance than lapply
     for (k in start:LagsList[j]) {

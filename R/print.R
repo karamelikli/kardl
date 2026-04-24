@@ -80,7 +80,7 @@ plot.kardl_mplier <- function(x, variables ="all" , ...) {
     }else{
       for (variable in variables) {
         if(! variable %in% x$vars$independentVars){
-          warning(paste0( variable," is not exits among independent variables!"), call.=F)
+          warning(variable, " is not exits among independent variables!", call.=F)
         }else{
           plots[[variable]] <- mplierggplot(mpsi, x$vars,variable)
         }

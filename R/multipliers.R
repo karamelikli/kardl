@@ -465,7 +465,7 @@ bootstrap<-function(kmodel,
           newy2<- sum(theta*my_newData[(t-0):(t-q+1),inddColnames]) #calculating independent vars
           newy3<-sum(my_newData[t,vars$deterministic]*b0[vars$deterministic]) #calculating deterministic vars
           newy <- newy1+ newy2+newy3+ b0[[1]] # adding constant
-          newDepData[t]  <-   newy  +   nardlres[sample(1:NROW(nardlres), 1)] #adding random residual
+          newDepData[t]  <-   newy  +   nardlres[sample(seq_len(NROW(nardlres)), 1)] #adding random residual
         }
         if(r==1){
           BSnewdata<-cbind(newDepData,vars$data) # adding to original data
@@ -484,7 +484,7 @@ bootstrap<-function(kmodel,
     }
 
     NewDiff<-as.data.frame( NewDiff[-1,])
-    rownames(NewDiff)<-1:nrow(NewDiff)
+    rownames(NewDiff)<-seq_len(nrow(NewDiff))
 
     lowerZ <- 0.5 * (1 - level / 100)
     rZ<-replications * lowerZ

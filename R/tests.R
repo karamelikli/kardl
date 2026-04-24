@@ -145,10 +145,8 @@ symmetrytest <- function(kmodel,
     bad_vars <- setdiff(vars, all_testable_vars)
     if (length(bad_vars) > 0) {
       stop(
-        paste0(
-          "These variables are not available for symmetry testing: ",
-          paste(bad_vars, collapse = ", ")
-        ),
+        "These variables are not available for symmetry testing: ",
+        paste(bad_vars, collapse = ", "),
         call. = FALSE
       )
     }
@@ -1173,7 +1171,7 @@ psst<-function(kmodel,case=3,signif_level = "auto"){
     case<-5
 
   }else{
-    if(!case ==3 ){
+    if(case != 3){
       # model has not trend but have constant
       notesArray <- c(notesArray,
                       "No trend is included. Case automatically adjusted to 3 (unrestricted intercept, no trend).")

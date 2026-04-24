@@ -15,7 +15,7 @@ trdata<-IFS$get_series(freq = "M", ref_area = "TR",
  PeriodRow<-trdata[,1]
 trdata[,1]<-NULL
 colnames(trdata)<-c("ER","CPI","PPI")
-trdata<-log(as.data.frame(lapply(trdata, function(x) as.numeric(x))))
+trdata<-log(as.data.frame(lapply(trdata, as.numeric)))
 rownames(trdata)<-PeriodRow
 #' # Inserting covid dummy variable
 trdata<-cbind(trdata,covid=0)

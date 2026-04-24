@@ -336,7 +336,7 @@ kardl <- function(data = NULL, formula = NULL,
   otherargsInfo <- list(...)
   kardlVars <- lmerge(argsInfo,otherargsInfo)
   myNames <- names(kardlVars)
-  for (i in 1:length(kardlVars)) {
+  for (i in seq_along(kardlVars)) {
     name <- myNames[i]
     if(!nzchar(name)) {
       kardlVars[[i]] <- NULL
@@ -345,7 +345,7 @@ kardl <- function(data = NULL, formula = NULL,
     if (is.null(kardlVars[[name]])) {
       kardlVars[[name]] <- kardl_get(name)
       if (is.null(kardlVars[[name]])) {
-        stop(paste0("No ",name," provided. Please supply `",name,"` or set it with kardl_set(",name," = ...)."),
+        stop("No ", name, " provided. Please supply `", name, "` or set it with kardl_set(", name, " = ...).",
              call. = FALSE)
       }
       attr(kardlVars[[name]], "source") <- "kardl_set"
@@ -1024,9 +1024,9 @@ makemodel.grid<-function(spec , ... ){#model ,  data,inputs  ){ # makemodel.defa
     bir<-cbind(bir,r)
   }
   colnames(bir)<-spec$extractedInfo$shortRunVars
-  LagMatrix <-bir[nrow(bir):1,] # I am reversing orders due to alerting about the insufficiency of the degree of freedom.
+  LagMatrix <-bir[rev(seq_len(nrow(bir))),] # I am reversing orders due to alerting about the insufficiency of the degree of freedom.
   colNum<-ncol(LagMatrix)
-  for (i in 1:nrow(LagMatrix)){
+  for (i in seq_len(nrow(LagMatrix))){
     LagCriteria[i,1] <- paste0(LagMatrix[i,],collapse=",")
   }
   for(i in batch$startRow:batch$endRow)  {

@@ -47,7 +47,7 @@ lmerge<-function(first,second,...){
   a<-first
   b<-second
   otherArgs<-list(...)
-  for (v in 1:length(a)) {
+  for (v in seq_along(a)) {
     n<-names(a[v])
     if(isFALSE( is.list( b[n]))){
       if(nzchar(n)){
@@ -63,9 +63,9 @@ lmerge<-function(first,second,...){
   }
   o<-c(a,b)
   if(length(otherArgs)>0){
-    for (q in 1:length(otherArgs)) {
+    for (q in seq_along(otherArgs)) {
       b2<-otherArgs[q][[1]]
-      for (v in 1:length(o)) {
+      for (v in seq_along(o)) {
         n<-names(o[v])
         if(isFALSE( is.list( b2[n]))){
           if(nzchar(n)){
@@ -227,7 +227,7 @@ BatchControl<-function(spec){
       stop("Invalid batch format. Use 'x/y', where x is the batch number and y is the total number of batches.",call. = FALSE)
     }
     # Extract batch number and total batches
-    batch_parts <- as.numeric(strsplit(spec$argsInfo$batch, "/")[[1]])
+    batch_parts <- as.numeric(strsplit(spec$argsInfo$batch, "/", fixed = TRUE)[[1]])
     current_batch <- batch_parts[1]
     total_batches <- batch_parts[2]
 
@@ -309,13 +309,13 @@ replace_lag_var <- function(string, varName, new_lag) {
 
   # If varName is a single value, return a single string
   if (length(varName) == 1) {
-    result <- gsub("\\{varName\\}", varName, gsub("\\{lag\\}", new_lag, string))
+    result <- gsub("{varName}", varName, gsub("{lag}", new_lag, string, fixed = TRUE), fixed = TRUE)
     return(result)
   }
 
   # If varName is a vector, return a vector of replaced strings
   result <- sapply(varName, function(var) {
-    gsub("\\{varName\\}", var, gsub("\\{lag\\}", new_lag, string))
+    gsub("{varName}", var, gsub("{lag}", new_lag, string, fixed = TRUE), fixed = TRUE)
   })
 
   return(result)
