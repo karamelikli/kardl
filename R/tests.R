@@ -686,10 +686,10 @@ htestsummary.pssf<-function(testObj,...){
       sig<-""
       if(PF>=bu[1,"L"]){
         decision<-"Inconclusive"
-        numericDec=0
+        numericDec <- 0
       }else{
         decision<-"Fail to reject H0 \u2192 No Cointegration"
-        numericDec=-1
+        numericDec <- -1
       }
     }
   }else{
@@ -701,13 +701,13 @@ htestsummary.pssf<-function(testObj,...){
       }else {
         decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="2.5%","4"="0.01")," level)")
       }
-      numericDec=1
+      numericDec <- 1
     }else if(PF>=bu[buRow,"L"]){
       decision<-"Inconclusive"
       numericDec<-0
     }else{
       decision<-"Fail to reject H0 \u2192 No Cointegration"
-      numericDec=-1
+      numericDec <- -1
     }
   }
 
@@ -1004,10 +1004,10 @@ htestsummary.narayan<-function(testObj,...){
       sig<-""
       if(PF>=bu[1,"L"]){
         decision<-"Inconclusive"
-        numericDec=0
+        numericDec <- 0
       }else{
         decision<-"Fail to reject H0 \u2192 No Cointegration"
-        numericDec=-1
+        numericDec <- -1
       }
     }
   }else{
@@ -1019,13 +1019,13 @@ htestsummary.narayan<-function(testObj,...){
       }else {
         decision<-paste0("Reject H0 \u2192 Cointegration (at ",switch (buRow,"1"="10%","2"="5%","3"="0.01")," level)")
       }
-      numericDec=1
+      numericDec <- 1
     }else if(PF>=bu[buRow,"L"]){
       decision<-"Inconclusive"
       numericDec<-0
     }else{
       decision<-"Fail to reject H0 \u2192 No Cointegration"
-      numericDec=-1
+      numericDec <- -1
     }
   }
   caseTxt <- switch(case,
@@ -1284,10 +1284,10 @@ htestsummary.psst<-function(testObj,...){
       sig<-""
       if(Pt>=bu[1,"L"]){
         decision<-"Inconclusive"
-        numericDec=0
+        numericDec <- 0
       }else{
         decision<-"Fail to reject H0 \u2192 No Cointegration"
-        numericDec=-1
+        numericDec <- -1
       }
     }
   }else{
