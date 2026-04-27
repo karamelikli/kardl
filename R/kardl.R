@@ -258,6 +258,23 @@
 #'
 #'
 #' @seealso  \code{\link{ecm}}, \code{\link{kardl_set}}, \code{\link{kardl_get}}, \code{\link{kardl_reset}}, \code{\link{modelCriterion}}
+#'
+#' @srrstats {G1.1} The package documentation describes `kardl` as an R implementation and extension of ARDL and NARDL workflows, with emphasis on mixed symmetric and asymmetric regressors, flexible lag selection, and dynamic multiplier methods.
+#' @srrstats {G2.0} Main input arguments including `formula`, `data`, `maxlag`, `mode`, `criterion`, and `differentAsymLag` are validated before estimation proceeds.
+#' @srrstats {G2.0a} The `formula` argument expects a single language object specifying the long-run ARDL equation; `maxlag` must be a positive integer; `mode` accepts predefined strings or a numeric lag vector.
+#' @srrstats {G2.1} The function checks that `formula` is a language object and that `data` contains all variables referenced in the formula before estimation.
+#' @srrstats {G2.3} Character-valued arguments such as `mode` and `criterion` are matched against predefined acceptable values via `match.arg()` internally.
+#' @srrstats {G2.3a} The `criterion` argument is matched against `c("AIC", "BIC", "AICc", "HQ")`; the `mode` argument against `c("quick", "grid", "grid_custom")`.
+#' @srrstats {G2.4} Formula parsing and data alignment are performed before estimation so all subsequent routines operate on a consistent internal representation.
+#' @srrstats {G2.4a} The `maxlag` argument is treated as an integer count before constructing lagged regressors.
+#' @srrstats {G2.13} Missing observations introduced by lagging and differencing are handled during model-frame construction before estimation.
+#' @srrstats {G2.14} Observations unavailable after lag construction are excluded from the estimation sample.
+#' @srrstats {TS1.0} The function accepts time-ordered data and constructs lagged and differenced variables internally for ARDL and NARDL estimation.
+#' @srrstats {TS1.3} A central preparation workflow parses the formula, constructs lagged variables, and returns a uniform internal model data structure.
+#' @srrstats {TS4.0} The fitted model is returned as an object of class `kardl_lm` with dedicated `print`, `summary`, and accessor methods.
+#' @srrstats {TS4.0b} The return value uses the explicit class `kardl_lm`.
+
+
 #' @export
 #'
 #' @import lmtest stats
@@ -456,10 +473,14 @@ kardl <- function(data = NULL, formula = NULL,
 #' \item \strong{model}: The fitted linear model object of class \code{lm} representing the estimated ARDL or NARDL model.
 #' }
 #'
+#' @srrstats {G2.0} Input arguments `formula`, `data`, `maxlag`, `mode`, `criterion`, `differentAsymLag`, and `batch` are validated before the ECM is estimated.
+#' @srrstats {G2.1} The function checks that `formula` is a valid language object and that `data` contains all model variables before proceeding.
+#' @srrstats {TS2.0} ECM estimation assumes a regular ordered sequence after preprocessing; structurally missing observations created by lagging are handled explicitly.
+#' @srrstats {TS2.1} Missing-data handling is part of the model-preparation step, not a separate imputation system.
+#' @srrstats {TS4.0} The fitted ECM is returned as an object of class `kardl_lm` with dedicated `print` and `summary` methods.
 #'
 #'
-#'
-#'
+
 #' @export
 #' @seealso \code{\link{kardl}} \code{\link{pssf}}  \code{\link{psst}}   \code{\link{ecm}}  \code{\link{narayan}}
 #'
@@ -638,6 +659,12 @@ ecmS <-lm( shortrunEQ, EcmData)
 #'
 #' If \code{cr} is a function, it is called with the fitted model and any additional arguments passed through \code{...}.
 #' @seealso \code{\link{kardl}}
+#'
+#' @srrstats {G1.6} This function provides criteria for model selection, including AIC, BIC, AICc, and HQ, which can be used in R based model selection processes too.
+#' @srrstats {G2.3} The `cr` argument is matched against `c("AIC", "BIC", "AICc", "HQ")` via `match.arg()` when a string is supplied.
+#' @srrstats {G3.0} Numerical comparisons in criterion calculations use tolerance-based floating-point arithmetic where appropriate.
+#'
+#'
 #' @examples
 #'
 #' # Example usage of modelCriterion function with a simple linear model
@@ -681,9 +708,15 @@ modelCriterion<-function(estModel,cr,...){
 }
 
 
+#'  Model Estimation Dispatcher
+#'
+#' This function serves as a dispatcher for estimating the ARDL or NARDL model based on the specified mode in the input arguments. It determines the appropriate estimation method to use (e.g., "quick", "grid_custom", "grid", or user-defined) and calls the corresponding S3 method for model estimation.
+#' @param spec A list containing the prepared specifications for model estimation, including extracted information and arguments.
+#' @param ... Additional arguments that can be passed to the specific estimation methods.
+#' @return The estimated model object based on the specified mode.
+#' @noRd
 
 makemodel<-function(spec,...){
-
   myMethod<-"quick"
   # if(is.vector(inputs$mode))
   if(is.vector(spec$argsInfo$mode[1]) && is.numeric(spec$argsInfo$mode) && isFALSE(isFALSE(spec$argsInfo$mode)) )  {
@@ -696,14 +729,19 @@ makemodel<-function(spec,...){
 
 
 
-# Estimation the model by quick lags
-#
-#If the lags of short-run variables are determined by user, the results will be obtained with \code{userDefinedModel}
-# @param inputs All inputs of making model.
-# @param ... Other inputs
-#
-# @return
-
+#' Quick Model Estimation Method
+#'
+#' This function implements the "quick" estimation method for ARDL or NARDL models.
+#' It performs a stepwise search to find the optimal lag structure based on the specified
+#' criterion. The function iteratively tests different lag combinations and evaluates the
+#'  model using the provided criterion until it converges to the best lag configuration.
+#' @param spec A list containing the prepared specifications for model estimation,
+#' including extracted information and arguments.
+#' @param ... Additional arguments that can be passed to the function.
+#' @return An object of class \code{kardl_lm} containing the estimated
+#' ARDL or NARDL model based on the "quick" estimation method.
+#' @noRd
+#'
 #' @export
 makemodel.quick<-function(spec , ...  ){#model,data,inputs){
   start_time <- Sys.time()
@@ -817,13 +855,19 @@ makemodel.quick<-function(spec , ...  ){#model,data,inputs){
   Karamelikli
 }
 
-# Estimation the model by User-defined lags
-#
-#If the lags of short-run variables are determined by user, the results will be obtained with \code{userDefinedModel}
-# @param inputs All inputs of making model.
-# @param ... Other inputs
-#
-# @return
+#' User-Defined Lag Estimation Method
+#'
+#' This function implements the estimation method for ARDL or NARDL models when the
+#' user provides a specific lag structure. It estimates the model using the provided
+#' lag configuration and evaluates it based on the specified criterion. The function
+#' returns the estimated model object based on the user-defined lag structure.
+#'
+#' @param spec A list containing the prepared specifications for model estimation,
+#'  including extracted information and arguments.
+#' @param ... Additional arguments that can be passed to the function.
+#' @return An object of class \code{kardl_lm} and \code{lm} containing the
+#' estimated ARDL or NARDL model based on the user-defined lag structure.
+#' @noRd
 #' @export
 #'
 makemodel.user <-function(spec, ...  ){#model,data,inputs){
@@ -878,15 +922,14 @@ makemodel.user <-function(spec, ...  ){#model,data,inputs){
   Karamelikli
 }
 
-# Find Optimum Lags level  by maximizing Performance
-#
-# To reduce server load for finding optimum lag, this function can find it.
-# Notice! nothing will be print during estimations.
-# @param inputs All inputs of making model.
-# @param ... Other inputs
-#
-# @return
-#
+#' Grid Search Estimation Method
+#'
+#' This function implements the "grid_custom" estimation method for ARDL or NARDL models. It performs a grid search over possible lag combinations to find the optimal lag structure based on the specified criterion. The function iteratively tests different lag combinations within the defined grid and evaluates the model using the provided criterion until it identifies the best lag configuration.
+#' @param spec A list containing the prepared specifications for model estimation, including extracted information and arguments.
+#' @param ... Additional arguments that can be passed to the function.
+#' @return An object of class \code{kardl_lm} and \code
+#' {lm} containing the estimated ARDL or NARDL model based on the "grid_custom" estimation method.
+#' @noRd
 #' @export
 makemodel.grid_custom<-function(spec, ...  ){ #model ,  data,inputs  ){
   # inputs$mode<-"grid_custom"
@@ -987,17 +1030,16 @@ makemodel.grid_custom<-function(spec, ...  ){ #model ,  data,inputs  ){
   Karamelikli
 }
 
-# Find Optimum Lags level  by visualization of Estimations
-#
-# Current job status and remained estimations with progress bar.
-# Notice! Users should check the validity of the model and data utilizing this function.
-# Appearance mode will have outputs during estimations.
-#
-# @param inputs All inputs of making model.
-# @param ... Other inputs
-#
-# @return
-#
+#' Grid Search Estimation Method with Console Output
+#'
+#' This function implements the "grid" estimation method for ARDL or NARDL models. It performs a grid search over possible lag combinations to find the optimal lag structure based on the specified criterion. The function iteratively tests different lag combinations within the defined grid and evaluates the model using the provided criterion until it identifies the best lag configuration. Additionally, this method provides console output during the estimation process to indicate progress and the current lag combination being evaluated.
+#' @param spec A list containing the prepared specifications for model estimation, including extracted information and
+#' arguments.
+#' @param ... Additional arguments that can be passed to the function.
+#' @return An object of class \code{kardl_lm} and \code
+#' {lm} containing the estimated ARDL or NARDL model based on the "grid" estimation method with console output.
+#' @noRd
+#'
 #' @export
 makemodel.grid<-function(spec , ... ){#model ,  data,inputs  ){ # makemodel.default
   # inputs$mode<-"grid"

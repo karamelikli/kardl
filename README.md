@@ -48,6 +48,60 @@ library(kardl)
 
 ```
 
+```{r srr-tags, eval = FALSE, echo = FALSE}
+#' srr tags for the kardl package
+#'
+#' This package follows structured statistical reporting rules using the
+#' `srrstats` framework. The standards governing implementation and documentation
+#' are summarized below.
+#'
+#' @srrstats {G1.0} The package documentation and accompanying materials cite the ARDL
+#' bounds-testing and nonlinear ARDL literature on which the implemented estimators,
+#' asymmetry decomposition, bounds tests, and dynamic multipliers are based.
+#' @srrstats {G1.1} The package is described as an implementation and extension of ARDL
+#' and NARDL workflows, supporting mixed symmetric and asymmetric regressors,
+#' flexible lag selection, and dynamic multiplier methods.
+#' @srrstats {G1.2} The README, NEWS file, and package website describe the development
+#' status, recent changes, and future maintenance plans of the package.
+#' @srrstats {G1.3} Key statistical concepts such as ARDL, NARDL, ECM, bounds testing,
+#' short-run asymmetry, long-run asymmetry, and dynamic multipliers are defined
+#' in function documentation and vignettes.
+#' @srrstats {G1.4} All user-facing functions and S3 methods are documented using `roxygen2`,
+#' and the generated Rd files are maintained as part of the package documentation workflow.
+#' @srrstats {G1.4a} Internal helper functions are documented where necessary and are
+#' excluded from the public help index using `@noRd` or marked as internal.
+```
+
+## Unique Features and Methodological Contributions
+
+The `kardl` package implements several methodological extensions and improvements for ARDL/NARDL modelling that go beyond standard implementations available in R and other software:
+
+- **differentAsymLag** option: Enables different lag orders for the positive and negative partial sum decompositions in NARDL models. This provides greater flexibility than the common symmetric lag restriction used in most existing packages.
+- **Narayan cointegration test** (`narayan()`): A dedicated small-sample bounds test (Narayan, 2005) with automatic handling of critical values for cases II–V. While the test exists in the literature, its seamless integration into a full ARDL/NARDL workflow is unique in R.
+- **Symmetry tests** (`symmetrytest()`): Comprehensive Wald tests for both short-run and long-run symmetry in NARDL models.
+- **Bootstrap confidence intervals for dynamic multipliers**: Robust uncertainty quantification around short-run, long-run, and impact multipliers through resampling methods, fully integrated with asymmetric multiplier estimation.
+- Additional advanced capabilities include highly flexible formula parsing for mixed symmetric/asymmetric regressors, multiple model selection criteria (AIC, BIC, AICc, HQ), parallel processing support, and extensive post-estimation tools tailored for asymmetric analysis.
+
+These features make `kardl` particularly suitable for researchers needing fine-grained control over asymmetric dynamics and small-sample inference.
+
+### Prior Art and Comparisons
+
+`kardl` builds upon the foundational NARDL framework of Shin et al. (2014) and extends it with practical innovations not fully available in other R packages.
+
+**Comparable implementations in R**:
+- `nardl` package
+- `ardl.nardl` / `dynardl`
+- Other tools in the broader `ardlverse` ecosystem
+
+While these packages provide solid baseline ARDL/NARDL estimation, `kardl` offers meaningful improvements in flexibility (especially regarding lag structures for asymmetric components), additional cointegration testing options (including the Narayan test), integrated symmetry testing, and bootstrap inference for dynamic multipliers.
+
+**Key reference**:
+- Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014). Modelling Asymmetric Cointegration and Dynamic Multipliers in a Nonlinear ARDL Framework. In *Econometric Methods and Their Applications in Finance, Macro and Related Fields*.
+- Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. *Applied Economics*, 37(17), 1979–1990.
+
+For a full list of implemented standards and methodological details, see the package vignette and the dedicated SRR standards documentation.
+
+
 ## Estimating an Asymmetric ARDL Model
 
 This example estimates an asymmetric ARDL model to analyze the dynamics of exchange rate pass-through to domestic prices in Turkey, using a sample dataset (`imf_example_data`) with variables for Consumer Price Index (CPI), Exchange Rate (ER), Producer Price Index (PPI), and a COVID-19 dummy variable.
@@ -751,7 +805,9 @@ kardl_set(batch = "3/6")
 kardl(data, MyFormula)
 ```
 
+## Contributing
 
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to contribute, including the package's **Life Cycle Statement**.
 
 
 

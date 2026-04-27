@@ -57,6 +57,8 @@ local({
 #' @return If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
 #' @seealso  \code{\link{kardl_get}}, \code{\link{kardl_reset}}
 #'
+#' @srrstats {G2.3a} Package-level option names are validated against a predefined list of acceptable values; invalid names produce an informative error.
+#' @srrstats {G2.4} Default argument values for `formula`, `data`, `maxlag`, `mode`, `criterion`, and `differentAsymLag` are stored centrally and merged with function arguments at call time.
 #'
 
 
@@ -112,6 +114,8 @@ kardl_set <- function(...) {
 #' @return If no arguments are provided, returns all options as a list. If specific option names are provided, returns their values.
 #'
 #' @seealso \code{\link{kardl_set}}, \code{\link{kardl_reset}}
+#'
+#' @srrstats {G2.3a} Requested option names are validated against the predefined settings list; unknown names produce an informative error.
 #'
 kardl_get <- function(...) {
   names_requested <- c(...)

@@ -1,3 +1,10 @@
+#' @srrstats {G5.2} Tests exercise successful calls and error conditions for
+#' the kardl package settings system (`kardl_set()`, `kardl_get()`,
+#' `kardl_reset()`).
+#' @srrstats {G5.3} Checks that default settings match documented values
+#' (maxlag = 4L, criterion = "AIC", differentAsymLag = TRUE).
+#' @srrstats {G5.4a} Uses deterministic known defaults to verify the settings
+#' round-trip through set -> get -> reset.
 test_that("Settings can be set, retrieved, and reset", {
   kardl_reset()
   default_settings <- kardl_get()

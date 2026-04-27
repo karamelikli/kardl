@@ -104,6 +104,10 @@ lmerge<-function(first,second,...){
 #'
 #' @seealso \code{\link[stats]{formula}} and \code{\link[base]{gregexpr}}
 #'
+#' @srrstats {G2.4c} Variable names and parsed formula terms are handled as character vectors when constructing variable lists from the formula.
+#' @srrstats {G2.6} One-dimensional variables selected through the formula are extracted and aligned through this routine before lagged terms are generated.
+#' @srrstats {G2.3b} Formula terms and asymmetry constructors are processed consistently so that documented model syntax is interpreted as intended.
+#'
 #' @examples
 #'
 #' # Parse formulas containing various collection types like ()
@@ -199,21 +203,23 @@ parse_formula_vars <- function(formula) {
 }
 
 
-# Batch Control
-#
-# This function divides a large estimation task into smaller, manageable batches.
-# If a job requires numerous estimations (e.g., 1,000,000), this function can partition it into batches # nolint: line_length_linter.
-# and determine the start and end points for each batch.
-#
-# @param inputs A list containing:
-#   - BatchTotal: Total number of batches planned.
-#   - BatchCurrent: The current batch number being processed.
-#   - lagRowsNumber: The total number of estimations required for the job.
-#
-# @return A list with the following:
-#   - startRow: The starting row for the current batch.
-#   - endRow: The ending row for the current batch.
-#
+#' Batch Control
+#'
+#' The \code{BatchControl()} function is designed to manage the execution of tasks in batches. It calculates the starting and ending row indices for a given batch based on the total number of tasks and the specified batch format. The function supports both single batch execution (where all tasks are processed at once) and multiple batch execution (where tasks are divided into specified batches).
+#'
+#' @param spec A list containing the necessary information for batch control, including:
+#' \itemize{
+#' \item \code{argsInfo$batch}: A string specifying the batch format.
+#' \item \code{extractedInfo$lagRowsNumber}: The total number of tasks (rows) to be processed.
+#' }
+#' @return A list containing:
+#' \itemize{
+#' \item \code{startRow}: The starting row index for the current batch.
+#' \item \code{endRow}: The ending row index for the current batch.
+#' \item \code{batch_size}: The number of tasks in the current batch.
+#' }
+#' @noRd
+#'
 
 
 BatchControl<-function(spec){
@@ -256,19 +262,22 @@ BatchControl<-function(spec){
 
 
 
+#' Display Progress Bar
+#'
+#' The \code{progressBar()} function provides a visual representation of the progress of a task in the console. It calculates the percentage of completion based on the current and total values and displays a progress bar accordingly. The function also allows for additional strings to be displayed alongside the progress bar for more context.
+#' @param current The current progress value (e.g., number of tasks completed).
+#' @param total The total value representing the completion point (e.g., total number of
+#' tasks).
+#' @param additionalStrings Optional additional strings to display alongside the progress bar for more context.
+#' @param verbose A logical value indicating whether to display the progress bar (default is TRUE
+#' to show progress).
+#' @param use_message A logical value indicating whether to use the \code{message()}
+#' function for output (CRAN-friendly but no overwrite) instead of \code{cat()} (which overwrites in the console). Default is FALSE, meaning \code{cat()} will be used for an overwriting progress bar.
+#' @return Invisibly returns NULL. The primary purpose of this function is to display the
+#' progress bar in the console, and it does not return any meaningful value.
+#' @noRd
+#'
 
-
-## Simple Progress Bar
-##
-## \code{progressBar} is a simple and highly modifiable function to present the progress of queued jobs. If you need most sophisticated functions to this propose, please visit \code{\link[progressr]{progressr}}.
-## @param current Current job no. For instance, if the 23rd estimation out of 400 is running, this value is 23.
-## @param total Total jobs which should be performed.
-## @param additionalStrings Any additional text desired to be included at the end of the output.
-##
-## @return print the progress bar
-## @seealso  \code{\link[progressr]{progressr}}
-## @examples
-## progressBar(23,400)
 progressBar<-function(current, total,additionalStrings="",
                       verbose = TRUE, use_message = FALSE){
   if (!interactive()) return(invisible()) # Skip in non-interactive environments
@@ -301,7 +310,17 @@ progressBar<-function(current, total,additionalStrings="",
  # cat("\r",paste0("% ",persentage, " [ ", theFirstPart,animate,theSecondPart, "] ",current,"/",total," ",additionalStrings))
 }
 
-# Change the lag value in a string
+#' Replace Lag Variable in String
+#'
+#' The \code{replace_lag_var()} function is designed to replace placeholders for variable names and lag values in a given string. It takes a string with placeholders, a variable name (or vector of variable names), and a new lag value, and returns the string with the placeholders replaced accordingly. This function is particularly useful for dynamically generating strings that involve lagged variables in time series analysis or similar contexts.
+#' @param string The input string containing placeholders for variable names and lag values. The placeholders should be in the format \code{varName} for variable names and \code{lag} for lag values.
+#' @param varName A character vector of variable names to replace the \code{var
+#' Name} placeholder in the input string. If a single variable name is provided, it will replace the placeholder once. If a vector of variable names is provided, the function will return a vector of strings with each variable name replacing the placeholder in the input string.
+#' @param new_lag A character or numeric value to replace the \code{lag
+#' } placeholder in the input string. This value will be used to indicate the lag value in the resulting string(s).
+#' @return A string or a vector of strings with the \code{varName}
+#' and \code{lag} placeholders replaced by the provided variable names and lag value. If a single variable name is provided, the function returns a single string. If a vector of variable names is provided, the function returns a vector of strings, each with the corresponding variable name replaced in the input string.
+#' @noRd
 
 replace_lag_var <- function(string, varName, new_lag) {
   # Ensure varName is a character vector

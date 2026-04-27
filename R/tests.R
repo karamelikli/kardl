@@ -43,6 +43,13 @@
 #' \item \code{Swald:} A data frame containing the Wald test results for the short-run variables, including F-statistic, p-value, degrees of freedom, residual degrees of freedom, and sum of squares.
 #' \item \code{Shypotheses:} A list containing the null and alternative hypotheses for the short-run variables.
 #' }
+#' @srrstats {G1.0} This function cites the original source of the symmetry test for non-linear ARDL models, which is based on the work of Shin, Yu, and Greenwood-Nimmo (2014).
+#' @srrstats {G1.1} The function implements the symmetry test for non-linear ARDL models as described in the original paper by Shin, Yu, and Greenwood-Nimmo (2014). It uses the appropriate test statistics and follows the correct procedures for conducting the tests.
+#' @srrstats {G1.3} Statistical terms such as NULL hypothesis, alternative hypothesis, test statistic are defined in the context of the symmetry test for non-linear ARDL models.
+#' @srrstats {G2.0} The function validates that `kmodel` is of class `kardl_lm` and rejects ECM objects that are not suitable for symmetry testing.
+#' @srrstats {G2.3} The `component` argument is matched against `c("both", "shortrun", "longrun")` and `type` against `c("F", "Chisq")` using `match.arg()`.
+#' @srrstats {G5.2b} Tests include error expectations for incompatible object classes and invalid post-estimation inputs.
+
 #' @export
 #' @import nlWaldTest
 #' @importFrom car linearHypothesis
@@ -472,6 +479,12 @@ symmetrytest <- function(kmodel,
 #' \item \code{notes}: A character vector containing any notes or warnings related to
 #' the test, such as the suitability of the test for small sample sizes or any adjustments made to the case based on the model's characteristics.
 #' }
+#' @srrstats {G1.0} This function cites the original source of the Pesaran, Shin, and Smith (2001) bounds testing approach for cointegration analysis, which is a widely used method in econometrics for testing the existence of long-term relationships between variables in autoregressive distributed lag (ARDL) models. The function also provides guidance on the suitability of the test for small sample sizes and suggests alternative approaches when necessary.
+#' @srrstats {G1.3}  Statistical terms such as NULL hypothesis, alternative hypothesis, test statistic are defined in the context of the Pesaran, Shin, and Smith (2001) bounds testing approach for cointegration analysis.
+#' @srrstats {G2.0} Input argument `kmodel` is validated as a `kardl_lm` object; `case` and `signif_level` are validated against acceptable values before the test is performed.
+#' @srrstats {G2.3} The `case` argument is validated against `c(1,2,3,4,5,"auto")`; `signif_level` against the set of accepted strings.
+#' @srrstats {TS2.2} The documentation discusses stationarity requirements in the context of ARDL bounds testing and the I(0)/I(1) framework.
+#' @srrstats {TS2.4} Users are expected to assess integration order before applying bounds-test interpretations; the documentation states these modelling assumptions.
 #' @export
 #' @importFrom car linearHypothesis
 #' @seealso   \code{\link{psst}}  \code{\link{ecm}}  \code{\link{narayan}}
@@ -625,6 +638,15 @@ pssf<-function(kmodel,case=3,signif_level = "auto"){
   ), class = c("kardl_test","htest"))
 }
 
+#' Summary method for Pesaran, Shin, and Smith Bounds F-Test
+#'
+#' This function provides a summary of the results from the Pesaran, Shin, and Smith (PSS) Bounds F-test for cointegration. It checks the validity of the input object, extracts relevant information from the test results, and organizes it into a structured format for easy interpretation. The summary includes the test statistic, critical values based on the specified case and significance level, and any notes or warnings related to the test.
+#' @param testObj An object of class "kardl_test" and "htest" that contains the results of the PSS Bounds F-test. The object should have been created using the \code{pssf()} function.
+#' @param ... Additional arguments (not currently used).
+#' @return A list containing the summary of the PSS Bounds F-test results, including
+#' the test statistic, critical values, and any notes or warnings. The list is of class "kardl_test_summary".
+#' @noRd
+
 htestsummary.pssf<-function(testObj,...){
   # check if the testObj is of class "kardl_test" and "htest" and if the method is "PesaranF"
   if(!inherits(testObj, "kardl_test") || !inherits(testObj, "htest") || testObj$test.func != "pssf"){
@@ -736,6 +758,17 @@ htestsummary.pssf<-function(testObj,...){
   ), class = "summary_htest")
 }
 
+#' Summary method for cointegration tests
+#'
+#' This function provides a summary of the results from various cointegration tests, including the Pesaran, Shin, and Smith (PSS) Bounds F-test and the Narayan test. It checks the validity of the input object, extracts relevant information from the test results, and organizes it into a structured format for easy interpretation. The summary includes the test statistic, critical values based on the specified case and significance level, and any notes or warnings related to the test.
+#' @param inputs An object of class "kardl_test" and "htest
+#' that contains the results of a cointegration test. The object should have been created using either the \code{pssf()}, \code{pssf()} or \code{narayan()} function.
+#' @param ... Additional arguments (not currently used).
+#' @return A list containing the summary of the cointegration test results, including
+#' the test statistic, critical values, and any notes or warnings. The list is of
+#' class "summary_htest".
+#' @noRd
+
 htestsummary<-function(inputs,...){
 
   switch(inputs$test.func,
@@ -776,6 +809,12 @@ htestsummary<-function(inputs,...){
 #' @inheritSection pssf Hypothesis testing
 #' @inherit pssf return
 #' @importFrom car linearHypothesis
+#'
+#' @srrstats {G1.0} This function cites the original source of the Narayan (2005) bounds testing approach for cointegration analysis in small samples, which provides critical values specifically designed for such contexts.
+#' @srrstats {G1.3}  Statistical terms such as NULL hypothesis, alternative hypothesis, test statistic are defined in the context of the Narayan (2005) bounds testing approach for cointegration analysis in small samples.
+#' @srrstats {G2.0} Input argument `kmodel` is validated as a `kardl_lm` object; `case` and `signif_level` are validated against acceptable values before the test is performed.
+#' @srrstats {G2.3} The `case` argument is validated against `c(2,3,4,5,"auto")`; `signif_level` against the set of accepted strings.
+#' @srrstats {TS2.3} The documentation notes that the Narayan test is designed for small samples (n < 100) and suggests `pssf()` for larger samples.
 #' @references Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. Applied economics, 37(17), 1979-1990.
 #' @export
 #' @seealso \code{\link{pssf}}  \code{\link{psst}}  \code{\link{ecm}}
@@ -916,6 +955,17 @@ narayan<-function(kmodel,case=3,signif_level = "auto"){
  test.func  = "narayan"
   ), class = c("kardl_test","htest"))
 }
+
+#' Summary method for Narayan Bounds F-Test
+#'
+#' This function provides a summary of the results from the Narayan Bounds F-test for cointegration. It checks the validity of the input object, extracts relevant information from the test results, and organizes it into a structured format for easy interpretation. The summary includes the test statistic, critical values based on the specified case and significance level, and any notes or warnings related to the test.
+#' @param testObj An object of class "kardl_test" and "htest" that contains
+#' the results of the Narayan Bounds F-test. The object should have been created using the \code{narayan()} function.
+#' @param ... Additional arguments (not currently used).
+#' @return A list containing the summary of the Narayan Bounds F-test results, including
+#' the test statistic, critical values, and any notes or warnings. The list is of
+#' class "summary_htest".
+#' @noRd
 
 htestsummary.narayan<-function(testObj,...){
   # check if the testObj is of class "kardl_test" and "htest" and if the method is "PesaranF"
@@ -1088,9 +1138,11 @@ htestsummary.narayan<-function(testObj,...){
 #' \item{case}{The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
 #' }
 #'
-
-#'
-#'
+#' @srrstats {G1.0} This function cite the original source of the test, which is Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing Approaches to the Analysis of Level Relationship", Journal of Applied Econometrics, 16(3), 289-326.
+#' @srrstats {G1.3}  Statistical terms such as NULL hypothesis, alternative hypothesis, test statistic are defined in the documentation.
+#' @srrstats {G2.0} Input argument `kmodel` is validated as a `kardl_lm` object; `case` and `signif_level` are validated before the test is performed.
+#' @srrstats {G2.3} The `case` argument is validated against `c(1,2,3,4,5,"auto")`; `signif_level` against the set of accepted character strings.
+#' @srrstats {TS2.2} The PSS t-test evaluates the error-correction coefficient, which is relevant to the cointegration and stationarity assumptions of the ARDL framework.
 #'
 #'
 #' @export
@@ -1212,7 +1264,15 @@ psst<-function(kmodel,case=3,signif_level = "auto"){
 
 }
 
-
+#'
+#' Summary method for Pesaran, Shin, and Smith t Bounds Test
+#'
+#' This function provides a summary of the results from the Pesaran, Shin, and Smith (PSS) t Bounds test for cointegration. It includes the test statistic, critical values, and the decision regarding the null hypothesis of no cointegration.
+#'
+#' @param testObj An object of class "kardl_test" and "htest" resulting from the \code{\link{psst}} function.
+#' @param ... Additional arguments (not used).
+#' @return An object of class "summary_htest" containing the test results, including the test statistic, critical values, decision, and any relevant notes.
+#' @noRd
 htestsummary.psst<-function(testObj,...){
   # check if the testObj is of class "kardl_test" and "htest" and if the method is "PesaranF"
   if(!inherits(testObj, "kardl_test") || !inherits(testObj, "htest") || testObj$test.func != "psst"){

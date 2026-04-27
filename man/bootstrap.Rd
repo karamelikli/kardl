@@ -4,7 +4,14 @@
 \alias{bootstrap}
 \title{Bootstrap Confidence Intervals for Dynamic Multipliers}
 \usage{
-bootstrap(kmodel, horizon = 80, replications = 100, level = 95, minProb = 0)
+bootstrap(
+  kmodel,
+  horizon = 80,
+  replications = 100,
+  level = 95,
+  minProb = 0,
+  seed = NULL
+)
 }
 \arguments{
 \item{kmodel}{The model produced by the \code{\link{kardl}} function. This is the model object
@@ -22,6 +29,8 @@ Default is \code{90}.}
 \item{minProb}{A numeric value specifying the minimum p-value threshold for including coefficients in the bootstrap.
 Coefficients with p-values above this threshold will be set to zero in the bootstrap samples. Default is \code{0} (no threshold).
 This parameter allows users to control the inclusion of coefficients in the bootstrap process based on their statistical significance. Setting a threshold can help focus the analysis on more relevant variables, but it may also exclude potentially important effects if set too stringently.}
+
+\item{seed}{An optional integer to set the random seed for reproducibility of the bootstrap results. If not provided, the bootstrap will use the current random state.}
 }
 \value{
 A list containing the following elements:
@@ -57,7 +66,7 @@ and lower confidence intervals. These values are provided for each variable and 
 
  # Perform bootstrap with specific variables for plotting
  boot <-
-   bootstrap(kardl_model,   replications=5)
+   bootstrap(kardl_model,   replications=5, seed = 123L)
  # The boot object will include all plots for the specified variables
  # Displaying the boot object provides an overview of its components
  names(boot)

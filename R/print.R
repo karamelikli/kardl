@@ -1,4 +1,9 @@
-
+#' Print and summary methods for kardl objects
+#' @description
+#' These methods provide custom print and summary outputs for various kardl object classes, including `
+#' kardl_mplier`, `kardl_boot`, `kardl_longrun`, `kardl_symmetric`, and `kardl_test`. The print methods display key information about the object, while the summary methods provide detailed summaries of the results, including statistical tests and decisions.
+#'
+#'
 #' @export
 #' @method print kardl_mplier
 #' @noRd
@@ -8,6 +13,7 @@ print.kardl_mplier <- function(x, ...) {
   print(x$mpsi, ...)
   invisible(x)
 }
+
 
 #' @export
 #' @method summary kardl_mplier
@@ -68,6 +74,11 @@ print.summary.kardl_boot <- function(x, ...) {
 
 #' @export
 #' @method plot kardl_mplier
+#' @srrstats {TS5.0} A plot method is implemented for `kardl_mplier` objects returned by `mplier()`.
+#' @srrstats {TS5.1} The horizontal axis of multiplier plots is labelled as the horizon or time-step index.
+#' @srrstats {TS5.2} The horizon variable is plotted on the horizontal axis in dynamic multiplier visualisations.
+#' @srrstats {TS5.3} Multiplier plots display the horizon index used in the model output.
+#' @srrstats {TS5.8} Multiplier plots distinguish positive and negative shock components by variable where asymmetric effects are present.
 #' @noRd
 plot.kardl_mplier <- function(x, variables ="all" , ...) {
   mpsi <- x$mpsi
@@ -95,6 +106,8 @@ plot.kardl_mplier <- function(x, variables ="all" , ...) {
 #' @import stats
 #' @export
 #' @method  summary kardl_longrun
+#' @srrstats {G3.1} Long-run multiplier standard errors returned in the summary are computed via the delta method using the fitted model's variance-covariance matrix.
+#' @srrstats {TS4.2} The summary documents coefficients, standard errors, t-values, and p-values for each long-run multiplier.
 #' @noRd
 summary.kardl_longrun <- function(object, ...) {
   objcoef <- object$original_model$coefficients

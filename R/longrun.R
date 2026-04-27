@@ -40,6 +40,14 @@
 #' }
 #' @export
 #' @import stats
+#'
+#'
+#' @srrstats {G1.3}  Statistical terms such as "long-run multipliers", "standard errors", "t-statistics", and "p-values" are clearly defined and used consistently throughout the documentation and examples.
+#' @srrstats {G2.0} The function validates that `model` is a `kardl_lm` object before extracting coefficients and covariance matrices.
+#' @srrstats {G3.1} Long-run multiplier standard errors are computed using the delta method applied to the fitted model variance-covariance matrix.
+#' @srrstats {G3.1a} Documentation describes the delta-method formula for standard errors and the partial derivatives A and B used in the calculation.
+#' @srrstats {TS4.2} The return value is documented: `coefficients`, `residuals`, `fitted.values`, `df.residual`, `call`, `terms`, and `model` are all described.
+#' @srrstats {TS4.0b} The return value uses the explicit class `kardl_longrun`.
 #' @importFrom msm deltamethod
 #' @seealso \code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}
 #' @examples
