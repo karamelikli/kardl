@@ -13,7 +13,8 @@ psst(kmodel, case = 3, signif_level = "auto")
 - kmodel:
 
   A fitted KARDL model object of class 'kardl_lm' created using the
-  [`kardl`](kardl.md) function.
+  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
+  function.
 
 - case:
 
@@ -122,7 +123,9 @@ Econometrics, 16(3), 289-326.
 
 ## See also
 
-[`pssf`](pssf.md) [`ecm`](ecm.md) [`narayan`](narayan.md)
+[`pssf`](https://karamelikli.github.io/kardl/reference/pssf.md)
+[`ecm`](https://karamelikli.github.io/kardl/reference/ecm.md)
+[`narayan`](https://karamelikli.github.io/kardl/reference/narayan.md)
 
 ## Examples
 

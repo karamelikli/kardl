@@ -58,7 +58,9 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><div class="section level1">
+  <main id="main" class="col-md-9"><hr>
+<p>editor_options: markdown: wrap: sentence —</p>
+<div class="section level1">
 <div class="page-header"><h1 id="kardl-">KARDL <img src="reference/figures/KARDL.png" align="right"><a class="anchor" aria-label="anchor" href="#kardl-"></a>
 </h1></div>
 <p><a href="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/karamelikli/kardl/releases" class="external-link"><img src="https://img.shields.io/github/v/release/karamelikli/kardl" alt="GitHub version"></a> <a href="https://opensource.org/licenses/GPL-3.0" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a> <a href="https://cran.r-project.org/package=kardl" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/kardl" alt="CRAN downloads"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle"></a></p>
@@ -79,7 +81,7 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"kardl"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/karamelikli/kardl" class="external-link">kardl</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://karamelikli.github.io/kardl/">kardl</a></span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can use the <code>devtools</code> package to load directly from GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -91,7 +93,33 @@
 <p>Load the package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/karamelikli/kardl" class="external-link">kardl</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://karamelikli.github.io/kardl/">kardl</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="unique-features-and-methodological-contributions">Unique Features and Methodological Contributions<a class="anchor" aria-label="anchor" href="#unique-features-and-methodological-contributions"></a>
+</h2>
+<p>The <code>kardl</code> package implements several methodological extensions and improvements for ARDL/NARDL modelling that go beyond standard implementations available in R and other software:</p>
+<ul>
+<li>
+<strong>differentAsymLag</strong> option: Enables different lag orders for the positive and negative partial sum decompositions in NARDL models. This provides greater flexibility than the common symmetric lag restriction used in most existing packages.</li>
+<li>
+<strong>Narayan cointegration test</strong> (<code><a href="reference/narayan.html">narayan()</a></code>): A dedicated small-sample bounds test (Narayan, 2005) with automatic handling of critical values for cases II–V. While the test exists in the literature, its seamless integration into a full ARDL/NARDL workflow is unique in R.</li>
+<li>
+<strong>Symmetry tests</strong> (<code><a href="reference/symmetrytest.html">symmetrytest()</a></code>): Comprehensive Wald tests for both short-run and long-run symmetry in NARDL models.</li>
+<li>
+<strong>Bootstrap confidence intervals for dynamic multipliers</strong>: Robust uncertainty quantification around short-run, long-run, and impact multipliers through resampling methods, fully integrated with asymmetric multiplier estimation.</li>
+<li>Additional advanced capabilities include highly flexible formula parsing for mixed symmetric/asymmetric regressors, multiple model selection criteria (AIC, BIC, AICc, HQ), parallel processing support, and extensive post-estimation tools tailored for asymmetric analysis.</li>
+</ul>
+<p>These features make <code>kardl</code> particularly suitable for researchers needing fine-grained control over asymmetric dynamics and small-sample inference.</p>
+<div class="section level3">
+<h3 id="prior-art-and-comparisons">Prior Art and Comparisons<a class="anchor" aria-label="anchor" href="#prior-art-and-comparisons"></a>
+</h3>
+<p><code>kardl</code> builds upon the foundational NARDL framework of Shin et al. (2014) and extends it with practical innovations not fully available in other R packages.</p>
+<p><strong>Comparable implementations in R</strong>: - <code>nardl</code> package - <code>ardl.nardl</code> / <code>dynardl</code> - Other tools in the broader <code>ardlverse</code> ecosystem</p>
+<p>While these packages provide solid baseline ARDL/NARDL estimation, <code>kardl</code> offers meaningful improvements in flexibility (especially regarding lag structures for asymmetric components), additional cointegration testing options (including the Narayan test), integrated symmetry testing, and bootstrap inference for dynamic multipliers.</p>
+<p><strong>Key reference</strong>: - Shin, Y., Yu, B., &amp; Greenwood-Nimmo, M. (2014). Modelling Asymmetric Cointegration and Dynamic Multipliers in a Nonlinear ARDL Framework. In <em>Econometric Methods and Their Applications in Finance, Macro and Related Fields</em>. - Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. <em>Applied Economics</em>, 37(17), 1979–1990.</p>
+<p>For a full list of implemented standards and methodological details, see the package vignette and the dedicated SRR standards documentation.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="estimating-an-asymmetric-ardl-model">Estimating an Asymmetric ARDL Model<a class="anchor" aria-label="anchor" href="#estimating-an-asymmetric-ardl-model"></a>
@@ -783,9 +811,32 @@
 </div>
 </div>
 <div class="section level2">
+<h2 id="contributing-to-kardl">Contributing to kardl<a class="anchor" aria-label="anchor" href="#contributing-to-kardl"></a>
+</h2>
+<p>Thank you for considering contributing to the <code>kardl</code> package!</p>
+<div class="section level3">
+<h3 id="life-cycle-statement">Life Cycle Statement<a class="anchor" aria-label="anchor" href="#life-cycle-statement"></a>
+</h3>
+<p>This package is <strong>in a stable state of development, with active subsequent development primarily in response to user feedback.</strong></p>
+<p>The core functionality for linear and nonlinear ARDL/NARDL estimation, dynamic multipliers, symmetry tests, Narayan cointegration test, and bootstrap methods is considered stable and reliable.</p>
+<p>Future development will mainly focus on: - Fixing bugs reported by users - Addressing feature requests (e.g., additional post-estimation tools, new test options, or performance improvements) - Maintaining compatibility with newer R versions and dependencies - Minor enhancements based on community needs</p>
+<p>Major new methodological features will only be added if they align with clear user demand or important advancements in the econometric literature.</p>
+</div>
+<div class="section level3">
+<h3 id="how-to-contribute">How to Contribute<a class="anchor" aria-label="anchor" href="#how-to-contribute"></a>
+</h3>
+<ul>
+<li>Report bugs or suggest features by opening an issue on GitHub.</li>
+<li>Submit pull requests for bug fixes or improvements.</li>
+<li>All contributions are welcome and will be properly acknowledged.</li>
+</ul>
+<p>For questions or discussions, please open an issue.</p>
+</div>
+</div>
+<div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>The <code>kardl</code> package is a versatile tool for econometric analysis, offering robust support for symmetric and asymmetric ARDL/NARDL modeling, cointegration tests, stability diagnostics, and heteroskedasticity checks. Its flexible formula specification, lag optimization, and support for parallel processing make it ideal for studying complex economic relationships. For more information, visit <a href="https://github.com/karamelikli/kardl" class="external-link uri">https://github.com/karamelikli/kardl</a> or contact the authors at <a href="mailto:hakperest@gmail.com">hakperest@gmail.com</a>.</p>
+<p>The <code>kardl</code> package is a versatile tool for econometric analysis, offering robust support for symmetric and asymmetric ARDL/NARDL modeling, cointegration tests. Its flexible formula specification, lag optimization, and support for parallel processing make it ideal for studying complex economic relationships. For more information, visit <a href="https://github.com/karamelikli/kardl" class="external-link uri">https://github.com/karamelikli/kardl</a> or contact the authors at <a href="mailto:hakperest@gmail.com">hakperest@gmail.com</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="disclosures">Disclosures<a class="anchor" aria-label="anchor" href="#disclosures"></a>

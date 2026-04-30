@@ -85,7 +85,9 @@ dependent variable in the original KARDL model.
 
 ## See also
 
-[`kardl`](kardl.md), [`pssf`](pssf.md), [`psst`](psst.md)
+[`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md),
+[`pssf`](https://karamelikli.github.io/kardl/reference/pssf.md),
+[`psst`](https://karamelikli.github.io/kardl/reference/psst.md)
 
 ## Examples
 

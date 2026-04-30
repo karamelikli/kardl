@@ -22,9 +22,9 @@ computational efficiency. Key features include:
   cointegration tests (PSS F, PSS t, Narayan), and ECM estimation.
 
 This vignette demonstrates how to use the
-[`kardl()`](../reference/kardl.md) function to estimate an asymmetric
-ARDL model, perform diagnostic tests, and visualize results, using
-economic data from Turkey.
+[`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
+function to estimate an asymmetric ARDL model, perform diagnostic tests,
+and visualize results, using economic data from Turkey.
 
 ## Installation
 
@@ -54,6 +54,64 @@ Load the package:
 
 library(kardl)
 ```
+
+## Unique Features and Methodological Contributions
+
+The `kardl` package implements several methodological extensions and
+improvements for ARDL/NARDL modelling that go beyond standard
+implementations available in R and other software:
+
+- **differentAsymLag** option: Enables different lag orders for the
+  positive and negative partial sum decompositions in NARDL models. This
+  provides greater flexibility than the common symmetric lag restriction
+  used in most existing packages.
+- **Narayan cointegration test**
+  ([`narayan()`](https://karamelikli.github.io/kardl/reference/narayan.md)):
+  A dedicated small-sample bounds test (Narayan, 2005) with automatic
+  handling of critical values for cases II–V. While the test exists in
+  the literature, its seamless integration into a full ARDL/NARDL
+  workflow is unique in R.
+- **Symmetry tests**
+  ([`symmetrytest()`](https://karamelikli.github.io/kardl/reference/symmetrytest.md)):
+  Comprehensive Wald tests for both short-run and long-run symmetry in
+  NARDL models.
+- **Bootstrap confidence intervals for dynamic multipliers**: Robust
+  uncertainty quantification around short-run, long-run, and impact
+  multipliers through resampling methods, fully integrated with
+  asymmetric multiplier estimation.
+- Additional advanced capabilities include highly flexible formula
+  parsing for mixed symmetric/asymmetric regressors, multiple model
+  selection criteria (AIC, BIC, AICc, HQ), parallel processing support,
+  and extensive post-estimation tools tailored for asymmetric analysis.
+
+These features make `kardl` particularly suitable for researchers
+needing fine-grained control over asymmetric dynamics and small-sample
+inference.
+
+### Prior Art and Comparisons
+
+`kardl` builds upon the foundational NARDL framework of Shin et
+al. (2014) and extends it with practical innovations not fully available
+in other R packages.
+
+**Comparable implementations in R**: - `nardl` package - `ardl.nardl` /
+`dynardl` - Other tools in the broader `ardlverse` ecosystem
+
+While these packages provide solid baseline ARDL/NARDL estimation,
+`kardl` offers meaningful improvements in flexibility (especially
+regarding lag structures for asymmetric components), additional
+cointegration testing options (including the Narayan test), integrated
+symmetry testing, and bootstrap inference for dynamic multipliers.
+
+**Key reference**: - Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014).
+Modelling Asymmetric Cointegration and Dynamic Multipliers in a
+Nonlinear ARDL Framework. In *Econometric Methods and Their Applications
+in Finance, Macro and Related Fields*. - Narayan, P. K. (2005). The
+saving and investment nexus for China: evidence from cointegration
+tests. *Applied Economics*, 37(17), 1979–1990.
+
+For a full list of implemented standards and methodological details, see
+the package vignette and the dedicated SRR standards documentation.
 
 ## Estimating an Asymmetric ARDL Model
 
@@ -97,7 +155,6 @@ specification:
 
 ``` r
 
-
 sameFormula <- y ~Asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + Deterministic(dummy1) + trend
 sameFormula <- y ~asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + deterministic(dummy1) + trend
 sameFormula <- y ~asym(x1)+sasym(x2+x3)+lasym(x4+x5) + det(dummy1) + trend
@@ -108,8 +165,9 @@ sameFormula <- y ~a(x1)+s(x2+x3)+l(x4+x5) + d(dummy1) + trend
 
 We estimate the ARDL model using different `mode` settings to
 demonstrate flexibility in lag selection. The
-[`kardl()`](../reference/kardl.md) function supports various modes:
-`"grid"`, `"grid_custom"`, `"quick"`, or a user-defined lag vector.
+[`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
+function supports various modes: `"grid"`, `"grid_custom"`, `"quick"`,
+or a user-defined lag vector.
 
 #### Using `mode = "grid"`
 
@@ -322,9 +380,9 @@ ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Crite
 
 #### Error Correction Model (ECM) Estimation
 
-The [`ecm()`](../reference/ecm.md) function estimates a Restricted ECM
-for cointegration testing. We specify the same formula and lag structure
-as in the ARDL model.
+The [`ecm()`](https://karamelikli.github.io/kardl/reference/ecm.md)
+function estimates a Restricted ECM for cointegration testing. We
+specify the same formula and lag structure as in the ARDL model.
 
 ``` r
 
@@ -366,9 +424,9 @@ summary(ecm_model)
 ### Step 4: Long-Run Coefficients
 
 We calculate long-run coefficients using
-[`kardl_longrun()`](../reference/kardl_longrun.md), which standardizes
-coefficients by dividing them by the negative of the dependent
-variable’s long-run parameter.
+[`kardl_longrun()`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md),
+which standardizes coefficients by dividing them by the negative of the
+dependent variable’s long-run parameter.
 
 ``` r
 
@@ -417,8 +475,10 @@ summary(mylong)
 
 ### Step 5: Asymmetry Test
 
-The [`symmetrytest()`](../reference/symmetrytest.md) function performs
-Wald tests to assess short- and long-run asymmetry in the model.
+The
+[`symmetrytest()`](https://karamelikli.github.io/kardl/reference/symmetrytest.md)
+function performs Wald tests to assess short- and long-run asymmetry in
+the model.
 
 ``` r
 
@@ -486,13 +546,15 @@ summary(ast)
 ### Step 6: Cointegration Tests
 
 We perform cointegration tests to assess long-term relationships using
-[`pssf()`](../reference/pssf.md), [`psst()`](../reference/psst.md), and
-[`narayan()`](../reference/narayan.md).
+[`pssf()`](https://karamelikli.github.io/kardl/reference/pssf.md),
+[`psst()`](https://karamelikli.github.io/kardl/reference/psst.md), and
+[`narayan()`](https://karamelikli.github.io/kardl/reference/narayan.md).
 
 #### PSS F Bound Test
 
-The [`pssf()`](../reference/pssf.md) function tests for cointegration
-using the Pesaran, Shin, and Smith F Bound test.
+The [`pssf()`](https://karamelikli.github.io/kardl/reference/pssf.md)
+function tests for cointegration using the Pesaran, Shin, and Smith F
+Bound test.
 
 ``` r
 
@@ -538,8 +600,9 @@ summary(A)
 
 #### PSS t Bound Test
 
-The [`psst()`](../reference/psst.md) function tests the significance of
-the lagged dependent variable’s coefficient.
+The [`psst()`](https://karamelikli.github.io/kardl/reference/psst.md)
+function tests the significance of the lagged dependent variable’s
+coefficient.
 
 ``` r
 
@@ -585,9 +648,10 @@ summary(A)
 
 #### Narayan Test
 
-The [`narayan()`](../reference/narayan.md) function is tailored for
-small sample sizes. It tests for cointegration using critical values
-optimized for small samples.
+The
+[`narayan()`](https://karamelikli.github.io/kardl/reference/narayan.md)
+function is tailored for small sample sizes. It tests for cointegration
+using critical values optimized for small samples.
 
 ``` r
 
@@ -634,9 +698,11 @@ summary(A)
 
 ### Step 7: Dynamic Multipliers
 
-The [`mplier()`](../reference/mplier.md) function calculates dynamic
-multipliers for the model, showing how changes in independent variables
-affect the dependent variable over time.
+The
+[`mplier()`](https://karamelikli.github.io/kardl/reference/mplier.md)
+function calculates dynamic multipliers for the model, showing how
+changes in independent variables affect the dependent variable over
+time.
 
 ``` r
 
@@ -692,8 +758,10 @@ variables to plot or use `variables = "all"` to visualize all dynamic
 multipliers.
 
 Bootstrap confidence intervals for dynamic multipliers can be calculated
-using the [`bootstrap()`](../reference/bootstrap.md) function, which
-provides robust estimates of uncertainty around the multipliers.
+using the
+[`bootstrap()`](https://karamelikli.github.io/kardl/reference/bootstrap.md)
+function, which provides robust estimates of uncertainty around the
+multipliers.
 
 ``` r
 
@@ -740,7 +808,8 @@ plot(bootstrap_results, variables = "ER")
 ### Step 8: Customizing Asymmetric Variables
 
 We demonstrate how to customize prefixes and suffixes for asymmetric
-variables using [`kardl_set()`](../reference/kardl_set.md).
+variables using
+[`kardl_set()`](https://karamelikli.github.io/kardl/reference/kardl_set.md).
 
 ``` r
 
@@ -804,8 +873,10 @@ kardl_custom
 - **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC,
   AICc, HQ), `differentAsymLag`, `AsymPrefix`, `Sasymuffix`,
   `ShortCoef`, and `LongCoef`. Use
-  [`kardl_get()`](../reference/kardl_get.md) to retrieve settings and
-  [`kardl_reset()`](../reference/kardl_reset.md) to restore defaults.
+  [`kardl_get()`](https://karamelikli.github.io/kardl/reference/kardl_get.md)
+  to retrieve settings and
+  [`kardl_reset()`](https://karamelikli.github.io/kardl/reference/kardl_reset.md)
+  to restore defaults.
 
 - **`kardl_longrun(model)`**: Calculates standardized long-run
   coefficients, returning `type` (“kardl_longrun”), `coef`, `delta_se`,
@@ -827,15 +898,18 @@ kardl_custom
 
 - **`ecm(data, model, maxlag, mode, ...)`**: Conducts the Restricted ECM
   test for cointegration, with similar parameters to
-  [`kardl()`](../reference/kardl.md) and case/significance level
-  options.
+  [`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
+  and case/significance level options.
 
-For detailed documentation, use [`?kardl`](../reference/kardl.md),
-[`?kardl_set`](../reference/kardl_set.md),
-[`?kardl_longrun`](../reference/kardl_longrun.md),
-[`?symmetrytest`](../reference/symmetrytest.md),
-[`?pssf`](../reference/pssf.md), [`?psst`](../reference/psst.md),
-[`?narayan`](../reference/narayan.md), or [`?ecm`](../reference/ecm.md).
+For detailed documentation, use
+[`?kardl`](https://karamelikli.github.io/kardl/reference/kardl.md),
+[`?kardl_set`](https://karamelikli.github.io/kardl/reference/kardl_set.md),
+[`?kardl_longrun`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md),
+[`?symmetrytest`](https://karamelikli.github.io/kardl/reference/symmetrytest.md),
+[`?pssf`](https://karamelikli.github.io/kardl/reference/pssf.md),
+[`?psst`](https://karamelikli.github.io/kardl/reference/psst.md),
+[`?narayan`](https://karamelikli.github.io/kardl/reference/narayan.md),
+or [`?ecm`](https://karamelikli.github.io/kardl/reference/ecm.md).
 
 ## Conclusion
 

@@ -27,7 +27,8 @@ arguments are provided, sets those options and returns the updated list.
 
 ## See also
 
-[`kardl_get`](kardl_get.md), [`kardl_reset`](kardl_reset.md)
+[`kardl_get`](https://karamelikli.github.io/kardl/reference/kardl_get.md),
+[`kardl_reset`](https://karamelikli.github.io/kardl/reference/kardl_reset.md)
 
 ## Examples
 

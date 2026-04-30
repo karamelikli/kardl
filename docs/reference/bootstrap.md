@@ -9,15 +9,24 @@ lower bounds for the confidence interval.
 ## Usage
 
 ``` r
-bootstrap(kmodel, horizon = 80, replications = 100, level = 95, minProb = 0)
+bootstrap(
+  kmodel,
+  horizon = 80,
+  replications = 100,
+  level = 95,
+  minProb = 0,
+  seed = NULL
+)
 ```
 
 ## Arguments
 
 - kmodel:
 
-  The model produced by the [`kardl`](kardl.md) function. This is the
-  model object from which the dynamic multipliers are calculated.
+  The model produced by the
+  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
+  function. This is the model object from which the dynamic multipliers
+  are calculated.
 
 - horizon:
 
@@ -34,7 +43,7 @@ bootstrap(kmodel, horizon = 80, replications = 100, level = 95, minProb = 0)
 - level:
 
   A numeric value specifying the confidence level for the intervals
-  (e.g., 95 for 95 Default is `90`.
+  (e.g., 95 for 95% confidence). Default is `90`.
 
 - minProb:
 
@@ -46,6 +55,12 @@ bootstrap(kmodel, horizon = 80, replications = 100, level = 95, minProb = 0)
   significance. Setting a threshold can help focus the analysis on more
   relevant variables, but it may also exclude potentially important
   effects if set too stringently.
+
+- seed:
+
+  An optional integer to set the random seed for reproducibility of the
+  bootstrap results. If not provided, the bootstrap will use the current
+  random state.
 
 ## Value
 
@@ -77,7 +92,8 @@ values are provided for each variable and at each time horizon.
 
 ## See also
 
-[`mplier`](mplier.md) for calculating dynamic multipliers
+[`mplier`](https://karamelikli.github.io/kardl/reference/mplier.md) for
+calculating dynamic multipliers
 
 ## Examples
 
@@ -94,7 +110,7 @@ values are provided for each variable and at each time horizon.
 
  # Perform bootstrap with specific variables for plotting
  boot <-
-   bootstrap(kardl_model,   replications=5)
+   bootstrap(kardl_model,   replications=5, seed = 123L)
  # The boot object will include all plots for the specified variables
  # Displaying the boot object provides an overview of its components
  names(boot)
@@ -112,12 +128,12 @@ values are provided for each variable and at each time horizon.
 #> 5 4 0.3581333 -0.281735367 0.07639793 0.22496277 -0.22496277       0
 #> 6 5 0.3709116 -0.326659918 0.04425171 0.27951609 -0.27951609       0
 #>   ER_CI_upper ER_CI_lower
-#> 1   0.1834999  0.03199611
-#> 2   0.2382231  0.09423749
-#> 3   0.2886517  0.08374155
-#> 4   0.2398815  0.03265227
-#> 5   0.1953934 -0.01221202
-#> 6   0.1533647 -0.04662558
+#> 1   0.1278960  0.07502600
+#> 2   0.1917234  0.10406928
+#> 3   0.2191685  0.10435071
+#> 4   0.1848818  0.10108447
+#> 5   0.1605490  0.06046077
+#> 6   0.1405415  0.01145040
 
 
   summary(boot)
@@ -131,20 +147,20 @@ values are provided for each variable and at each time horizon.
 #>  Mean   :40   Mean   :0.5868   Mean   :-1.173031   Mean   :-0.5863  
 #>  3rd Qu.:60   3rd Qu.:0.6959   3rd Qu.:-0.837426   3rd Qu.:-0.3340  
 #>  Max.   :80   Max.   :0.7432   Max.   :-0.005755   Max.   : 0.1760  
-#>     PPI_POS          PPI_NEG           PPI_dif   ER_CI_upper     
-#>  Min.   :0.0165   Min.   :-2.2241   Min.   :0   Min.   :-0.4794  
-#>  1st Qu.:0.9673   1st Qu.:-1.9762   1st Qu.:0   1st Qu.:-0.4269  
-#>  Median :1.5849   Median :-1.5849   Median :0   Median :-0.3310  
-#>  Mean   :1.4268   Mean   :-1.4268   Mean   :0   Mean   :-0.2650  
-#>  3rd Qu.:1.9762   3rd Qu.:-0.9673   3rd Qu.:0   3rd Qu.:-0.1561  
-#>  Max.   :2.2241   Max.   :-0.0165   Max.   :0   Max.   : 0.2887  
-#>   ER_CI_lower      
-#>  Min.   :-1.23049  
-#>  1st Qu.:-1.02721  
-#>  Median :-0.73238  
-#>  Mean   :-0.69237  
-#>  3rd Qu.:-0.41318  
-#>  Max.   : 0.09424  
+#>     PPI_POS          PPI_NEG           PPI_dif   ER_CI_upper      
+#>  Min.   :0.0165   Min.   :-2.2241   Min.   :0   Min.   :-0.33918  
+#>  1st Qu.:0.9673   1st Qu.:-1.9762   1st Qu.:0   1st Qu.:-0.29813  
+#>  Median :1.5849   Median :-1.5849   Median :0   Median :-0.21868  
+#>  Mean   :1.4268   Mean   :-1.4268   Mean   :0   Mean   :-0.16617  
+#>  3rd Qu.:1.9762   3rd Qu.:-0.9673   3rd Qu.:0   3rd Qu.:-0.06495  
+#>  Max.   :2.2241   Max.   :-0.0165   Max.   :0   Max.   : 0.21917  
+#>   ER_CI_lower     
+#>  Min.   :-1.4062  
+#>  1st Qu.:-1.2767  
+#>  Median :-1.0294  
+#>  Mean   :-0.8798  
+#>  3rd Qu.:-0.5566  
+#>  Max.   : 0.1044  
 
  # Retrieve plots generated during the bootstrap process
  # Accessing all plots

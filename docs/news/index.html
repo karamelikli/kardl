@@ -49,6 +49,8 @@
 <ul><li>
 <strong>autotest compliance:</strong> Fixed errors and warnings in <code>autotest</code> example parsing (e.g., <code>subscript out of bounds</code>, <code>recursive indexing failed</code>). Updated example structures to be atomic and assignment-based, improving automated test generation and reproducibility.</li>
 <li>
+<strong>seed argument added to bootstrap:</strong> The <code><a href="../reference/bootstrap.html">bootstrap()</a></code> function now includes an optional <code>seed</code> argument, allowing users to set a random seed for reproducibility of bootstrap results.</li>
+<li>
 <strong>kardl_reset updated:</strong> The <code><a href="../reference/kardl_reset.html">kardl_reset()</a></code> function has been updated. Exclude argument is now optional and defaults to <code>NULL</code>, allowing users to reset all settings except those explicitly specified.</li>
 <li>
 <strong>Print method improvements:</strong> Standard output handling in print methods has been revised. Functions now rely on standard R messaging mechanisms instead of direct console output calls, improving compatibility with CRAN checks and allowing users to control output behavior more effectively.</li>

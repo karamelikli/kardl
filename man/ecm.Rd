@@ -99,21 +99,17 @@ the model estimation process.
 
 \strong{\emph{details}}
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{   The \code{maxlag} parameter is crucial for defining the maximum lag length that the model
-   will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
-   It controls the computational effort and helps prevent overfitting by restricting the search
-   space for lag selection.
-}\if{html}{\out{</div>}}
-
+The \code{maxlag} parameter is crucial for defining the maximum lag length that the model
+will evaluate when selecting the optimal lag structure based on the specified \code{criterion}.
+It controls the computational effort and helps prevent overfitting by restricting the search
+space for lag selection.
 \itemize{
 \item  If the data has a short time horizon or is prone to overfitting, consider reducing \code{maxlag}.
 \item  If the data is expected to have long-term dependencies, increasing \code{maxlag} may be necessary to capture the relevant dynamics.
 }
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{   Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
-   context of the analysis:
-}\if{html}{\out{</div>}}
-
+Setting an appropriate value for \code{maxlag} depends on the nature of your dataset and the
+context of the analysis:
 \itemize{
 \item For small datasets or quick tests, use smaller values (e.g., \code{maxlag = 2}).
 \item For datasets with more observations or longer-term patterns, larger values (e.g., \code{maxlag = 8})  may be appropriate, though this increases computational time.
@@ -161,34 +157,25 @@ A numeric vector of lag values specified by the user, allowing full customizatio
 structure used in model estimation. When a user-defined vector is provided (e.g., \code{c(1, 2, 4, 5)}),
 the function skips the lag optimization process and directly uses the specified lags.
 
-\if{html}{\out{<div class="sourceCode">}}\preformatted{     Users can define lag values directly as a numeric vector. For example:
-      \code{mode = c(1, 2, 4, 5)} assigns lags of 1, 2, 4, and 5 to variables in the specified order.
-     Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
-      \code{mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)} assigns lags to variables explicitly.
-     Ensure that the lags are correctly designated by verifying the result using
-      \code{kardl_model$properLag} after estimation.
+Users can define lag values directly as a numeric vector. For example:
+\code{mode = c(1, 2, 4, 5)} assigns lags of 1, 2, 4, and 5 to variables in the specified order.
+Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
+\code{mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)} assigns lags to variables explicitly.
+Ensure that the lags are correctly designated by verifying the result using
+\code{kardl_model$properLag} after estimation.
 
-    \\strong\{\\emph\{Attention!\}\}
-    A function-based criterion or user-defined function can be specified
-     for model selection, but this is only supported for \code{mode = "grid_custom"}
-     and \code{mode = "quick"}. The \code{mode = "grid"} option is restricted to
-     predefined criteria (e.g., AIC or BIC). For more information on available criteria,
-     see the \code{\link{modelCriterion}} function documentation.
-    - When using a numeric vector, ensure the order of lag values matches the variables in your formula.
-    - If using named vectors, double-check the variable names to avoid mismatches or unintended results.
-    - This mode bypasses the automatic lag optimization and assumes the user-defined lags are correct.
-}\if{html}{\out{</div>}}
-
+\strong{\emph{Attention!}}
+A function-based criterion or user-defined function can be specified
+for model selection, but this is only supported for \code{mode = "grid_custom"}
+and \code{mode = "quick"}. The \code{mode = "grid"} option is restricted to
+predefined criteria (e.g., AIC or BIC). For more information on available criteria,
+see the \code{\link{modelCriterion}} function documentation.
+\itemize{
+\item When using a numeric vector, ensure the order of lag values matches the variables in your formula.
+\item If using named vectors, double-check the variable names to avoid mismatches or unintended results.
+\item This mode bypasses the automatic lag optimization and assumes the user-defined lags are correct.
 }
-
-\if{html}{\out{<div class="sourceCode">}}\preformatted{   The `mode` parameter provides flexibility for different use cases:
-   - Use `"grid"` mode for debugging or interactive use where progress visibility is important.
-   - Use `"grid_custom"` mode to minimize overhead in computationally intensive tasks.
-   - Specify a user-defined vector to customize the lag structure based on prior knowledge or analysis.
-
-   Selecting the appropriate mode can improve the efficiency and usability of the function depending
-   on the user's requirements and the computational environment.
-}\if{html}{\out{</div>}}}
+}}
 
 \item{criterion}{A string specifying the information criterion to be used for selecting the optimal lag structure.
 The available options are:

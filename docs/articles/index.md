@@ -2,4 +2,5 @@
 
 ### All vignettes
 
-- [Introduction to kardl](intro.md):
+- [Introduction to
+  kardl](https://karamelikli.github.io/kardl/articles/intro.md):

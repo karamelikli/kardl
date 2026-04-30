@@ -121,7 +121,9 @@ evidence from cointegration tests. Applied economics, 37(17), 1979-1990.
 
 ## See also
 
-[`pssf`](pssf.md) [`psst`](psst.md) [`ecm`](ecm.md)
+[`pssf`](https://karamelikli.github.io/kardl/reference/pssf.md)
+[`psst`](https://karamelikli.github.io/kardl/reference/psst.md)
+[`ecm`](https://karamelikli.github.io/kardl/reference/ecm.md)
 
 ## Examples
 

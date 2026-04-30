@@ -106,7 +106,7 @@ separately. Otherwise, the same dynamic path is used.
 
 ## See also
 
-[`bootstrap`](bootstrap.md)
+[`bootstrap`](https://karamelikli.github.io/kardl/reference/bootstrap.md)
 
 ## Examples
 

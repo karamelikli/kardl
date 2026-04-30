@@ -9,11 +9,15 @@
   `recursive indexing failed`). Updated example structures to be atomic
   and assignment-based, improving automated test generation and
   reproducibility.
+- **seed argument added to bootstrap:** The
+  [`bootstrap()`](https://karamelikli.github.io/kardl/reference/bootstrap.md)
+  function now includes an optional `seed` argument, allowing users to
+  set a random seed for reproducibility of bootstrap results.
 - **kardl_reset updated:** The
-  [`kardl_reset()`](../reference/kardl_reset.md) function has been
-  updated. Exclude argument is now optional and defaults to `NULL`,
-  allowing users to reset all settings except those explicitly
-  specified.
+  [`kardl_reset()`](https://karamelikli.github.io/kardl/reference/kardl_reset.md)
+  function has been updated. Exclude argument is now optional and
+  defaults to `NULL`, allowing users to reset all settings except those
+  explicitly specified.
 - **Print method improvements:** Standard output handling in print
   methods has been revised. Functions now rely on standard R messaging
   mechanisms instead of direct console output calls, improving

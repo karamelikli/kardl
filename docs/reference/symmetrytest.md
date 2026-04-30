@@ -135,8 +135,11 @@ applications, 281-314.
 
 ## See also
 
-[`kardl`](kardl.md), [`pssf`](pssf.md), [`psst`](psst.md),
-[`ecm`](ecm.md), [`narayan`](narayan.md)
+[`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md),
+[`pssf`](https://karamelikli.github.io/kardl/reference/pssf.md),
+[`psst`](https://karamelikli.github.io/kardl/reference/psst.md),
+[`ecm`](https://karamelikli.github.io/kardl/reference/ecm.md),
+[`narayan`](https://karamelikli.github.io/kardl/reference/narayan.md)
 
 ## Examples
 

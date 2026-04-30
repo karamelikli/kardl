@@ -24,7 +24,8 @@ option names are provided, returns their values.
 
 ## See also
 
-[`kardl_set`](kardl_set.md), [`kardl_reset`](kardl_reset.md)
+[`kardl_set`](https://karamelikli.github.io/kardl/reference/kardl_set.md),
+[`kardl_reset`](https://karamelikli.github.io/kardl/reference/kardl_reset.md)
 
 ## Examples
 
@@ -43,7 +44,7 @@ kardl_get()
 #> 
 #> $formula
 #> CPI ~ ER + PPI + Asymmetr(ER) + deterministic(covid) + trend
-#> <environment: 0x5a41105efc48>
+#> <environment: 0x5e82646053b0>
 #> 
 #> $ShortCoef
 #> [1] "L{lag}.d.{varName}"

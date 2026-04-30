@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Huseyin
 Karamelikli and Huseyin Utku Demir</h4>
             
-            <h4 data-toc-skip class="date">2026-04-24</h4>
+            <h4 data-toc-skip class="date">2026-04-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/karamelikli/kardl/blob/HEAD/vignettes/intro.Rmd" class="external-link"><code>vignettes/intro.Rmd</code></a></small>
       <div class="d-none name"><code>intro.Rmd</code></div>
@@ -113,7 +113,7 @@ and visualize results, using economic data from Turkey.</p>
 repository:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"kardl"</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/karamelikli/kardl" class="external-link">kardl</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://karamelikli.github.io/kardl/">kardl</a></span><span class="op">)</span></span></code></pre></div>
 <p>Alternatively, you can use the <code>devtools</code> package to load
 directly from GitHub:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -124,7 +124,71 @@ directly from GitHub:</p>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install-deprecated.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"karamelikli/kardl"</span><span class="op">)</span></span></code></pre></div>
 <p>Load the package:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/karamelikli/kardl" class="external-link">kardl</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://karamelikli.github.io/kardl/">kardl</a></span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="unique-features-and-methodological-contributions">Unique Features and Methodological Contributions<a class="anchor" aria-label="anchor" href="#unique-features-and-methodological-contributions"></a>
+</h2>
+<p>The <code>kardl</code> package implements several methodological
+extensions and improvements for ARDL/NARDL modelling that go beyond
+standard implementations available in R and other software:</p>
+<ul>
+<li>
+<strong>differentAsymLag</strong> option: Enables different lag
+orders for the positive and negative partial sum decompositions in NARDL
+models. This provides greater flexibility than the common symmetric lag
+restriction used in most existing packages.</li>
+<li>
+<strong>Narayan cointegration test</strong>
+(<code><a href="../reference/narayan.html">narayan()</a></code>): A dedicated small-sample bounds test (Narayan,
+2005) with automatic handling of critical values for cases II–V. While
+the test exists in the literature, its seamless integration into a full
+ARDL/NARDL workflow is unique in R.</li>
+<li>
+<strong>Symmetry tests</strong> (<code><a href="../reference/symmetrytest.html">symmetrytest()</a></code>):
+Comprehensive Wald tests for both short-run and long-run symmetry in
+NARDL models.</li>
+<li>
+<strong>Bootstrap confidence intervals for dynamic
+multipliers</strong>: Robust uncertainty quantification around
+short-run, long-run, and impact multipliers through resampling methods,
+fully integrated with asymmetric multiplier estimation.</li>
+<li>Additional advanced capabilities include highly flexible formula
+parsing for mixed symmetric/asymmetric regressors, multiple model
+selection criteria (AIC, BIC, AICc, HQ), parallel processing support,
+and extensive post-estimation tools tailored for asymmetric
+analysis.</li>
+</ul>
+<p>These features make <code>kardl</code> particularly suitable for
+researchers needing fine-grained control over asymmetric dynamics and
+small-sample inference.</p>
+<div class="section level3">
+<h3 id="prior-art-and-comparisons">Prior Art and Comparisons<a class="anchor" aria-label="anchor" href="#prior-art-and-comparisons"></a>
+</h3>
+<p><code>kardl</code> builds upon the foundational NARDL framework of
+Shin et al. (2014) and extends it with practical innovations not fully
+available in other R packages.</p>
+<p><strong>Comparable implementations in R</strong>: -
+<code>nardl</code> package - <code>ardl.nardl</code> /
+<code>dynardl</code> - Other tools in the broader <code>ardlverse</code>
+ecosystem</p>
+<p>While these packages provide solid baseline ARDL/NARDL estimation,
+<code>kardl</code> offers meaningful improvements in flexibility
+(especially regarding lag structures for asymmetric components),
+additional cointegration testing options (including the Narayan test),
+integrated symmetry testing, and bootstrap inference for dynamic
+multipliers.</p>
+<p><strong>Key reference</strong>: - Shin, Y., Yu, B., &amp;
+Greenwood-Nimmo, M. (2014). Modelling Asymmetric Cointegration and
+Dynamic Multipliers in a Nonlinear ARDL Framework. In <em>Econometric
+Methods and Their Applications in Finance, Macro and Related
+Fields</em>. - Narayan, P. K. (2005). The saving and investment nexus
+for China: evidence from cointegration tests. <em>Applied
+Economics</em>, 37(17), 1979–1990.</p>
+<p>For a full list of implemented standards and methodological details,
+see the package vignette and the dedicated SRR standards
+documentation.</p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="estimating-an-asymmetric-ardl-model">Estimating an Asymmetric ARDL Model<a class="anchor" aria-label="anchor" href="#estimating-an-asymmetric-ardl-model"></a>
@@ -165,8 +229,7 @@ combinations of asymmetric and deterministic variables. The following
 variations of the formula are equivalent and will yield the same model
 specification:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">Asymmetric</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">Sasymmetric</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">Lasymmetric</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">Deterministic</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
+<code class="sourceCode R"><span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">Asymmetric</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">Sasymmetric</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">Lasymmetric</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">Deterministic</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
 <span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">asymmetric</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">Sasymmetric</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">Lasymmetric</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
 <span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">asym</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">sasym</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">lasym</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
 <span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">a</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">s</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">l</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">d</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span></code></pre></div>

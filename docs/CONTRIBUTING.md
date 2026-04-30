@@ -70,5 +70,5 @@ advice.
 ## Code of Conduct
 
 Please note that the kardl project is released with a [Contributor Code
-of Conduct](CODE_OF_CONDUCT.md). By contributing to this project you
-agree to abide by its terms.
+of Conduct](https://karamelikli.github.io/kardl/CODE_OF_CONDUCT.md). By
+contributing to this project you agree to abide by its terms.

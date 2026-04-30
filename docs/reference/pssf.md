@@ -22,7 +22,8 @@ pssf(kmodel, case = 3, signif_level = "auto")
 - kmodel:
 
   A fitted KARDL model object of class 'kardl_lm' created using the
-  [`kardl`](kardl.md) function.
+  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
+  function.
 
 - case:
 
@@ -124,7 +125,9 @@ Econometrics, 16(3), 289-326.
 
 ## See also
 
-[`psst`](psst.md) [`ecm`](ecm.md) [`narayan`](narayan.md)
+[`psst`](https://karamelikli.github.io/kardl/reference/psst.md)
+[`ecm`](https://karamelikli.github.io/kardl/reference/ecm.md)
+[`narayan`](https://karamelikli.github.io/kardl/reference/narayan.md)
 
 ## Examples
 

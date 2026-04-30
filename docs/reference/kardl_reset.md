@@ -22,7 +22,8 @@ A list of the settings after reset, returned invisibly.
 
 ## See also
 
-[`kardl_set`](kardl_set.md), [`kardl_get`](kardl_get.md)
+[`kardl_set`](https://karamelikli.github.io/kardl/reference/kardl_set.md),
+[`kardl_get`](https://karamelikli.github.io/kardl/reference/kardl_get.md)
 
 ## Examples
 

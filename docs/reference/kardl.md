@@ -35,8 +35,8 @@ kardl(
   variables, including options for deterministic terms, asymmetric
   variables, and a trend component.
 
-  Example formula:
-  `y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`
+         Example formula:
+         \code{y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
 
   ***Details***
 
@@ -176,7 +176,7 @@ kardl(
   - **User-defined vector**: A numeric vector of lag values specified by
     the user, allowing full customization of the lag structure used in
     model estimation. When a user-defined vector is provided (e.g.,
-    \`c(1, 2, 4, 5)\`), the function skips the lag optimization process
+    `c(1, 2, 4, 5)`), the function skips the lag optimization process
     and directly uses the specified lags.
 
     Users can define lag values directly as a numeric vector. For
@@ -193,23 +193,17 @@ kardl(
     `mode = "grid_custom"` and `mode = "quick"`. The `mode = "grid"`
     option is restricted to predefined criteria (e.g., AIC or BIC). For
     more information on available criteria, see the
-    [`modelCriterion`](modelCriterion.md) function documentation. - When
-    using a numeric vector, ensure the order of lag values matches the
-    variables in your formula. - If using named vectors, double-check
-    the variable names to avoid mismatches or unintended results. - This
-    mode bypasses the automatic lag optimization and assumes the
-    user-defined lags are correct.
+    [`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+    function documentation.
 
-  The \`mode\` parameter provides flexibility for different use cases: -
-  Use \`"grid"\` mode for debugging or interactive use where progress
-  visibility is important. - Use \`"grid_custom"\` mode to minimize
-  overhead in computationally intensive tasks. - Specify a user-defined
-  vector to customize the lag structure based on prior knowledge or
-  analysis.
+    - When using a numeric vector, ensure the order of lag values
+      matches the variables in your formula.
 
-  Selecting the appropriate mode can improve the efficiency and
-  usability of the function depending on the user's requirements and the
-  computational environment.
+    - If using named vectors, double-check the variable names to avoid
+      mismatches or unintended results.
+
+    - This mode bypasses the automatic lag optimization and assumes the
+      user-defined lags are correct.
 
 - criterion:
 
@@ -235,8 +229,9 @@ kardl(
 
   The criterion can be specified as a string (e.g., `"AIC"`) or as a
   user-defined function that takes a fitted model object. Please visit
-  the [`modelCriterion`](modelCriterion.md) function documentation for
-  more details on using custom criteria.
+  the
+  [`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+  function documentation for more details on using custom criteria.
 
 - differentAsymLag:
 
@@ -368,13 +363,17 @@ lag of the first-differenced `PPI` (short-run component).
 In addition, the suffixes `_POS` and `_NEG` indicate the positive and
 negative partial sum components of a variable, respectively. This
 notation is used by default and remains valid unless modified through
-the [`kardl_set()`](kardl_set.md) function.
+the
+[`kardl_set()`](https://karamelikli.github.io/kardl/reference/kardl_set.md)
+function.
 
 ## See also
 
-[`ecm`](ecm.md), [`kardl_set`](kardl_set.md),
-[`kardl_get`](kardl_get.md), [`kardl_reset`](kardl_reset.md),
-[`modelCriterion`](modelCriterion.md)
+[`ecm`](https://karamelikli.github.io/kardl/reference/ecm.md),
+[`kardl_set`](https://karamelikli.github.io/kardl/reference/kardl_set.md),
+[`kardl_get`](https://karamelikli.github.io/kardl/reference/kardl_get.md),
+[`kardl_reset`](https://karamelikli.github.io/kardl/reference/kardl_reset.md),
+[`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
 
 ## Examples
 

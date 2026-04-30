@@ -83,7 +83,7 @@ additional arguments passed through `...`.
 
 ## See also
 
-[`kardl`](kardl.md)
+[`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
 
 ## Examples
 

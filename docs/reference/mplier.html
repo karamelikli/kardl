@@ -94,8 +94,6 @@ This parameter allows users to control the inclusion of coefficients in the calc
 </ul><p>When a component is linear, the same coefficient path is used for both positive
 and negative changes. When asymmetric, separate positive and negative effects
 are computed.</p>
-
-
 <p>The <code>mplier</code> function computes dynamic multipliers based on the coefficients and lag structure of a model estimated using the <code>kardl</code> package. The function extracts necessary
 information from the model, such as coefficients, lag structure, and variable names, to compute the dynamic multipliers. It calculates the short-run coefficients, Lambda values, and omega values based on the model's parameters and lag structure. The output includes a matrix of dynamic multipliers (mpsi), which can be used for further analysis or visualization.
 The dynamic multipliers provide insight into how changes in the independent variables affect the dependent variable over time, allowing for a deeper understanding of the relationships captured by the model. The function also allows users to set a minimum p-value threshold for including coefficients in the calculation, providing flexibility in focusing on statistically significant effects.</p>

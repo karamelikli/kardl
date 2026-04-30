@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimate a Restricted ECM Model — ecm"><meta name="description" content="The `ecm` function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model."><meta property="og:description" content="The `ecm` function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimate a Restricted ECM Model — ecm"><meta name="description" content="The ecm function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model."><meta property="og:description" content="The ecm function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -44,7 +44,7 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>The `ecm` function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model.</p>
+    <p>The <code>ecm</code> function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model.</p>
     </div>
 
     <div class="section level2">
@@ -71,12 +71,10 @@
 
 <dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
 <dd><p>A formula specifying the long-run model equation. This formula defines the relationships
-       between the dependent variable and explanatory variables, including options for deterministic terms,
-       asymmetric variables, and a trend component.</p>
-<p>Example formula:
-       <code>y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend</code></p>
-
-
+between the dependent variable and explanatory variables, including options for deterministic terms,
+asymmetric variables, and a trend component.</p>
+<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>   Example formula<span class="sc">:</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>   \code{y <span class="sc">~</span> x <span class="sc">+</span> z <span class="sc">+</span> <span class="fu">Asymmetric</span>(z) <span class="sc">+</span> <span class="fu">Lasymmetric</span>(x2 <span class="sc">+</span> x3) <span class="sc">+</span> <span class="fu">Sasymmetric</span>(x3 <span class="sc">+</span> x4) <span class="sc">+</span> <span class="fu">deterministic</span>(dummy1 <span class="sc">+</span> dummy2) <span class="sc">+</span> trend}</span></code></pre><p></p></div>
 <p><strong><em>Details</em></strong></p>
 <p>The formula allows flexible specification of variables and their roles:</p>
 <ul><li><p><strong>Deterministic variables:</strong>
@@ -115,37 +113,34 @@ rules:</p>
 <span>    <span class="va">trend</span></span>
 <span>  </span></code></pre></div></li>
 <li><p>They must not be nested within one another. Valid usage:
-  <code>y ~ x + deterministic(dummy) + Asymmetric(z)</code>.
-  Invalid usage (to be avoided):
-  <code>y ~ x + deterministic(Asymmetric(z))</code> or
-  <code>y ~ x + Asymmetric(deterministic(dummy))</code>.</p></li>
+<code>y ~ x + deterministic(dummy) + Asymmetric(z)</code>.
+Invalid usage (to be avoided):
+<code>y ~ x + deterministic(Asymmetric(z))</code> or
+<code>y ~ x + Asymmetric(deterministic(dummy))</code>.</p></li>
 <li><p>Where applicable, arguments are validated internally using
-  <code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code>. Consequently, abbreviated inputs are accepted
-  provided they uniquely identify a valid option. For example, if
-  <code>"asymmetric"</code> is an admissible value, specifying <code>"a"</code>
-  is sufficient. For clarity and reproducibility, however, full
-  argument names are recommended.</p></li>
+<code><a href="https://rdrr.io/r/base/match.arg.html" class="external-link">match.arg()</a></code>. Consequently, abbreviated inputs are accepted
+provided they uniquely identify a valid option. For example, if
+<code>"asymmetric"</code> is an admissible value, specifying <code>"a"</code>
+is sufficient. For clarity and reproducibility, however, full
+argument names are recommended.</p></li>
 </ul><p>These components may therefore be combined flexibly to construct
 a specification tailored to the empirical analysis.</p></dd>
 
 
 <dt id="arg-maxlag">maxlag<a class="anchor" aria-label="anchor" href="#arg-maxlag"></a></dt>
 <dd><p>An integer specifying the maximum number of lags to be considered for the model.
-       The default value is <code>4</code>. This parameter sets an upper limit on the lag length during
-       the model estimation process.</p>
-
+The default value is <code>4</code>. This parameter sets an upper limit on the lag length during
+the model estimation process.</p>
 <p><strong><em>details</em></strong></p>
-
 <p>The <code>maxlag</code> parameter is crucial for defining the maximum lag length that the model
-       will evaluate when selecting the optimal lag structure based on the specified <code>criterion</code>.
-       It controls the computational effort and helps prevent overfitting by restricting the search
-       space for lag selection.</p><ul><li><p>If the data has a short time horizon or is prone to overfitting, consider reducing <code>maxlag</code>.</p></li>
+will evaluate when selecting the optimal lag structure based on the specified <code>criterion</code>.
+It controls the computational effort and helps prevent overfitting by restricting the search
+space for lag selection.</p><ul><li><p>If the data has a short time horizon or is prone to overfitting, consider reducing <code>maxlag</code>.</p></li>
 <li><p>If the data is expected to have long-term dependencies, increasing <code>maxlag</code> may be necessary to capture the relevant dynamics.</p></li>
 </ul><p>Setting an appropriate value for <code>maxlag</code> depends on the nature of your dataset and the
-       context of the analysis:</p><ul><li><p>For small datasets or quick tests, use smaller values (e.g., <code>maxlag = 2</code>).</p></li>
+context of the analysis:</p><ul><li><p>For small datasets or quick tests, use smaller values (e.g., <code>maxlag = 2</code>).</p></li>
 <li><p>For datasets with more observations or longer-term patterns, larger values (e.g., <code>maxlag = 8</code>)  may be appropriate, though this increases computational time.</p></li>
 </ul><p><strong><em>examples</em></strong></p>
-
 <p>Using the default maximum lag (4)</p>
 <p><code>kardl(data, MyFormula, maxlag = 4)</code></p>
 <p>Reducing the maximum lag to 2 for faster computation</p>
@@ -156,62 +151,57 @@ a specification tailored to the empirical analysis.</p></dd>
 
 <dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
 <dd><p>Specifies the mode of estimation and output control. This parameter determines how
-       the function handles lag estimation and what kind of feedback or control is provided during
-       the process. The available options are:</p>
+the function handles lag estimation and what kind of feedback or control is provided during
+the process. The available options are:</p>
 <ul><li><p><strong>"quick"</strong> (default):
-        Displays progress and messages in the console while the function estimates the optimal lag values.
-        This mode is suitable for interactive use or for users who want to monitor the estimation process
-        in real-time. It provides detailed feedback for debugging or observation but may use additional
-        resources due to verbose output.</p></li>
+Displays progress and messages in the console while the function estimates the optimal lag values.
+This mode is suitable for interactive use or for users who want to monitor the estimation process
+in real-time. It provides detailed feedback for debugging or observation but may use additional
+resources due to verbose output.</p></li>
 <li><p><strong>"grid"</strong> :
-        Displays progress and messages in the console while the function estimates the optimal lag values.
-        This mode is suitable for interactive use or for users who want to monitor the estimation process
-        in real-time. It provides detailed feedback for debugging or observation but may use additional
-        resources due to verbose output.</p></li>
+Displays progress and messages in the console while the function estimates the optimal lag values.
+This mode is suitable for interactive use or for users who want to monitor the estimation process
+in real-time. It provides detailed feedback for debugging or observation but may use additional
+resources due to verbose output.</p></li>
 <li><p><strong>"grid_custom"</strong>:
-        Suppresses most or all console output, prioritizing faster execution and reduced resource usage
-        on PCs or servers. This mode is recommended for high-performance scenarios, batch processing,
-        or when the estimation process does not require user monitoring. Suitable for large-scale or
-        repeated runs where output is unnecessary.</p></li>
+Suppresses most or all console output, prioritizing faster execution and reduced resource usage
+on PCs or servers. This mode is recommended for high-performance scenarios, batch processing,
+or when the estimation process does not require user monitoring. Suitable for large-scale or
+repeated runs where output is unnecessary.</p></li>
 <li><p><strong>User-defined vector</strong>:
-        A numeric vector of lag values specified by the user, allowing full customization of the lag
-        structure used in model estimation. When a user-defined vector is provided (e.g., `c(1, 2, 4, 5)`),
-        the function skips the lag optimization process and directly uses the specified lags.</p>
+A numeric vector of lag values specified by the user, allowing full customization of the lag
+structure used in model estimation. When a user-defined vector is provided (e.g., <code>c(1, 2, 4, 5)</code>),
+the function skips the lag optimization process and directly uses the specified lags.</p>
 <p>Users can define lag values directly as a numeric vector. For example:
-          <code>mode = c(1, 2, 4, 5)</code> assigns lags of 1, 2, 4, and 5 to variables in the specified order.
-         Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
-          <code>mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code> assigns lags to variables explicitly.
-         Ensure that the lags are correctly designated by verifying the result using
-          <code>kardl_model$properLag</code> after estimation.</p>
+<code>mode = c(1, 2, 4, 5)</code> assigns lags of 1, 2, 4, and 5 to variables in the specified order.
+Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
+<code>mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code> assigns lags to variables explicitly.
+Ensure that the lags are correctly designated by verifying the result using
+<code>kardl_model$properLag</code> after estimation.</p>
 <p><strong><em>Attention!</em></strong>
-        A function-based criterion or user-defined function can be specified
-         for model selection, but this is only supported for <code>mode = "grid_custom"</code>
-         and <code>mode = "quick"</code>. The <code>mode = "grid"</code> option is restricted to
-         predefined criteria (e.g., AIC or BIC). For more information on available criteria,
-         see the <code><a href="modelCriterion.html">modelCriterion</a></code> function documentation.
-        - When using a numeric vector, ensure the order of lag values matches the variables in your formula.
-        - If using named vectors, double-check the variable names to avoid mismatches or unintended results.
-        - This mode bypasses the automatic lag optimization and assumes the user-defined lags are correct.</p></li>
-</ul><p>The `mode` parameter provides flexibility for different use cases:
-       - Use `"grid"` mode for debugging or interactive use where progress visibility is important.
-       - Use `"grid_custom"` mode to minimize overhead in computationally intensive tasks.
-       - Specify a user-defined vector to customize the lag structure based on prior knowledge or analysis.</p>
-<p>Selecting the appropriate mode can improve the efficiency and usability of the function depending
-       on the user's requirements and the computational environment.</p></dd>
+A function-based criterion or user-defined function can be specified
+for model selection, but this is only supported for <code>mode = "grid_custom"</code>
+and <code>mode = "quick"</code>. The <code>mode = "grid"</code> option is restricted to
+predefined criteria (e.g., AIC or BIC). For more information on available criteria,
+see the <code><a href="modelCriterion.html">modelCriterion</a></code> function documentation.</p><ul><li><p>When using a numeric vector, ensure the order of lag values matches the variables in your formula.</p></li>
+<li><p>If using named vectors, double-check the variable names to avoid mismatches or unintended results.</p></li>
+<li><p>This mode bypasses the automatic lag optimization and assumes the user-defined lags are correct.</p></li>
+</ul></li>
+</ul></dd>
 
 
 <dt id="arg-criterion">criterion<a class="anchor" aria-label="anchor" href="#arg-criterion"></a></dt>
 <dd><p>A string specifying the information criterion to be used for selecting the optimal lag structure.
-      The available options are:</p><ul><li><p><strong>"AIC"</strong>: Akaike Information Criterion (default). This criterion balances model fit and complexity,
-      favoring models that explain the data well with fewer parameters.</p></li>
+The available options are:</p><ul><li><p><strong>"AIC"</strong>: Akaike Information Criterion (default). This criterion balances model fit and complexity,
+favoring models that explain the data well with fewer parameters.</p></li>
 <li><p><strong>"BIC"</strong>: Bayesian Information Criterion. This criterion imposes a stronger penalty for model complexity
-      than AIC, making it more conservative in selecting models with fewer parameters.</p></li>
+than AIC, making it more conservative in selecting models with fewer parameters.</p></li>
 <li><p><strong>"AICc"</strong>: Corrected Akaike Information Criterion. This is an adjusted version of AIC that accounts for small sample sizes,
-      making it more suitable when the number of observations is limited relative to the number of parameters.</p></li>
+making it more suitable when the number of observations is limited relative to the number of parameters.</p></li>
 <li><p><strong>"HQ"</strong>: Hannan-Quinn Information Criterion. This criterion provides a compromise between AIC and BIC,
-      favoring models that balance fit and complexity without being overly conservative.</p></li>
+favoring models that balance fit and complexity without being overly conservative.</p></li>
 </ul><p>The criterion can be specified as a string (e.g., <code>"AIC"</code>) or as a user-defined function that takes a fitted model object.
-      Please visit the <code><a href="modelCriterion.html">modelCriterion</a></code> function documentation for more details on using custom criteria.</p></dd>
+Please visit the <code><a href="modelCriterion.html">modelCriterion</a></code> function documentation for more details on using custom criteria.</p></dd>
 
 
 <dt id="arg-differentasymlag">differentAsymLag<a class="anchor" aria-label="anchor" href="#arg-differentasymlag"></a></dt>
@@ -221,8 +211,8 @@ a specification tailored to the empirical analysis.</p></dd>
 <dt id="arg-batch">batch<a class="anchor" aria-label="anchor" href="#arg-batch"></a></dt>
 <dd><p>A string specifying the batch processing configuration in the format "current_batch/total_batches".
 If a user utilize grid or grid_custom mode and want to split the lag search into multiple batches, this parameter can be used to define the current batch and the total number of batches.
-      For example, "2/5" indicates that the current batch is the second out of a total of five batches.
-      The default value is "1/1", meaning that the entire lag search is performed in a single batch.</p></dd>
+For example, "2/5" indicates that the current batch is the second out of a total of five batches.
+The default value is "1/1", meaning that the entire lag search is performed in a single batch.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -247,15 +237,12 @@ If a user utilize grid or grid_custom mode and want to split the lag search into
 
 
 
-
 <p>The null and alternative hypotheses for the restricted ECM test are as follows:</p>
 <p>$$\mathbf{H_{0}:} \theta  =   0$$
-  $$\mathbf{H_{1}:} \theta  \neq 0$$</p>
+$$\mathbf{H_{1}:} \theta  \neq 0$$</p>
 <p>The null hypothesis (\(H_{0}\)) states that there is no cointegration in the model, meaning that the long-run relationship between the variables is not significant. The alternative hypothesis (\(H_{1}\)) suggests that there is cointegration, indicating a significant long-term relationship between the variables.</p>
 <p>The test statistic is calculated as the t-statistic of the coefficient of the error correction term (\(\theta\)) in the ECM model. If the absolute value of the t-statistic exceeds the critical value from the PSS t Bound table, we reject the null hypothesis in favor of the alternative hypothesis, indicating that cointegration is present.</p>
 <p>The cases for the restricted ECM Bound test are defined as follows:</p>
-
-
 <ul><li><p><code>case 1</code>: No constant, no trend.</p>
 <p>This case is used when the model does not include a constant term or a trend term. It is suitable for models where the variables are stationary and do not exhibit any long-term trends.</p>
 <p>The model is specified as follows:</p>
@@ -266,8 +253,8 @@ If a user utilize grid or grid_custom mode and want to split the lag search into
 $$</p></li>
 <li><p><code>case 2</code>: Restricted constant, no trend.</p>
 <p>This case is used when the model includes a constant term but no trend term. It is suitable for models where the variables exhibit a long-term relationship but do not have a trend component.
-  The model is specified as follows:
-  $$
+The model is specified as follows:
+$$
   \begin{aligned}
   \Delta y_t &amp;= \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1} - \alpha_0 - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
   \end{aligned}
