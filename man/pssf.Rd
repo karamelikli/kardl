@@ -7,8 +7,9 @@
 pssf(kardl_model, case = "auto", signif_level = "auto", ...)
 }
 \arguments{
-\item{kardl_model}{A fitted KARDL model object of class 'kardl_lm' created
-using the \code{\link{kardl}} function.}
+\item{kardl_model}{An object of class \code{kardl_lm} produced by
+\code{\link{kardl}} or an object of class \code{kardl_longrun}
+produced by \code{\link{kardl_longrun}}.}
 
 \item{case}{Numeric or character. Specifies the case of the test to be used
 in the function. Acceptable values are 1, 2, 3, 4, 5, and "auto". If

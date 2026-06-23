@@ -7,8 +7,9 @@
 psst(kardl_model, ...)
 }
 \arguments{
-\item{kardl_model}{A fitted KARDL model object of class 'kardl_lm' created
-using the \code{\link{kardl}} function.}
+\item{kardl_model}{An object of class \code{kardl_lm} produced by
+\code{\link{kardl}} or an object of class \code{kardl_longrun}
+produced by \code{\link{kardl_longrun}}.}
 
 \item{...}{Additional arguments (currently not used).}
 }

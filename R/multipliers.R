@@ -1,8 +1,11 @@
-#' Compute Dynamic Multipliers for kardl Models
+#' Compute Dynamic Multipliers for KARDL Models
 #'
-#' Computes cumulative dynamic multipliers based on a model estimated using the
-#' \code{kardl} framework. The function supports different configurations of
-#' linearity and asymmetry in both short-run and long-run dynamics.
+#' Computes cumulative dynamic multipliers from fitted KARDL models.
+#' The method supports linear, asymmetric, and mixed asymmetric
+#' specifications estimated using the `kardl()` framework. Dynamic
+#' multipliers can be computed from objects of class `kardl_lm`
+#' as well as from long-run representations obtained via
+#' `kardl_longrun()`, using the corresponding S3 methods.
 #'
 #' The asymmetry structure is determined internally:
 #' \itemize{
@@ -24,8 +27,9 @@
 #' positive and negative changes. When asymmetric, separate positive and
 #' negative effects are computed.
 #'
-#' @param kardl_model An object of class \code{kardl_lm} produced by the
-#'        \code{kardl} function.
+#' @param kardl_model An object of class \code{kardl_lm} or
+#'   \code{kardl_longrun}, representing a fitted KARDL model or its
+#'   long-run representation.
 #' @param horizon Integer. Number of periods ahead for which dynamic multipliers
 #'        are computed.
 #' @param min_prob Numeric. Minimum p-value threshold for including coefficients
@@ -182,6 +186,23 @@ mplier.default <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
   )
 }
 
+#' Long-Run Dynamic Multipliers for kardl_longrun Objects
+#'
+#' This method computes cumulative dynamic multipliers for a model estimated
+#' using the `kardl` package, specifically for objects of class `kardl_longrun`.
+#' It extracts the original model from the `kardl_longrun` object and calls the
+#' `mplier.kardl_lm` method to compute the dynamic multipliers based on the
+#' original model's coefficients and lag structure.
+#'
+#'
+#'
+#' @export
+#' @method  mplier kardl_longrun
+#' @noRd
+mplier.kardl_longrun <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
+  mplier.kardl_lm (kardl_model$original_model, horizon = horizon,
+                   min_prob = min_prob, ...)
+}
 
 #' Compute Dynamic Multipliers for kardl Models
 #'
@@ -432,9 +453,10 @@ mplier.kardl_lm <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
 #' estimate the variability of the dynamic multipliers, providing upper and
 #' lower bounds for the confidence interval.
 #'
-#' @param kardl_model The model produced by the \code{\link{kardl}} function.
-#'        This is the model object from which the dynamic multipliers are
-#'        calculated.
+#' @param kardl_model An object of class `kardl_lm` or `kardl_longrun`
+#'   produced by the \code{\link{kardl}} or \code{\link{kardl_longrun}}
+#'   functions. This object provides the model information used to
+#'   compute the dynamic multipliers.
 #' @param horizon An integer specifying the horizon over which dynamic
 #'        multipliers will be computed. The horizon defines the time frame for
 #'        the analysis (e.g., 40 periods).
@@ -568,6 +590,30 @@ bootstrap.default <- function(kardl_model,
     "Please estimate a model using kardl() first.",
     call. = FALSE
   )
+}
+
+#' Bootstrap Confidence Intervals for Dynamic Multipliers of kardl_longrun
+#' Models
+#'
+#' This method computes bootstrap confidence intervals for dynamic multipliers
+#' of a model estimated using the `kardl` package, specifically for objects of
+#' class `kardl_longrun`.
+#'
+#' @export
+#' @method  bootstrap kardl_longrun
+#' @noRd
+bootstrap.kardl_longrun <- function(
+  kardl_model,
+  horizon = 80,
+  replications = 100,
+  level = 95,
+  min_prob = 0,
+  seed = NULL,
+  ...
+) {
+  bootstrap.kardl_lm(kardl_model$original_model, horizon = horizon,
+                     replications = replications, level = level,
+                     min_prob = min_prob, seed = seed, ...)
 }
 
 

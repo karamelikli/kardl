@@ -15,9 +15,10 @@ bootstrap(
 )
 }
 \arguments{
-\item{kardl_model}{The model produced by the \code{\link{kardl}} function.
-This is the model object from which the dynamic multipliers are
-calculated.}
+\item{kardl_model}{An object of class \code{kardl_lm} or \code{kardl_longrun}
+produced by the \code{\link{kardl}} or \code{\link{kardl_longrun}}
+functions. This object provides the model information used to
+compute the dynamic multipliers.}
 
 \item{horizon}{An integer specifying the horizon over which dynamic
 multipliers will be computed. The horizon defines the time frame for

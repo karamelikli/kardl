@@ -2,13 +2,14 @@
 % Please edit documentation in R/multipliers.R
 \name{mplier}
 \alias{mplier}
-\title{Compute Dynamic Multipliers for kardl Models}
+\title{Compute Dynamic Multipliers for KARDL Models}
 \usage{
 mplier(kardl_model, horizon = 80, min_prob = 0, ...)
 }
 \arguments{
-\item{kardl_model}{An object of class \code{kardl_lm} produced by the
-\code{kardl} function.}
+\item{kardl_model}{An object of class \code{kardl_lm} or
+\code{kardl_longrun}, representing a fitted KARDL model or its
+long-run representation.}
 
 \item{horizon}{Integer. Number of periods ahead for which dynamic multipliers
 are computed.}
@@ -35,9 +36,12 @@ A list of class \code{kardl_mplier} containing:
 }
 }
 \description{
-Computes cumulative dynamic multipliers based on a model estimated using the
-\code{kardl} framework. The function supports different configurations of
-linearity and asymmetry in both short-run and long-run dynamics.
+Computes cumulative dynamic multipliers from fitted KARDL models.
+The method supports linear, asymmetric, and mixed asymmetric
+specifications estimated using the \code{kardl()} framework. Dynamic
+multipliers can be computed from objects of class \code{kardl_lm}
+as well as from long-run representations obtained via
+\code{kardl_longrun()}, using the corresponding S3 methods.
 }
 \details{
 The asymmetry structure is determined internally:

@@ -617,8 +617,9 @@ kardl_critvals <- function(x, ...) {
 #'   H_{1}: \sum_{j = 0}^{q}{\beta^{+}_{j}} \neq \sum_{j = 0}^{m}{\beta^{-}_{j}}
 #' }
 #'
-#' @param kardl_model An object of class \code{kardl_lm} representing a fitted
-#' non-linear KARDL model.
+#' @param kardl_model An object of class \code{kardl_lm} produced by
+#'   \code{\link{kardl}} or an object of class \code{kardl_longrun}
+#'   produced by \code{\link{kardl_longrun}}.
 #' @param selected_vars A character vector specifying the names of the variables
 #'  to be included in the symmetry test. If NULL (the default), all eligible
 #'  variables will be tested. The variable names should match those used in the
@@ -764,6 +765,24 @@ symmetrytest.default <- function(kardl_model,
     "symmetrytest() requires a kardl_lm object. ",
     "Please estimate a model using kardl() first.",
     call. = FALSE
+  )
+}
+
+#' @export
+#' @method symmetrytest kardl_longrun
+symmetrytest.kardl_longrun <- function(
+    kardl_model,
+    selected_vars = NULL,
+    component = "both",
+    type = "F",
+    ...
+) {
+  symmetrytest.kardl_lm(
+    kardl_model = kardl_model$original_model,
+    selected_vars = selected_vars,
+    component = component,
+    type = type,
+    ...
   )
 }
 
@@ -1190,8 +1209,9 @@ symmetrytest.kardl_lm <- function(
 #' useful when the underlying data includes a mix of stationary and
 #' non-stationary variables.
 #'
-#' @param kardl_model A fitted KARDL model object of class 'kardl_lm' created
-#' using the \code{\link{kardl}} function.
+#' @param kardl_model An object of class \code{kardl_lm} produced by
+#'   \code{\link{kardl}} or an object of class \code{kardl_longrun}
+#'   produced by \code{\link{kardl_longrun}}.
 #' @param case Numeric or character. Specifies the case of the test to be used
 #'        in the function. Acceptable values are 1, 2, 3, 4, 5, and "auto". If
 #'        "auto" is chosen, the function determines the case automatically
@@ -1346,6 +1366,21 @@ pssf <- function(kardl_model,
                  ...) {
   UseMethod("pssf")
 }
+
+#' @export
+#' @method pssf kardl_longrun
+pssf.kardl_longrun <- function(
+    kardl_model, case = "auto", signif_level = "auto",
+                               ...) {
+  pssf.kardl_lm(
+    kardl_model = kardl_model$original_model,
+    case = case,
+    signif_level = signif_level,
+    ...
+  )
+}
+
+
 
 #' @exportS3Method
 pssf.default <- function(kardl_model,
@@ -1536,8 +1571,9 @@ pssf.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
 #'  sample size constraints when determining the presence of a long-term
 #'  equilibrium relationship between variables.
 #'
-#' @param kardl_model A fitted KARDL model object of class 'kardl_lm' created
-#' using the \code{\link{kardl}} function.
+#' @param kardl_model An object of class \code{kardl_lm} produced by
+#'   \code{\link{kardl}} or an object of class \code{kardl_longrun}
+#'   produced by \code{\link{kardl_longrun}}.
 #' @param case Numeric or character. Specifies the case of the test to be used
 #' in the function.
 #' Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the
@@ -1641,9 +1677,25 @@ narayan.default <- function(kardl_model,
   )
 }
 
+#' @export
+#' @method narayan kardl_longrun
+#'
+narayan.kardl_longrun <- function(kardl_model,
+                                  case = "auto", signif_level = "auto", ...) {
+  narayan.kardl_lm(
+    kardl_model = kardl_model$original_model,
+    case = case,
+    signif_level = signif_level,
+    ...
+  )
+}
+
+
 #' Narayan Bounds Test
 #'
-#' @param kardl_model A fitted model object.
+#' @param kardl_model An object of class \code{kardl_lm} produced by
+#'   \code{\link{kardl}} or an object of class \code{kardl_longrun}
+#'   produced by \code{\link{kardl_longrun}}.
 #' @param case Numeric or character. Specifies the case of the test to be used
 #' in the function.
 #' @param signif_level Character or numeric. Specifies the significance level to
@@ -1932,13 +1984,26 @@ psst.default <- function(kardl_model, ...) {
   )
 }
 
+#' @export
+#' @method psst kardl_longrun
+psst.kardl_longrun <- function(kardl_model, case = "auto",
+                              signif_level = "auto", ...) {
+  psst.kardl_lm(
+    kardl_model = kardl_model$original_model,
+    case = case,
+    signif_level = signif_level,
+    ...
+  )
+}
+
 #' Pesaran, Shin, and Smith t Bounds Test
 #'
 #' This function performs the Pesaran, Shin, and Smith (PSS) t Bound test to
 #' assess the presence of a long-term relationship (cointegration) between
 #' variables in the context of an autoregressive distributed lag (ARDL) model.
-#' @param kardl_model A fitted KARDL model object of class 'kardl_lm' created
-#' using the \code{\link{kardl}} function.
+#' @param kardl_model An object of class \code{kardl_lm} produced by
+#'   \code{\link{kardl}} or an object of class \code{kardl_longrun}
+#'   produced by \code{\link{kardl_longrun}}.
 #' @param ... Additional arguments passed to methods.
 #' @return A `kardl_test` object.
 #' @method psst kardl_lm

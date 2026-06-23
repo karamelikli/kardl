@@ -13,8 +13,9 @@ symmetrytest(
 )
 }
 \arguments{
-\item{kardl_model}{An object of class \code{kardl_lm} representing a fitted
-non-linear KARDL model.}
+\item{kardl_model}{An object of class \code{kardl_lm} produced by
+\code{\link{kardl}} or an object of class \code{kardl_longrun}
+produced by \code{\link{kardl_longrun}}.}
 
 \item{selected_vars}{A character vector specifying the names of the variables
 to be included in the symmetry test. If NULL (the default), all eligible
