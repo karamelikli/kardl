@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,32 +44,114 @@
 
 <div id="contributing-to-kardl" class="section level1">
 
-<p>This outlines how to propose a change to kardl. For a detailed discussion on contributing to this and other tidyverse packages, please see the <a href="https://rstd.io/tidy-contrib" class="external-link">development contributing guide</a> and our <a href="https://code-review.tidyverse.org/" class="external-link">code review principles</a>.</p>
+<p>Thank you for your interest in contributing to <code>kardl</code>. This document outlines the recommended workflow for proposing changes, reporting issues, and contributing code or documentation improvements.</p>
 <div class="section level2">
-<h2 id="fixing-typos">Fixing typos<a class="anchor" aria-label="anchor" href="#fixing-typos"></a></h2>
-<p>You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the <em>source</em> file. This generally means you’ll need to edit <a href="https://roxygen2.r-lib.org/articles/roxygen2.html" class="external-link">roxygen2 comments</a> in an <code>.R</code>, not a <code>.Rd</code> file. You can find the <code>.R</code> file that generates the <code>.Rd</code> by reading the comment in the first line.</p>
+<h2 id="before-contributing">Before contributing<a class="anchor" aria-label="anchor" href="#before-contributing"></a></h2>
+<p>Please first check the existing issues and pull requests to avoid duplicate work.</p>
+<p>For substantial changes, feature requests, or API modifications, open an issue before starting development so the proposed change can be discussed.</p>
+<p>Repository:</p>
+<p><a href="https://github.com/karamelikli/kardl" class="external-link">kardl GitHub repository</a></p>
+<hr></div>
+<div class="section level2">
+<h2 id="reporting-bugs">Reporting bugs<a class="anchor" aria-label="anchor" href="#reporting-bugs"></a></h2>
+<p>Bug reports should include a minimal reproducible example using a reprex whenever possible.</p>
+<p>Helpful bug reports generally include:</p>
+<ul><li>A short description of the problem</li>
+<li>Expected behavior</li>
+<li>Actual behavior</li>
+<li>A minimal reproducible example</li>
+<li>Relevant error messages or warnings</li>
+</ul><hr></div>
+<div class="section level2">
+<h2 id="fixing-documentation-issues">Fixing documentation issues<a class="anchor" aria-label="anchor" href="#fixing-documentation-issues"></a></h2>
+<p>Small documentation improvements such as typo corrections, grammar fixes, or clarification edits can be made directly through the GitHub web interface.</p>
+<p>Please edit the source <code>.R</code> files containing the <code>roxygen2</code> comments rather than the generated <code>.Rd</code> files.</p>
+<p>Useful references:</p>
+<ul><li><a href="https://roxygen2.r-lib.org/articles/roxygen2.html" class="external-link">roxygen2 documentation</a></li>
+<li><a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html" class="external-link">Roxygen markdown formatting</a></li>
+</ul><hr></div>
+<div class="section level2">
+<h2 id="development-setup">Development setup<a class="anchor" aria-label="anchor" href="#development-setup"></a></h2>
+<p>We recommend using the <code>usethis</code> workflow for package development.</p>
+<div class="section level3">
+<h3 id="id_1-fork-and-clone-the-repository">1. Fork and clone the repository<a class="anchor" aria-label="anchor" href="#id_1-fork-and-clone-the-repository"></a></h3>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/create_from_github.html" class="external-link">create_from_github</a></span><span class="op">(</span><span class="st">"karamelikli/kardl"</span>, fork <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="id_2-install-development-dependencies">2. Install development dependencies<a class="anchor" aria-label="anchor" href="#id_2-install-development-dependencies"></a></h3>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install_deps.html" class="external-link">install_dev_deps</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="id_3-run-package-checks">3. Run package checks<a class="anchor" aria-label="anchor" href="#id_3-run-package-checks"></a></h3>
+<p>Before making changes, ensure the package passes checks locally:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>If checks fail for reasons unrelated to your changes, please open an issue before continuing.</p>
+<hr></div>
 </div>
 <div class="section level2">
-<h2 id="bigger-changes">Bigger changes<a class="anchor" aria-label="anchor" href="#bigger-changes"></a></h2>
-<p>If you want to make a bigger change, it’s a good idea to first file an issue and make sure someone from the team agrees that it’s needed. If you’ve found a bug, please file an issue that illustrates the bug with a minimal <a href="https://www.tidyverse.org/help/#reprex" class="external-link">reprex</a> (this will also help you write a unit test, if needed). See our guide on <a href="https://code-review.tidyverse.org/issues/" class="external-link">how to create a great issue</a> for more advice.</p>
+<h2 id="pull-request-workflow">Pull request workflow<a class="anchor" aria-label="anchor" href="#pull-request-workflow"></a></h2>
 <div class="section level3">
-<h3 id="pull-request-process">Pull request process<a class="anchor" aria-label="anchor" href="#pull-request-process"></a></h3>
-<ul><li><p>Fork the package and clone onto your computer. If you haven’t done this before, we recommend using <code>usethis::create_from_github("karamelikli/kardl", fork = TRUE)</code>.</p></li>
-<li><p>Install all development dependencies with <code><a href="https://devtools.r-lib.org/reference/install_deps.html" class="external-link">devtools::install_dev_deps()</a></code>, and then make sure the package passes R CMD check by running <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>. If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help before continuing.</p></li>
-<li><p>Create a Git branch for your pull request (PR). We recommend using <code>usethis::pr_init("brief-description-of-change")</code>.</p></li>
-<li><p>Make your changes, commit to git, and then create a PR by running <code><a href="https://usethis.r-lib.org/reference/pull-requests.html" class="external-link">usethis::pr_push()</a></code>, and following the prompts in your browser. The title of your PR should briefly describe the change. The body of your PR should contain <code>Fixes #issue-number</code>.</p></li>
-<li><p>For user-facing changes, add a bullet to the top of <code>NEWS.md</code> (i.e. just below the first header). Follow the style described in <a href="https://style.tidyverse.org/news.html" class="external-link uri">https://style.tidyverse.org/news.html</a>.</p></li>
+<h3 id="create-a-development-branch">Create a development branch<a class="anchor" aria-label="anchor" href="#create-a-development-branch"></a></h3>
+<p>We recommend creating a dedicated branch for each pull request:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/pull-requests.html" class="external-link">pr_init</a></span><span class="op">(</span><span class="st">"brief-description-of-change"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="make-changes">Make changes<a class="anchor" aria-label="anchor" href="#make-changes"></a></h3>
+<p>After implementing your changes:</p>
+<ul><li>Run tests</li>
+<li>Run <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>
+</li>
+<li>Update documentation if necessary</li>
+<li>Add or update unit tests when appropriate</li>
 </ul></div>
 <div class="section level3">
-<h3 id="code-style">Code style<a class="anchor" aria-label="anchor" href="#code-style"></a></h3>
-<ul><li><p>New code should follow the tidyverse <a href="https://style.tidyverse.org" class="external-link">style guide</a>. You can use <a href="https://posit-dev.github.io/air/" class="external-link">Air</a> to apply this style, but please don’t restyle code that has nothing to do with your PR.</p></li>
-<li><p>We use <a href="https://cran.r-project.org/package=roxygen2" class="external-link">roxygen2</a>, with <a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html" class="external-link">Markdown syntax</a>, for documentation.</p></li>
-<li><p>We use <a href="https://cran.r-project.org/package=testthat" class="external-link">testthat</a> for unit tests. Contributions with test cases included are easier to accept.</p></li>
-</ul></div>
+<h3 id="submit-the-pull-request">Submit the pull request<a class="anchor" aria-label="anchor" href="#submit-the-pull-request"></a></h3>
+<p>Push your branch and open a pull request:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/pull-requests.html" class="external-link">pr_push</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Please ensure that:</p>
+<ul><li>The PR title clearly summarizes the change</li>
+<li>The PR description references related issues using:</li>
+</ul><pre class="text"><code><span><span class="va">Fixes</span> <span class="co">#issue-number</span></span></code></pre>
+<hr></div>
 </div>
 <div class="section level2">
-<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a></h2>
-<p>Please note that the kardl project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>. By contributing to this project you agree to abide by its terms.</p>
+<h2 id="newsmd-updates">NEWS.md updates<a class="anchor" aria-label="anchor" href="#newsmd-updates"></a></h2>
+<p>User-facing changes should be added to the top section of <code>NEWS.md</code>.</p>
+<p>Please follow the tidyverse news style guide:</p>
+<p><a href="https://style.tidyverse.org/news.html" class="external-link">tidyverse NEWS style guide</a></p>
+<hr></div>
+<div class="section level2">
+<h2 id="code-style-guidelines">Code style guidelines<a class="anchor" aria-label="anchor" href="#code-style-guidelines"></a></h2>
+<div class="section level3">
+<h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a></h3>
+<p>The package uses:</p>
+<ul><li>
+<code>roxygen2</code> for documentation</li>
+<li>Markdown syntax within roxygen comments</li>
+</ul></div>
+<div class="section level3">
+<h3 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h3>
+<p>Unit tests use the <code>testthat</code> framework.</p>
+<p>Contributions that include tests are easier to review and merge.</p>
+<p>Useful references:</p>
+<ul><li><a href="https://testthat.r-lib.org" class="external-link">testthat documentation</a></li>
+</ul><hr></div>
+</div>
+<div class="section level2">
+<h2 id="package-checks-and-standards">Package checks and standards<a class="anchor" aria-label="anchor" href="#package-checks-and-standards"></a></h2>
+<p>Before submitting a pull request, contributors are encouraged to verify that:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>runs successfully without errors or warnings.</p>
+<p>If applicable, also check:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 
@@ -78,7 +160,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Huseyin Karamelikli, Huseyin Utku Demir.</p>
+  <p>Developed by Huseyin karamelikli, Huseyin Utku Demir.</p>
 </div>
 
 <div class="pkgdown-footer-right">

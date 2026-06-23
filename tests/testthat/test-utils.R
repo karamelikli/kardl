@@ -1,21 +1,27 @@
 #' @srrstats {G5.2} Tests exercise successful calls and error conditions for
 #' utility functions including `parse_formula_vars()`, `lmerge()`, and
-#' `BatchControl()`.
+#' `batch_control()`.
 #' @srrstats {G5.3} Tests verify expected types, values, and list structure
 #' for utility function outputs.
-#' @srrstats {G5.6} Results of `modelCriterion()` with a function argument
+#' @srrstats {G5.6} Results of `model_criterion()` with a function argument
 #' match the base-R AIC/BIC exactly, confirming correctness.
 #' @srrstats {G2.6} `parse_formula_vars()` correctly extracts variables by
 #' name and group from complex formula expressions.
 test_that("model Criterion functions work correctly", {
+  mylm <- lm(mpg ~ wt + hp, data = mtcars)
 
-  mylm<- lm(mpg ~ wt + hp, data = mtcars)
+  expect_identical(model_criterion(mylm, AIC), stats::AIC(mylm))
+  expect_identical(model_criterion(mylm, BIC), stats::BIC(mylm))
 
-   expect_identical(modelCriterion(mylm,AIC), stats::AIC(mylm))
-   expect_identical(modelCriterion(mylm,BIC), stats::BIC(mylm))
-
-  #' Not strictly necessary to test formulas, but good to know `parse_formula_vars` runs
-  formula <- y ~ x + z + asymmetric(z) + Lasymmetric(x1+x2) + Sasymmetric(x3+x4+x5) + deterministic(d1) + trend
+  #' Not strictly necessary to test formulas, but good to know
+  #' `parse_formula_vars` runs
+  formula <- y ~ x +
+    z +
+    asymmetric(z) +
+    Lasymmetric(x1 + x2) +
+    Sasymmetric(x3 + x4 + x5) +
+    deterministic(d1) +
+    trend
   vars <- parse_formula_vars(formula)
 
   expect_type(vars, "list")
@@ -62,9 +68,9 @@ test_that("lmerge prioritises first list", {
   a <- list(x = 1, y = 2)
   b <- list(x = 99, z = 3)
   result <- lmerge(a, b)
-  expect_identical(result$x, 1)   #' a wins
-  expect_identical(result$z, 3)   #' only in b
-  expect_identical(result$y, 2)   #' only in a
+  expect_identical(result$x, 1) #' a wins
+  expect_identical(result$z, 3) #' only in b
+  expect_identical(result$y, 2) #' only in a
 })
 
 #' @srrstats {G5.4a} Tests three-way merge with priority to the leftmost list.
@@ -73,7 +79,7 @@ test_that("lmerge works with more than two lists", {
   b <- list(y = 2)
   cc <- list(z = 3, x = 100)
   result <- lmerge(a, b, cc)
-  expect_identical(result$x, 1)   #' a wins over cc
+  expect_identical(result$x, 1) #' a wins over cc
   expect_identical(result$z, 3)
 })
 
@@ -90,49 +96,69 @@ test_that("lmerge handles named vectors", {
 
 #' @srrstats {G5.4a} Tests the single-batch case where all lag combinations
 #' are processed in one run.
-test_that("BatchControl returns full range for '1/1'", {
+test_that("batch_control returns full range for '1/1'", {
   kardl_reset()
-  spec <- kardl(imf_example_data, CPI ~ ER + PPI,
-                mode = "grid_custom", maxlag = 2)
-  #' Reconstruct a minimal spec-like list for BatchControl
-  fake_spec <- list(
-    argsInfo = list(batch = "1/1"),
-    extractedInfo = list(lagRowsNumber = 100)
+  spec <- kardl(
+    CPI ~ ER + PPI,
+    imf_example_data,
+    mode = "grid_custom",
+    maxlag = 2
   )
-  res <- BatchControl(fake_spec)
-  expect_identical(res$startRow, 1)
-  expect_identical(res$endRow, 100)
+  #' Reconstruct a minimal spec-like list for batch_control
+  fake_spec <- list(
+    args_info = list(batch = "1/1"),
+    extracted_info = list(lag_rows_number = 100)
+  )
+  res <- batch_control(fake_spec)
+  expect_identical(res$start_row, 1)
+  expect_identical(res$end_row, 100)
 })
 
 #' @srrstats {G5.4a} Tests that the second of four equal batches returns the
 #' correct start and end row indices.
-test_that("BatchControl splits correctly for '2/4'", {
+test_that("batch_control splits correctly for '2/4'", {
   fake_spec <- list(
-    argsInfo = list(batch = "2/4"),
-    extractedInfo = list(lagRowsNumber = 100)
+    args_info = list(batch = "2/4"),
+    extracted_info = list(lag_rows_number = 100)
   )
-  res <- BatchControl(fake_spec)
-  expect_identical(res$startRow, 26)
-  expect_identical(res$endRow, 50)
+  res <- batch_control(fake_spec)
+  expect_identical(res$start_row, 26)
+  expect_identical(res$end_row, 50)
 })
 
 #' @srrstats {G5.2a} Checks that an out-of-range batch number triggers a
 #' warning with an informative message.
-test_that("BatchControl warns and defaults to batch 1 when batch number out of range", {
+test_that("batch_control warns & defaults to batch 1 on invalid batch num", {
   fake_spec <- list(
-    argsInfo = list(batch = "10/4"),
-    extractedInfo = list(lagRowsNumber = 100)
+    args_info = list(batch = "10/4"),
+    extracted_info = list(lag_rows_number = 100)
   )
-  expect_warning(BatchControl(fake_spec), "between 1 and")
+  expect_warning(batch_control(fake_spec), "between 1 and")
 })
 
 #' @srrstats {G5.2a} Checks that a malformed batch string produces an
 #' informative error before any processing occurs.
 #' @srrstats {G5.8a} Confirms that invalid inputs are rejected early.
-test_that("BatchControl errors on malformed batch string", {
+test_that("batch_control errors on malformed batch string", {
   fake_spec <- list(
-    argsInfo = list(batch = "bad_format"),
-    extractedInfo = list(lagRowsNumber = 100)
+    args_info = list(batch = "bad_format"),
+    extracted_info = list(lag_rows_number = 100)
   )
-  expect_error(BatchControl(fake_spec), "Invalid batch format")
+  expect_error(batch_control(fake_spec), "Invalid batch format")
+})
+
+test_that("invalid lag combination produces informative error", {
+  expect_error(
+    kardl(CPI ~ ER + PPI, imf_example_data, mode = c(0.5, 1, 1)),
+    "User-defined should have valid numeric and non-decimal."
+  )
+
+  expect_error(
+    kardl(CPI ~ ER + PPI, imf_example_data, mode = c("2", 1, 1)),
+    "User-defined value should have valid vector."
+  )
+  expect_error(
+    kardl(CPI ~ ER + PPI, imf_example_data, mode = c(2, 1, 5, 1)),
+    "User-defined should match with short-run variables."
+  )
 })

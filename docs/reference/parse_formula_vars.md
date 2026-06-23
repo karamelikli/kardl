@@ -1,6 +1,6 @@
 # Parse Formula Variables
 
-The `parseFormula()` function analyzes a given formula to identify and
+The `parse_formula()` function analyzes a given formula to identify and
 extract variables that match specified patterns. It is particularly
 useful for isolating variables enclosed within certain functions or
 constructs in the formula, such as `asym()`,
@@ -53,7 +53,8 @@ A list containing:
 ``` r
 
 # Parse formulas containing various collection types like ()
-formula_ <- y ~ x +det(s -gg- d) + asymS(d2 -rr+ s)-mm(y1+y2+y3)+asym(k1+k2+k3)+trend-huseyin
+formula_ <- y ~ x + det(s - gg - d) + asymS(d2 - rr + s) -
+  mm(y1 + y2 + y3) + asym(k1 + k2 + k3) + trend - huseyin
 # Extract variables
 parse_formula_vars(formula_)
 #> $response
@@ -82,5 +83,4 @@ parse_formula_vars(formula_)
 #> [1] "k1" "k2" "k3"
 #> 
 #> 
-
 ```

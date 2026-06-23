@@ -5,45 +5,20 @@ This function performs the Pesaran t Bound test
 ## Usage
 
 ``` r
-psst(kmodel, case = 3, signif_level = "auto")
+psst(kardl_model, ...)
 ```
 
 ## Arguments
 
-- kmodel:
+- kardl_model:
 
   A fitted KARDL model object of class 'kardl_lm' created using the
   [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
   function.
 
-- case:
+- ...:
 
-  Numeric or character. Specifies the case of the test to be used in the
-  function. Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto"
-  is chosen, the function determines the case automatically based on the
-  model's characteristics. Invalid values will result in an error.
-
-  - `1`: No intercept and no trend
-
-  - `2`: Restricted intercept and no trend
-
-  - `3`: Unrestricted intercept and no trend
-
-  - `4`: Unrestricted intercept and restricted trend
-
-  - `5`: Unrestricted intercept and unrestricted trend
-
-- signif_level:
-
-  Character or numeric. Specifies the significance level to be used in
-  the function. Acceptable values are "auto", "0.10", "0.1", "0.05",
-  "0.025", and "0.01". If a numeric value is provided, it will be
-  converted to a character string.
-
-  When `"auto"` is selected, the function determines the significance
-  level sequentially, starting from the most stringent level (`"0.01"`)
-  and proceeding to `"0.025"`, `"0.05"`, and `"0.10"` until a suitable
-  level is identified. Invalid values will result in an error.
+  Additional arguments (currently not used).
 
 ## Value
 
@@ -130,9 +105,9 @@ Econometrics, 16(3), 289-326.
 ## Examples
 
 ``` r
-
-kardl_model<-kardl(imf_example_data,
+kardl_model<-kardl(
                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                   imf_example_data,
                    mode=c(1,2,3,0))
 my_test<-psst(kardl_model)
 # Getting the results of the test.
@@ -147,29 +122,41 @@ my_test
 # Getting details of the test.
 my_summary<-summary(my_test)
 my_summary
-#> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration 
-#> t  =  -3.871999 
-#> k =  3 
 #> 
-#> Hypotheses:
+#> ========================================
+#> KARDL Cointegration Test Results
+#> ========================================
+#> 
+#>  Decision: Reject H0 → Weak evidence of cointegration (at 10% level)
+#> 
+#>  Test Statistic:
+#>   t: -3.8719990
+#> 
+#>  Critical Values (Lower & Upper Bounds):
+#>            L     U
+#>   10%  -3.13 -3.84
+#>   5%   -3.41 -4.16
+#>   2.5% -3.65 -4.42
+#>   1%   -3.96 -4.73
+#> 
+#> 
+#>  Comparison:
+#>   At the 10% significance level, t (3.8719990) exceeds the upper bound (3.84).
+#>   This indicates that the variables tend to move together over  time.
+#>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+#> 
+#>  Hypotheses:
 #> H0: Coef(L1.CPI) = 0 
-#> H1: Coef(L1.CPI)≠ 0 
+#> H1: Coef(L1.CPI) ≠ 0 
 #> 
-#> Test Decision:  Reject H0 → Cointegration (at 1% level) 
+#>  Model Details:
+#>   Number of regressors (k): 3
+#>   Case: V 
 #> 
-#> Critical Values (Case  V ):
-#>           L     U
-#> 0.10  -3.13 -3.84
-#> 0.05  -3.41 -4.16
-#> 0.025 -3.65 -4.42
-#> 0.01  -3.96 -4.73
-#> 
-#> Notes:
-#>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-#> 
+#> ========================================
 
 # Getting the critical values of the test.
-my_summary$crit_vals
+kardl_extract(my_summary, what = "critical_values")
 #>           L     U
 #> 0.10  -3.13 -3.84
 #> 0.05  -3.41 -4.16
@@ -182,10 +169,11 @@ my_summary$crit_vals
 # Using magrittr :
 
 library(magrittr)
-     imf_example_data %>%
-     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0))    %>%
-                           psst()
+imf_example_data %>%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) %>%
+  psst()
 #> 
 #>  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
@@ -194,30 +182,43 @@ library(magrittr)
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
-   # Getting details of the test results using magrittr:
-   imf_example_data %>%
-   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>%
-   psst() %>% summary()
-#> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration 
-#> t  =  -3.871999 
-#> k =  3 
+# Getting details of the test results using magrittr:
+imf_example_data %>%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) %>%
+  psst() %>%
+  summary()
 #> 
-#> Hypotheses:
+#> ========================================
+#> KARDL Cointegration Test Results
+#> ========================================
+#> 
+#>  Decision: Reject H0 → Weak evidence of cointegration (at 10% level)
+#> 
+#>  Test Statistic:
+#>   t: -3.8719990
+#> 
+#>  Critical Values (Lower & Upper Bounds):
+#>            L     U
+#>   10%  -3.13 -3.84
+#>   5%   -3.41 -4.16
+#>   2.5% -3.65 -4.42
+#>   1%   -3.96 -4.73
+#> 
+#> 
+#>  Comparison:
+#>   At the 10% significance level, t (3.8719990) exceeds the upper bound (3.84).
+#>   This indicates that the variables tend to move together over  time.
+#>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+#> 
+#>  Hypotheses:
 #> H0: Coef(L1.CPI) = 0 
-#> H1: Coef(L1.CPI)≠ 0 
+#> H1: Coef(L1.CPI) ≠ 0 
 #> 
-#> Test Decision:  Reject H0 → Cointegration (at 1% level) 
+#>  Model Details:
+#>   Number of regressors (k): 3
+#>   Case: V 
 #> 
-#> Critical Values (Case  V ):
-#>           L     U
-#> 0.10  -3.13 -3.84
-#> 0.05  -3.41 -4.16
-#> 0.025 -3.65 -4.42
-#> 0.01  -3.96 -4.73
-#> 
-#> Notes:
-#>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-#> 
-
+#> ========================================
 ```

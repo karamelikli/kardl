@@ -12,14 +12,16 @@ of a long-term equilibrium relationship between variables.
 ## Usage
 
 ``` r
-narayan(kmodel, case = 3, signif_level = "auto")
+narayan(kardl_model, case = "auto", signif_level = "auto", ...)
 ```
 
 ## Arguments
 
-- kmodel:
+- kardl_model:
 
-  The kardl obejct
+  A fitted KARDL model object of class 'kardl_lm' created using the
+  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
+  function.
 
 - case:
 
@@ -51,13 +53,17 @@ narayan(kmodel, case = 3, signif_level = "auto")
   and proceeding to `"0.025"`, `"0.05"`, and `"0.10"` until a suitable
   level is identified. Invalid values will result in an error.
 
+- ...:
+
+  Additional arguments (currently not used).
+
 ## Value
 
 A list with class "htest" containing the following components:
 
 - `statistic`: The calculated F-statistic for the test.
 
-- `caseTxt`: A character string describing the case used for the test,
+- `case_txt`: A character string describing the case used for the test,
   based on the specified case parameter.
 
 - `alternative`: A character string describing the alternative
@@ -65,7 +71,7 @@ A list with class "htest" containing the following components:
 
 - `sample.size`: The number of observations used in the test.
 
-- `varnames`: A character vector containing the names of the dependent
+- `var_names`: A character vector containing the names of the dependent
   variable and independent variables used in the test.
 
 - `k`: The number of independent variables (excluding the dependent
@@ -128,10 +134,11 @@ evidence from cointegration tests. Applied economics, 37(17), 1979-1990.
 ## Examples
 
 ``` r
-kardl_model<-kardl(imf_example_data,
+kardl_model<-kardl(
                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                   imf_example_data,
                    mode=c(1,2,3,0))
-my_test<-narayan(kardl_model)
+my_test<-narayan(kardl_model, case=3, signif_level="auto")
 # Getting the results of the test.
 my_test
 #> 
@@ -144,30 +151,42 @@ my_test
 # Getting details of the test.
 my_summary<-summary(my_test)
 my_summary
-#> Narayan F Test for Cointegration 
-#> F  =  10.20356 
-#> k =  3 
 #> 
-#> Hypotheses:
+#> ========================================
+#> KARDL Cointegration Test Results
+#> ========================================
+#> 
+#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> 
+#>  Test Statistic:
+#>   F: 10.2035571
+#> 
+#>  Critical Values (Lower & Upper Bounds):
+#>           L     U
+#>   10% 3.588 4.605
+#>   5%  4.203 5.320
+#>   1%  5.620 6.908
+#> 
+#> 
+#>  Comparison:
+#>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.908).
+#>   This indicates that the variables tend to move together over  time.
+#>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+#> 
+#>  Hypotheses:
 #> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 
+#> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. 
 #> 
-#> Test Decision:  Reject H0 → Cointegration (at 1% level) 
+#>  Model Details:
+#>   Number of regressors (k): 3
+#>   Case: V 
 #> 
-#> Critical Values (Case  V ):
-#>          L     U
-#> 0.10 3.588 4.605
-#> 0.05 4.203 5.320
-#> 0.01 5.620 6.908
 #> 
-#> Notes:
-#>    • The Narayan F-test is designed for small samples. Your model uses only 469 observations. For greater accuracy with large samples, consider pssf() function. 
-#>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-#>    • The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.
-#> 
+#>  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.
+#> ========================================
 
 # Getting the critical values of the test.
-my_summary$crit_vals
+kardl_extract(my_summary, what = "critical_values")
 #>          L     U
 #> 0.10 3.588 4.605
 #> 0.05 4.203 5.320
@@ -179,9 +198,11 @@ my_summary$crit_vals
 # Using magrittr :
 
 library(magrittr)
-  imf_example_data %>%
-  kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                        mode=c(1,2,3,0)) %>% narayan()
+imf_example_data %>%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) %>%
+  narayan()
 #> 
 #>  Narayan F Test for Cointegration
 #> 
@@ -190,31 +211,44 @@ library(magrittr)
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
-  # Getting details of the test results using magrittr:
-   imf_example_data %>%
-   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>%
-   narayan() %>% summary()
-#> Narayan F Test for Cointegration 
-#> F  =  10.20356 
-#> k =  3 
+# Getting details of the test results using magrittr:
+imf_example_data %>%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) %>%
+  narayan() %>%
+  summary()
 #> 
-#> Hypotheses:
+#> ========================================
+#> KARDL Cointegration Test Results
+#> ========================================
+#> 
+#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> 
+#>  Test Statistic:
+#>   F: 10.2035571
+#> 
+#>  Critical Values (Lower & Upper Bounds):
+#>           L     U
+#>   10% 3.588 4.605
+#>   5%  4.203 5.320
+#>   1%  5.620 6.908
+#> 
+#> 
+#>  Comparison:
+#>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.908).
+#>   This indicates that the variables tend to move together over  time.
+#>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+#> 
+#>  Hypotheses:
 #> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 
+#> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. 
 #> 
-#> Test Decision:  Reject H0 → Cointegration (at 1% level) 
+#>  Model Details:
+#>   Number of regressors (k): 3
+#>   Case: V 
 #> 
-#> Critical Values (Case  V ):
-#>          L     U
-#> 0.10 3.588 4.605
-#> 0.05 4.203 5.320
-#> 0.01 5.620 6.908
 #> 
-#> Notes:
-#>    • The Narayan F-test is designed for small samples. Your model uses only 469 observations. For greater accuracy with large samples, consider pssf() function. 
-#>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-#>    • The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.
-#> 
-
+#>  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.
+#> ========================================
 ```

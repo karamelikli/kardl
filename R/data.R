@@ -1,6 +1,10 @@
 #' IMF Example Data
 #'
-#' This is an example data set used for testing purposes. It contains monthly data on exchange rates, consumer price index, producer price index, and a dummy variable for the COVID-19 pandemic for Turkey from January 1985 to February 2024.
+#' This is an example data set used for testing purposes. It contains monthly
+#' data on exchange rates, consumer price index, producer price index, and a
+#' dummy variable for the COVID-19 pandemic for Turkey from January 1985 to
+#' February 2024.
+#'
 #'
 #'
 #' @details
@@ -13,15 +17,18 @@
 #' \code{IFS <- load_datasets("IFS")}
 #'
 #' \itemize{
-#' \item \strong{PCPI_IX}             Prices, Consumer Price Index, All items, Index\cr
-#' \item \strong{AIP_IX}              Economic Activity, Industrial Production, Index\cr
-#' \item \strong{ENDE_XDC_USD_RATE}   Exchange Rates, Domestic Currency per U.S. Dollar, End of Period, Rate}
+#' \item \strong{PCPI_IX}   Prices, Consumer Price Index, All items, Index
+#' \item \strong{AIP_IX}    Economic Activity, Industrial Production, Index
+#' \item \strong{ENDE_XDC_USD_RATE} Exchange Rates, Domestic Currency per U.S.
+#' Dollar, End of Period, Rate}
 #'
-#' \code{  trdata<-IFS$get_series(freq = "M", ref_area = "TR", indicator = c("PCPI_IX","AIP_IX","ENDE_XDC_USD_RATE"),start_period = "1985-01",end_period = "2024-02")}\cr
+#' \code{  trdata<-IFS$get_series(freq = "M", ref_area = "TR",
+#' indicator = c("PCPI_IX","AIP_IX","ENDE_XDC_USD_RATE"),
+#' start_period = "1985-01",end_period = "2024-02")}
 #' \code{  PeriodRow<-trdata[,1]}\cr
 #' \code{  trdata[,1]<-NULL}\cr
-#' \code{  colnames(trdata)<-c("ER","CPI","PPI")}\cr
-#' \code{  trdata<-log(as.data.frame(lapply(trdata, function(x) as.numeric(x))))}\cr
+#' \code{colnames(trdata)<-c("ER","CPI","PPI")}
+#' \code{trdata<-log(as.data.frame(lapply(trdata, function(x) as.numeric(x))))}
 #' \code{  rownames(trdata)<-PeriodRow}
 #'
 #' \strong{Inserting covid dummy variable}
@@ -38,7 +45,6 @@
 #' }
 #'
 #' @seealso \code{\link[imf.data]{load_datasets}}
-#'
 #' @examples
 #' data(imf_example_data)
 #' head(imf_example_data)

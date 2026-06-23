@@ -4,10 +4,13 @@
 \alias{kardl_longrun}
 \title{Compute Long-Run Multipliers from a kardl Model}
 \usage{
-kardl_longrun(model)
+kardl_longrun(kardl_model, ...)
 }
 \arguments{
-\item{model}{An object of class \code{kardl} estimated using the \code{kardl} function.}
+\item{kardl_model}{An object of class \code{kardl} estimated using the
+\code{kardl} function.}
+
+\item{...}{Additional arguments (currently not used).}
 }
 \value{
 An object of class \code{kardl_long_run}, which is a list containing:
@@ -16,10 +19,14 @@ An object of class \code{kardl_long_run}, which is a list containing:
 \item \code{residuals}: A vector of residuals from the long-run model.
 \item \code{effects}: A vector of effects from the long-run model.
 \item \code{rank}: The rank of the long-run model.
-\item \code{fitted.values}: A vector of fitted values from the long-run model.
-\item \code{assign}: A vector indicating the assignment of coefficients to terms in the long-run model.
-\item \code{qr}: The QR decomposition of the design matrix of the long-run model.
-\item \code{df.residual}: The degrees of freedom of the residuals of the long-run model.
+\item \code{fitted.values}: A vector of fitted values from the long-run
+model.
+\item \code{assign}: A vector indicating the assignment of coefficients
+to terms in the long-run model.
+\item \code{qr}: The QR decomposition of the design matrix of the
+long-run model.
+\item \code{df.residual}: The degrees of freedom of the residuals of the
+long-run model.
 \item \code{xlevels}: A list of factor levels used in the long-run model.
 \item \code{call}: The matched call used to create the long-run model.
 \item \code{terms}: The terms object of the long-run model.
@@ -27,42 +34,69 @@ An object of class \code{kardl_long_run}, which is a list containing:
 }
 }
 \description{
-This function calculates the long-run parameters of a KARDL model estimated using the \code{kardl} function. The long-run parameters are calculated by dividing the negative of the coefficients of the independent variables by the coefficient of the dependent variable. If an intercept is included in the model, it is also standardized by dividing it by the negative of the long-run parameter of the dependent variable.
+This function calculates the long-run parameters of a KARDL model estimated
+using the \code{kardl} function. The long-run parameters are calculated by
+dividing the negative of the coefficients of the independent variables by
+the coefficient of the dependent variable. If an intercept is included in
+the model, it is also standardized by dividing it by the negative of the
+long-run parameter of the dependent variable.
 }
 \details{
-The function also calculates the standard errors of the long-run multipliers using the delta method, which accounts for the covariance between the coefficients. The fitted values and residuals of the long-run model are calculated based on the original data and the long-run multipliers.
+The function also calculates the standard errors of the long-run multipliers
+using the delta method, which accounts for the covariance between the
+coefficients. The fitted values and residuals of the long-run model are
+calculated based on the original data and the long-run multipliers.
 
-The function returns an object of class \code{kardl_long_run}, which contains the long-run multipliers, their standard errors, t-statistics, p-values, fitted values, residuals, and other relevant information for further analysis and diagnostics.
+The function returns an object of class \code{kardl_long_run}, which contains
+the long-run multipliers, their standard errors, t-statistics, p-values,
+fitted values, residuals, and other relevant information for further
+analysis and diagnostics.
 
-Note that the fitted values and residuals from the long-run model are not centered (i.e., they do not have a mean of zero) by design, which means that diagnostic plots and residual-based tests may not be valid for this model. The primary focus of this function is on the estimation of the long-run multipliers and their associated statistics.
+Note that the fitted values and residuals from the long-run model are not
+centered (i.e., they do not have a mean of zero) by design, which means that
+diagnostic plots and residual-based tests may not be valid for this model.
+The primary focus of this function is on the estimation of the long-run
+multipliers and their associated statistics.
 
 The long-run multipliers are calculated using the formula:
 \deqn{LRM_i = -\frac{\eta_i}{\eta_0}}.
 
-t-values and p-values are calculated using the standard errors obtained from the delta method, which accounts for the covariance between the coefficients.
+t-values and p-values are calculated using the standard errors obtained from
+the delta method, which accounts for the covariance between the coefficients.
 Delta method formula for standard errors of long-run multipliers:
-\deqn{SE(LR_i) = \sqrt{(A^2) \cdot Var(\eta_i) + 2 \cdot A \cdot B \cdot Cov(\eta_i, \eta_0) + (B^2) \cdot Var(\eta_0)}} where \deqn{A = \frac{\partial LRM_i}{\partial \eta_i} = -\frac{1}{\eta_0}} and \deqn{B = \frac{\partial LRM_i}{\partial \eta_0} = \frac{\eta_i}{\eta_0^2}} .
-Hence, \eqn{\eta_i} is the coefficient of the independent variable and \eqn{\eta_0} is the coefficient of the dependent variable in the original KARDL model.
+\deqn{SE(LR_i) = \sqrt{(A^2) \cdot Var(\eta_i) + 2 \cdot A \cdot B \cdot
+Cov(\eta_i, \eta_0) + (B^2) \cdot Var(\eta_0)}}
+where \deqn{A = \frac{\partial LRM_i}{\partial \eta_i} = -\frac{1}{\eta_0}}
+and \deqn{B = \frac{\partial LRM_i}{\partial \eta_0} =
+\frac{\eta_i}{\eta_0^2}}.
+Hence, \eqn{\eta_i} is the coefficient of the independent variable and
+\eqn{\eta_0} is the coefficient of the dependent variable in the original
+KARDL model.
 }
 \examples{
-kardl_model<-kardl(imf_example_data,
-                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   mode=c(1,2,3,0))
-long<-kardl_longrun(kardl_model)
+
+kardl_model <- kardl(
+  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+  imf_example_data,
+  mode = c(1, 2, 3, 0)
+)
+long <- kardl_longrun(kardl_model)
 
 # Calculate the long-run multipliers
 long
+
 # Details of the long-run multipliers
 summary(long)
 
-
 # Using magrittr
-
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-     imf_example_data \%>\%
-     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend, mode=c(1,2,3,0)) \%>\%
-     kardl_longrun() \%>\% summary()
+imf_example_data \%>\%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) \%>\%
+  kardl_longrun() \%>\%
+  summary()
 \dontshow{\}) # examplesIf}
 }
 \seealso{

@@ -10,6 +10,8 @@
   : IMF Example Data
 - [`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md) :
   Estimate ARDL and NARDL Models with Automatic Lag Selection
+- [`kardl_extract()`](https://karamelikli.github.io/kardl/reference/kardl_extract.md)
+  : Extract Components from kardl Objects
 - [`kardl_get()`](https://karamelikli.github.io/kardl/reference/kardl_get.md)
   : Get kardl Package Options
 - [`kardl_longrun()`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md)
@@ -20,7 +22,7 @@
   : Set kardl Package Options
 - [`lmerge()`](https://karamelikli.github.io/kardl/reference/lmerge.md)
   : Merge Lists with Priority to the First Argument
-- [`modelCriterion()`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+- [`model_criterion()`](https://karamelikli.github.io/kardl/reference/model_criterion.md)
   : Model Selection Criteria
 - [`mplier()`](https://karamelikli.github.io/kardl/reference/mplier.md)
   : Compute Dynamic Multipliers for kardl Models
@@ -28,6 +30,8 @@
   : Narayan Bounds Test
 - [`parse_formula_vars()`](https://karamelikli.github.io/kardl/reference/parse_formula_vars.md)
   : Parse Formula Variables
+- [`parse_model_specs()`](https://karamelikli.github.io/kardl/reference/parse_model_specs.md)
+  : Parse model specifications from user inputs
 - [`pssf()`](https://karamelikli.github.io/kardl/reference/pssf.md) :
   Pesaran, Shin, and Smith Bounds F-Test
 - [`psst()`](https://karamelikli.github.io/kardl/reference/psst.md) :

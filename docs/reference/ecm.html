@@ -5,7 +5,15 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimate a Restricted ECM Model — ecm"><meta name="description" content="The ecm function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model."><meta property="og:description" content="The ecm function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimate a Restricted ECM Model — ecm"><meta name="description" content="The ecm function estimates a restricted Error Correction Model (ECM) based
+on the provided data and model specification. This function is designed to
+test for cointegration using the PSS t Bound test, which assesses the
+presence of a long-term equilibrium relationship between the dependent
+variable and the independent variables in the model."><meta property="og:description" content="The ecm function estimates a restricted Error Correction Model (ECM) based
+on the provided data and model specification. This function is designed to
+test for cointegration using the PSS t Bound test, which assesses the
+presence of a long-term equilibrium relationship between the dependent
+variable and the independent variables in the model."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -13,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,18 +52,22 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>The <code>ecm</code> function estimates a restricted Error Correction Model (ECM) based on the provided data and model specification. This function is designed to test for cointegration using the PSS t Bound test, which assesses the presence of a long-term equilibrium relationship between the dependent variable and the independent variables in the model.</p>
+    <p>The <code>ecm</code> function estimates a restricted Error Correction Model (ECM) based
+on the provided data and model specification. This function is designed to
+test for cointegration using the PSS t Bound test, which assesses the
+presence of a long-term equilibrium relationship between the dependent
+variable and the independent variables in the model.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ecm</span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  formula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  maxlag <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  mode <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  criterion <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  differentAsymLag <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  different_asym_lag <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  batch <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -65,16 +77,14 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>The data of analysis</p></dd>
-
-
-<dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
-<dd><p>A formula specifying the long-run model equation. This formula defines the relationships
-between the dependent variable and explanatory variables, including options for deterministic terms,
-asymmetric variables, and a trend component.</p>
-<p></p><div class="sourceCode"><pre><code><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>   Example formula<span class="sc">:</span></span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>   \code{y <span class="sc">~</span> x <span class="sc">+</span> z <span class="sc">+</span> <span class="fu">Asymmetric</span>(z) <span class="sc">+</span> <span class="fu">Lasymmetric</span>(x2 <span class="sc">+</span> x3) <span class="sc">+</span> <span class="fu">Sasymmetric</span>(x3 <span class="sc">+</span> x4) <span class="sc">+</span> <span class="fu">deterministic</span>(dummy1 <span class="sc">+</span> dummy2) <span class="sc">+</span> trend}</span></code></pre><p></p></div>
+<dl><dt id="arg-formula">formula<a class="anchor" aria-label="anchor" href="#arg-formula"></a></dt>
+<dd><p>A formula specifying the long-run model equation. This formula
+defines the relationships between the dependent variable and
+explanatory variables, including options for deterministic terms,
+asymmetric variables, and a trend component.
+Example formula:
+<code>y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) +
+       Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend</code></p>
 <p><strong><em>Details</em></strong></p>
 <p>The formula allows flexible specification of variables and their roles:</p>
 <ul><li><p><strong>Deterministic variables:</strong>
@@ -127,159 +137,238 @@ argument names are recommended.</p></li>
 a specification tailored to the empirical analysis.</p></dd>
 
 
+<dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
+<dd><p>The data of analysis, which should be a data frame containing the
+variables referenced in the <code>formula</code>. The function will check that all
+variables specified in the formula are present in the data before
+proceeding with estimation. The data should be time-ordered, and the
+function will internally handle the construction of lagged and differenced
+variables as needed for ARDL and NARDL estimation.</p></dd>
+
+
 <dt id="arg-maxlag">maxlag<a class="anchor" aria-label="anchor" href="#arg-maxlag"></a></dt>
-<dd><p>An integer specifying the maximum number of lags to be considered for the model.
-The default value is <code>4</code>. This parameter sets an upper limit on the lag length during
-the model estimation process.</p>
+<dd><p>An integer specifying the maximum number of lags to be
+considered for the model. The default value is <code>4</code>. This
+parameter sets an upper limit on the lag length during the model
+estimation process.</p>
 <p><strong><em>details</em></strong></p>
-<p>The <code>maxlag</code> parameter is crucial for defining the maximum lag length that the model
-will evaluate when selecting the optimal lag structure based on the specified <code>criterion</code>.
-It controls the computational effort and helps prevent overfitting by restricting the search
-space for lag selection.</p><ul><li><p>If the data has a short time horizon or is prone to overfitting, consider reducing <code>maxlag</code>.</p></li>
-<li><p>If the data is expected to have long-term dependencies, increasing <code>maxlag</code> may be necessary to capture the relevant dynamics.</p></li>
-</ul><p>Setting an appropriate value for <code>maxlag</code> depends on the nature of your dataset and the
-context of the analysis:</p><ul><li><p>For small datasets or quick tests, use smaller values (e.g., <code>maxlag = 2</code>).</p></li>
-<li><p>For datasets with more observations or longer-term patterns, larger values (e.g., <code>maxlag = 8</code>)  may be appropriate, though this increases computational time.</p></li>
+<p>The <code>maxlag</code> parameter is crucial for defining the maximum lag length
+that the model will evaluate when selecting the optimal lag structure based
+on the specified <code>criterion</code>. It controls the computational effort and
+helps prevent overfitting by restricting the search space for lag selection.</p><ul><li><p>If the data has a short time horizon or is prone to overfitting,
+consider reducing <code>maxlag</code>.</p></li>
+<li><p>If the data is expected to have long-term dependencies, increasing
+<code>maxlag</code> may be necessary to capture the relevant dynamics.</p></li>
+</ul><p>Setting an appropriate value for <code>maxlag</code> depends on the nature of your
+dataset and the context of the analysis:</p><ul><li><p>For small datasets or quick tests, use smaller values
+(e.g., <code>maxlag = 2</code>).</p></li>
+<li><p>For datasets with more observations or longer-term patterns, larger
+values (e.g., <code>maxlag = 8</code>) may be appropriate, though this increases
+computational time.</p></li>
 </ul><p><strong><em>examples</em></strong></p>
 <p>Using the default maximum lag (4)</p>
-<p><code>kardl(data, MyFormula, maxlag = 4)</code></p>
+<p><code>kardl(data, my_formula, maxlag = 4)</code></p>
 <p>Reducing the maximum lag to 2 for faster computation</p>
-<p><code>kardl(data, MyFormula, maxlag = 2)</code></p>
+<p><code>kardl(data, my_formula, maxlag = 2)</code></p>
 <p>Increasing the maximum lag to 8 for datasets with longer dependencies</p>
-<p><code>kardl(data, MyFormula, maxlag = 8)</code></p></dd>
+<p><code>kardl(data, my_formula, maxlag = 8)</code></p></dd>
 
 
 <dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
-<dd><p>Specifies the mode of estimation and output control. This parameter determines how
-the function handles lag estimation and what kind of feedback or control is provided during
-the process. The available options are:</p>
+<dd><p>Specifies the mode of estimation and output control. This
+parameter determines how the function handles lag estimation and what
+kind of feedback or control is provided during the process. The
+available options are:</p>
 <ul><li><p><strong>"quick"</strong> (default):
-Displays progress and messages in the console while the function estimates the optimal lag values.
-This mode is suitable for interactive use or for users who want to monitor the estimation process
-in real-time. It provides detailed feedback for debugging or observation but may use additional
-resources due to verbose output.</p></li>
+Displays progress and messages in the console while the function
+estimates the optimal lag values. This mode is suitable for
+interactive use or for users who want to monitor the estimation
+process in real-time. It provides detailed feedback for debugging or
+observation but may use additional resources due to verbose output.</p></li>
 <li><p><strong>"grid"</strong> :
-Displays progress and messages in the console while the function estimates the optimal lag values.
-This mode is suitable for interactive use or for users who want to monitor the estimation process
-in real-time. It provides detailed feedback for debugging or observation but may use additional
-resources due to verbose output.</p></li>
+Displays progress and messages in the console while the function
+estimates the optimal lag values. This mode is suitable for
+interactive use or for users who want to monitor the estimation
+process in real-time. It provides detailed feedback for debugging or
+observation but may use additional resources due to verbose output.</p></li>
 <li><p><strong>"grid_custom"</strong>:
-Suppresses most or all console output, prioritizing faster execution and reduced resource usage
-on PCs or servers. This mode is recommended for high-performance scenarios, batch processing,
-or when the estimation process does not require user monitoring. Suitable for large-scale or
-repeated runs where output is unnecessary.</p></li>
+Suppresses most or all console output, prioritizing faster execution
+and reduced resource usage on PCs or servers. This mode is
+recommended for high-performance scenarios, batch processing,
+or when the estimation process does not require user monitoring.
+Suitable for large-scale or repeated runs where output is
+unnecessary.</p></li>
 <li><p><strong>User-defined vector</strong>:
-A numeric vector of lag values specified by the user, allowing full customization of the lag
-structure used in model estimation. When a user-defined vector is provided (e.g., <code>c(1, 2, 4, 5)</code>),
-the function skips the lag optimization process and directly uses the specified lags.</p>
+A numeric vector of lag values specified by the user, allowing full
+customization of the lag structure used in model estimation. When a
+user-defined vector is provided (e.g., <code>c(1, 2, 4, 5)</code>), the function skips
+the lag optimization process and directly uses the specified lags.</p>
 <p>Users can define lag values directly as a numeric vector. For example:
-<code>mode = c(1, 2, 4, 5)</code> assigns lags of 1, 2, 4, and 5 to variables in the specified order.
-Alternatively, lag values can be assigned to variables by name for clarity and control. For example:
-<code>mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code> assigns lags to variables explicitly.
-Ensure that the lags are correctly designated by verifying the result using
-<code>kardl_model$properLag</code> after estimation.</p>
+<code>mode = c(1, 2, 4, 5)</code> assigns lags of 1, 2, 4, and 5 to variables in
+the specified order. Alternatively, lag values can be assigned to variables
+by name for clarity and control. For example:
+<code>mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code> assigns lags to
+variables explicitly. Ensure that the lags are correctly designated by
+verifying the result using <code>kardl_model$proper_lag</code> after estimation.</p>
 <p><strong><em>Attention!</em></strong>
 A function-based criterion or user-defined function can be specified
-for model selection, but this is only supported for <code>mode = "grid_custom"</code>
-and <code>mode = "quick"</code>. The <code>mode = "grid"</code> option is restricted to
-predefined criteria (e.g., AIC or BIC). For more information on available criteria,
-see the <code><a href="modelCriterion.html">modelCriterion</a></code> function documentation.</p><ul><li><p>When using a numeric vector, ensure the order of lag values matches the variables in your formula.</p></li>
-<li><p>If using named vectors, double-check the variable names to avoid mismatches or unintended results.</p></li>
-<li><p>This mode bypasses the automatic lag optimization and assumes the user-defined lags are correct.</p></li>
+for model selection, but this is only supported for
+<code>mode = "grid_custom"</code> and <code>mode = "quick"</code>. The
+<code>mode = "grid"</code> option is restricted to predefined criteria (e.g., AIC
+or BIC). For more information on available criteria, see the
+<code><a href="model_criterion.html">model_criterion</a></code> function documentation.</p><ul><li><p>When using a numeric vector, ensure the order of lag values matches
+the variables in your formula.</p></li>
+<li><p>If using named vectors, double-check the variable names to avoid
+mismatches or unintended results.</p></li>
+<li><p>This mode bypasses the automatic lag optimization and assumes the
+user-defined lags are correct.</p></li>
 </ul></li>
 </ul></dd>
 
 
 <dt id="arg-criterion">criterion<a class="anchor" aria-label="anchor" href="#arg-criterion"></a></dt>
-<dd><p>A string specifying the information criterion to be used for selecting the optimal lag structure.
-The available options are:</p><ul><li><p><strong>"AIC"</strong>: Akaike Information Criterion (default). This criterion balances model fit and complexity,
-favoring models that explain the data well with fewer parameters.</p></li>
-<li><p><strong>"BIC"</strong>: Bayesian Information Criterion. This criterion imposes a stronger penalty for model complexity
-than AIC, making it more conservative in selecting models with fewer parameters.</p></li>
-<li><p><strong>"AICc"</strong>: Corrected Akaike Information Criterion. This is an adjusted version of AIC that accounts for small sample sizes,
-making it more suitable when the number of observations is limited relative to the number of parameters.</p></li>
-<li><p><strong>"HQ"</strong>: Hannan-Quinn Information Criterion. This criterion provides a compromise between AIC and BIC,
-favoring models that balance fit and complexity without being overly conservative.</p></li>
-</ul><p>The criterion can be specified as a string (e.g., <code>"AIC"</code>) or as a user-defined function that takes a fitted model object.
-Please visit the <code><a href="modelCriterion.html">modelCriterion</a></code> function documentation for more details on using custom criteria.</p></dd>
+<dd><p>A string specifying the information criterion to be used
+for selecting the optimal lag structure. The available options are:</p><ul><li><p><strong>"AIC"</strong>: Akaike Information Criterion (default). This criterion
+balances model fit and complexity, favoring models that explain the
+data well with fewer parameters.</p></li>
+<li><p><strong>"BIC"</strong>: Bayesian Information Criterion. This criterion imposes
+a stronger penalty for model complexity than AIC, making it more
+conservative in selecting models with fewer parameters.</p></li>
+<li><p><strong>"AICc"</strong>: Corrected Akaike Information Criterion. This is an
+adjusted version of AIC that accounts for small sample sizes,
+making it more suitable when the number of observations is limited
+relative to the number of parameters.</p></li>
+<li><p><strong>"HQ"</strong>: Hannan-Quinn Information Criterion. This criterion
+provides a compromise between AIC and BIC, favoring models that
+balance fit and complexity without being overly conservative.</p></li>
+</ul><p>The criterion can be specified as a string (e.g., <code>"AIC"</code>) or as
+a user-defined function that takes a fitted model object.
+Please visit the <code><a href="model_criterion.html">model_criterion</a></code> function documentation
+for more details on using custom criteria.</p></dd>
 
 
-<dt id="arg-differentasymlag">differentAsymLag<a class="anchor" aria-label="anchor" href="#arg-differentasymlag"></a></dt>
-<dd><p>A logical value indicating whether to allow different lag lengths for positive and negative decompositions.</p></dd>
+<dt id="arg-different-asym-lag">different_asym_lag<a class="anchor" aria-label="anchor" href="#arg-different-asym-lag"></a></dt>
+<dd><p>A logical value indicating whether to allow
+different lag lengths for positive and negative decompositions.</p></dd>
 
 
 <dt id="arg-batch">batch<a class="anchor" aria-label="anchor" href="#arg-batch"></a></dt>
-<dd><p>A string specifying the batch processing configuration in the format "current_batch/total_batches".
-If a user utilize grid or grid_custom mode and want to split the lag search into multiple batches, this parameter can be used to define the current batch and the total number of batches.
-For example, "2/5" indicates that the current batch is the second out of a total of five batches.
-The default value is "1/1", meaning that the entire lag search is performed in a single batch.</p></dd>
+<dd><p>A string specifying the batch processing configuration in the
+format "current_batch/total_batches". If a user utilize grid or
+grid_custom mode and want to split the lag search into multiple
+batches, this parameter can be used to define the current batch and
+the total number of batches. For example, "2/5" indicates that the
+current batch is the second out of a total of five batches.
+The default value is "1/1", meaning that the entire lag search is
+performed in a single batch.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments that can be passed to the function. These arguments can be used to specify other settings or parameters that are not explicitly defined in the main arguments.</p></dd>
+<dd><p>Additional arguments that can be passed to the function. These
+arguments can be used to specify other settings or parameters that
+are not explicitly defined in the main arguments.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list containing the results of the restricted ECM test, including:</p><ul><li><p><code>ecm</code>: The estimated ECM model objects including:</p><ul><li><p><code>longrunEQ</code>: The estimated long-run model equation object.</p></li>
-<li><p><code>shortrunEQ</code>: The estimated short-run model equation</p></li>
-<li><p><code>ecmL</code>: The estimated long-run model object.</p></li>
+    <p>A list containing the results of the restricted ECM test, including:</p><ul><li><p><code>ecm</code>: The estimated ECM model objects including:</p><ul><li><p><code>longrun_eq</code>: The estimated long-run model equation object.</p></li>
+<li><p><code>shortrun_eq</code>: The estimated short-run model equation.</p></li>
+<li><p><code>ecm_l</code>: The estimated long-run model object.</p></li>
 </ul></li>
-<li><p><strong>argsInfo</strong>: A list of input arguments used for the estimation. It includes the data, formula, maxlag, mode, criterion, differentAsymLag, and batch settings.</p></li>
-<li><p><strong>extractedInfo</strong>: A list containing extracted information from the input data and formula, such as variable names, deterministic terms, asymmetric variables, and the prepared dataset for estimation.</p></li>
-<li><p><strong>timeInfo</strong>: A list containing timing information for the estimation process, including start time, end time, and total duration.</p></li>
-<li><p><strong>lagInfo</strong>: A list containing lag selection information, including the optimal lag configuration and criteria values for different lag combinations.</p></li>
-<li><p><strong>estInfo</strong>: A list containing estimation details, such as the type of model, estimation method, model formula, number of parameters (k), number of observations (n), start and end points of the fitted values, and total time span.</p></li>
-<li><p><strong>model</strong>: The fitted linear model object of class <code>lm</code> representing the estimated ARDL or NARDL model.</p></li>
+<li><p><strong>args_info</strong>: A list of input arguments used for the estimation.
+It includes the data, formula, maxlag, mode, criterion,
+different_asym_lag, and batch settings.</p></li>
+<li><p><strong>extracted_info</strong>: A list containing extracted information from
+the input data and formula, such as variable names, deterministic
+terms, asymmetric variables, and the prepared dataset for estimation.</p></li>
+<li><p><strong>time_info</strong>: A list containing timing information for the
+estimation process, including start time, end time, and total duration.</p></li>
+<li><p><strong>lag_info</strong>: A list containing lag selection information,
+including the optimal lag configuration and criteria values for
+different lag combinations.</p></li>
+<li><p><strong>est_info</strong>: A list containing estimation details, such as the
+type of model, estimation method, model formula, number of parameters
+(k), number of observations (n), start and end points of the fitted
+values, and total time span.</p></li>
+<li><p><strong>model</strong>: The fitted linear model object of class <code>lm</code>
+representing the estimated ARDL or NARDL model.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a></h2>
 
 
 
-<p>The null and alternative hypotheses for the restricted ECM test are as follows:</p>
+<p>The null and alternative hypotheses for the restricted ECM test are as
+follows:</p>
 <p>$$\mathbf{H_{0}:} \theta  =   0$$
 $$\mathbf{H_{1}:} \theta  \neq 0$$</p>
-<p>The null hypothesis (\(H_{0}\)) states that there is no cointegration in the model, meaning that the long-run relationship between the variables is not significant. The alternative hypothesis (\(H_{1}\)) suggests that there is cointegration, indicating a significant long-term relationship between the variables.</p>
-<p>The test statistic is calculated as the t-statistic of the coefficient of the error correction term (\(\theta\)) in the ECM model. If the absolute value of the t-statistic exceeds the critical value from the PSS t Bound table, we reject the null hypothesis in favor of the alternative hypothesis, indicating that cointegration is present.</p>
+<p>The null hypothesis (\(H_{0}\)) states that there is no cointegration in
+the model, meaning that the long-run relationship between the variables is
+not significant. The alternative hypothesis (\(H_{1}\)) suggests that
+there is cointegration, indicating a significant long-term relationship
+between the variables.</p>
+<p>The test statistic is calculated as the t-statistic of the coefficient of
+the error correction term (\(\theta\)) in the ECM model. If the absolute
+value of the t-statistic exceeds the critical value from the PSS t Bound
+table, we reject the null hypothesis in favor of the alternative
+hypothesis, indicating that cointegration is present.</p>
 <p>The cases for the restricted ECM Bound test are defined as follows:</p>
 <ul><li><p><code>case 1</code>: No constant, no trend.</p>
-<p>This case is used when the model does not include a constant term or a trend term. It is suitable for models where the variables are stationary and do not exhibit any long-term trends.</p>
+<p>This case is used when the model does not include a constant term or a
+trend term. It is suitable for models where the variables are stationary
+and do not exhibit any long-term trends.</p>
 <p>The model is specified as follows:</p>
 <p>$$
 \begin{aligned}
-\Delta y_t =  \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1}  - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+\Delta y_t =  \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} +
+\sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} +
+\theta (y_{t-1}  - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
 \end{aligned}
 $$</p></li>
 <li><p><code>case 2</code>: Restricted constant, no trend.</p>
-<p>This case is used when the model includes a constant term but no trend term. It is suitable for models where the variables exhibit a long-term relationship but do not have a trend component.
-The model is specified as follows:
-$$
+<p>This case is used when the model includes a constant term but no trend
+term. It is suitable for models where the variables exhibit a long-term
+relationship but do not have a trend component.</p>
+<p>The model is specified as follows:</p>
+<p>$$
   \begin{aligned}
-  \Delta y_t &amp;= \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1} - \alpha_0 - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+  \Delta y_t &amp;= \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} +
+  \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} +
+  \theta (y_{t-1} - \alpha_0 - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
   \end{aligned}
   $$</p></li>
 <li><p><code>case 3</code>: Unrestricted constant, no trend.</p>
-<p>This case is used when the model includes an unrestricted constant term but no trend term. It is suitable for models where the variables exhibit a long-term relationship with a constant but do not have a trend component.</p>
+<p>This case is used when the model includes an unrestricted constant term
+but no trend term. It is suitable for models where the variables exhibit
+a long-term relationship with a constant but do not have a trend
+component.</p>
 <p>The model is specified as follows:</p>
 <p>$$
   \begin{aligned}
-  \Delta y_t &amp;= \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1} - \alpha_0 - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+  \Delta y_t &amp;= \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} +
+  \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} +
+  \theta (y_{t-1} - \alpha_0 - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
   \end{aligned}
     $$</p></li>
 <li><p><code>case 4</code>: Unrestricted Constant, restricted trend.</p>
-<p>This case is used when the model includes an unrestricted constant term and a restricted trend term. It is suitable for models where the variables exhibit a long-term relationship with a constant and a trend component.</p>
+<p>This case is used when the model includes an unrestricted constant term
+and a restricted trend term. It is suitable for models where the variables
+exhibit a long-term relationship with a constant and a trend component.</p>
 <p>The model is specified as follows:</p>
 <p>$$
   \begin{aligned}
-  \Delta y_t &amp;= \phi + \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1} - \pi (t-1) - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+  \Delta y_t &amp;= \phi + \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} +
+  \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} +
+  \theta (y_{t-1} - \pi (t-1) - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
   \end{aligned}
    $$</p></li>
 <li><p><code>case 5</code>: Unrestricted constant, unrestricted trend.</p></li>
-</ul><p>The Error Correction Model (ECM) is specified as follows:
-$$
+</ul><p>The Error Correction Model (ECM) is specified as follows:</p>
+<p>$$
 \begin{aligned}
-\Delta y_t &amp;= \phi + \varphi t +  \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} + \sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} + \theta (y_{t-1}  - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
+\Delta y_t &amp;= \phi + \varphi t + \sum_{j=1}^{p} \gamma_j \Delta y_{t-j} +
+\sum_{i=1}^{k} \sum_{j=0}^{q_i} \beta_{ij} \Delta x_{i,t-j} +
+\theta (y_{t-1} - \sum_{i=1}^{k} \alpha_i x_{i,t-1} ) + e_t
 \end{aligned}
 $$</p>
     </div>
@@ -294,19 +383,21 @@ first differences. Accordingly, <code>L1.PPI</code> represents the first lag of 
 level of <code>PPI</code> (long-run component), while <code>L3.d.PPI</code> denotes the
 third lag of the first-differenced <code>PPI</code> (short-run component).</p>
 <p>In addition, the suffixes <code>_POS</code> and <code>_NEG</code> indicate the positive
-and negative partial sum components of a variable, respectively. This notation
-is used by default and remains valid unless modified through the
-<code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
+and negative partial sum components of a variable, respectively.
+This notation is used by default and remains valid unless modified through
+the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="kardl.html">kardl</a></code> <code><a href="pssf.html">pssf</a></code>  <code><a href="psst.html">psst</a></code>   <code>ecm</code>  <code><a href="narayan.html">narayan</a></code></p></div>
+    <div class="dont-index"><p><code><a href="kardl.html">kardl</a></code> <code><a href="pssf.html">pssf</a></code> <code><a href="psst.html">psst</a></code>
+<code>ecm</code> <code><a href="narayan.html">narayan</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY</span></span></span>
+<span class="r-in"><span><span class="co"># Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH</span></span></span>
+<span class="r-in"><span><span class="co"># TO DOMESTIC PRICES IN TURKEY</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_set.html">kardl_set</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  formula <span class="op">=</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
 <span class="r-in"><span>  data <span class="op">=</span> <span class="va">imf_example_data</span>,</span></span>
@@ -321,15 +412,13 @@ is used by default and remains valid unless modified through the
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1.861e-02   -1.384e-02    4.448e-01   -4.173e-02    1.149e-01    9.347e-02  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI        covid  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   9.679e-03    4.914e-02    6.999e-03    2.102e-02   -5.382e-03    5.425e-03  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       trend  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  -4.375e-05  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L0.d.ER_NEG     L0.d.PPI  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.0181865   -0.0172809    0.4703704    0.1341552    0.0207522   -0.0007262  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       covid        trend  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   0.0027255   -0.0000378  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Checking the cointegration test results using Pesaran t test</span></span></span>
@@ -338,41 +427,56 @@ is used by default and remains valid unless modified through the
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t = -3.6425</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t = -4.5607</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: Cointegrating relationship exists</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting the details of psst result</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="psst.html">psst</a></span><span class="op">(</span><span class="va">ecm_model_grid</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t  =  -3.642489 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> k =  3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 2.5% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   t: -4.5606582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            L     U</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   10%  -3.13 -3.84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5%   -3.41 -4.16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2.5% -3.65 -4.42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1%   -3.96 -4.73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   At the 2% significance level, t (4.5606582) exceeds the upper bound (4.42).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(EcmRes) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(EcmRes)≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(EcmRes) ≠ 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 → Cointegration (at 1% level) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Case: V </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Critical Values (Case  V ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           L     U</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.10  -3.13 -3.84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.05  -3.41 -4.16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.025 -3.65 -4.42</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.01  -3.96 -4.73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using the grid_custom mode for faster execution without console output</span></span></span>
-<span class="r-in"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span><span class="va">imf_example_data</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span>, criterion <span class="op">=</span> <span class="st">"HQ"</span>, batch <span class="op">=</span> <span class="st">"2/3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  mode <span class="op">=</span> <span class="st">"grid_custom"</span>,</span></span>
+<span class="r-in"><span>  criterion <span class="op">=</span> <span class="st">"HQ"</span>, batch <span class="op">=</span> <span class="st">"2/3"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ecm_model</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, ER_POS: 2, ER_NEG: 0, PPI: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L2.d.ER_POS  </span>
@@ -390,7 +494,7 @@ is used by default and remains valid unless modified through the
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 1, ER_NEG: 1, PPI: 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
@@ -405,7 +509,7 @@ is used by default and remains valid unless modified through the
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ecm_model2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residuals:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Min        1Q    Median        3Q       Max </span>
@@ -436,10 +540,10 @@ is used by default and remains valid unless modified through the
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Alternative specification</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">ecm</span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span> <span class="op">~</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>, case <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu">ecm</span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>, <span class="va">imf_example_data</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Residuals:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       Min        1Q    Median        3Q       Max </span>
@@ -473,7 +577,7 @@ is used by default and remains valid unless modified through the
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
@@ -490,7 +594,7 @@ is used by default and remains valid unless modified through the
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 1, ER_POS: 1, ER_NEG: 0, PPI: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L0.d.ER_NEG  </span>
@@ -505,7 +609,7 @@ is used by default and remains valid unless modified through the
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  </span>
@@ -516,29 +620,32 @@ is used by default and remains valid unless modified through the
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For using different lag values for positive and negative decompositions</span></span></span>
 <span class="r-in"><span><span class="co"># Setting the same lags for positive and negative decompositions</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="kardl_set.html">kardl_set</a></span><span class="op">(</span>differentAsymLag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="kardl_set.html">kardl_set</a></span><span class="op">(</span>different_asym_lag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">diffAsymLags</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">diffAsymLags</span><span class="op">$</span><span class="va">lagInfo</span><span class="op">$</span><span class="va">OptLag</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">diffAsymLags</span>, <span class="st">"opt_lag"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    CPI ER_POS ER_NEG    PPI </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      2      2      2      2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Setting different lags for positive and negative decompositions</span></span></span>
-<span class="r-in"><span><span class="va">sameAsymLags</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span>differentAsymLag <span class="op">=</span> <span class="cn">TRUE</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">sameAsymLags</span><span class="op">$</span><span class="va">lagInfo</span><span class="op">$</span><span class="va">OptLag</span></span></span>
+<span class="r-in"><span><span class="va">sameAsymLags</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span>different_asym_lag <span class="op">=</span> <span class="cn">TRUE</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">sameAsymLags</span>, <span class="st">"opt_lag"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    CPI ER_POS ER_NEG    PPI </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      2      2      0      2 </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Setting the prefixes and suffixes for nonlinear variables</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_reset.html">kardl_reset</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="kardl_set.html">kardl_set</a></span><span class="op">(</span>AsymPrefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asyP_"</span>, <span class="st">"asyN_"</span><span class="op">)</span>, AsymSuffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_PP"</span>, <span class="st">"_NN"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">customizedNames</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span><span class="va">imf_example_data</span>, <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="kardl_set.html">kardl_set</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  asym_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asyP_"</span>, <span class="st">"asyN_"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  asym_suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_PP"</span>, <span class="st">"_NN"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">customizedNames</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span>, <span class="va">imf_example_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">customizedNames</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrunEQ, data = EcmData)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coefficients:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     (Intercept)           EcmRes         L1.d.CPI         L2.d.CPI  </span>
@@ -556,7 +663,7 @@ is used by default and remains valid unless modified through the
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Huseyin Karamelikli, Huseyin Utku Demir.</p>
+  <p>Developed by Huseyin karamelikli, Huseyin Utku Demir.</p>
 </div>
 
 <div class="pkgdown-footer-right">

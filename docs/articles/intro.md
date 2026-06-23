@@ -12,8 +12,8 @@ components. The package supports customizable lag structures, model
 selection criteria (AIC, BIC, AICc, HQ), and parallel processing for
 computational efficiency. Key features include:
 
-- **Flexible Formula Specification**: Use `Asymmetric()`,
-  `Lasymmetric()`, and `Sasymmetric()` to model asymmetric effects in
+- **Flexible Formula Specification**: Use `asymmetric()`,
+  `lasymmetric()`, and `sasymmetric()` to model asymmetric effects in
   short- and long-run dynamics, and `deterministic()` for dummy
   variables.
 - **Lag Optimization**: Choose between automatic lag selection
@@ -42,7 +42,10 @@ GitHub:
 ``` r
 
 # Install required packages
-install.packages(c("stats", "msm", "lmtest", "nlWaldTest", "car", "strucchange", "utils","ggplot2"))
+install.packages(c(
+  "stats", "msm", "lmtest", "nlWaldTest", "car", "strucchange",
+  "utils", "ggplot2"
+))
 # Install kardl from GitHub
 install.packages("devtools")
 devtools::install_github("karamelikli/kardl")
@@ -61,7 +64,7 @@ The `kardl` package implements several methodological extensions and
 improvements for ARDL/NARDL modelling that go beyond standard
 implementations available in R and other software:
 
-- **differentAsymLag** option: Enables different lag orders for the
+- **different_asym_lag** option: Enables different lag orders for the
   positive and negative partial sum decompositions in NARDL models. This
   provides greater flexibility than the common symmetric lag restriction
   used in most existing packages.
@@ -88,32 +91,7 @@ These features make `kardl` particularly suitable for researchers
 needing fine-grained control over asymmetric dynamics and small-sample
 inference.
 
-### Prior Art and Comparisons
-
-`kardl` builds upon the foundational NARDL framework of Shin et
-al. (2014) and extends it with practical innovations not fully available
-in other R packages.
-
-**Comparable implementations in R**: - `nardl` package - `ardl.nardl` /
-`dynardl` - Other tools in the broader `ardlverse` ecosystem
-
-While these packages provide solid baseline ARDL/NARDL estimation,
-`kardl` offers meaningful improvements in flexibility (especially
-regarding lag structures for asymmetric components), additional
-cointegration testing options (including the Narayan test), integrated
-symmetry testing, and bootstrap inference for dynamic multipliers.
-
-**Key reference**: - Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014).
-Modelling Asymmetric Cointegration and Dynamic Multipliers in a
-Nonlinear ARDL Framework. In *Econometric Methods and Their Applications
-in Finance, Macro and Related Fields*. - Narayan, P. K. (2005). The
-saving and investment nexus for China: evidence from cointegration
-tests. *Applied Economics*, 37(17), 1979–1990.
-
-For a full list of implemented standards and methodological details, see
-the package vignette and the dedicated SRR standards documentation.
-
-## Estimating an Asymmetric ARDL Model
+## Estimating an asymmetric ARDL Model
 
 This example estimates an asymmetric ARDL model to analyze the dynamics
 of exchange rate pass-through to domestic prices in Turkey, using a
@@ -137,15 +115,16 @@ be loaded by `readxl` or other data import functions.
 
 We define the model formula using R’s formula syntax, incorporating
 asymmetric effects and deterministic variables. We use `asymmetric()`
-for variables with both short- and long-run asymmetry, `Lasymmetric()`
-for long-run asymmetry, `Sasymmetric()` for short-run asymmetry, and
+for variables with both short- and long-run asymmetry, `lasymmetric()`
+for long-run asymmetry, `sasymmetric()` for short-run asymmetry, and
 `deterministic()` for fixed dummy variables. The `trend` term includes a
 linear time trend in the model.
 
 ``` r
 
 # Define the model formula
-MyFormula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend
+my_formula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) +
+  trend
 ```
 
 Indeed, the formula syntax is flexible, allowing for various
@@ -155,10 +134,17 @@ specification:
 
 ``` r
 
-sameFormula <- y ~Asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + Deterministic(dummy1) + trend
-sameFormula <- y ~asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + deterministic(dummy1) + trend
-sameFormula <- y ~asym(x1)+sasym(x2+x3)+lasym(x4+x5) + det(dummy1) + trend
-sameFormula <- y ~a(x1)+s(x2+x3)+l(x4+x5) + d(dummy1) + trend
+same_formula <- y ~ asymmetric(x1) +
+  sasymmetric(x2 + x3) +
+  lasymmetric(x4 + x5) +
+  deterministic(dummy1) + trend
+same_formula <- y ~ asymmetric(x1) +
+  sasymmetric(x2 + x3) +
+  lasymmetric(x4 + x5) +
+  deterministic(dummy1) + trend
+same_formula <- y ~ asym(x1) + sasym(x2 + x3) + lasym(x4 + x5) +
+  det(dummy1) + trend
+same_formula <- y ~ a(x1) + s(x2 + x3) + l(x4 + x5) + d(dummy1) + trend
 ```
 
 ### Step 3: Model Estimation
@@ -177,9 +163,12 @@ provides console feedback.
 ``` r
 
 # Set model options
-kardl_set(criterion = "BIC", differentAsymLag = TRUE, data=imf_example_data)
+kardl_set(criterion = "BIC", different_asym_lag = TRUE, data = imf_example_data)
 # Estimate model with grid mode
-kardl_model <- kardl(data=imf_example_data,formula= MyFormula, maxlag = 4, mode = "grid")
+kardl_model <- kardl(
+  data = imf_example_data, formula = my_formula,
+  maxlag = 4, mode = "grid"
+)
 ```
 
 ``` r
@@ -192,20 +181,15 @@ kardl_model
     ## CPI: 1, ER_POS: 1, ER_NEG: 0, PPI_POS: 3, PPI_NEG: 0 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + 
-    ##     L1.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + L0.d.PPI_POS + 
-    ##     L1.d.PPI_POS + L2.d.PPI_POS + L3.d.PPI_POS + L0.d.PPI_NEG + 
-    ##     covid + trend
+    ## lm(formula = my_formula, data = model_data)
     ## 
     ## Coefficients:
     ##  (Intercept)        L1.CPI     L1.ER_POS     L1.ER_NEG    L1.PPI_POS  
-    ##   -0.0386634    -0.0121524     0.0110491     0.0252653     0.0517031  
-    ##   L1.PPI_NEG      L1.d.CPI   L0.d.ER_POS   L1.d.ER_POS   L0.d.ER_NEG  
-    ##    0.0451043     0.3340367     0.1111220     0.0937503    -0.0026591  
-    ## L0.d.PPI_POS  L1.d.PPI_POS  L2.d.PPI_POS  L3.d.PPI_POS  L0.d.PPI_NEG  
-    ##    0.0474102     0.0021468    -0.0519928    -0.0517409     0.0057550  
-    ##        covid         trend  
-    ##    0.0033275    -0.0002952
+    ##   -0.0662799    -0.0167504     0.0138795     0.0346587     0.0420485  
+    ##   L1.PPI_NEG      L1.d.CPI   L0.d.ER_POS   L0.d.ER_NEG  L0.d.PPI_POS  
+    ##    0.0396081     0.3969313     0.1242241    -0.0229369     0.0420020  
+    ## L0.d.PPI_NEG         covid         trend  
+    ##   -0.0039507     0.0036707    -0.0000213
 
 Summary of the model provides detailed information about the estimated
 coefficients, standard errors, t-values, and significance levels.
@@ -218,41 +202,34 @@ summary(kardl_model)
 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + 
-    ##     L1.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + L0.d.PPI_POS + 
-    ##     L1.d.PPI_POS + L2.d.PPI_POS + L3.d.PPI_POS + L0.d.PPI_NEG + 
-    ##     covid + trend
+    ## lm(formula = my_formula, data = model_data)
     ## 
     ## Residuals:
     ##       Min        1Q    Median        3Q       Max 
-    ## -0.050478 -0.008129 -0.000904  0.006918  0.102836 
+    ## -0.044033 -0.009369 -0.001300  0.007786  0.113556 
     ## 
     ## Coefficients:
     ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  -0.0386634  0.0227251  -1.701 0.089572 .  
-    ## L1.CPI       -0.0121524  0.0047287  -2.570 0.010494 *  
-    ## L1.ER_POS     0.0110491  0.0051559   2.143 0.032652 *  
-    ## L1.ER_NEG     0.0252653  0.0079538   3.177 0.001594 ** 
-    ## L1.PPI_POS    0.0517031  0.0096244   5.372 1.25e-07 ***
-    ## L1.PPI_NEG    0.0451043  0.0107631   4.191 3.35e-05 ***
-    ## L1.d.CPI      0.3340367  0.0399191   8.368 7.54e-16 ***
-    ## L0.d.ER_POS   0.1111220  0.0180412   6.159 1.63e-09 ***
-    ## L1.d.ER_POS   0.0937503  0.0181990   5.151 3.88e-07 ***
-    ## L0.d.ER_NEG  -0.0026591  0.0474028  -0.056 0.955291    
-    ## L0.d.PPI_POS  0.0474102  0.0160401   2.956 0.003284 ** 
-    ## L1.d.PPI_POS  0.0021468  0.0144158   0.149 0.881684    
-    ## L2.d.PPI_POS -0.0519928  0.0143424  -3.625 0.000322 ***
-    ## L3.d.PPI_POS -0.0517409  0.0137160  -3.772 0.000183 ***
-    ## L0.d.PPI_NEG  0.0057550  0.0135155   0.426 0.670452    
-    ## covid         0.0033275  0.0050899   0.654 0.513621    
-    ## trend        -0.0002952  0.0002472  -1.194 0.233112    
+    ## (Intercept)  -0.0662799  0.0233710  -2.836 0.004772 ** 
+    ## L1.CPI       -0.0167504  0.0048668  -3.442 0.000631 ***
+    ## L1.ER_POS     0.0138795  0.0052938   2.622 0.009039 ** 
+    ## L1.ER_NEG     0.0346587  0.0081800   4.237 2.74e-05 ***
+    ## L1.PPI_POS    0.0420485  0.0096352   4.364 1.58e-05 ***
+    ## L1.PPI_NEG    0.0396081  0.0110457   3.586 0.000372 ***
+    ## L1.d.CPI      0.3969313  0.0399609   9.933  < 2e-16 ***
+    ## L0.d.ER_POS   0.1242241  0.0185934   6.681 6.94e-11 ***
+    ## L0.d.ER_NEG  -0.0229369  0.0495520  -0.463 0.643668    
+    ## L0.d.PPI_POS  0.0420020  0.0166326   2.525 0.011899 *  
+    ## L0.d.PPI_NEG -0.0039507  0.0139364  -0.283 0.776936    
+    ## covid         0.0036707  0.0053298   0.689 0.491354    
+    ## trend        -0.0000213  0.0002533  -0.084 0.933010    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.01483 on 448 degrees of freedom
-    ##   (5 observations deleted due to missingness)
-    ## Multiple R-squared:  0.6516, Adjusted R-squared:  0.6392 
-    ## F-statistic: 52.38 on 16 and 448 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 0.0156 on 455 degrees of freedom
+    ##   (2 observations deleted due to missingness)
+    ## Multiple R-squared:  0.6099, Adjusted R-squared:  0.5996 
+    ## F-statistic: 59.28 on 12 and 455 DF,  p-value: < 2.2e-16
 
 #### Using User-Defined Lags
 
@@ -260,12 +237,14 @@ Specify custom lags to bypass automatic lag selection:
 
 ``` r
 
-kardl_model2 <- kardl(data=imf_example_data, MyFormula, mode = c(2, 1, 1, 3, 0))
+kardl_model2 <- kardl(
+  data = imf_example_data, my_formula,
+  mode = c(2, 1, 1, 3, 0)
+)
 # View results
-kardl_model2$lagInfo
+kardl_extract(kardl_model2, "opt_lag")
 ```
 
-    ## $OptLag
     ##     CPI  ER_POS  ER_NEG PPI_POS PPI_NEG 
     ##       2       1       1       3       0
 
@@ -277,10 +256,7 @@ summary(kardl_model2)
 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.ER_POS + L1.ER_NEG + L1.PPI_POS + L1.PPI_NEG + 
-    ##     L1.d.CPI + L2.d.CPI + L0.d.ER_POS + L1.d.ER_POS + L0.d.ER_NEG + 
-    ##     L1.d.ER_NEG + L0.d.PPI_POS + L1.d.PPI_POS + L2.d.PPI_POS + 
-    ##     L3.d.PPI_POS + L0.d.PPI_NEG + covid + trend
+    ## lm(formula = my_formula, data = model_data)
     ## 
     ## Residuals:
     ##       Min        1Q    Median        3Q       Max 
@@ -322,26 +298,25 @@ variable:
 
 ``` r
 
-kardl_set(data=imf_example_data)
-kardl(formula =  CPI ~ . + deterministic(covid), mode = "grid")
+kardl_set(data = imf_example_data)
+kardl(formula = CPI ~ . + deterministic(covid), mode = "grid")
 ```
 
     ## Optimal lags for each variable ( BIC ):
     ## CPI: 1, ER: 1, PPI: 1 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.ER + L1.PPI + L1.d.CPI + L0.d.ER + L1.d.ER + 
-    ##     L0.d.PPI + L1.d.PPI + covid
+    ## lm(formula = my_formula, data = model_data)
     ## 
     ## Coefficients:
     ## (Intercept)       L1.CPI        L1.ER       L1.PPI     L1.d.CPI      L0.d.ER  
-    ##   0.0721925   -0.0151379    0.0156144   -0.0017714    0.4453614    0.0995449  
-    ##     L1.d.ER     L0.d.PPI     L1.d.PPI        covid  
-    ##   0.0871452    0.0058383    0.0238530    0.0008534
+    ##    0.075004    -0.019754     0.020240     0.001600     0.489064     0.113932  
+    ##    L0.d.PPI        covid  
+    ##   -0.001353    -0.002127
 
 #### Visualizing Lag Criteria
 
-The `LagCriteria` component contains lag combinations and their
+The `lag_criteria` component contains lag combinations and their
 criterion values. We visualize these to compare model selection criteria
 (AIC, BIC, HQ).
 
@@ -350,28 +325,45 @@ criterion values. We visualize these to compare model selection criteria
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-# Convert LagCriteria to a data frame
-LagCriteria <- as.data.frame(kardl_model$lagInfo$LagCriteria)
-colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
-LagCriteria <- LagCriteria %>% mutate(across(c(AIC, BIC, HQ), as.numeric))
+# Convert lag_criteria to a data frame
+lag_criteria <- as.data.frame(kardl_extract(kardl_model, "lag_criteria"))
+colnames(lag_criteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+lag_criteria <- lag_criteria |> mutate(across(c(AIC, BIC, HQ), as.numeric))
 
 # Pivot to long format
-LagCriteria_long <- LagCriteria %>%
-  select(-AICc) %>%
-  pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+lag_criteria_long <- lag_criteria |>
+  select(-AICc) |>
+  pivot_longer(
+    cols = c(AIC, BIC, HQ),
+    names_to = "Criteria",
+    values_to = "Value"
+  )
 
 # Find minimum values
-min_values <- LagCriteria_long %>%
-  group_by(Criteria) %>%
-  slice_min(order_by = Value) %>%
+min_values <- lag_criteria_long |>
+  group_by(Criteria) |>
+  slice_min(order_by = Value) |>
   ungroup()
 
 # Plot
-ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
+ggplot(
+  lag_criteria_long,
+  aes(x = lag, y = Value, color = Criteria, group = Criteria)
+) +
   geom_line() +
-  geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
-  geom_text(data = min_values, aes(x = lag, y = Value, label = lag), vjust = 1.5, color = "black", size = 3.5) +
-  labs(title = "Lag Criteria Comparison", x = "Lag Configuration", y = "Criteria Value") +
+  geom_point(
+    data = min_values, aes(x = lag, y = Value),
+    color = "red", size = 3, shape = 8
+  ) +
+  geom_text(
+    data = min_values, aes(x = lag, y = Value, label = lag),
+    vjust = 1.5, color = "black", size = 3.5
+  ) +
+  labs(
+    title = "Lag Criteria Comparison",
+    x = "Lag Configuration",
+    y = "Criteria Value"
+  ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
@@ -386,14 +378,17 @@ specify the same formula and lag structure as in the ARDL model.
 
 ``` r
 
-ecm_model <- ecm(data=imf_example_data, formula = MyFormula, maxlag = 4, mode = "grid_custom")
+ecm_model <- ecm(
+  data = imf_example_data, formula = my_formula,
+  maxlag = 4, mode = "grid_custom"
+)
 # View results
 summary(ecm_model)
 ```
 
     ## 
     ## Call:
-    ## lm(formula = shortrunEQ, data = EcmData)
+    ## lm(formula = shortrun_eq, data = ecm_data)
     ## 
     ## Residuals:
     ##       Min        1Q    Median        3Q       Max 
@@ -431,17 +426,17 @@ dependent variable’s long-run parameter.
 ``` r
 
 # Long-run coefficients
-mylong <- kardl_longrun(kardl_model)
-mylong
+my_long <- kardl_longrun(kardl_model)
+my_long
 ```
 
     ## 
     ## Call:
-    ## kardl_longrun(model = kardl_model)
+    ## kardl_longrun.kardl_lm(kardl_model = kardl_model)
     ## 
     ## Coefficients:
     ##  L1.ER_POS   L1.ER_NEG  L1.PPI_POS  L1.PPI_NEG  
-    ##     0.9092      2.0790      4.2545      3.7115
+    ##     0.8286      2.0691      2.5103      2.3646
 
 The [`summary()`](https://rdrr.io/r/base/summary.html) function provides
 detailed information about the long-run coefficients, including standard
@@ -450,30 +445,26 @@ errors, t-values, and significance levels.
 ``` r
 
 # Summary of long-run coefficients
-summary(mylong)
+summary(my_long)
 ```
 
     ## 
     ## Call:
-    ## kardl_longrun(model = kardl_model)
+    ## kardl_longrun.kardl_lm(kardl_model = kardl_model)
     ## 
     ## Estimation type:
     ## Long-run multipliers 
     ## 
     ## Coefficients:
     ##            Estimate Std. Error t value  Pr(>|t|)    
-    ## L1.ER_POS   0.90921    0.20834  4.3640 1.587e-05 ***
-    ## L1.ER_NEG   2.07904    0.56693  3.6672 0.0002747 ***
-    ## L1.PPI_POS  4.25455    1.72822  2.4618 0.0141998 *  
-    ## L1.PPI_NEG  3.71155    1.33518  2.7798 0.0056681 ** 
+    ## L1.ER_POS   0.82861    0.15902  5.2107 2.858e-07 ***
+    ## L1.ER_NEG   2.06913    0.41649  4.9680 9.593e-07 ***
+    ## L1.PPI_POS  2.51030    0.85303  2.9428 0.0034187 ** 
+    ## L1.PPI_NEG  2.36460    0.71337  3.3147 0.0009908 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-    ## 
-    ## Note:
-    ## Coefficients, standard errors, t-statistics and p-values are reliably estimated.
-    ## Fitted values and residuals are NOT centered (E(u) ≠ 0 by design) → diagnostic plots and residual-based tests are invalid.
 
-### Step 5: Asymmetry Test
+### Step 5: Symmetry Test
 
 The
 [`symmetrytest()`](https://karamelikli.github.io/kardl/reference/symmetrytest.md)
@@ -482,11 +473,19 @@ the model.
 
 ``` r
 
-ast <- imf_example_data %>% kardl(CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend, mode = c(1, 2, 3, 0, 1)) %>% symmetrytest()
+ast <- imf_example_data |>
+  kardl(
+    CPI ~ ER + PPI + asymmetric(ER + PPI) +
+      deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0, 1),
+    data = _
+  ) |>
+  symmetrytest()
 ast
 ```
 
     ## 
+    ## KARDL Symmetry Test Results
     ## Symmetry Test Results - Long-run:
     ## =======================
     ##     Df  Sum of Sq    Mean Sq F value Pr(>F)
@@ -509,39 +508,43 @@ and test decisions.
 summary(ast)
 ```
 
-    ## Long-run symmetry tests:
     ## 
-    ## Test for variable:  ER 
-    ## F statistic: 2.164906, p-value: 0.1418984
-    ## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. 
-    ## Hypotheses:
-    ## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)
-    ## H1: - Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)
+    ## Long-run symmetry tests
+    ## -----------------------
+    ##           F  Pr(>F)
+    ## ER  2.16491 0.14190
+    ## PPI 0.71527 0.39815
     ## 
-    ## Test for variable:  PPI 
-    ## F statistic: 0.7152717, p-value: 0.3981528
-    ## Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
-    ## Hypotheses:
-    ## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)
-    ## H1: - Coef(L1.PPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.PPI_NEG)/Coef(L1.CPI)
+    ## Hypotheses and decisions:
+    ## 
+    ## Variable: ER 
+    ## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+    ## H1: At least one coefficient differs from zero. 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. 
+    ## 
+    ## Variable: PPI 
+    ## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+    ## H1: At least one coefficient differs from zero. 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
     ## 
     ## 
-    ## _____________________________
-    ## Short-run symmetry tests:
+    ## Short-run symmetry tests
+    ## ------------------------
+    ##           F  Pr(>F)
+    ## ER  1.67981 0.19562
+    ## PPI 0.75820 0.38436
     ## 
-    ## Test for variable:  ER 
-    ## F  statistic:  1.679811 , p-value:  0.1956198 
-    ## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. 
-    ## Hypotheses:
-    ## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)
-    ## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG)
+    ## Hypotheses and decisions:
     ## 
-    ## Test for variable:  PPI 
-    ## F  statistic:  0.7582018 , p-value:  0.3843603 
-    ## Test Decision:  Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI. 
-    ## Hypotheses:
-    ## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)
-    ## H1: Coef(L0.d.PPI_POS) ≠ Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG)
+    ## Variable: ER 
+    ## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG) 
+    ## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG) 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. 
+    ## 
+    ## Variable: PPI 
+    ## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG) 
+    ## H1: Coef(L0.d.PPI_POS) ≠ Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG) 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI.
 
 ### Step 6: Cointegration Tests
 
@@ -558,15 +561,15 @@ Bound test.
 
 ``` r
 
-A <- kardl_model %>% pssf(case = 3, signif_level = "0.05")
-A
+test_result <- kardl_model |> pssf(case = 3, signif_level = "0.05")
+test_result
 ```
 
     ## 
     ##  Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration
     ## 
-    ## data:  model
-    ## F = 11.271
+    ## data:  kardl_model
+    ## F = 10.792
     ## alternative hypothesis: Cointegrating relationship exists
 
 Summary of the PSS F Bound test provides detailed information about the
@@ -575,28 +578,41 @@ cointegration.
 
 ``` r
 
-summary(A)
+summary(test_result)
 ```
 
-    ## Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration 
-    ## F  =  11.27056 
-    ## k =  4 
     ## 
-    ## Hypotheses:
+    ## ========================================
+    ## KARDL Cointegration Test Results
+    ## ========================================
+    ## 
+    ##  Decision: Reject H0 → Cointegration (at 5% level)
+    ## 
+    ##  Test Statistic:
+    ##   F: 10.7918266
+    ## 
+    ##  Critical Values (Lower & Upper Bounds):
+    ##           L    U
+    ##   10%  3.03 4.06
+    ##   5%   3.47 4.57
+    ##   2.5% 3.89 5.07
+    ##   1%   4.40 5.72
+    ## 
+    ## 
+    ##  Comparison:
+    ##   At the 5% significance level, F (10.7918266) exceeds the upper bound (4.57).
+    ##   This indicates that the variables tend to move together over  time.
+    ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+    ## 
+    ##  Hypotheses:
     ## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 
-    ## H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI_POS) ≠ Coef(L1.PPI_NEG)≠ 0 
+    ## H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI_POS), Coef(L1.PPI_NEG) are zero. 
     ## 
-    ## Test Decision:  Reject H0 → Cointegration (at 5% level) 
+    ##  Model Details:
+    ##   Number of regressors (k): 4
+    ##   Case: V 
     ## 
-    ## Critical Values (Case  V ):
-    ##          L    U
-    ## 0.10  3.03 4.06
-    ## 0.05  3.47 4.57
-    ## 0.025 3.89 5.07
-    ## 0.01  4.40 5.72
-    ## 
-    ## Notes:
-    ##    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
+    ## ========================================
 
 #### PSS t Bound Test
 
@@ -606,15 +622,15 @@ coefficient.
 
 ``` r
 
-A <- kardl_model %>% psst(case = 3, signif_level = "0.05")
-A
+test_result <- kardl_model |> psst(case = 3, signif_level = "0.05")
+test_result
 ```
 
     ## 
     ##  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
     ## 
     ## data:  model
-    ## t = -2.5699
+    ## t = -3.4418
     ## alternative hypothesis: Cointegrating relationship exists
 
 Summary of the PSS t Bound test provides detailed information about the
@@ -623,28 +639,41 @@ cointegration.
 
 ``` r
 
-summary(A)
+summary(test_result)
 ```
 
-    ## Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration 
-    ## t  =  -2.569932 
-    ## k =  4 
     ## 
-    ## Hypotheses:
+    ## ========================================
+    ## KARDL Cointegration Test Results
+    ## ========================================
+    ## 
+    ##  Decision: Inconclusive
+    ## 
+    ##  Test Statistic:
+    ##   t: -3.4418095
+    ## 
+    ##  Critical Values (Lower & Upper Bounds):
+    ##            L     U
+    ##   10%  -3.13 -4.04
+    ##   5%   -3.41 -4.36
+    ##   2.5% -3.65 -4.62
+    ##   1%   -3.96 -4.96
+    ## 
+    ## 
+    ##  Comparison:
+    ##   At the 5% significance level, t (3.4418095) falls between the lower bound (3.41) and upper bound (4.36).
+    ##   This is an inconclusive zone where we cannot make a definitive  judgment.
+    ##   Conclusion: The test does not provide clear evidence either way.
+    ## 
+    ##  Hypotheses:
     ## H0: Coef(L1.CPI) = 0 
-    ## H1: Coef(L1.CPI)≠ 0 
+    ## H1: Coef(L1.CPI) ≠ 0 
     ## 
-    ## Test Decision:  Reject H0 → Cointegration (at 5% level) 
+    ##  Model Details:
+    ##   Number of regressors (k): 4
+    ##   Case: V 
     ## 
-    ## Critical Values (Case  V ):
-    ##           L     U
-    ## 0.10  -3.13 -4.04
-    ## 0.05  -3.41 -4.36
-    ## 0.025 -3.65 -4.62
-    ## 0.01  -3.96 -4.96
-    ## 
-    ## Notes:
-    ##    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
+    ## ========================================
 
 #### Narayan Test
 
@@ -655,15 +684,15 @@ using critical values optimized for small samples.
 
 ``` r
 
-A <- kardl_model %>% narayan(case = 3, signif_level = "0.05")
-A
+test_result <- kardl_model |> narayan(case = 3, signif_level = "0.05")
+test_result
 ```
 
     ## 
     ##  Narayan F Test for Cointegration
     ## 
     ## data:  model
-    ## F = 11.271
+    ## F = 10.792
     ## alternative hypothesis: Cointegrating relationship exists
 
 Summary of the Narayan test provides detailed information about the test
@@ -672,29 +701,42 @@ cointegration.
 
 ``` r
 
-summary(A)
+summary(test_result)
 ```
 
-    ## Narayan F Test for Cointegration 
-    ## F  =  11.27056 
-    ## k =  4 
     ## 
-    ## Hypotheses:
+    ## ========================================
+    ## KARDL Cointegration Test Results
+    ## ========================================
+    ## 
+    ##  Decision: Reject H0 → Cointegration (at 5% level)
+    ## 
+    ##  Test Statistic:
+    ##   F: 10.7918266
+    ## 
+    ##  Critical Values (Lower & Upper Bounds):
+    ##           L     U
+    ##   10% 3.160 4.230
+    ##   5%  3.678 4.840
+    ##   1%  4.890 6.164
+    ## 
+    ## 
+    ##  Comparison:
+    ##   At the 5% significance level, F (10.7918266) exceeds the upper bound (4.84).
+    ##   This indicates that the variables tend to move together over  time.
+    ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+    ## 
+    ##  Hypotheses:
     ## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 
-    ## H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI_POS) ≠ Coef(L1.PPI_NEG)≠ 0 
+    ## H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI_POS), Coef(L1.PPI_NEG) are zero. 
     ## 
-    ## Test Decision:  Reject H0 → Cointegration (at 5% level) 
+    ##  Model Details:
+    ##   Number of regressors (k): 4
+    ##   Case: V 
     ## 
-    ## Critical Values (Case  V ):
-    ##          L     U
-    ## 0.10 3.160 4.230
-    ## 0.05 3.678 4.840
-    ## 0.01 4.890 6.164
     ## 
-    ## Notes:
-    ##    • The Narayan F-test is designed for small samples. Your model uses only 469 observations. For greater accuracy with large samples, consider pssf() function. 
-    ##    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-    ##    • The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.
+    ##  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.
+    ## ========================================
 
 ### Step 7: Dynamic Multipliers
 
@@ -706,40 +748,40 @@ time.
 
 ``` r
 
-multipliers <- kardl_model %>% mplier()
+multipliers <- kardl_model |> mplier()
 # View multipliers of the model
-head(multipliers$mpsi)
+head(kardl_extract(multipliers, "multipliers"))
 ```
 
-    ##      h    ER_POS       ER_NEG    ER_dif    PPI_POS      PPI_NEG     PPI_dif
-    ## [1,] 0 0.1111220  0.002659096 0.1137811 0.04741019 -0.005755012  0.04165518
-    ## [2,] 1 0.2516899 -0.021750322 0.2299396 0.11652070 -0.052711765  0.06380893
-    ## [3,] 2 0.3066352 -0.054904985 0.2517302 0.13790041 -0.112860775  0.02503964
-    ## [4,] 3 0.3323117 -0.090577971 0.2417337 0.14332835 -0.176685526 -0.03335717
-    ## [5,] 4 0.3478993 -0.126658657 0.2212406 0.19510280 -0.240962483 -0.04585969
-    ## [6,] 5 0.3599274 -0.162437060 0.1974903 0.26172949 -0.304609373 -0.04287988
+    ##      h    ER_POS       ER_NEG     ER_dif    PPI_POS      PPI_NEG     PPI_dif
+    ## [1,] 0 0.1242241  0.022936894 0.14716099 0.04200204  0.003950724  0.04595277
+    ## [2,] 1 0.1853312 -0.003001657 0.18232956 0.05797042 -0.034155367  0.02381505
+    ## [3,] 2 0.2203617 -0.047905918 0.17245575 0.06333773 -0.088316829 -0.02497909
+    ## [4,] 3 0.2444547 -0.099586097 0.14486860 0.06440726 -0.147943943 -0.08353668
+    ## [5,] 4 0.2638028 -0.153090186 0.11071257 0.06375294 -0.208741767 -0.14498883
+    ## [6,] 5 0.2809433 -0.206422027 0.07452128 0.06242533 -0.268985893 -0.20656056
 
 ``` r
 
 # View long-run multipliers
-head(multipliers$omega)
+kardl_extract(multipliers, "omega")
 ```
 
-    ## [1]  1.3218843 -0.3340367
+    ## [1]  1.3801808 -0.3969313
 
 ``` r
 
 # View short-run multipliers
-head(multipliers$lambda)
+head(kardl_extract(multipliers, "lambda"))
 ```
 
-    ##            ER_POS       ER_NEG       PPI_POS     PPI_NEG
-    ## [1,]  0.111122028 -0.002659096  0.0474101941 0.005755012
-    ## [2,] -0.006322597  0.027924436  0.0064397124 0.039349293
-    ## [3,] -0.093750322  0.000000000 -0.0541396294 0.000000000
-    ## [4,]  0.000000000  0.000000000  0.0002518809 0.000000000
-    ## [5,]  0.000000000  0.000000000  0.0517409420 0.000000000
-    ## [6,]  0.000000000  0.000000000  0.0000000000 0.000000000
+    ##          ER_POS      ER_NEG     PPI_POS      PPI_NEG
+    ## [1,]  0.1242241 -0.02293689  0.04200204 -0.003950724
+    ## [2,] -0.1103446  0.05759561 -0.04200204  0.043558804
+    ## [3,]  0.0000000  0.00000000  0.00000000  0.000000000
+    ## [4,]  0.0000000  0.00000000  0.00000000  0.000000000
+    ## [5,]  0.0000000  0.00000000  0.00000000  0.000000000
+    ## [6,]  0.0000000  0.00000000  0.00000000  0.000000000
 
 Plotting dynamic multipliers for specific variables can be done using
 the [`plot()`](https://rdrr.io/r/graphics/plot.default.html) function,
@@ -751,7 +793,7 @@ independent variables over time.
 plot(multipliers, variables = c("ER", "PPI"))
 ```
 
-![](intro_files/figure-html/plot-multipliers-1.png)![](intro_files/figure-html/plot-multipliers-2.png)
+![](intro_files/figure-html/plot-multipliers-1.png)
 
 To handle a large number of variables, you can specify a subset of
 variables to plot or use `variables = "all"` to visualize all dynamic
@@ -765,7 +807,8 @@ multipliers.
 
 ``` r
 
-bootstrap_results <- kardl_model %>%   bootstrap(horizon = 12,  replications= 10)
+bootstrap_results <- kardl_model |>
+  bootstrap(horizon = 12, replications = 10)
 # View bootstrap summary
 summary(bootstrap_results)
 ```
@@ -773,29 +816,29 @@ summary(bootstrap_results)
     ## Summary of Dynamic Multipliers
     ## Horizon: 12 
     ## 
-    ##        h          ER_POS           ER_NEG              ER_dif      
-    ##  Min.   : 0   Min.   :0.1111   Min.   :-0.396247   Min.   :0.0315  
-    ##  1st Qu.: 3   1st Qu.:0.3323   1st Qu.:-0.299717   1st Qu.:0.1004  
-    ##  Median : 6   Median :0.3706   Median :-0.197680   Median :0.1484  
-    ##  Mean   : 6   Mean   :0.3467   Mean   :-0.195624   Mean   :0.1511  
-    ##  3rd Qu.: 9   3rd Qu.:0.4001   3rd Qu.:-0.090578   3rd Qu.:0.2212  
-    ##  Max.   :12   Max.   :0.4277   Max.   : 0.002659   Max.   :0.2517  
-    ##     PPI_POS           PPI_NEG             PPI_dif           ER_CI_upper    
-    ##  Min.   :0.04741   Min.   :-0.720251   Min.   :-0.045860   Min.   :0.1558  
-    ##  1st Qu.:0.14333   1st Qu.:-0.548660   1st Qu.:-0.033357   1st Qu.:0.2040  
-    ##  Median :0.33251   Median :-0.367272   Median :-0.004707   Median :0.2388  
-    ##  Mean   :0.36104   Mean   :-0.362996   Mean   :-0.001957   Mean   :0.2449  
-    ##  3rd Qu.:0.54395   3rd Qu.:-0.176686   3rd Qu.: 0.024956   3rd Qu.:0.2941  
-    ##  Max.   :0.74521   Max.   :-0.005755   Max.   : 0.063809   Max.   :0.3333  
-    ##   ER_CI_lower        PPI_CI_upper      PPI_CI_lower     
-    ##  Min.   :-0.13109   Min.   :0.02179   Min.   :-0.19412  
-    ##  1st Qu.:-0.02293   1st Qu.:0.04069   1st Qu.:-0.19122  
-    ##  Median : 0.05582   Median :0.07289   Median :-0.18770  
-    ##  Mean   : 0.05608   Mean   :0.06884   Mean   :-0.14912  
-    ##  3rd Qu.: 0.15745   3rd Qu.:0.09263   3rd Qu.:-0.16366  
-    ##  Max.   : 0.19002   Max.   :0.11741   Max.   : 0.01085
+    ##        h          ER_POS           ER_NEG             ER_dif        
+    ##  Min.   : 0   Min.   :0.1242   Min.   :-0.54519   Min.   :-0.16380  
+    ##  1st Qu.: 3   1st Qu.:0.2445   1st Qu.:-0.40804   1st Qu.:-0.06693  
+    ##  Median : 6   Median :0.2969   Median :-0.25879   Median : 0.03813  
+    ##  Mean   : 6   Mean   :0.2847   Mean   :-0.25573   Mean   : 0.02895  
+    ##  3rd Qu.: 9   3rd Qu.:0.3411   3rd Qu.:-0.09959   3rd Qu.: 0.14487  
+    ##  Max.   :12   Max.   :0.3814   Max.   : 0.02294   Max.   : 0.18233  
+    ##     PPI_POS           PPI_NEG             PPI_dif          ER_CI_upper    
+    ##  Min.   :0.04200   Min.   :-0.650249   Min.   :-0.59891   Min.   :0.1689  
+    ##  1st Qu.:0.05437   1st Qu.:-0.495965   1st Qu.:-0.44002   1st Qu.:0.1745  
+    ##  Median :0.05797   Median :-0.328001   Median :-0.26715   Median :0.2723  
+    ##  Mean   :0.05739   Mean   :-0.322665   Mean   :-0.26528   Mean   :0.2682  
+    ##  3rd Qu.:0.06243   3rd Qu.:-0.147944   3rd Qu.:-0.08354   3rd Qu.:0.3491  
+    ##  Max.   :0.06441   Max.   : 0.003951   Max.   : 0.04595   Max.   :0.3977  
+    ##   ER_CI_lower         PPI_CI_upper       PPI_CI_lower      
+    ##  Min.   :-0.456249   Min.   :-0.49442   Min.   :-0.789906  
+    ##  1st Qu.:-0.302609   1st Qu.:-0.36962   1st Qu.:-0.615389  
+    ##  Median :-0.133211   Median :-0.23505   Median :-0.418502  
+    ##  Mean   :-0.159183   Mean   :-0.21177   Mean   :-0.407860  
+    ##  3rd Qu.: 0.003771   3rd Qu.:-0.04240   3rd Qu.:-0.191493  
+    ##  Max.   : 0.049601   Max.   : 0.07719   Max.   :-0.006423
 
-Vşsualize bootstrap results for specific variables to understand the
+Visualize bootstrap results for specific variables to understand the
 variability and confidence intervals of the dynamic multipliers.
 
 ``` r
@@ -805,7 +848,7 @@ plot(bootstrap_results, variables = "ER")
 
 ![](intro_files/figure-html/plot-bootstrap-multipliers-1.png)
 
-### Step 8: Customizing Asymmetric Variables
+### Step 8: Customizing asymmetric Variables
 
 We demonstrate how to customize prefixes and suffixes for asymmetric
 variables using
@@ -815,8 +858,8 @@ variables using
 
 # Set custom prefixes and suffixes
 kardl_reset()
-kardl_set(AsymPrefix = c("asyP_", "asyN_"), AsymSuffix = c("_PP", "_NN"))
-kardl_custom <- kardl(data=imf_example_data, MyFormula)
+kardl_set(asym_prefix = c("asyP_", "asyN_"), asym_suffix = c("_PP", "_NN"))
+kardl_custom <- kardl(data = imf_example_data, my_formula)
 kardl_custom
 ```
 
@@ -824,11 +867,7 @@ kardl_custom
     ## CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 0, asyP_PPI_PP: 4, asyN_PPI_NN: 0 
     ## 
     ## Call:
-    ## L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.asyP_PPI_PP + 
-    ##     L1.asyN_PPI_NN + L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + 
-    ##     L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + L0.d.asyP_PPI_PP + L1.d.asyP_PPI_PP + 
-    ##     L2.d.asyP_PPI_PP + L3.d.asyP_PPI_PP + L4.d.asyP_PPI_PP + 
-    ##     L0.d.asyN_PPI_NN + covid + trend
+    ## lm(formula = my_formula, data = model_data)
     ## 
     ## Coefficients:
     ##      (Intercept)            L1.CPI     L1.asyP_ER_PP     L1.asyN_ER_NN  
@@ -849,12 +888,12 @@ kardl_custom
   - `data`: A time series dataset (e.g., a data frame with CPI, ER,
     PPI).
   - `formula`: A formula specifying the long-run equation, e.g.,
-    `y ~ x + z + asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`.
+    `y ~ x + z + asymmetric(z) + lasymmetric(x2 + x3) + sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`.
     Supports:
-    - `asymmetric()`: Asymmetric effects for both short- and long-run
+    - `asymmetric()`: asymmetric effects for both short- and long-run
       dynamics.
-    - `Lasymmetric()`: Long-run asymmetric variables.
-    - `Sasymmetric()`: Short-run asymmetric variables.
+    - `lasymmetric()`: Long-run asymmetric variables.
+    - `sasymmetric()`: Short-run asymmetric variables.
     - `deterministic()`: Fixed dummy variables.
     - `trend`: Linear time trend.
   - `maxlag`: Maximum number of lags (default: 4). Use smaller values
@@ -867,12 +906,12 @@ kardl_custom
     - User-defined vector (e.g., `c(1, 2, 4, 5)` or
       `c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)`).
   - Returns a list with components: `inputs`, `finalModel`,
-    `start_time`, `end_time`, `properLag`, `TimeSpan`, `OptLag`,
-    `LagCriteria`, `type` (“kardlmodel”).
+    `start_time`, `end_time`, `properLag`, `time_span`, `opt_lag`,
+    `lag_criteria`, `type` (“kardlmodel”).
 
 - **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC,
-  AICc, HQ), `differentAsymLag`, `AsymPrefix`, `Sasymuffix`,
-  `ShortCoef`, and `LongCoef`. Use
+  AICc, HQ), `different_asym_lag`, `asym_prefix`, `Sasymuffix`,
+  `short_coef`, and `long_coef`. Use
   [`kardl_get()`](https://karamelikli.github.io/kardl/reference/kardl_get.md)
   to retrieve settings and
   [`kardl_reset()`](https://karamelikli.github.io/kardl/reference/kardl_reset.md)

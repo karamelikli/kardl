@@ -20,7 +20,7 @@ an asymmetric relationship.
 
 The non-linear model with one asymmetric variables is specified as
 follows: \$\$ \Delta{y\_{t}} = \psi + \eta\_{0}y\_{t - 1} +
-\eta^{+}\_{1} x^{+}\_{t - 1}+ \eta^{-}\_{1} x^{-}\_{t - 1} + \sum\_{j =
+\eta^{+}\_{1} x^{+}\_{t - 1} + \eta^{-}\_{1} x^{-}\_{t - 1} + \sum\_{j =
 1}^{p}{\gamma\_{j}\Delta y\_{t - j}} + \sum\_{j =
 0}^{q}{\beta^{+}\_{j}\Delta x^{+}\_{t - j}} + \sum\_{j =
 0}^{m}{\beta^{-}\_{j}\Delta x^{-}\_{t - j}} + e\_{t} \$\$
@@ -37,23 +37,30 @@ for the long-run variables are: \$\$ H\_{0}:
 -\frac{\eta^{-}\_{1}}{\eta\_{0}} \$\$
 
 The hypotheses for the short-run variables are: \$\$ H\_{0}: \sum\_{j =
-0}^{q}{\beta^{+}\_{j}} = \sum\_{j = 0}^{m}{\beta^{-}\_{j}} \$\$
-\$\$H\_{1}: \sum\_{j = 0}^{q}{\beta^{+}\_{j}} \neq \sum\_{j =
+0}^{q}{\beta^{+}\_{j}} = \sum\_{j = 0}^{m}{\beta^{-}\_{j}} \$\$ \$\$
+H\_{1}: \sum\_{j = 0}^{q}{\beta^{+}\_{j}} \neq \sum\_{j =
 0}^{m}{\beta^{-}\_{j}} \$\$
 
 ## Usage
 
 ``` r
-symmetrytest(kmodel, vars = NULL, component = "both", type = "F", ...)
+symmetrytest(
+  kardl_model,
+  selected_vars = NULL,
+  component = "both",
+  type = "F",
+  ...
+)
 ```
 
 ## Arguments
 
-- kmodel:
+- kardl_model:
 
-  The kardl obejct
+  An object of class `kardl_lm` representing a fitted non-linear KARDL
+  model.
 
-- vars:
+- selected_vars:
 
   A character vector specifying the names of the variables to be
   included in the symmetry test. If NULL (the default), all eligible
@@ -96,19 +103,19 @@ symmetrytest(kmodel, vars = NULL, component = "both", type = "F", ...)
 
 A list with class "kardl" containing the following components:
 
-- `Lwald:` A data frame containing the Wald test results for the
-  long-run variables, including F-statistic, p-value, degrees of
+- `long_wald_summary:` A data frame containing the Wald test results for
+  the long-run variables, including F-statistic, p-value, degrees of
   freedom, and residual degrees of freedom.
 
-- `Lhypotheses:` A list containing the null and alternative hypotheses
-  for the long-run variables.
+- `long_hypotheses:` A list containing the null and alternative
+  hypotheses for the long-run variables.
 
-- `Swald:` A data frame containing the Wald test results for the
-  short-run variables, including F-statistic, p-value, degrees of
-  freedom, residual degrees of freedom, and sum of squares.
+- `short_wald_summary:` A data frame containing the Wald test results
+  for the short-run variables, including F-statistic, p-value, degrees
+  of freedom, residual degrees of freedom, and sum of squares.
 
-- `Shypotheses:` A list containing the null and alternative hypotheses
-  for the short-run variables.
+- `short_hypotheses:` A list containing the null and alternative
+  hypotheses for the short-run variables.
 
 ## Details
 
@@ -144,12 +151,14 @@ applications, 281-314.
 ## Examples
 
 ``` r
-
- kardl_model<-kardl(imf_example_data,
-                    CPI~Lasym(PPI+ER)+Sas(ER)+deterministic(covid)+trend)
- ast<- symmetrytest(kardl_model)
- ast
+kardl_model <- kardl(
+  CPI ~ Lasym(PPI + ER) + Sas(ER) + deterministic(covid) + trend,
+  imf_example_data
+)
+ast <- symmetrytest(kardl_model)
+ast
 #> 
+#> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
 #>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
@@ -165,74 +174,91 @@ applications, 281-314.
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
- # Detailed results of the test:
- summary(ast)
-#> Long-run symmetry tests:
+# Detailed results of the test:
+summary(ast)
 #> 
-#> Test for variable:  ER 
-#> F statistic: 4.221689, p-value: 0.04048856
-#> Test Decision:  Reject H0 at 5% level. Indicating long-run asymmetry for variable ER. 
-#> Hypotheses:
-#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)
-#> H1: - Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)
+#> Long-run symmetry tests
+#> -----------------------
+#>           F   Pr(>F)  
+#> ER  4.22169 0.040489 *
+#> PPI 0.13210 0.716440  
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Test for variable:  PPI 
-#> F statistic: 0.1320953, p-value: 0.7164405
-#> Test Decision:  Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
-#> Hypotheses:
-#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)
-#> H1: - Coef(L1.PPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.PPI_NEG)/Coef(L1.CPI)
+#> Hypotheses and decisions:
+#> 
+#> Variable: ER 
+#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+#> H1: At least one coefficient differs from zero. 
+#> Decision: Reject H0 at 5% level. Indicating long-run asymmetry for variable ER. 
+#> 
+#> Variable: PPI 
+#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+#> H1: At least one coefficient differs from zero. 
+#> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
 #> 
 #> 
-#> _____________________________
-#> Short-run symmetry tests:
+#> Short-run symmetry tests
+#> ------------------------
+#>          F    Pr(>F)   
+#> ER 9.54985 0.0021239 **
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Test for variable:  ER 
-#> F  statistic:  9.549852 , p-value:  0.002123947 
-#> Test Decision:  Reject H0 at 5% level. Indicating short-run asymmetry for variable ER. 
-#> Hypotheses:
-#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG)
-#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG)
+#> Hypotheses and decisions:
 #> 
- # The null hypothesis of the test is that the model is symmetric, while the alternative
- # hypothesis is that the model is asymmetric. The test statistic and p-value are provided
- # in the output. If the p-value is less than a chosen significance level (e.g., 0.05),
- # we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.
+#> Variable: ER 
+#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) 
+#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) 
+#> Decision: Reject H0 at 5% level. Indicating short-run asymmetry for variable ER. 
+# The null hypothesis of the test is that the model is symmetric, while the
+# alternative hypothesis is that the model is asymmetric. The test statistic
+# and p-value are provided in the output. If the p-value is less than a
+# chosen significance level (e.g., 0.05), we reject the null hypothesis and
+# conclude that there is evidence of asymmetry in the model.
 
- # The default significance level is 0.05, but you can specify a different level using the 'level'
- # argument in the summary function. For example, to use a significance level of 0.01,
- # you can use the following code:
- summary(ast, level = 0.01)
-#> Long-run symmetry tests:
+# The default significance level is 0.05, but you can specify a different
+# level using the 'level' argument in the summary function. For example, to
+# use a significance level of 0.01, you can use the following code:
+summary(ast, level = 0.01)
 #> 
-#> Test for variable:  ER 
-#> F statistic: 4.221689, p-value: 0.04048856
-#> Test Decision:  Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable ER. 
-#> Hypotheses:
-#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)
-#> H1: - Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)
+#> Long-run symmetry tests
+#> -----------------------
+#>           F   Pr(>F)  
+#> ER  4.22169 0.040489 *
+#> PPI 0.13210 0.716440  
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Test for variable:  PPI 
-#> F statistic: 0.1320953, p-value: 0.7164405
-#> Test Decision:  Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PPI. 
-#> Hypotheses:
-#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)
-#> H1: - Coef(L1.PPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.PPI_NEG)/Coef(L1.CPI)
+#> Hypotheses and decisions:
+#> 
+#> Variable: ER 
+#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+#> H1: At least one coefficient differs from zero. 
+#> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable ER. 
+#> 
+#> Variable: PPI 
+#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+#> H1: At least one coefficient differs from zero. 
+#> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PPI. 
 #> 
 #> 
-#> _____________________________
-#> Short-run symmetry tests:
+#> Short-run symmetry tests
+#> ------------------------
+#>          F    Pr(>F)   
+#> ER 9.54985 0.0021239 **
+#> ---
+#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Test for variable:  ER 
-#> F  statistic:  9.549852 , p-value:  0.002123947 
-#> Test Decision:  Reject H0 at 1% level. Indicating short-run asymmetry for variable ER. 
-#> Hypotheses:
-#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG)
-#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG)
+#> Hypotheses and decisions:
 #> 
+#> Variable: ER 
+#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) 
+#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) 
+#> Decision: Reject H0 at 1% level. Indicating short-run asymmetry for variable ER. 
 
- # To get symmetry test results in long-run, you can use the following code:
- ast$Lwald
+# To get symmetry test results in long-run, you can use the following code:
+kardl_extract(ast, what = "long_wald_summary")
 #> Symmetry Test Results - Long-run:
 #> =======================
 #>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
@@ -241,8 +267,8 @@ applications, 281-314.
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
- # To get symmetry test results in short-run, you can use the following code:
- ast$Swald
+# To get symmetry test results in short-run, you can use the following code:
+kardl_extract(ast, what = "short_wald_summary")
 #> Symmetry Test Results - Short-run:
 #> =======================
 #>    Df Sum of Sq   Mean Sq F value   Pr(>F)   
@@ -250,46 +276,40 @@ applications, 281-314.
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
- # To get the null and alternative hypotheses of the test in long-run,
- # you can use the following code:
-
- ast$Lhypotheses
-#> $H0
-#> $H0$ER
-#> [1] "- Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI)"
+# To get the null and alternative hypotheses of the test in long-run,
+# you can use the following code:
+kardl_extract(ast, what = "long_hypotheses")
 #> 
-#> $H0$PPI
-#> [1] "- Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI)"
+#> Hypotheses:
+#> 
+#> Variable: ER 
+#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+#> H1: At least one coefficient differs from zero. 
 #> 
 #> 
-#> $H1
-#> $H1$ER
-#> [1] "- Coef(L1.ER_POS)/Coef(L1.CPI) ≠ - Coef(L1.ER_NEG)/Coef(L1.CPI)"
-#> 
-#> $H1$PPI
-#> [1] "- Coef(L1.PPI_POS)/Coef(L1.CPI) ≠ - Coef(L1.PPI_NEG)/Coef(L1.CPI)"
-#> 
+#> Variable: PPI 
+#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+#> H1: At least one coefficient differs from zero. 
 #> 
 
- # To get the null and alternative hypotheses of the test in short-run,
- # you can use the following code:
+# To get the null and alternative hypotheses of the test in short-run,
+# you can use the following code:
+kardl_extract(ast, what = "short_hypotheses")
+#> 
+#> Hypotheses:
+#> 
+#> Variable: ER 
+#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) 
+#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) 
+#> 
 
- ast$Shypotheses
-#> $H0
-#> $H0$ER
-#> [1] "Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG)"
+# Alternatively, you can also use the symmetrytest function with the
+# component argument to specify whether you want to test for long-run or
+# short-run symmetry. For example, to test for long-run symmetry, you can use
+# the following code:
+symmetrytest(kardl_model, component = "longrun")
 #> 
-#> 
-#> $H1
-#> $H1$ER
-#> [1] "Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG)"
-#> 
-#> 
- # Alternatively, you can also use the symmetrytest function with the component
- # argument to specify whether you want to test for long-run or short-run symmetry.
- # For example, to test for long-run symmetry, you can use the following code:
- symmetrytest(kardl_model, component = "longrun")
-#> 
+#> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
 #>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
@@ -298,9 +318,11 @@ applications, 281-314.
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
- # To test for short-run symmetry, you can use the following code:
- symmetrytest(kardl_model, component = "shortrun")
+
+# To test for short-run symmetry, you can use the following code:
+symmetrytest(kardl_model, component = "shortrun")
 #> 
+#> KARDL Symmetry Test Results
 #> Symmetry Test Results - Short-run:
 #> =======================
 #>    Df Sum of Sq   Mean Sq F value   Pr(>F)   
@@ -309,22 +331,26 @@ applications, 281-314.
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
 
- # If you want to test for symmetry with respect to a specific variable,
- # you can use the vars argument in the symmetrytest function. For example,
- # to test for symmetry with respect to the PPI variable, you can use the following code:
- symmetrytest(kardl_model, vars = "PPI")
+# If you want to test for symmetry with respect to a specific variable,
+# you can use the selected_vars argument in the symmetrytest function. For
+# example, to test for symmetry with respect to the PPI variable, you can use
+# the following code:
+symmetrytest(kardl_model, selected_vars = "PPI")
 #> 
+#> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
 #>     Df  Sum of Sq    Mean Sq F value Pr(>F)
 #> PPI  1 2.9149e-05 2.9149e-05  0.1321 0.7164
 #> 
 
- # To test for symmetry with respect to multiple variables, you can provide
- # a vector of variable names to the vars argument. For example, to test for
- # symmetry with respect to both PPI and ER, you can use the following code:
- symmetrytest(kardl_model, vars = c("PPI", "ER"))
+# To test for symmetry with respect to multiple variables, you can provide
+# a vector of variable names to the selected_vars argument. For example, to
+# test for symmetry with respect to both PPI and ER, you can use the
+# following code:
+symmetrytest(kardl_model, selected_vars = c("PPI", "ER"))
 #> 
+#> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
 #>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
@@ -341,12 +367,14 @@ applications, 281-314.
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
 
- # Finally, you can also specify the type of test statistic to be used in the
- # symmetry test. By default, the function uses the Wald test  F statistic,
- # but you can also choose to use the chi-squared test statistic.
- # For example, to use the chi-squared test statistic, you can use the following code:
- symmetrytest(kardl_model, type="Chisq")
+# Finally, you can also specify the type of test statistic to be used in the
+# symmetry test. By default, the function uses the Wald test F statistic,
+# but you can also choose to use the chi-squared test statistic.
+# For example, to use the chi-squared test statistic, you can use the
+# following code:
+symmetrytest(kardl_model, type = "Chisq")
 #> 
+#> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
 #>     Df  Chisq Pr(>Chisq)  
@@ -362,5 +390,4 @@ applications, 281-314.
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-
 ```

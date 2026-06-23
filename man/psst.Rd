@@ -4,56 +4,59 @@
 \alias{psst}
 \title{Pesaran, Shin, and Smith t Bounds Test}
 \usage{
-psst(kmodel, case = 3, signif_level = "auto")
+psst(kardl_model, ...)
 }
 \arguments{
-\item{kmodel}{A fitted KARDL model object of class 'kardl_lm' created using the \code{\link{kardl}} function.}
+\item{kardl_model}{A fitted KARDL model object of class 'kardl_lm' created
+using the \code{\link{kardl}} function.}
 
-\item{case}{Numeric or character. Specifies the case of the test to be used in the function.
-Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the function determines the case automatically based on the model's characteristics. Invalid values will result in an error.
-\itemize{
-\item \code{1}: No intercept and no trend
-\item \code{2}: Restricted intercept and no trend
-\item \code{3}: Unrestricted intercept and no trend
-\item \code{4}: Unrestricted intercept and restricted trend
-\item \code{5}: Unrestricted intercept and unrestricted trend
-}}
-
-\item{signif_level}{Character or numeric. Specifies the significance level to be used in the function.
-Acceptable values are "auto", "0.10", "0.1", "0.05", "0.025", and "0.01".
-If a numeric value is provided, it will be converted to a character string.
-
-When \code{"auto"} is selected, the function determines the significance level
-sequentially, starting from the most stringent level (\code{"0.01"}) and proceeding
-to \code{"0.025"}, \code{"0.05"}, and \code{"0.10"} until a suitable level is identified.
-Invalid values will result in an error.}
+\item{...}{Additional arguments (currently not used).}
 }
 \value{
-The function returns an object of class "htest" containing the following components:
+The function returns an object of class "htest" containing the
+following components:
 \describe{
 \item{statistic}{The calculated t-statistic for the test.}
 \item{method}{A description of the test performed.}
 \item{data.name}{The name of the data used in the test.}
 \item{k}{The number of independent variables in the model.}
 \item{notes}{Any notes or warnings related to the test results, such as
-sample size considerations or adjustments made to the case based on model characteristics.}
-\item{sig}{The significance level used for the test, either specified by the user or determined automatically.}
+sample size considerations or adjustments made to the case based on model
+characteristics.}
+\item{sig}{The significance level used for the test, either specified by the
+user or determined automatically.}
 \item{alternative}{The alternative hypothesis being tested.}
-\item{case}{The case used for the test, either specified by the user or determined automatically based on the model's characteristics.}
+\item{case}{The case used for the test, either specified by the user or
+determined automatically based on the model's characteristics.}
 }
 }
 \description{
 This function performs the Pesaran t Bound test
 }
 \details{
-This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which is used to detect the existence of a long-term relationship (cointegration) between variables in an autoregressive distributed lag (ARDL) model. The t Bound test specifically focuses on the significance of the coefficient of the lagged dependent variable, helping to assess whether the variable reverts to its long-term equilibrium after short-term deviations. The test provides critical values for both upper and lower bounds. If the t-statistic falls within the appropriate range, it confirms the presence of cointegration. This test is particularly useful when working with datasets containing both stationary and non-stationary variables.
+This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which
+is used to detect the existence of a long-term relationship (cointegration)
+between variables in an autoregressive distributed lag (ARDL) model. The t
+Bound test specifically focuses on the significance of the coefficient of
+the lagged dependent variable, helping to assess whether the variable
+reverts to its long-term equilibrium after short-term deviations. The test
+provides critical values for both upper and lower bounds. If the t-statistic
+falls within the appropriate range, it confirms the presence of
+cointegration. This test is particularly useful when working with datasets
+containing both stationary and non-stationary variables.
 }
 \section{Hypothesis testing}{
 
-The PSS t Bound test evaluates the null hypothesis that the long-run coefficients of the model are equal to zero against the alternative hypothesis that at least one of them is non-zero. The test is conducted under different cases, depending on the model specification.
+The PSS t Bound test evaluates the null hypothesis that the long-run
+coefficients of the model are equal to zero against the alternative
+hypothesis that at least one of them is non-zero. The test is conducted under
+different cases, depending on the model specification.
 
 \deqn{
-  \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  + \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +   \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+ \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
+  \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  +
+  \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +
+  \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+
+  \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
 }
 
 \deqn{\mathbf{H_{0}:} \eta_0   = 0}
@@ -61,9 +64,9 @@ The PSS t Bound test evaluates the null hypothesis that the long-run coefficient
 }
 
 \examples{
-
-kardl_model<-kardl(imf_example_data,
+kardl_model<-kardl(
                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                   imf_example_data,
                    mode=c(1,2,3,0))
 my_test<-psst(kardl_model)
 # Getting the results of the test.
@@ -73,7 +76,7 @@ my_summary<-summary(my_test)
 my_summary
 
 # Getting the critical values of the test.
-my_summary$crit_vals
+kardl_extract(my_summary, what = "critical_values")
 
 
 
@@ -82,22 +85,25 @@ my_summary$crit_vals
 
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-     imf_example_data \%>\%
-     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0))    \%>\%
-                           psst()
+imf_example_data \%>\%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) \%>\%
+  psst()
 
-   # Getting details of the test results using magrittr:
-   imf_example_data \%>\%
-   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\%
-   psst() \%>\% summary()
-
-
+# Getting details of the test results using magrittr:
+imf_example_data \%>\%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) \%>\%
+  psst() \%>\%
+  summary()
 \dontshow{\}) # examplesIf}
 }
 \references{
-Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing Approaches to the Analysis of Level Relationship", Journal of Applied Econometrics, 16(3), 289-326.
+Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing
+Approaches to the Analysis of Level Relationship", Journal of Applied
+Econometrics, 16(3), 289-326.
 }
 \seealso{
 \code{\link{pssf}}   \code{\link{ecm}}  \code{\link{narayan}}

@@ -4,78 +4,115 @@
 \alias{narayan}
 \title{Narayan Bounds Test}
 \usage{
-narayan(kmodel, case = 3, signif_level = "auto")
+narayan(kardl_model, case = "auto", signif_level = "auto", ...)
 }
 \arguments{
-\item{kmodel}{The kardl obejct}
+\item{kardl_model}{A fitted KARDL model object of class 'kardl_lm' created
+using the \code{\link{kardl}} function.}
 
-\item{case}{Numeric or character. Specifies the case of the test to be used in the function.
-Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the function determines the case automatically based on the model's characteristics. Invalid values will result in an error.
+\item{case}{Numeric or character. Specifies the case of the test to be used
+in the function.
+Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the
+function determines the case automatically based on the model's
+characteristics. Invalid values will result in an error.
 
 \itemize{
-\item \code{1}: No intercept and no trend. This case is not supported by the Narayan test.
+\item \code{1}: No intercept and no trend. This case is not supported by the
+Narayan test.
 \item \code{2}: Restricted intercept and no trend.
 \item \code{3}: Unrestricted intercept and no trend.
 \item \code{4}: Unrestricted intercept and restricted trend.
 \item \code{5}: Unrestricted intercept and unrestricted trend.
 }}
 
-\item{signif_level}{Character or numeric. Specifies the significance level to be used in the function.
+\item{signif_level}{Character or numeric. Specifies the significance level to
+be used in the function.
 Acceptable values are "auto", "0.10", "0.1", "0.05", "0.025", and "0.01".
 If a numeric value is provided, it will be converted to a character string.
 
-When \code{"auto"} is selected, the function determines the significance level
-sequentially, starting from the most stringent level (\code{"0.01"}) and proceeding
-to \code{"0.025"}, \code{"0.05"}, and \code{"0.10"} until a suitable level is identified.
+When \code{"auto"} is selected, the function determines the significance
+level sequentially, starting from the most stringent level (\code{"0.01"})
+and proceeding to \code{"0.025"}, \code{"0.05"}, and \code{"0.10"} until a
+suitable level is identified.
 Invalid values will result in an error.}
+
+\item{...}{Additional arguments (currently not used).}
 }
 \value{
 A list with class "htest" containing the following components:
 \itemize{
 \item \code{statistic}: The calculated F-statistic for the test.
-\item \code{caseTxt}: A character string describing the case used for the test, based on the specified case parameter.
-\item \code{alternative}: A character string describing the alternative hypothesis of the test.
+\item \code{case_txt}: A character string describing the case used for the
+test, based on the specified case parameter.
+\item \code{alternative}: A character string describing the alternative
+hypothesis of the test.
 \item \code{sample.size}: The number of observations used in the test.
-\item \code{varnames}: A character vector containing the names of the dependent variable and independent variables used in the test.
-\item \code{k}: The number of independent variables (excluding the dependent variable) included in the test.
-\item \code{sig}: The significance level used for the test, either specified by the user or determined automatically.
-\item \code{notes}: A character vector containing any notes or warnings related to
-the test, such as the suitability of the test for small sample sizes or any adjustments made to the case based on the model's characteristics.
+\item \code{var_names}: A character vector containing the names of the
+dependent variable and independent variables used in the test.
+\item \code{k}: The number of independent variables (excluding the dependent
+variable) included in the test.
+\item \code{sig}: The significance level used for the test, either specified
+by the user or determined automatically.
+\item \code{notes}: A character vector containing any notes or warnings
+related to the test, such as the suitability of the test for small
+sample sizes or any adjustments made to the case based on the model's
+characteristics.
 }
 }
 \description{
-This function performs the Narayan test, which is designed to assess cointegration using critical values specifically tailored for small sample sizes. Unlike traditional cointegration tests that may rely on asymptotic distributions, the Narayan test adjusts for the limitations of small samples, providing more accurate results in such contexts. This makes the test particularly useful for studies with fewer observations, as it accounts for sample size constraints when determining the presence of a long-term equilibrium relationship between variables.
+This function performs the Narayan test, which is designed to assess
+cointegration using critical values specifically tailored for small sample
+sizes. Unlike traditional cointegration tests that may rely on asymptotic
+distributions, the Narayan test adjusts for the limitations of small samples,
+providing more accurate results in such contexts. This makes the test
+particularly useful for studies with fewer observations, as it accounts for
+sample size constraints when determining the presence of a long-term
+equilibrium relationship between variables.
 }
 \section{Hypothesis testing}{
 
-The null hypothesis (H0) of the F Bound test is that there is no cointegration among the variables in the model. In other words, it tests whether the long-term relationship between the variables is statistically significant. If the calculated F-statistic exceeds the upper critical value, we reject the null hypothesis and conclude that there is cointegration. Conversely, if the F-statistic falls below the lower critical value, we fail to reject the null hypothesis, indicating no evidence of cointegration. If the F-statistic lies between the two critical values, the result is inconclusive.
+The null hypothesis (H0) of the F Bound test is that there is no
+cointegration among the variables in the model. In other words, it tests
+whether the long-term relationship between the variables is statistically
+significant. If the calculated F-statistic exceeds the upper critical value,
+we reject the null hypothesis and conclude that there is cointegration.
+Conversely, if the F-statistic falls below the lower critical value, we fail
+to reject the null hypothesis, indicating no evidence of cointegration. If
+the F-statistic lies between the two critical values, the result is
+inconclusive.
 
 \deqn{
-  \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  + \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +   \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+ \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
+  \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  +
+  \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +
+  \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+
+  \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
 }
 
 \describe{
 \item{Cases 1, 3, 5:}{
 \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k  = 0}
-\deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k} \neq 0}
+\deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}
+           \neq 0}
 }
 \item{Case 2:}{
 \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k =  \psi  = 0}
-\deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \psi \neq 0}
+\deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}
+           \neq \psi \neq 0}
 }
-
 \item{Case 4:}{
 \deqn{\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k = \varphi = 0}
-\deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \varphi \neq 0}
+\deqn{\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}
+           \neq \varphi \neq 0}
 }
 }
 }
 
 \examples{
-kardl_model<-kardl(imf_example_data,
+kardl_model<-kardl(
                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
+                   imf_example_data,
                    mode=c(1,2,3,0))
-my_test<-narayan(kardl_model)
+my_test<-narayan(kardl_model, case=3, signif_level="auto")
 # Getting the results of the test.
 my_test
 # Getting details of the test.
@@ -83,7 +120,7 @@ my_summary<-summary(my_test)
 my_summary
 
 # Getting the critical values of the test.
-my_summary$crit_vals
+kardl_extract(my_summary, what = "critical_values")
 
 
 
@@ -92,21 +129,24 @@ my_summary$crit_vals
 
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-  imf_example_data \%>\%
-  kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                        mode=c(1,2,3,0)) \%>\% narayan()
+imf_example_data \%>\%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) \%>\%
+  narayan()
 
-  # Getting details of the test results using magrittr:
-   imf_example_data \%>\%
-   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) \%>\%
-   narayan() \%>\% summary()
-
-
+# Getting details of the test results using magrittr:
+imf_example_data \%>\%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) \%>\%
+  narayan() \%>\%
+  summary()
 \dontshow{\}) # examplesIf}
 }
 \references{
-Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. Applied economics, 37(17), 1979-1990.
+Narayan, P. K. (2005). The saving and investment nexus for China:
+evidence from cointegration tests. Applied economics, 37(17), 1979-1990.
 }
 \seealso{
 \code{\link{pssf}}  \code{\link{psst}}  \code{\link{ecm}}

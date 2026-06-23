@@ -1,3 +1,55 @@
+# kardl 2.0.1
+## New Features
+
+* Added S3 methods for major `kardl` classes, improving integration with
+  standard R workflows.
+
+* Added `summary()` methods for:
+  - `kardl_test`
+  - `kardl_symmetric`
+
+* Added dedicated print methods for:
+  - `kardl_decision`
+  - `kardl_mplier`
+
+* Introduced the new generic accessor function `kardl_extract()`
+  to retrieve documented components from `kardl` objects without
+  relying on internal object structures.
+
+* Added extraction methods for:
+  - `kardl_mplier`
+  - `kardl_symmetric`
+  - `kardl_test_summary`
+
+  allowing users to access multipliers, hypotheses, Wald test results,
+  critical values, decisions, and other model components through a
+  unified interface.
+
+## Improvements
+
+* Standardized object output across `kardl` classes using S3 methods.
+
+* Improved consistency of hypothesis reporting and decision summaries
+  for cointegration and symmetry tests.
+
+* Enhanced printing of critical values, test statistics, and multiplier
+  objects to better respect console width and improve readability.
+
+
+```r
+  kardl(formula, data)
+````
+
+
+# kardl 1.3.2
+## Changes in this version
+
+* Renamed `combineVarTypes()` to `parse_model_specs()`.
+    * **Lifecycle Update**: While previously internal, `parse_model_specs()` is now exported to support developers using `kardl` as a dependency for their own packages.
+* Refactored `parse_model_specs()` (formerly `combineVarTypes`):
+    * Several input validation and initial check procedures have been moved to the internal utility function `CheckInputs()`.
+    * `CheckInputs()` remains an internal function and is not exported.
+    
 # kardl 1.3.1
 ## Changes in this version
 

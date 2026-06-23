@@ -1,6 +1,3 @@
-------------------------------------------------------------------------
-
-editor_options: markdown: wrap: sentence ---
 
 # KARDL <img src="man/figures/KARDL.png" align="right"/>
 
@@ -8,7 +5,6 @@ editor_options: markdown: wrap: sentence ---
 [![GitHub version](https://img.shields.io/github/v/release/karamelikli/kardl)](https://github.com/karamelikli/kardl/releases) 
 [![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://opensource.org/licenses/GPL-3.0) 
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/kardl)](https://cran.r-project.org/package=kardl) 
-[![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 
 ## Introduction
 
@@ -18,7 +14,9 @@ The `kardl` package is an R tool for estimating symmetric and asymmetric Autoreg
 - **Lag Optimization**: Choose between automatic lag selection (`"quick"`, `"grid"`, `"grid_custom"`) or user-defined lags.
 - **Dynamic Analysis**: Compute long-run coefficients, perform cointegration tests (PSS F, PSS t, Narayan), and ECM estimation.
 
-This vignette demonstrates how to use the `kardl()` function to estimate an asymmetric ARDL model, perform diagnostic tests, and visualize results, using economic data from Turkey. \## Installation
+This vignette demonstrates how to use the `kardl()` function to estimate an asymmetric ARDL model, perform diagnostic tests, and visualize results, using economic data from Turkey. 
+
+## Installation
 
 `kardl` in R can easily be installed from its CRAN repository:
 
@@ -50,7 +48,7 @@ library(kardl)
 
 The `kardl` package implements several methodological extensions and improvements for ARDL/NARDL modelling that go beyond standard implementations available in R and other software:
 
-- **differentAsymLag** option: Enables different lag orders for the positive and negative partial sum decompositions in NARDL models. This provides greater flexibility than the common symmetric lag restriction used in most existing packages.
+- **different_asym_lag** option: Enables different lag orders for the positive and negative partial sum decompositions in NARDL models. This provides greater flexibility than the common symmetric lag restriction used in most existing packages.
 - **Narayan cointegration test** (`narayan()`): A dedicated small-sample bounds test (Narayan, 2005) with automatic handling of critical values for cases II–V. While the test exists in the literature, its seamless integration into a full ARDL/NARDL workflow is unique in R.
 - **Symmetry tests** (`symmetrytest()`): Comprehensive Wald tests for both short-run and long-run symmetry in NARDL models.
 - **Bootstrap confidence intervals for dynamic multipliers**: Robust uncertainty quantification around short-run, long-run, and impact multipliers through resampling methods, fully integrated with asymmetric multiplier estimation.
@@ -58,19 +56,8 @@ The `kardl` package implements several methodological extensions and improvement
 
 These features make `kardl` particularly suitable for researchers needing fine-grained control over asymmetric dynamics and small-sample inference.
 
-### Prior Art and Comparisons
 
-`kardl` builds upon the foundational NARDL framework of Shin et al. (2014) and extends it with practical innovations not fully available in other R packages.
-
-**Comparable implementations in R**: - `nardl` package - `ardl.nardl` / `dynardl` - Other tools in the broader `ardlverse` ecosystem
-
-While these packages provide solid baseline ARDL/NARDL estimation, `kardl` offers meaningful improvements in flexibility (especially regarding lag structures for asymmetric components), additional cointegration testing options (including the Narayan test), integrated symmetry testing, and bootstrap inference for dynamic multipliers.
-
-**Key reference**: - Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014). Modelling Asymmetric Cointegration and Dynamic Multipliers in a Nonlinear ARDL Framework. In *Econometric Methods and Their Applications in Finance, Macro and Related Fields*. - Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. *Applied Economics*, 37(17), 1979–1990.
-
-For a full list of implemented standards and methodological details, see the package vignette and the dedicated SRR standards documentation.
-
-## Estimating an Asymmetric ARDL Model
+## Estimating an asymmetric ARDL Model
 
 This example estimates an asymmetric ARDL model to analyze the dynamics of exchange rate pass-through to domestic prices in Turkey, using a sample dataset (`imf_example_data`) with variables for Consumer Price Index (CPI), Exchange Rate (ER), Producer Price Index (PPI), and a COVID-19 dummy variable.
 
@@ -78,46 +65,56 @@ This example estimates an asymmetric ARDL model to analyze the dynamics of excha
 
 Assume `imf_example_data` contains monthly data for CPI, ER, PPI, and a COVID dummy variable. We prepare the data by ensuring proper formatting and adding the dummy variable. We retrieve data from the IMF’s International Financial Statistics (IFS) dataset and prepare it for analysis.
 
-Note: The `imf_example_data` is a placeholder for demonstration purposes. You should replace it with your actual dataset. The data can be loaded by `readxl` or other data import functions.
+Note: The `imf_example_data` is a placeholder for demonstration purposes. You should replace it with your actual dataset.
+The data can be loaded by `readxl` or other data import functions.
+
 
 ### Step 2: Define the Model Formula
 
-We define the model formula using R's formula syntax, incorporating asymmetric effects and deterministic variables. We use `asymmetric()` for variables with both short- and long-run asymmetry, `Lasymmetric()` for long-run asymmetry, `Sasymmetric()` for short-run asymmetry, and `deterministic()` for fixed dummy variables. The `trend` term includes a linear time trend in the model.
+We define the model formula using R's formula syntax, incorporating asymmetric effects and deterministic variables. We use `asymmetric()` for variables with both short- and long-run asymmetry, `lasymmetric()` for long-run asymmetry, `sasymmetric()` for short-run asymmetry, and `deterministic()` for fixed dummy variables. The `trend` term includes a linear time trend in the model.
 
 ``` r
-
 # Define the model formula
-MyFormula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend
+my_formula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) +
+  trend
 ```
-
 Indeed, the formula syntax is flexible, allowing for various combinations of asymmetric and deterministic variables. The following variations of the formula are equivalent and will yield the same model specification:
 
 ``` r
-
-sameFormula <- y ~Asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + Deterministic(dummy1) + trend
-sameFormula <- y ~asymmetric(x1)+Sasymmetric(x2+x3)+Lasymmetric(x4+x5) + deterministic(dummy1) + trend
-sameFormula <- y ~asym(x1)+sasym(x2+x3)+lasym(x4+x5) + det(dummy1) + trend
-sameFormula <- y ~a(x1)+s(x2+x3)+l(x4+x5) + d(dummy1) + trend
+same_formula <- y ~ asymmetric(x1) +
+  sasymmetric(x2 + x3) +
+  lasymmetric(x4 + x5) +
+  deterministic(dummy1) + trend
+same_formula <- y ~ asymmetric(x1) +
+  sasymmetric(x2 + x3) +
+  lasymmetric(x4 + x5) +
+  deterministic(dummy1) + trend
+same_formula <- y ~ asym(x1) + sasym(x2 + x3) + lasym(x4 + x5) +
+  det(dummy1) + trend
+same_formula <- y ~ a(x1) + s(x2 + x3) + l(x4 + x5) + d(dummy1) + trend
 ```
+
+
+
 
 ### Step 3: Model Estimation
 
 We estimate the ARDL model using different `mode` settings to demonstrate flexibility in lag selection. The `kardl()` function supports various modes: `"grid"`, `"grid_custom"`, `"quick"`, or a user-defined lag vector.
 
 #### Using `mode = "grid"`
-
 The `"grid"` mode evaluates all lag combinations up to `maxlag` and provides console feedback.
 
 ``` r
-
 # Set model options
-kardl_set(criterion = "BIC", differentAsymLag = TRUE, data=imf_example_data)
+kardl_set(criterion = "BIC", different_asym_lag = TRUE, data = imf_example_data)
 # Estimate model with grid mode
-kardl_model <- kardl(data=imf_example_data,formula= MyFormula, maxlag = 4, mode = "grid")
+kardl_model <- kardl(
+  data = imf_example_data, formula = my_formula,
+  maxlag = 4, mode = "grid"
+)
 # View results
 kardl_model
 ```
-
 Summary of the model provides detailed information about the estimated coefficients, standard errors, t-values, and significance levels.
 
 ``` r
@@ -125,63 +122,82 @@ Summary of the model provides detailed information about the estimated coefficie
 summary(kardl_model)
 ```
 
+
 #### Using User-Defined Lags
 
 Specify custom lags to bypass automatic lag selection:
 
 ``` r
-
-kardl_model2 <- kardl(data=imf_example_data, MyFormula, mode = c(2, 1, 1, 3, 0))
+kardl_model2 <- kardl(
+  data = imf_example_data, my_formula,
+  mode = c(2, 1, 1, 3, 0)
+)
 # View results
-kardl_model2$lagInfo
-```
+kardl_extract(kardl_model2,"opt_lag")
 
+```
 ``` r
 # Display model summary
 summary(kardl_model2)
 ```
 
-#### Using All Variables
 
+
+#### Using All Variables
 Use the `.` operator to include all variables except the dependent variable:
 
 ``` r
-
-kardl_set(data=imf_example_data)
-kardl(formula =  CPI ~ . + deterministic(covid), mode = "grid")
+kardl_set(data = imf_example_data)
+kardl(formula = CPI ~ . + deterministic(covid), mode = "grid")
 ```
 
 #### Visualizing Lag Criteria
 
-The `LagCriteria` component contains lag combinations and their criterion values. We visualize these to compare model selection criteria (AIC, BIC, HQ).
+The `lag_criteria` component contains lag combinations and their criterion values. We visualize these to compare model selection criteria (AIC, BIC, HQ).
 
 ``` r
-
 library(dplyr)
 library(tidyr)
 library(ggplot2)
-# Convert LagCriteria to a data frame
-LagCriteria <- as.data.frame(kardl_model$lagInfo$LagCriteria)
-colnames(LagCriteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
-LagCriteria <- LagCriteria %>% mutate(across(c(AIC, BIC, HQ), as.numeric))
+# Convert lag_criteria to a data frame
+lag_criteria <- as.data.frame(kardl_extract(kardl_model, "lag_criteria"))
+colnames(lag_criteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+lag_criteria <- lag_criteria |> mutate(across(c(AIC, BIC, HQ), as.numeric))
 
 # Pivot to long format
-LagCriteria_long <- LagCriteria %>%
-  select(-AICc) %>%
-  pivot_longer(cols = c(AIC, BIC, HQ), names_to = "Criteria", values_to = "Value")
+lag_criteria_long <- lag_criteria |>
+  select(-AICc) |>
+  pivot_longer(
+    cols = c(AIC, BIC, HQ),
+    names_to = "Criteria",
+    values_to = "Value"
+  )
 
 # Find minimum values
-min_values <- LagCriteria_long %>%
-  group_by(Criteria) %>%
-  slice_min(order_by = Value) %>%
+min_values <- lag_criteria_long |>
+  group_by(Criteria) |>
+  slice_min(order_by = Value) |>
   ungroup()
 
 # Plot
-ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Criteria)) +
+ggplot(
+  lag_criteria_long,
+  aes(x = lag, y = Value, color = Criteria, group = Criteria)
+) +
   geom_line() +
-  geom_point(data = min_values, aes(x = lag, y = Value), color = "red", size = 3, shape = 8) +
-  geom_text(data = min_values, aes(x = lag, y = Value, label = lag), vjust = 1.5, color = "black", size = 3.5) +
-  labs(title = "Lag Criteria Comparison", x = "Lag Configuration", y = "Criteria Value") +
+  geom_point(
+    data = min_values, aes(x = lag, y = Value),
+    color = "red", size = 3, shape = 8
+  ) +
+  geom_text(
+    data = min_values, aes(x = lag, y = Value, label = lag),
+    vjust = 1.5, color = "black", size = 3.5
+  ) +
+  labs(
+    title = "Lag Criteria Comparison",
+    x = "Lag Configuration",
+    y = "Criteria Value"
+  ) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
@@ -189,38 +205,47 @@ ggplot(LagCriteria_long, aes(x = lag, y = Value, color = Criteria, group = Crite
 #### Error Correction Model (ECM) Estimation
 
 The `ecm()` function estimates a Restricted ECM for cointegration testing. We specify the same formula and lag structure as in the ARDL model.
-
 ``` r
-ecm_model <- ecm(data=imf_example_data, formula = MyFormula, maxlag = 4, mode = "grid_custom")
+ecm_model <- ecm(
+  data = imf_example_data, formula = my_formula,
+  maxlag = 4, mode = "grid_custom"
+)
 # View results
 summary(ecm_model)
 ```
+
 
 ### Step 4: Long-Run Coefficients
 
 We calculate long-run coefficients using `kardl_longrun()`, which standardizes coefficients by dividing them by the negative of the dependent variable’s long-run parameter.
 
 ``` r
-
 # Long-run coefficients
-mylong <- kardl_longrun(kardl_model)
-mylong
+my_long <- kardl_longrun(kardl_model)
+my_long
 ```
 
 The `summary()` function provides detailed information about the long-run coefficients, including standard errors, t-values, and significance levels.
 
 ``` r
 # Summary of long-run coefficients
-summary(mylong)
+summary(my_long)
 ```
 
-### Step 5: Asymmetry Test
+
+### Step 5: Symmetry Test
 
 The `symmetrytest()` function performs Wald tests to assess short- and long-run asymmetry in the model.
 
 ``` r
-
-ast <- imf_example_data %>% kardl(CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) + trend, mode = c(1, 2, 3, 0, 1)) %>% symmetrytest()
+ast <- imf_example_data |>
+  kardl(
+    CPI ~ ER + PPI + asymmetric(ER + PPI) +
+      deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0, 1),
+    data = _
+  ) |>
+  symmetrytest()
 ast
 ```
 
@@ -231,6 +256,8 @@ Summary of the symmetry test provides detailed results for both long-run and sho
 summary(ast)
 ```
 
+
+
 ### Step 6: Cointegration Tests
 
 We perform cointegration tests to assess long-term relationships using `pssf()`, `psst()`, and `narayan()`.
@@ -240,16 +267,14 @@ We perform cointegration tests to assess long-term relationships using `pssf()`,
 The `pssf()` function tests for cointegration using the Pesaran, Shin, and Smith F Bound test.
 
 ``` r
-
-A <- kardl_model %>% pssf(case = 3, signif_level = "0.05")
-A
+test_result <- kardl_model |> pssf(case = 3, signif_level = "0.05")
+test_result
 ```
 
 Summary of the PSS F Bound test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.
 
 ``` r
-
-summary(A)
+summary(test_result)
 ```
 
 #### PSS t Bound Test
@@ -257,15 +282,12 @@ summary(A)
 The `psst()` function tests the significance of the lagged dependent variable’s coefficient.
 
 ``` r
-
-A <- kardl_model %>% psst(case = 3, signif_level = "0.05")
-A
+test_result <- kardl_model |> psst(case = 3, signif_level = "0.05")
+test_result
 ```
-
 Summary of the PSS t Bound test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.
-
 ``` r
-summary(A)
+summary(test_result)
 ```
 
 #### Narayan Test
@@ -273,75 +295,74 @@ summary(A)
 The `narayan()` function is tailored for small sample sizes. It tests for cointegration using critical values optimized for small samples.
 
 ``` r
-
-A <- kardl_model %>% narayan(case = 3, signif_level = "0.05")
-A
+test_result <- kardl_model |> narayan(case = 3, signif_level = "0.05")
+test_result
 ```
-
 Summary of the Narayan test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.
 
 ``` r
-summary(A)
+summary(test_result)
 ```
+
+
 
 ### Step 7: Dynamic Multipliers
 
 The `mplier()` function calculates dynamic multipliers for the model, showing how changes in independent variables affect the dependent variable over time.
-
 ``` r
-multipliers <- kardl_model %>% mplier()
+multipliers <- kardl_model |> mplier()
 # View multipliers of the model
-head(multipliers$mpsi)
+head(kardl_extract(multipliers, "multipliers"))
 # View long-run multipliers
-head(multipliers$omega)
+kardl_extract(multipliers, "omega")
 # View short-run multipliers
-head(multipliers$lambda)
+head(kardl_extract(multipliers, "lambda"))
 ```
 
 Plotting dynamic multipliers for specific variables can be done using the `plot()` function, which visualizes the response of the dependent variable to changes in independent variables over time.
-
 ``` r
 plot(multipliers, variables = c("ER", "PPI"))
 ```
 
-To handle a large number of variables, you can specify a subset of variables to plot or use `variables = "all"` to visualize all dynamic multipliers.
-
-Bootstrap confidence intervals for dynamic multipliers can be calculated using the `bootstrap()` function, which provides robust estimates of uncertainty around the multipliers.
-
+ 
+ To handle a large number of variables, you can specify a subset of variables to plot or use `variables = "all"` to visualize all dynamic multipliers.
+ 
+ Bootstrap confidence intervals for dynamic multipliers can be calculated using the `bootstrap()` function, which provides robust estimates of uncertainty around the multipliers.
 ``` r
-bootstrap_results <- kardl_model %>%   bootstrap(horizon = 12,  replications= 10)
+bootstrap_results <- kardl_model |>
+  bootstrap(horizon = 12, replications = 10)
 # View bootstrap summary
 summary(bootstrap_results)
 ```
 
-Vşsualize bootstrap results for specific variables to understand the variability and confidence intervals of the dynamic multipliers.
+Visualize bootstrap results for specific variables to understand the variability and confidence intervals of the dynamic multipliers.
 
 ``` r
 plot(bootstrap_results, variables = "ER")
 ```
+ 
 
-### Step 8: Customizing Asymmetric Variables
+
+### Step 8: Customizing asymmetric Variables
 
 We demonstrate how to customize prefixes and suffixes for asymmetric variables using `kardl_set()`.
 
 ``` r
-
 # Set custom prefixes and suffixes
 kardl_reset()
-kardl_set(AsymPrefix = c("asyP_", "asyN_"), AsymSuffix = c("_PP", "_NN"))
-kardl_custom <- kardl(data=imf_example_data, MyFormula)
+kardl_set(asym_prefix = c("asyP_", "asyN_"), asym_suffix = c("_PP", "_NN"))
+kardl_custom <- kardl(data = imf_example_data, my_formula)
 kardl_custom
 ```
 
 ## Key Functions and Parameters
 
 - **`kardl(data, model, maxlag, mode, ...)`**:
-
   - `data`: A time series dataset (e.g., a data frame with CPI, ER, PPI).
-  - `formula`: A formula specifying the long-run equation, e.g., `y ~ x + z + asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`. Supports:
-    - `asymmetric()`: Asymmetric effects for both short- and long-run dynamics.
-    - `Lasymmetric()`: Long-run asymmetric variables.
-    - `Sasymmetric()`: Short-run asymmetric variables.
+  - `formula`: A formula specifying the long-run equation, e.g., `y ~ x + z + asymmetric(z) + lasymmetric(x2 + x3) + sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`. Supports:
+    - `asymmetric()`: asymmetric effects for both short- and long-run dynamics.
+    - `lasymmetric()`: Long-run asymmetric variables.
+    - `sasymmetric()`: Short-run asymmetric variables.
     - `deterministic()`: Fixed dummy variables.
     - `trend`: Linear time trend.
   - `maxlag`: Maximum number of lags (default: 4). Use smaller values (e.g., 2) for small datasets, larger values (e.g., 8) for long-term dependencies.
@@ -350,9 +371,9 @@ kardl_custom
     - `"grid"`: Verbose output with lag optimization.
     - `"grid_custom"`: Silent, efficient execution.
     - User-defined vector (e.g., `c(1, 2, 4, 5)` or `c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)`).
-  - Returns a list with components: `inputs`, `finalModel`, `start_time`, `end_time`, `properLag`, `TimeSpan`, `OptLag`, `LagCriteria`, `type` ("kardlmodel").
+  - Returns a list with components: `inputs`, `finalModel`, `start_time`, `end_time`, `properLag`, `time_span`, `opt_lag`, `lag_criteria`, `type` ("kardlmodel").
 
-- **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC, AICc, HQ), `differentAsymLag`, `AsymPrefix`, `Sasymuffix`, `ShortCoef`, and `LongCoef`. Use `kardl_get()` to retrieve settings and `kardl_reset()` to restore defaults.
+- **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC, AICc, HQ), `different_asym_lag`, `asym_prefix`, `Sasymuffix`, `short_coef`, and `long_coef`. Use `kardl_get()` to retrieve settings and `kardl_reset()` to restore defaults.
 
 - **`kardl_longrun(model)`**: Calculates standardized long-run coefficients, returning `type` ("kardl_longrun"), `coef`, `delta_se`, `results`, and `starsDesc`.
 
@@ -364,7 +385,7 @@ kardl_custom
 
 - **`narayan(model, case, signif_level)`**: Conducts the Narayan test for cointegration, optimized for small samples (cases 2–5).
 
-- **`ecm(data, model, maxlag, mode, ...)`**: Conducts the Restricted ECM test for cointegration, with similar parameters to `kardl()` and case/significance level options.
+- **`ecm(data, model, maxlag, mode,  ...)`**: Conducts the Restricted ECM test for cointegration, with similar parameters to `kardl()` and case/significance level options.
 
 For detailed documentation, use `?kardl`, `?kardl_set`, `?kardl_longrun`, `?symmetrytest`, `?pssf`, `?psst`, `?narayan`, or `?ecm`.
 
@@ -379,11 +400,11 @@ The options for the KARDL package are set by the `kardl_set()` function in R. Th
 | maxlag | 4 | The maximum number of lags to be considered for the model estimation |
 | mode | "quick" | The mode of the model estimation, can be "quick", "grid", "grid_custom" or a user-defined vector |
 | criterion | "AIC" | The criterion for model selection, can be "AIC", "BIC", "HQ" or a user-defined function |
-| differentAsymLag | FALSE | If TRUE, the asymmetry lags will be different for positive and negative shocks |
-| AsymPrefix | c() | Prefix for asymmetry variables, default is empty |
-| AsymSuffix | c("\_POS", "\_NEG") | Suffix for asymmetry variables, default is "\_POS" and "\_NEG" |
-| LongCoef | "L{lag}.{varName}" | Prefix for long-run coefficients, default is "L1." |
-| ShortCoef | "L{lag}.d.{varName}" | Prefix for short-run coefficients, default is "L1.d." |
+| different_asym_lag | FALSE | If TRUE, the asymmetry lags will be different for positive and negative shocks |
+| asym_prefix | c() | Prefix for asymmetry variables, default is empty |
+| asym_suffix | c("\_POS", "\_NEG") | Suffix for asymmetry variables, default is "\_POS" and "\_NEG" |
+| long_coef | "L{lag}.{varName}" | Prefix for long-run coefficients, default is "L1." |
+| short_coef | "L{lag}.d.{varName}" | Prefix for short-run coefficients, default is "L1.d." |
 | batch | "1/1" | Batch size for parallel processing, default is "1/1" |
 
 The details of the options are as follows:
@@ -427,7 +448,7 @@ The `mode` parameter determines how the `kardl()` function approaches the estima
 
 `criterion` is a character string specifying the criterion to be used for selecting the optimal lags. The default value is `"AIC"`. The available options are:
 
-- **User defined function**: For detailed information on the model selection criteria used in the methods, see the documentation for the `modelCriterion` function.
+- **User defined function**: For detailed information on the model selection criteria used in the methods, see the documentation for the `model_criterion` function.
 - **AIC**: Akaike Information Criterion (AIC). This criterion balances model fit and complexity, favoring models with a lower AIC value. It is widely used in time series analysis and model selection.
 - **BIC**: Schwarz Criterion (SC), also known as the Bayesian Information Criterion (BIC). This criterion imposes a stricter penalty for model complexity compared to AIC, often leading to simpler models when data size is large.
 - **AICc**: Corrected Akaike Information Criterion. This is a modification of AIC that accounts for small sample sizes. It is more reliable than AIC when the number of observations is limited.
@@ -435,7 +456,7 @@ The `mode` parameter determines how the `kardl()` function approaches the estima
 
 #### Details
 
-For detailed information on the model selection criteria used in the methods, see the documentation for the `modelCriterion` function.
+For detailed information on the model selection criteria used in the methods, see the documentation for the `model_criterion` function.
 
 The choice of the criterion can significantly impact the selected lag length and, consequently, the performance of the model. Each criterion has its strengths and is suited to specific scenarios:
 
@@ -453,7 +474,7 @@ Ensure that the selected criterion aligns with the goals of your analysis and th
 ``` r
 
 kardl_set(criterion = "AIC")
-kardl(data, MyFormula)
+kardl(data, my_formula)
 ```
 
 ##### Using BIC for lag selection
@@ -461,7 +482,7 @@ kardl(data, MyFormula)
 ``` r
 
 kardl_set(criterion = "BIC")
-kardl(data, MyFormula)
+kardl(data, my_formula)
 ```
 
 ##### Using AICc for small sample sizes
@@ -469,7 +490,7 @@ kardl(data, MyFormula)
 ``` r
 
 kardl_set(criterion = "AICc")
-data %>% kardl(MyFormula)
+data %>% kardl(my_formula, data=.)
 ```
 
 ##### Using HQ criterion
@@ -477,16 +498,16 @@ data %>% kardl(MyFormula)
 ``` r
 
 kardl_set(criterion = "HQ")
-kardl(data, MyFormula)
+kardl(data, my_formula)
 ```
 
-### 6. differentAsymLag
+### 6. different_asym_lag
 
-`differentAsymLag` is a logical value (`TRUE` or `FALSE`) indicating whether positive and negative asymmetric variables should be assigned different lags during the estimation process. The default value is `FALSE`, meaning that both positive and negative components will use the same lag.
+`different_asym_lag` is a logical value (`TRUE` or `FALSE`) indicating whether positive and negative asymmetric variables should be assigned different lags during the estimation process. The default value is `FALSE`, meaning that both positive and negative components will use the same lag.
 
 #### Details
 
-Asymmetric decomposition separates a variable into its positive and negative changes. In some models, it may be desirable to assign different lags to these components to capture distinct dynamic behaviors. Setting `differentAsymLag = TRUE` allows the function to optimize lags for positive and negative components independently. When `differentAsymLag = FALSE`, both components will share the same lag.
+Asymmetric decomposition separates a variable into its positive and negative changes. In some models, it may be desirable to assign different lags to these components to capture distinct dynamic behaviors. Setting `different_asym_lag = TRUE` allows the function to optimize lags for positive and negative components independently. When `different_asym_lag = FALSE`, both components will share the same lag.
 
 This parameter is particularly useful when:
 
@@ -495,8 +516,8 @@ This parameter is particularly useful when:
 
 **Attention!**
 
-- When `differentAsymLag = TRUE`, ensure that the model has sufficient data to estimate separate lags reliably.
-- For models with limited observations or a high number of variables, `differentAsymLag = FALSE` may be more robust and computationally efficient.
+- When `different_asym_lag = TRUE`, ensure that the model has sufficient data to estimate separate lags reliably.
+- For models with limited observations or a high number of variables, `different_asym_lag = FALSE` may be more robust and computationally efficient.
 
 #### Examples
 
@@ -504,21 +525,21 @@ This parameter is particularly useful when:
 
 ``` r
 
-kadrl_set(differentAsymLag = FALSE)
-kardl(data, MyFormula)
+kadrl_set(different_asym_lag = FALSE)
+kardl(data, my_formula)
 ```
 
 ##### Assigning different lags for positive and negative components
 
 ``` r
 
-kardl_set(differentAsymLag = TRUE)
-kardl(data, MyFormula)
+kardl_set(different_asym_lag = TRUE)
+kardl(data, my_formula)
 ```
 
-### 7. AsymPrefix
+### 7. asym_prefix
 
-`AsymPrefix` is a character vector specifying the prefixes used for naming asymmetric variables created during positive and negative decomposition. The default value is an empty vector `c()`, indicating that no prefixes are added by default.
+`asym_prefix` is a character vector specifying the prefixes used for naming asymmetric variables created during positive and negative decomposition. The default value is an empty vector `c()`, indicating that no prefixes are added by default.
 
 When specified, the prefixes are added to the beginning of variable names to represent the positive and negative decomposition:
 
@@ -529,15 +550,15 @@ When specified, the prefixes are added to the beginning of variable names to rep
 
 Asymmetric decomposition is used to analyze the separate effects of positive and negative changes in a variable. For example, given a variable `X`, prefixes can be used to generate `POS_X` and `NEG_X` for the positive and negative components, respectively.
 
-By default, no prefixes are applied (`AsymPrefix = c()`). However, users can define custom prefixes by providing a vector with two elements. For example:
+By default, no prefixes are applied (`asym_prefix = c()`). However, users can define custom prefixes by providing a vector with two elements. For example:
 
-- `kardl_set(AsymPrefix = c("POS_", "NEG_"))` results in variable names such as `POS_X` and `NEG_X`.
-- `kardl_set(AsymPrefix = c("Increase_", "Decrease_"))` results in variable names such as `Increase_X` and `Decrease_X`.
+- `kardl_set(asym_prefix = c("POS_", "NEG_"))` results in variable names such as `POS_X` and `NEG_X`.
+- `kardl_set(asym_prefix = c("Increase_", "Decrease_"))` results in variable names such as `Increase_X` and `Decrease_X`.
 
 **Attention!**
 
 - The vector must contain exactly two elements: the first for the positive decomposition and the second for the negative decomposition.
-- If prefixes are used in combination with suffixes (via `AsymSuffix`), ensure that the resulting variable names are meaningful and do not conflict.
+- If prefixes are used in combination with suffixes (via `asym_suffix`), ensure that the resulting variable names are meaningful and do not conflict.
 
 ### Examples
 
@@ -545,26 +566,26 @@ By default, no prefixes are applied (`AsymPrefix = c()`). However, users can def
 
 ``` r
 
-kardl_set( AsymPrefix = c())
+kardl_set( asym_prefix = c())
 ```
 
 #### Custom prefixes for positive and negative decomposition
 
 ``` r
 
-kardl_set(AsymPrefix = c("POS_", "NEG_"))
+kardl_set(asym_prefix = c("POS_", "NEG_"))
 ```
 
 #### Combining prefixes with suffixes
 
 ``` r
 
-kardl_set( AsymPrefix = c("Change_", "Fall_"), AsymSuffix = c("_High", "_Low"))
+kardl_set( asym_prefix = c("Change_", "Fall_"), asym_suffix = c("_High", "_Low"))
 ```
 
-### 8. AsymSuffix
+### 8. asym_suffix
 
-`AsymSuffix` is a character vector specifying the suffixes used for naming asymmetric variables created during positive and negative decomposition. The default value is `c("_POS", "_NEG")`, where:
+`asym_suffix` is a character vector specifying the suffixes used for naming asymmetric variables created during positive and negative decomposition. The default value is `c("_POS", "_NEG")`, where:
 
 - `"_POS"` is the suffix appended to variables representing the positive decomposition.
 - `"_NEG"` is the suffix appended to variables representing the negative decomposition.
@@ -580,8 +601,8 @@ Asymmetric decomposition is commonly used in models to separate the effects of p
 
 By default, the suffixes `"_POS"` and `"_NEG"` are used, but users can customize them as needed by providing a custom vector. For example:
 
-- `AsymSuffix = c("_Increase", "_Decrease")` results in variable names such as `X_Increase` and `X_Decrease`.
-- `AsymSuffix = c("_Up", "_Down")` results in variable names such as `X_Up` and `X_Down`.
+- `asym_suffix = c("_Increase", "_Decrease")` results in variable names such as `X_Increase` and `X_Decrease`.
+- `asym_suffix = c("_Up", "_Down")` results in variable names such as `X_Up` and `X_Down`.
 
 **Attention!**
 
@@ -590,9 +611,9 @@ By default, the suffixes `"_POS"` and `"_NEG"` are used, but users can customize
   - The second element must always represent the negative decomposition.
 - Providing more or fewer elements or incorrect ordering may cause errors in variable naming.
 
-### 9. LongCoef
+### 9. long_coef
 
-`LongCoef` is a character string specifying the prefix format for naming long-run coefficients in the model output. The default value is `"L{lag}.{varName}"`, where:
+`long_coef` is a character string specifying the prefix format for naming long-run coefficients in the model output. The default value is `"L{lag}.{varName}"`, where:
 
 - `{lag}` is a placeholder for the lag number.
 - `{varName}` is a placeholder for the variable name.
@@ -601,19 +622,19 @@ This format generates names like `L1.X` for the first lag of variable `X`.
 
 #### Details
 
-Long-run coefficients represent the long-term relationships between the dependent variable and independent variables in an ARDL or NARDL model. The `LongCoef` parameter allows users to customize how these coefficients are named in the output, making it easier to identify and interpret them. The default format `"L{lag}.{varName}"` is widely used and provides clear information about the lag and variable associated with each coefficient. Users can modify the format by changing the `LongCoef` string. For example:
+Long-run coefficients represent the long-term relationships between the dependent variable and independent variables in an ARDL or NARDL model. The `long_coef` parameter allows users to customize how these coefficients are named in the output, making it easier to identify and interpret them. The default format `"L{lag}.{varName}"` is widely used and provides clear information about the lag and variable associated with each coefficient. Users can modify the format by changing the `long_coef` string. For example:
 
-- `LongCoef = "LongRun_{varName}_Lag{lag}"` results in names like `LongRun_X_Lag1`.
-- `LongCoef = "LR_{varName}_L{lag}"` results in names like `LR_X_L1`.
+- `long_coef = "LongRun_{varName}_Lag{lag}"` results in names like `LongRun_X_Lag1`.
+- `long_coef = "LR_{varName}_L{lag}"` results in names like `LR_X_L1`.
 
 **Attention!**
 
 - Ensure that the placeholders `{lag}` and `{varName}` are included in the custom format to maintain clarity in the coefficient names.
 - Avoid using special characters or spaces in the format that may cause issues in R variable naming conventions.
 
-### 10. ShortCoef
+### 10. short_coef
 
-`ShortCoef` is a character string specifying the prefix format for naming short-run coefficients in the model output. The default value is `"L{lag}.d.{varName}"`, where:
+`short_coef` is a character string specifying the prefix format for naming short-run coefficients in the model output. The default value is `"L{lag}.d.{varName}"`, where:
 
 - `{lag}` is a placeholder for the lag number.
 - `{varName}` is a placeholder for the variable name.
@@ -622,10 +643,10 @@ This format generates names like `L1.d.X` for the first lag of the differenced v
 
 #### Details
 
-Short-run coefficients capture the immediate effects of changes in independent variables on the dependent variable in an ARDL or NARDL model. The `ShortCoef` parameter allows users to customize how these coefficients are named in the output, facilitating easier identification and interpretation. The default format `"L{lag}.d.{varName}"` is commonly used and provides clear information about the lag, differencing, and variable associated with each coefficient. Users can modify the format by changing the `ShortCoef` string. For example:
+Short-run coefficients capture the immediate effects of changes in independent variables on the dependent variable in an ARDL or NARDL model. The `short_coef` parameter allows users to customize how these coefficients are named in the output, facilitating easier identification and interpretation. The default format `"L{lag}.d.{varName}"` is commonly used and provides clear information about the lag, differencing, and variable associated with each coefficient. Users can modify the format by changing the `short_coef` string. For example:
 
-- `ShortCoef = "ShortRun_{varName}_Lag{lag}"` results in names like `ShortRun_X_Lag1`.
-- `ShortCoef = "SR_{varName}_L{lag}"` results in names like `SR_X_L1`.
+- `short_coef = "ShortRun_{varName}_Lag{lag}"` results in names like `ShortRun_X_Lag1`.
+- `short_coef = "SR_{varName}_L{lag}"` results in names like `SR_X_L1`.
 
 **Attention!**
 
@@ -657,21 +678,21 @@ For example, setting `batch = "2/4"` would divide the estimation into 4 batches,
 
 ``` r
 kardl_set(batch = "1/1")
-kardl(data, MyFormula)
+kardl(data, my_formula)
 ```
 
 ##### Using a batch size of 2 out of 4
 
 ``` r
 kardl_set(batch = "2/4")
-kardl(data, MyFormula)
+kardl(data, my_formula)
 ```
 
 ##### Using a batch size of 3 out of 6
 
 ``` r
 kardl_set(batch = "3/6")
-kardl(data, MyFormula)
+kardl(data, my_formula)
 ```
 
 ## Contributing to kardl

@@ -5,7 +5,13 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="IMF Example Data — imf_example_data"><meta name="description" content="This is an example data set used for testing purposes. It contains monthly data on exchange rates, consumer price index, producer price index, and a dummy variable for the COVID-19 pandemic for Turkey from January 1985 to February 2024."><meta property="og:description" content="This is an example data set used for testing purposes. It contains monthly data on exchange rates, consumer price index, producer price index, and a dummy variable for the COVID-19 pandemic for Turkey from January 1985 to February 2024."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="IMF Example Data — imf_example_data"><meta name="description" content="This is an example data set used for testing purposes. It contains monthly
+data on exchange rates, consumer price index, producer price index, and a
+dummy variable for the COVID-19 pandemic for Turkey from January 1985 to
+February 2024."><meta property="og:description" content="This is an example data set used for testing purposes. It contains monthly
+data on exchange rates, consumer price index, producer price index, and a
+dummy variable for the COVID-19 pandemic for Turkey from January 1985 to
+February 2024."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -13,7 +19,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +50,10 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>This is an example data set used for testing purposes. It contains monthly data on exchange rates, consumer price index, producer price index, and a dummy variable for the COVID-19 pandemic for Turkey from January 1985 to February 2024.</p>
+    <p>This is an example data set used for testing purposes. It contains monthly
+data on exchange rates, consumer price index, producer price index, and a
+dummy variable for the COVID-19 pandemic for Turkey from January 1985 to
+February 2024.</p>
     </div>
 
     <div class="section level2">
@@ -73,10 +82,16 @@
     <p>These data obtained from <span class="pkg">imf.data</span> package.
 The sample data is not updated and obtained by following codes:</p>
 <p><code>install.packages("imf.data")</code><br><code><a href="https://pedrobtz.github.io/imf.data/" class="external-link">library("imf.data")</a></code><br><code>IFS &lt;- load_datasets("IFS")</code></p>
-<ul><li><p><strong>PCPI_IX</strong>             Prices, Consumer Price Index, All items, Index<br></p></li>
-<li><p><strong>AIP_IX</strong>              Economic Activity, Industrial Production, Index<br></p></li>
-<li><p><strong>ENDE_XDC_USD_RATE</strong>   Exchange Rates, Domestic Currency per U.S. Dollar, End of Period, Rate</p></li>
-</ul><p><code>  trdata&lt;-IFS$get_series(freq = "M", ref_area = "TR", indicator = c("PCPI_IX","AIP_IX","ENDE_XDC_USD_RATE"),start_period = "1985-01",end_period = "2024-02")</code><br><code>  PeriodRow&lt;-trdata[,1]</code><br><code>  trdata[,1]&lt;-NULL</code><br><code>  colnames(trdata)&lt;-c("ER","CPI","PPI")</code><br><code>  trdata&lt;-log(as.data.frame(lapply(trdata, function(x) as.numeric(x))))</code><br><code>  rownames(trdata)&lt;-PeriodRow</code></p>
+<ul><li><p><strong>PCPI_IX</strong>   Prices, Consumer Price Index, All items, Index</p></li>
+<li><p><strong>AIP_IX</strong>    Economic Activity, Industrial Production, Index</p></li>
+<li><p><strong>ENDE_XDC_USD_RATE</strong> Exchange Rates, Domestic Currency per U.S.
+Dollar, End of Period, Rate</p></li>
+</ul><p><code>  trdata&lt;-IFS$get_series(freq = "M", ref_area = "TR",
+indicator = c("PCPI_IX","AIP_IX","ENDE_XDC_USD_RATE"),
+start_period = "1985-01",end_period = "2024-02")</code>
+<code>  PeriodRow&lt;-trdata[,1]</code><br><code>  trdata[,1]&lt;-NULL</code><br><code>colnames(trdata)&lt;-c("ER","CPI","PPI")</code>
+<code>trdata&lt;-log(as.data.frame(lapply(trdata, function(x) as.numeric(x))))</code>
+<code>  rownames(trdata)&lt;-PeriodRow</code></p>
 <p><strong>Inserting covid dummy variable</strong></p>
 <p><code>  trdata&lt;-cbind(trdata,covid=0)</code><br><code>  trdata[420:470,4]&lt;-1</code></p>
     </div>
@@ -89,13 +104,13 @@ The sample data is not updated and obtained by following codes:</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">imf_example_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">imf_example_data</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                ER       CPI      PPI covid</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1985-01 -7.698074 -4.895304 3.514587     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1985-02 -7.634863 -4.862836 3.393818     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1985-03 -7.618904 -4.816122 3.492322     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1985-04 -7.576649 -4.807842 3.452126     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1985-05 -7.545791 -4.784120 3.548855     0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1985-06 -7.531908 -4.791754 3.275258     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                 ER       CPI      PPI covid</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Jan 1985 -7.698074 -4.895304 3.514587     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Feb 1985 -7.634863 -4.862836 3.393818     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Mar 1985 -7.618904 -4.816122 3.492322     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Apr 1985 -7.576649 -4.807842 3.452126     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> May 1985 -7.545791 -4.784120 3.548855     0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Jun 1985 -7.531908 -4.791754 3.275258     0</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -103,7 +118,7 @@ The sample data is not updated and obtained by following codes:</p>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Huseyin Karamelikli, Huseyin Utku Demir.</p>
+  <p>Developed by Huseyin karamelikli, Huseyin Utku Demir.</p>
 </div>
 
 <div class="pkgdown-footer-right">

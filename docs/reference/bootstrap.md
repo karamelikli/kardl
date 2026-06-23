@@ -10,18 +10,19 @@ lower bounds for the confidence interval.
 
 ``` r
 bootstrap(
-  kmodel,
+  kardl_model,
   horizon = 80,
   replications = 100,
   level = 95,
-  minProb = 0,
-  seed = NULL
+  min_prob = 0,
+  seed = NULL,
+  ...
 )
 ```
 
 ## Arguments
 
-- kmodel:
+- kardl_model:
 
   The model produced by the
   [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
@@ -45,7 +46,7 @@ bootstrap(
   A numeric value specifying the confidence level for the intervals
   (e.g., 95 for 95% confidence). Default is `90`.
 
-- minProb:
+- min_prob:
 
   A numeric value specifying the minimum p-value threshold for including
   coefficients in the bootstrap. Coefficients with p-values above this
@@ -61,6 +62,10 @@ bootstrap(
   An optional integer to set the random seed for reproducibility of the
   bootstrap results. If not provided, the bootstrap will use the current
   random state.
+
+- ...:
+
+  Additional arguments (currently not used).
 
 ## Value
 
@@ -99,27 +104,28 @@ calculating dynamic multipliers
 
 ``` r
 
-  # Example usage of the bootstrap function
+# Example usage of the bootstrap function
 
+# Fit a model using kardl
+kardl_model <- kardl(
+  CPI ~ ER + PPI + asy(ER) + det(covid) + trend,
+  imf_example_data,
+  mode = c(1, 2, 3, 0)
+)
 
- # Fit a model using kardl
- kardl_model <- kardl(imf_example_data,
-                      CPI ~ ER + PPI + asy(ER) +
-                       det(covid) + trend,
-                      mode = c(1, 2, 3, 0))
-
- # Perform bootstrap with specific variables for plotting
- boot <-
-   bootstrap(kardl_model,   replications=5, seed = 123L)
- # The boot object will include all plots for the specified variables
- # Displaying the boot object provides an overview of its components
- names(boot)
+# Perform bootstrap with specific variables for plotting
+boot <- bootstrap(kardl_model,
+  horizon = 40, level = 95, min_prob = 0,
+  replications = 5, seed = 123L
+)
+# The boot object will include all plots for the specified variables
+# Displaying the boot object provides an overview of its components
+names(boot)
 #> [1] "mpsi"         "level"        "horizon"      "vars"         "replications"
 #> [6] "type"        
 
-
- # Inspect the first few rows of the dynamic multiplier estimates
-  head(boot$mpsi)
+# Inspect the first few rows of the dynamic multiplier estimates
+head(kardl_extract(boot, "multipliers"))
 #>   h    ER_POS       ER_NEG     ER_dif    PPI_POS     PPI_NEG PPI_dif
 #> 1 0 0.1079048 -0.005754563 0.10215020 0.01650164 -0.01650164       0
 #> 2 1 0.2441508 -0.068170052 0.17598074 0.06089675 -0.06089675       0
@@ -135,50 +141,48 @@ calculating dynamic multipliers
 #> 5   0.1605490  0.06046077
 #> 6   0.1405415  0.01145040
 
-
-  summary(boot)
+summary(boot)
 #> Summary of Dynamic Multipliers
-#> Horizon: 80 
+#> Horizon: 40 
 #> 
-#>        h          ER_POS           ER_NEG              ER_dif       
-#>  Min.   : 0   Min.   :0.1079   Min.   :-1.766204   Min.   :-1.0230  
-#>  1st Qu.:20   1st Qu.:0.5034   1st Qu.:-1.582999   1st Qu.:-0.8871  
-#>  Median :40   Median :0.6212   Median :-1.293834   Median :-0.6726  
-#>  Mean   :40   Mean   :0.5868   Mean   :-1.173031   Mean   :-0.5863  
-#>  3rd Qu.:60   3rd Qu.:0.6959   3rd Qu.:-0.837426   3rd Qu.:-0.3340  
-#>  Max.   :80   Max.   :0.7432   Max.   :-0.005755   Max.   : 0.1760  
+#>        h          ER_POS           ER_NEG              ER_dif        
+#>  Min.   : 0   Min.   :0.1079   Min.   :-1.293834   Min.   :-0.67261  
+#>  1st Qu.:10   1st Qu.:0.4210   1st Qu.:-1.091555   1st Qu.:-0.52255  
+#>  Median :20   Median :0.5034   Median :-0.837426   Median :-0.33403  
+#>  Mean   :20   Mean   :0.4833   Mean   :-0.784433   Mean   :-0.30116  
+#>  3rd Qu.:30   3rd Qu.:0.5690   3rd Qu.:-0.518143   3rd Qu.:-0.09717  
+#>  Max.   :40   Max.   :0.6212   Max.   :-0.005755   Max.   : 0.17598  
 #>     PPI_POS          PPI_NEG           PPI_dif   ER_CI_upper      
-#>  Min.   :0.0165   Min.   :-2.2241   Min.   :0   Min.   :-0.33918  
-#>  1st Qu.:0.9673   1st Qu.:-1.9762   1st Qu.:0   1st Qu.:-0.29813  
-#>  Median :1.5849   Median :-1.5849   Median :0   Median :-0.21868  
-#>  Mean   :1.4268   Mean   :-1.4268   Mean   :0   Mean   :-0.16617  
-#>  3rd Qu.:1.9762   3rd Qu.:-0.9673   3rd Qu.:0   3rd Qu.:-0.06495  
-#>  Max.   :2.2241   Max.   :-0.0165   Max.   :0   Max.   : 0.21917  
+#>  Min.   :0.0165   Min.   :-1.5849   Min.   :0   Min.   :-0.21868  
+#>  1st Qu.:0.5353   1st Qu.:-1.3112   1st Qu.:0   1st Qu.:-0.15439  
+#>  Median :0.9673   Median :-0.9673   Median :0   Median :-0.06495  
+#>  Mean   :0.9061   Mean   :-0.9061   Mean   :0   Mean   :-0.04213  
+#>  3rd Qu.:1.3112   3rd Qu.:-0.5353   3rd Qu.:0   3rd Qu.: 0.05949  
+#>  Max.   :1.5849   Max.   :-0.0165   Max.   :0   Max.   : 0.21917  
 #>   ER_CI_lower     
-#>  Min.   :-1.4062  
-#>  1st Qu.:-1.2767  
-#>  Median :-1.0294  
-#>  Mean   :-0.8798  
-#>  3rd Qu.:-0.5566  
+#>  Min.   :-1.0294  
+#>  1st Qu.:-0.8309  
+#>  Median :-0.5566  
+#>  Mean   :-0.5069  
+#>  3rd Qu.:-0.2051  
 #>  Max.   : 0.1044  
 
- # Retrieve plots generated during the bootstrap process
- # Accessing all plots
-  plot(boot)
+# Retrieve plots generated during the bootstrap process
+# Accessing all plots
+plot(boot)
+#> Warning: Multiple variables selected. Only the first one will be plotted.
 
 
+# Accessing the plot for a specific variable by its name
+plot(boot, variable = "PPI")
 
- # Accessing the plot for a specific variable by its name
-  plot(boot, variable = "PPI")
-
- plot(boot, variable = "ER")
-
-
+plot(boot, variable = "ER")
 
 
 library(magrittr)
 
-   imf_example_data %>% kardl( CPI ~ PPI + asym(ER) +trend, maxlag=2) %>%
-   bootstrap(replications=5) %>% plot(variable = "ER")
-
+imf_example_data %>%
+  kardl(CPI ~ PPI + asym(ER) + trend, maxlag = 2, data = .) %>%
+  bootstrap(replications = 5) %>%
+  plot(variable = "ER")
 ```

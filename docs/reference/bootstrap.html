@@ -5,13 +5,15 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Bootstrap Confidence Intervals for Dynamic Multipliers — bootstrap"><meta name="description" content="This function computes bootstrap confidence intervals (CI) for dynamic multipliers
-of a specified variable in a model estimated using the kardl package. The bootstrap method
-generates resampled datasets to estimate the variability of the dynamic multipliers,
-providing upper and lower bounds for the confidence interval."><meta property="og:description" content="This function computes bootstrap confidence intervals (CI) for dynamic multipliers
-of a specified variable in a model estimated using the kardl package. The bootstrap method
-generates resampled datasets to estimate the variability of the dynamic multipliers,
-providing upper and lower bounds for the confidence interval."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Bootstrap Confidence Intervals for Dynamic Multipliers — bootstrap"><meta name="description" content="This function computes bootstrap confidence intervals (CI) for dynamic
+multipliers of a specified variable in a model estimated using the
+kardl package. The bootstrap method generates resampled datasets to
+estimate the variability of the dynamic multipliers, providing upper and
+lower bounds for the confidence interval."><meta property="og:description" content="This function computes bootstrap confidence intervals (CI) for dynamic
+multipliers of a specified variable in a model estimated using the
+kardl package. The bootstrap method generates resampled datasets to
+estimate the variability of the dynamic multipliers, providing upper and
+lower bounds for the confidence interval."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -19,7 +21,7 @@ providing upper and lower bounds for the confidence interval."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -50,21 +52,23 @@ providing upper and lower bounds for the confidence interval."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p>This function computes bootstrap confidence intervals (CI) for dynamic multipliers
-of a specified variable in a model estimated using the <code>kardl</code> package. The bootstrap method
-generates resampled datasets to estimate the variability of the dynamic multipliers,
-providing upper and lower bounds for the confidence interval.</p>
+    <p>This function computes bootstrap confidence intervals (CI) for dynamic
+multipliers of a specified variable in a model estimated using the
+<code>kardl</code> package. The bootstrap method generates resampled datasets to
+estimate the variability of the dynamic multipliers, providing upper and
+lower bounds for the confidence interval.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bootstrap</span><span class="op">(</span></span>
-<span>  <span class="va">kmodel</span>,</span>
+<span>  <span class="va">kardl_model</span>,</span>
 <span>  horizon <span class="op">=</span> <span class="fl">80</span>,</span>
 <span>  replications <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  level <span class="op">=</span> <span class="fl">95</span>,</span>
-<span>  minProb <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  min_prob <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -72,49 +76,70 @@ providing upper and lower bounds for the confidence interval.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-kmodel">kmodel<a class="anchor" aria-label="anchor" href="#arg-kmodel"></a></dt>
-<dd><p>The model produced by the <code><a href="kardl.html">kardl</a></code> function. This is the model object
-from which the dynamic multipliers are calculated.</p></dd>
+<dl><dt id="arg-kardl-model">kardl_model<a class="anchor" aria-label="anchor" href="#arg-kardl-model"></a></dt>
+<dd><p>The model produced by the <code><a href="kardl.html">kardl</a></code> function.
+This is the model object from which the dynamic multipliers are
+calculated.</p></dd>
 
 
 <dt id="arg-horizon">horizon<a class="anchor" aria-label="anchor" href="#arg-horizon"></a></dt>
-<dd><p>An integer specifying the horizon over which dynamic multipliers will be computed.
-The horizon defines the time frame for the analysis (e.g., 40 periods).</p></dd>
+<dd><p>An integer specifying the horizon over which dynamic
+multipliers will be computed. The horizon defines the time frame for
+the analysis (e.g., 40 periods).</p></dd>
 
 
 <dt id="arg-replications">replications<a class="anchor" aria-label="anchor" href="#arg-replications"></a></dt>
-<dd><p>An integer indicating the number of bootstrap replications to perform.
-Higher values increase accuracy but also computational time. Default is <code>100</code>.</p></dd>
+<dd><p>An integer indicating the number of bootstrap
+replications to perform. Higher values increase accuracy but also
+computational time. Default is <code>100</code>.</p></dd>
 
 
 <dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
-<dd><p>A numeric value specifying the confidence level for the intervals (e.g., 95 for 95% confidence).
-Default is <code>90</code>.</p></dd>
+<dd><p>A numeric value specifying the confidence level for the
+intervals (e.g., 95 for 95% confidence). Default is <code>90</code>.</p></dd>
 
 
-<dt id="arg-minprob">minProb<a class="anchor" aria-label="anchor" href="#arg-minprob"></a></dt>
-<dd><p>A numeric value specifying the minimum p-value threshold for including coefficients in the bootstrap.
-Coefficients with p-values above this threshold will be set to zero in the bootstrap samples. Default is <code>0</code> (no threshold).
-This parameter allows users to control the inclusion of coefficients in the bootstrap process based on their statistical significance. Setting a threshold can help focus the analysis on more relevant variables, but it may also exclude potentially important effects if set too stringently.</p></dd>
+<dt id="arg-min-prob">min_prob<a class="anchor" aria-label="anchor" href="#arg-min-prob"></a></dt>
+<dd><p>A numeric value specifying the minimum p-value threshold for
+including coefficients in the bootstrap. Coefficients with p-values
+above this threshold will be set to zero in the bootstrap samples.
+Default is <code>0</code> (no threshold). This parameter allows users to
+control the inclusion of coefficients in the bootstrap process based
+on their statistical significance. Setting a threshold can help focus
+the analysis on more relevant variables, but it may also exclude
+potentially important effects if set too stringently.</p></dd>
 
 
 <dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
-<dd><p>An optional integer to set the random seed for reproducibility of the bootstrap results. If not provided, the bootstrap will use the current random state.</p></dd>
+<dd><p>An optional integer to set the random seed for reproducibility
+of the bootstrap results. If not provided, the bootstrap will use
+the current random state.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional arguments (currently not used).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list containing the following elements:</p><ul><li><p><strong>mpsi</strong>: A data frame containing the dynamic multiplier estimates along with their upper and lower confidence intervals for each variable and time horizon.</p></li>
+    <p>A list containing the following elements:</p><ul><li><p><strong>mpsi</strong>: A data frame containing the dynamic multiplier
+estimates along with their upper and lower confidence intervals for
+each variable and time horizon.</p></li>
 <li><p><strong>level</strong>: The confidence level used for the intervals (e.g 95).</p></li>
-<li><p><strong>horizon</strong>: The horizon over which the multipliers were computed (e.g., 40).</p></li>
-<li><p><strong>vars</strong>: A list of variable information extracted from the model, including dependent variable, independent variables, asymmetric variables, and deterministic terms.</p></li>
+<li><p><strong>horizon</strong>: The horizon over which the multipliers were computed
+(e.g., 40).</p></li>
+<li><p><strong>vars</strong>: A list of variable information extracted from the
+model, including dependent variable, independent variables,
+asymmetric variables, and deterministic terms.</p></li>
 <li><p><strong>replications</strong>: The number of bootstrap replications performed.</p></li>
-<li><p><strong>type</strong>: A character string indicating the type of analysis, in this case "bootstrap".</p></li>
+<li><p><strong>type</strong>: A character string indicating the type of analysis,
+in this case "bootstrap".</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>The <code>mpsi</code> component of the output contains the dynamic multiplier estimates along with their upper
-and lower confidence intervals. These values are provided for each variable and at each time horizon.</p>
+    <p>The <code>mpsi</code> component of the output contains the dynamic multiplier
+estimates along with their upper and lower confidence intervals. These
+values are provided for each variable and at each time horizon.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -124,27 +149,28 @@ and lower confidence intervals. These values are provided for each variable and 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="co"># Example usage of the bootstrap function</span></span></span>
+<span class="r-in"><span><span class="co"># Example usage of the bootstrap function</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Fit a model using kardl</span></span></span>
+<span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asy</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>  <span class="va">imf_example_data</span>,</span></span>
+<span class="r-in"><span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># Fit a model using kardl</span></span></span>
-<span class="r-in"><span> <span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>,</span></span>
-<span class="r-in"><span>                      <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asy</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span></span></span>
-<span class="r-in"><span>                       <span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
-<span class="r-in"><span>                      mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># Perform bootstrap with specific variables for plotting</span></span></span>
-<span class="r-in"><span> <span class="va">boot</span> <span class="op">&lt;-</span></span></span>
-<span class="r-in"><span>   <span class="fu">bootstrap</span><span class="op">(</span><span class="va">kardl_model</span>,   replications<span class="op">=</span><span class="fl">5</span>, seed <span class="op">=</span> <span class="fl">123L</span><span class="op">)</span></span></span>
-<span class="r-in"><span> <span class="co"># The boot object will include all plots for the specified variables</span></span></span>
-<span class="r-in"><span> <span class="co"># Displaying the boot object provides an overview of its components</span></span></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Perform bootstrap with specific variables for plotting</span></span></span>
+<span class="r-in"><span><span class="va">boot</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">kardl_model</span>,</span></span>
+<span class="r-in"><span>  horizon <span class="op">=</span> <span class="fl">40</span>, level <span class="op">=</span> <span class="fl">95</span>, min_prob <span class="op">=</span> <span class="fl">0</span>,</span></span>
+<span class="r-in"><span>  replications <span class="op">=</span> <span class="fl">5</span>, seed <span class="op">=</span> <span class="fl">123L</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># The boot object will include all plots for the specified variables</span></span></span>
+<span class="r-in"><span><span class="co"># Displaying the boot object provides an overview of its components</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mpsi"         "level"        "horizon"      "vars"         "replications"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "type"        </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># Inspect the first few rows of the dynamic multiplier estimates</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">boot</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Inspect the first few rows of the dynamic multiplier estimates</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">boot</span>, <span class="st">"multipliers"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   h    ER_POS       ER_NEG     ER_dif    PPI_POS     PPI_NEG PPI_dif</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0 0.1079048 -0.005754563 0.10215020 0.01650164 -0.01650164       0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 1 0.2441508 -0.068170052 0.17598074 0.06089675 -0.06089675       0</span>
@@ -160,53 +186,51 @@ and lower confidence intervals. These values are provided for each variable and 
 <span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.1605490  0.06046077</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 6   0.1405415  0.01145040</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Summary of Dynamic Multipliers</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Horizon: 80 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Horizon: 40 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        h          ER_POS           ER_NEG              ER_dif       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   : 0   Min.   :0.1079   Min.   :-1.766204   Min.   :-1.0230  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:20   1st Qu.:0.5034   1st Qu.:-1.582999   1st Qu.:-0.8871  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :40   Median :0.6212   Median :-1.293834   Median :-0.6726  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :40   Mean   :0.5868   Mean   :-1.173031   Mean   :-0.5863  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:60   3rd Qu.:0.6959   3rd Qu.:-0.837426   3rd Qu.:-0.3340  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :80   Max.   :0.7432   Max.   :-0.005755   Max.   : 0.1760  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        h          ER_POS           ER_NEG              ER_dif        </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   : 0   Min.   :0.1079   Min.   :-1.293834   Min.   :-0.67261  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:10   1st Qu.:0.4210   1st Qu.:-1.091555   1st Qu.:-0.52255  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :20   Median :0.5034   Median :-0.837426   Median :-0.33403  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :20   Mean   :0.4833   Mean   :-0.784433   Mean   :-0.30116  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:30   3rd Qu.:0.5690   3rd Qu.:-0.518143   3rd Qu.:-0.09717  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :40   Max.   :0.6212   Max.   :-0.005755   Max.   : 0.17598  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     PPI_POS          PPI_NEG           PPI_dif   ER_CI_upper      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :0.0165   Min.   :-2.2241   Min.   :0   Min.   :-0.33918  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:0.9673   1st Qu.:-1.9762   1st Qu.:0   1st Qu.:-0.29813  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :1.5849   Median :-1.5849   Median :0   Median :-0.21868  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :1.4268   Mean   :-1.4268   Mean   :0   Mean   :-0.16617  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:1.9762   3rd Qu.:-0.9673   3rd Qu.:0   3rd Qu.:-0.06495  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :2.2241   Max.   :-0.0165   Max.   :0   Max.   : 0.21917  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :0.0165   Min.   :-1.5849   Min.   :0   Min.   :-0.21868  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:0.5353   1st Qu.:-1.3112   1st Qu.:0   1st Qu.:-0.15439  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :0.9673   Median :-0.9673   Median :0   Median :-0.06495  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :0.9061   Mean   :-0.9061   Mean   :0   Mean   :-0.04213  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:1.3112   3rd Qu.:-0.5353   3rd Qu.:0   3rd Qu.: 0.05949  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :1.5849   Max.   :-0.0165   Max.   :0   Max.   : 0.21917  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   ER_CI_lower     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :-1.4062  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:-1.2767  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :-1.0294  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :-0.8798  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:-0.5566  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :-1.0294  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:-0.8309  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :-0.5566  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :-0.5069  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:-0.2051  </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   : 0.1044  </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># Retrieve plots generated during the bootstrap process</span></span></span>
-<span class="r-in"><span> <span class="co"># Accessing all plots</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># Retrieve plots generated during the bootstrap process</span></span></span>
+<span class="r-in"><span><span class="co"># Accessing all plots</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Multiple variables selected. Only the first one will be plotted.</span>
 <span class="r-plt img"><img src="bootstrap-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Accessing the plot for a specific variable by its name</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="bootstrap-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span> <span class="co"># Accessing the plot for a specific variable by its name</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="bootstrap-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="bootstrap-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>   <span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span><span class="va">trend</span>, maxlag<span class="op">=</span><span class="fl">2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>   <span class="fu">bootstrap</span><span class="op">(</span>replications<span class="op">=</span><span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="bootstrap-5.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>, maxlag <span class="op">=</span> <span class="fl">2</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">bootstrap</span><span class="op">(</span>replications <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="bootstrap-4.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -214,7 +238,7 @@ and lower confidence intervals. These values are provided for each variable and 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Huseyin Karamelikli, Huseyin Utku Demir.</p>
+  <p>Developed by Huseyin karamelikli, Huseyin Utku Demir.</p>
 </div>
 
 <div class="pkgdown-footer-right">

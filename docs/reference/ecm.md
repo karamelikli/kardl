@@ -10,12 +10,12 @@ the dependent variable and the independent variables in the model.
 
 ``` r
 ecm(
-  data = NULL,
   formula = NULL,
+  data = NULL,
   maxlag = NULL,
   mode = NULL,
   criterion = NULL,
-  differentAsymLag = NULL,
+  different_asym_lag = NULL,
   batch = NULL,
   ...
 )
@@ -23,19 +23,13 @@ ecm(
 
 ## Arguments
 
-- data:
-
-  The data of analysis
-
 - formula:
 
   A formula specifying the long-run model equation. This formula defines
   the relationships between the dependent variable and explanatory
   variables, including options for deterministic terms, asymmetric
-  variables, and a trend component.
-
-         Example formula:
-         \code{y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
+  variables, and a trend component. Example formula:
+  `y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`
 
   ***Details***
 
@@ -101,6 +95,15 @@ ecm(
   These components may therefore be combined flexibly to construct a
   specification tailored to the empirical analysis.
 
+- data:
+
+  The data of analysis, which should be a data frame containing the
+  variables referenced in the `formula`. The function will check that
+  all variables specified in the formula are present in the data before
+  proceeding with estimation. The data should be time-ordered, and the
+  function will internally handle the construction of lagged and
+  differenced variables as needed for ARDL and NARDL estimation.
+
 - maxlag:
 
   An integer specifying the maximum number of lags to be considered for
@@ -135,15 +138,15 @@ ecm(
 
   Using the default maximum lag (4)
 
-  `kardl(data, MyFormula, maxlag = 4)`
+  `kardl(data, my_formula, maxlag = 4)`
 
   Reducing the maximum lag to 2 for faster computation
 
-  `kardl(data, MyFormula, maxlag = 2)`
+  `kardl(data, my_formula, maxlag = 2)`
 
   Increasing the maximum lag to 8 for datasets with longer dependencies
 
-  `kardl(data, MyFormula, maxlag = 8)`
+  `kardl(data, my_formula, maxlag = 8)`
 
 - mode:
 
@@ -184,7 +187,7 @@ ecm(
     assigned to variables by name for clarity and control. For example:
     `mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)` assigns lags to
     variables explicitly. Ensure that the lags are correctly designated
-    by verifying the result using `kardl_model$properLag` after
+    by verifying the result using `kardl_model$proper_lag` after
     estimation.
 
     ***Attention!*** A function-based criterion or user-defined function
@@ -192,7 +195,7 @@ ecm(
     `mode = "grid_custom"` and `mode = "quick"`. The `mode = "grid"`
     option is restricted to predefined criteria (e.g., AIC or BIC). For
     more information on available criteria, see the
-    [`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+    [`model_criterion`](https://karamelikli.github.io/kardl/reference/model_criterion.md)
     function documentation.
 
     - When using a numeric vector, ensure the order of lag values
@@ -229,10 +232,10 @@ ecm(
   The criterion can be specified as a string (e.g., `"AIC"`) or as a
   user-defined function that takes a fitted model object. Please visit
   the
-  [`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+  [`model_criterion`](https://karamelikli.github.io/kardl/reference/model_criterion.md)
   function documentation for more details on using custom criteria.
 
-- differentAsymLag:
+- different_asym_lag:
 
   A logical value indicating whether to allow different lag lengths for
   positive and negative decompositions.
@@ -259,29 +262,29 @@ A list containing the results of the restricted ECM test, including:
 
 - `ecm`: The estimated ECM model objects including:
 
-  - `longrunEQ`: The estimated long-run model equation object.
+  - `longrun_eq`: The estimated long-run model equation object.
 
-  - `shortrunEQ`: The estimated short-run model equation
+  - `shortrun_eq`: The estimated short-run model equation.
 
-  - `ecmL`: The estimated long-run model object.
+  - `ecm_l`: The estimated long-run model object.
 
-- **argsInfo**: A list of input arguments used for the estimation. It
-  includes the data, formula, maxlag, mode, criterion, differentAsymLag,
-  and batch settings.
+- **args_info**: A list of input arguments used for the estimation. It
+  includes the data, formula, maxlag, mode, criterion,
+  different_asym_lag, and batch settings.
 
-- **extractedInfo**: A list containing extracted information from the
+- **extracted_info**: A list containing extracted information from the
   input data and formula, such as variable names, deterministic terms,
   asymmetric variables, and the prepared dataset for estimation.
 
-- **timeInfo**: A list containing timing information for the estimation
+- **time_info**: A list containing timing information for the estimation
   process, including start time, end time, and total duration.
 
-- **lagInfo**: A list containing lag selection information, including
+- **lag_info**: A list containing lag selection information, including
   the optimal lag configuration and criteria values for different lag
   combinations.
 
-- **estInfo**: A list containing estimation details, such as the type of
-  model, estimation method, model formula, number of parameters (k),
+- **est_info**: A list containing estimation details, such as the type
+  of model, estimation method, model formula, number of parameters (k),
   number of observations (n), start and end points of the fitted values,
   and total time span.
 
@@ -327,12 +330,14 @@ The cases for the restricted ECM Bound test are defined as follows:
 
   This case is used when the model includes a constant term but no trend
   term. It is suitable for models where the variables exhibit a
-  long-term relationship but do not have a trend component. The model is
-  specified as follows: \$\$ \begin{aligned} \Delta y_t &=
-  \sum\_{j=1}^{p} \gamma_j \Delta y\_{t-j} + \sum\_{i=1}^{k}
-  \sum\_{j=0}^{q_i} \beta\_{ij} \Delta x\_{i,t-j} + \theta (y\_{t-1} -
-  \alpha_0 - \sum\_{i=1}^{k} \alpha_i x\_{i,t-1} ) + e_t \end{aligned}
-  \$\$
+  long-term relationship but do not have a trend component.
+
+  The model is specified as follows:
+
+  \$\$ \begin{aligned} \Delta y_t &= \sum\_{j=1}^{p} \gamma_j \Delta
+  y\_{t-j} + \sum\_{i=1}^{k} \sum\_{j=0}^{q_i} \beta\_{ij} \Delta
+  x\_{i,t-j} + \theta (y\_{t-1} - \alpha_0 - \sum\_{i=1}^{k} \alpha_i
+  x\_{i,t-1} ) + e_t \end{aligned} \$\$
 
 - `case 3`: Unrestricted constant, no trend.
 
@@ -364,8 +369,9 @@ The cases for the restricted ECM Bound test are defined as follows:
 
 - `case 5`: Unrestricted constant, unrestricted trend.
 
-The Error Correction Model (ECM) is specified as follows: \$\$
-\begin{aligned} \Delta y_t &= \phi + \varphi t + \sum\_{j=1}^{p}
+The Error Correction Model (ECM) is specified as follows:
+
+\$\$ \begin{aligned} \Delta y_t &= \phi + \varphi t + \sum\_{j=1}^{p}
 \gamma_j \Delta y\_{t-j} + \sum\_{i=1}^{k} \sum\_{j=0}^{q_i} \beta\_{ij}
 \Delta x\_{i,t-j} + \theta (y\_{t-1} - \sum\_{i=1}^{k} \alpha_i
 x\_{i,t-1} ) + e_t \end{aligned} \$\$
@@ -396,7 +402,8 @@ function.
 
 ``` r
 
-# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
+# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
+# TO DOMESTIC PRICES IN TURKEY
 kardl_set(
   formula = CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
   data = imf_example_data,
@@ -411,15 +418,13 @@ ecm_model_grid
 #> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
-#>   1.861e-02   -1.384e-02    4.448e-01   -4.173e-02    1.149e-01    9.347e-02  
-#> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI        covid  
-#>   9.679e-03    4.914e-02    6.999e-03    2.102e-02   -5.382e-03    5.425e-03  
-#>       trend  
-#>  -4.375e-05  
+#> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L0.d.ER_NEG     L0.d.PPI  
+#>   0.0181865   -0.0172809    0.4703704    0.1341552    0.0207522   -0.0007262  
+#>       covid        trend  
+#>   0.0027255   -0.0000378  
 #> 
 
 # Checking the cointegration test results using Pesaran t test
@@ -428,41 +433,56 @@ psst(ecm_model_grid)
 #>  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
 #> data:  model
-#> t = -3.6425
+#> t = -4.5607
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
 # Getting the details of psst result
 summary(psst(ecm_model_grid))
-#> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration 
-#> t  =  -3.642489 
-#> k =  3 
 #> 
-#> Hypotheses:
+#> ========================================
+#> KARDL Cointegration Test Results
+#> ========================================
+#> 
+#>  Decision: Reject H0 → Cointegration (at 2.5% level)
+#> 
+#>  Test Statistic:
+#>   t: -4.5606582
+#> 
+#>  Critical Values (Lower & Upper Bounds):
+#>            L     U
+#>   10%  -3.13 -3.84
+#>   5%   -3.41 -4.16
+#>   2.5% -3.65 -4.42
+#>   1%   -3.96 -4.73
+#> 
+#> 
+#>  Comparison:
+#>   At the 2% significance level, t (4.5606582) exceeds the upper bound (4.42).
+#>   This indicates that the variables tend to move together over  time.
+#>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+#> 
+#>  Hypotheses:
 #> H0: Coef(EcmRes) = 0 
-#> H1: Coef(EcmRes)≠ 0 
+#> H1: Coef(EcmRes) ≠ 0 
 #> 
-#> Test Decision:  Reject H0 → Cointegration (at 1% level) 
+#>  Model Details:
+#>   Number of regressors (k): 3
+#>   Case: V 
 #> 
-#> Critical Values (Case  V ):
-#>           L     U
-#> 0.10  -3.13 -3.84
-#> 0.05  -3.41 -4.16
-#> 0.025 -3.65 -4.42
-#> 0.01  -3.96 -4.73
-#> 
-#> Notes:
-#>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-#> 
+#> ========================================
 
 # Using the grid_custom mode for faster execution without console output
-ecm_model <- ecm(imf_example_data, mode = "grid_custom", criterion = "HQ", batch = "2/3")
+ecm_model <- ecm(
+  mode = "grid_custom",
+  criterion = "HQ", batch = "2/3"
+)
 ecm_model
 #> Optimal lags for each variable ( HQ ):
 #> CPI: 1, ER_POS: 2, ER_NEG: 0, PPI: 0 
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
 #> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L2.d.ER_POS  
@@ -480,7 +500,7 @@ ecm_model2
 #> CPI: 2, ER_POS: 1, ER_NEG: 1, PPI: 3 
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
 #> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
@@ -495,7 +515,7 @@ ecm_model2
 summary(ecm_model2)
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Residuals:
 #>       Min        1Q    Median        3Q       Max 
@@ -526,10 +546,10 @@ summary(ecm_model2)
 #> 
 
 # Alternative specification
-summary(ecm(imf_example_data, CPI ~ PPI + asym(ER) + trend, case = 4))
+summary(ecm(CPI ~ PPI + asym(ER) + trend, imf_example_data))
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Residuals:
 #>       Min        1Q    Median        3Q       Max 
@@ -563,7 +583,7 @@ ecm(mode = "grid_custom")
 #> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
 #> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
@@ -580,7 +600,7 @@ ecm(maxlag = 2, mode = "grid_custom")
 #> CPI: 1, ER_POS: 1, ER_NEG: 0, PPI: 0 
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
 #> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L0.d.ER_NEG  
@@ -595,7 +615,7 @@ ecm(criterion = "HQ", mode = "grid_custom")
 #> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 0 
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
 #> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
@@ -606,29 +626,32 @@ ecm(criterion = "HQ", mode = "grid_custom")
 
 # For using different lag values for positive and negative decompositions
 # Setting the same lags for positive and negative decompositions
-kardl_set(differentAsymLag = FALSE)
+kardl_set(different_asym_lag = FALSE)
 
 diffAsymLags <- ecm(mode = "grid_custom")
-diffAsymLags$lagInfo$OptLag
+kardl_extract(diffAsymLags, "opt_lag")
 #>    CPI ER_POS ER_NEG    PPI 
 #>      2      2      2      2 
 
 # Setting different lags for positive and negative decompositions
-sameAsymLags <- ecm(differentAsymLag = TRUE, mode = "grid_custom")
-sameAsymLags$lagInfo$OptLag
+sameAsymLags <- ecm(different_asym_lag = TRUE, mode = "grid_custom")
+kardl_extract(sameAsymLags, "opt_lag")
 #>    CPI ER_POS ER_NEG    PPI 
 #>      2      2      0      2 
 
 # Setting the prefixes and suffixes for nonlinear variables
 kardl_reset()
-kardl_set(AsymPrefix = c("asyP_", "asyN_"), AsymSuffix = c("_PP", "_NN"))
-customizedNames <- ecm(imf_example_data, CPI ~ ER + PPI + asym(ER))
+kardl_set(
+  asym_prefix = c("asyP_", "asyN_"),
+  asym_suffix = c("_PP", "_NN")
+)
+customizedNames <- ecm(CPI ~ ER + PPI + asym(ER), imf_example_data)
 customizedNames
 #> Optimal lags for each variable ( AIC ):
 #> CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 3 
 #> 
 #> Call:
-#> lm(formula = shortrunEQ, data = EcmData)
+#> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
 #>     (Intercept)           EcmRes         L1.d.CPI         L2.d.CPI  

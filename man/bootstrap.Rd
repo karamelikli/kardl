@@ -5,95 +5,115 @@
 \title{Bootstrap Confidence Intervals for Dynamic Multipliers}
 \usage{
 bootstrap(
-  kmodel,
+  kardl_model,
   horizon = 80,
   replications = 100,
   level = 95,
-  minProb = 0,
-  seed = NULL
+  min_prob = 0,
+  seed = NULL,
+  ...
 )
 }
 \arguments{
-\item{kmodel}{The model produced by the \code{\link{kardl}} function. This is the model object
-from which the dynamic multipliers are calculated.}
+\item{kardl_model}{The model produced by the \code{\link{kardl}} function.
+This is the model object from which the dynamic multipliers are
+calculated.}
 
-\item{horizon}{An integer specifying the horizon over which dynamic multipliers will be computed.
-The horizon defines the time frame for the analysis (e.g., 40 periods).}
+\item{horizon}{An integer specifying the horizon over which dynamic
+multipliers will be computed. The horizon defines the time frame for
+the analysis (e.g., 40 periods).}
 
-\item{replications}{An integer indicating the number of bootstrap replications to perform.
-Higher values increase accuracy but also computational time. Default is \code{100}.}
+\item{replications}{An integer indicating the number of bootstrap
+replications to perform. Higher values increase accuracy but also
+computational time. Default is \code{100}.}
 
-\item{level}{A numeric value specifying the confidence level for the intervals (e.g., 95 for 95\% confidence).
-Default is \code{90}.}
+\item{level}{A numeric value specifying the confidence level for the
+intervals (e.g., 95 for 95\% confidence). Default is \code{90}.}
 
-\item{minProb}{A numeric value specifying the minimum p-value threshold for including coefficients in the bootstrap.
-Coefficients with p-values above this threshold will be set to zero in the bootstrap samples. Default is \code{0} (no threshold).
-This parameter allows users to control the inclusion of coefficients in the bootstrap process based on their statistical significance. Setting a threshold can help focus the analysis on more relevant variables, but it may also exclude potentially important effects if set too stringently.}
+\item{min_prob}{A numeric value specifying the minimum p-value threshold for
+including coefficients in the bootstrap. Coefficients with p-values
+above this threshold will be set to zero in the bootstrap samples.
+Default is \code{0} (no threshold). This parameter allows users to
+control the inclusion of coefficients in the bootstrap process based
+on their statistical significance. Setting a threshold can help focus
+the analysis on more relevant variables, but it may also exclude
+potentially important effects if set too stringently.}
 
-\item{seed}{An optional integer to set the random seed for reproducibility of the bootstrap results. If not provided, the bootstrap will use the current random state.}
+\item{seed}{An optional integer to set the random seed for reproducibility
+of the bootstrap results. If not provided, the bootstrap will use
+the current random state.}
+
+\item{...}{Additional arguments (currently not used).}
 }
 \value{
 A list containing the following elements:
 \itemize{
-\item \strong{mpsi}: A data frame containing the dynamic multiplier estimates along with their upper and lower confidence intervals for each variable and time horizon.
+\item \strong{mpsi}: A data frame containing the dynamic multiplier
+estimates along with their upper and lower confidence intervals for
+each variable and time horizon.
 \item \strong{level}: The confidence level used for the intervals (e.g 95).
-\item \strong{horizon}: The horizon over which the multipliers were computed (e.g., 40).
-\item \strong{vars}: A list of variable information extracted from the model, including dependent variable, independent variables, asymmetric variables, and deterministic terms.
+\item \strong{horizon}: The horizon over which the multipliers were computed
+(e.g., 40).
+\item \strong{vars}: A list of variable information extracted from the
+model, including dependent variable, independent variables,
+asymmetric variables, and deterministic terms.
 \item \strong{replications}: The number of bootstrap replications performed.
-\item \strong{type}: A character string indicating the type of analysis, in this case "bootstrap".
+\item \strong{type}: A character string indicating the type of analysis,
+in this case "bootstrap".
 }
 }
 \description{
-This function computes bootstrap confidence intervals (CI) for dynamic multipliers
-of a specified variable in a model estimated using the \code{kardl} package. The bootstrap method
-generates resampled datasets to estimate the variability of the dynamic multipliers,
-providing upper and lower bounds for the confidence interval.
+This function computes bootstrap confidence intervals (CI) for dynamic
+multipliers of a specified variable in a model estimated using the
+\code{kardl} package. The bootstrap method generates resampled datasets to
+estimate the variability of the dynamic multipliers, providing upper and
+lower bounds for the confidence interval.
 }
 \details{
-The \code{mpsi} component of the output contains the dynamic multiplier estimates along with their upper
-and lower confidence intervals. These values are provided for each variable and at each time horizon.
+The \code{mpsi} component of the output contains the dynamic multiplier
+estimates along with their upper and lower confidence intervals. These
+values are provided for each variable and at each time horizon.
 }
 \examples{
 
-  # Example usage of the bootstrap function
+# Example usage of the bootstrap function
 
+# Fit a model using kardl
+kardl_model <- kardl(
+  CPI ~ ER + PPI + asy(ER) + det(covid) + trend,
+  imf_example_data,
+  mode = c(1, 2, 3, 0)
+)
 
- # Fit a model using kardl
- kardl_model <- kardl(imf_example_data,
-                      CPI ~ ER + PPI + asy(ER) +
-                       det(covid) + trend,
-                      mode = c(1, 2, 3, 0))
+# Perform bootstrap with specific variables for plotting
+boot <- bootstrap(kardl_model,
+  horizon = 40, level = 95, min_prob = 0,
+  replications = 5, seed = 123L
+)
+# The boot object will include all plots for the specified variables
+# Displaying the boot object provides an overview of its components
+names(boot)
 
- # Perform bootstrap with specific variables for plotting
- boot <-
-   bootstrap(kardl_model,   replications=5, seed = 123L)
- # The boot object will include all plots for the specified variables
- # Displaying the boot object provides an overview of its components
- names(boot)
+# Inspect the first few rows of the dynamic multiplier estimates
+head(kardl_extract(boot, "multipliers"))
 
+summary(boot)
 
- # Inspect the first few rows of the dynamic multiplier estimates
-  head(boot$mpsi)
+# Retrieve plots generated during the bootstrap process
+# Accessing all plots
+plot(boot)
 
-
-  summary(boot)
-
- # Retrieve plots generated during the bootstrap process
- # Accessing all plots
-  plot(boot)
-
- # Accessing the plot for a specific variable by its name
-  plot(boot, variable = "PPI")
- plot(boot, variable = "ER")
-
-
+# Accessing the plot for a specific variable by its name
+plot(boot, variable = "PPI")
+plot(boot, variable = "ER")
 
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
 
-   imf_example_data \%>\% kardl( CPI ~ PPI + asym(ER) +trend, maxlag=2) \%>\%
-   bootstrap(replications=5) \%>\% plot(variable = "ER")
-
+imf_example_data \%>\%
+  kardl(CPI ~ PPI + asym(ER) + trend, maxlag = 2, data = .) \%>\%
+  bootstrap(replications = 5) \%>\%
+  plot(variable = "ER")
 \dontshow{\}) # examplesIf}
 }
 \seealso{

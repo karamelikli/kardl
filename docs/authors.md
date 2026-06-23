@@ -2,7 +2,7 @@
 
 ## Authors
 
-- **Huseyin Karamelikli**. Author, maintainer.
+- **Huseyin karamelikli**. Author, maintainer.
   [](https://orcid.org/0000-0001-7622-0972)
 
 - **Huseyin Utku Demir**. Author.
@@ -13,14 +13,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/karamelikli/kardl/blob/HEAD/DESCRIPTION)
 
-Karamelikli H, Demir H (2026). *kardl: Make Symmetric and Asymmetric
-ARDL Estimations*. R package version 1.3.1,
+karamelikli H, Demir H (2026). *kardl: Make Symmetric and Asymmetric
+ARDL Estimations*. R package version 2.0.1,
 <https://karamelikli.github.io/kardl/>.
 
     @Manual{,
       title = {kardl: Make Symmetric and Asymmetric ARDL Estimations},
-      author = {Huseyin Karamelikli and Huseyin Utku Demir},
+      author = {Huseyin karamelikli and Huseyin Utku Demir},
       year = {2026},
-      note = {R package version 1.3.1},
+      note = {R package version 2.0.1},
       url = {https://karamelikli.github.io/kardl/},
     }

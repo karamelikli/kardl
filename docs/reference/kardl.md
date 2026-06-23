@@ -11,12 +11,12 @@ criteria.
 
 ``` r
 kardl(
-  data = NULL,
   formula = NULL,
+  data = NULL,
   maxlag = NULL,
   mode = NULL,
   criterion = NULL,
-  differentAsymLag = NULL,
+  different_asym_lag = NULL,
   batch = NULL,
   ...
 )
@@ -24,19 +24,13 @@ kardl(
 
 ## Arguments
 
-- data:
-
-  The data of analysis
-
 - formula:
 
   A formula specifying the long-run model equation. This formula defines
   the relationships between the dependent variable and explanatory
   variables, including options for deterministic terms, asymmetric
-  variables, and a trend component.
-
-         Example formula:
-         \code{y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend}
+  variables, and a trend component. Example formula:
+  `y ~ x + z + Asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`
 
   ***Details***
 
@@ -102,6 +96,15 @@ kardl(
   These components may therefore be combined flexibly to construct a
   specification tailored to the empirical analysis.
 
+- data:
+
+  The data of analysis, which should be a data frame containing the
+  variables referenced in the `formula`. The function will check that
+  all variables specified in the formula are present in the data before
+  proceeding with estimation. The data should be time-ordered, and the
+  function will internally handle the construction of lagged and
+  differenced variables as needed for ARDL and NARDL estimation.
+
 - maxlag:
 
   An integer specifying the maximum number of lags to be considered for
@@ -136,15 +139,15 @@ kardl(
 
   Using the default maximum lag (4)
 
-  `kardl(data, MyFormula, maxlag = 4)`
+  `kardl(data, my_formula, maxlag = 4)`
 
   Reducing the maximum lag to 2 for faster computation
 
-  `kardl(data, MyFormula, maxlag = 2)`
+  `kardl(data, my_formula, maxlag = 2)`
 
   Increasing the maximum lag to 8 for datasets with longer dependencies
 
-  `kardl(data, MyFormula, maxlag = 8)`
+  `kardl(data, my_formula, maxlag = 8)`
 
 - mode:
 
@@ -185,7 +188,7 @@ kardl(
     assigned to variables by name for clarity and control. For example:
     `mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)` assigns lags to
     variables explicitly. Ensure that the lags are correctly designated
-    by verifying the result using `kardl_model$properLag` after
+    by verifying the result using `kardl_model$proper_lag` after
     estimation.
 
     ***Attention!*** A function-based criterion or user-defined function
@@ -193,7 +196,7 @@ kardl(
     `mode = "grid_custom"` and `mode = "quick"`. The `mode = "grid"`
     option is restricted to predefined criteria (e.g., AIC or BIC). For
     more information on available criteria, see the
-    [`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+    [`model_criterion`](https://karamelikli.github.io/kardl/reference/model_criterion.md)
     function documentation.
 
     - When using a numeric vector, ensure the order of lag values
@@ -230,10 +233,10 @@ kardl(
   The criterion can be specified as a string (e.g., `"AIC"`) or as a
   user-defined function that takes a fitted model object. Please visit
   the
-  [`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+  [`model_criterion`](https://karamelikli.github.io/kardl/reference/model_criterion.md)
   function documentation for more details on using custom criteria.
 
-- differentAsymLag:
+- different_asym_lag:
 
   A logical value indicating whether to allow different lag lengths for
   positive and negative decompositions.
@@ -259,29 +262,29 @@ kardl(
 An object of class `kardl_lm` containing the estimated ARDL or NARDL
 model. The object includes the following components:
 
-- argsInfo:
+- args_info:
 
   A list of input arguments used for the estimation. It includes the
-  data, formula, maxlag, mode, criterion, differentAsymLag, and batch
+  data, formula, maxlag, mode, criterion, different_asym_lag, and batch
   settings.
 
-- extractedInfo:
+- extracted_info:
 
   A list containing extracted information from the input data and
   formula, such as variable names, deterministic terms, asymmetric
   variables, and the prepared dataset for estimation.
 
-- timeInfo:
+- time_info:
 
   A list containing timing information for the estimation process,
   including start time, end time, and total duration.
 
-- lagInfo:
+- lag_info:
 
   A list containing lag selection information, including the optimal lag
   configuration and criteria values for different lag combinations.
 
-- estInfo:
+- est_info:
 
   A list containing estimation details, such as the type of model,
   estimation method, model formula, number of parameters (k), number of
@@ -303,7 +306,7 @@ The general formula for the long-run model is specified as follows: \$\$
 {\sum\_{j=0}^{q^+\_i} { \beta^+\_{ij} \Delta {x}^+\_{i,t-j} } } +
 \sum\_{i=1}^{m} {\sum\_{j=0}^{q^-\_i} { \beta^-\_{ij} \Delta
 {x}^-\_{i,t-j} } } + \sum\_{i=m+1}^{k} {\sum\_{j=0}^{q_i} { \beta\_{ij}
-\Delta {x}\_{i,t-j} } }+ e_t \end{aligned} \$\$
+\Delta {x}\_{i,t-j} } } + e_t \end{aligned} \$\$
 
 Where:
 
@@ -373,32 +376,37 @@ function.
 [`kardl_set`](https://karamelikli.github.io/kardl/reference/kardl_set.md),
 [`kardl_get`](https://karamelikli.github.io/kardl/reference/kardl_get.md),
 [`kardl_reset`](https://karamelikli.github.io/kardl/reference/kardl_reset.md),
-[`modelCriterion`](https://karamelikli.github.io/kardl/reference/modelCriterion.md)
+[`model_criterion`](https://karamelikli.github.io/kardl/reference/model_criterion.md)
 
 ## Examples
 
 ``` r
 
 
-# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH TO DOMESTIC PRICES IN TURKEY
+# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
+# TO DOMESTIC PRICES IN TURKEY
 
-kardl_set(formula =CPI~ER+PPI+Asymmetr(ER)+deterministic(covid)+trend ,
-          data=imf_example_data,
-          maxlag=2
+kardl_set(
+  formula = CPI ~ ER + PPI + Asymmetr(ER) +
+    deterministic(covid) + trend,
+  data = imf_example_data,
+  maxlag = 2
 ) # setting the default values of the kardl function
 
 
 # using the grid_custom mode with batch processing
 
-kardl_model_grid<-kardl( mode = "grid_custom",batch = "2/3",criterion = "BIC")
+kardl_model_grid <- kardl(
+  mode = "grid_custom",
+  batch = "2/3",
+  criterion = "BIC"
+)
 kardl_model_grid
 #> Optimal lags for each variable ( BIC ):
 #> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + 
-#>     L0.d.PPI + covid + trend
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
 #>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
@@ -409,7 +417,7 @@ kardl_model_grid
 #>       6.284e-03        1.649e-02        7.898e-03        9.699e-05  
 #> 
 
-kardl_model2<-kardl(mode = c( 2    ,  1    ,  1   ,   3 ))
+kardl_model2 <- kardl(mode = c(2, 1, 1, 3))
 
 # Getting the results
 kardl_model2
@@ -417,10 +425,7 @@ kardl_model2
 #> CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 1, PPI: 3 
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + 
-#>     L0.d.asyN_ER_NN + L1.d.asyN_ER_NN + L0.d.PPI + L1.d.PPI + 
-#>     L2.d.PPI + L3.d.PPI + covid + trend
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
 #>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
@@ -439,10 +444,7 @@ kardl_model2
 summary(kardl_model2)
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + 
-#>     L0.d.asyN_ER_NN + L1.d.asyN_ER_NN + L0.d.PPI + L1.d.PPI + 
-#>     L2.d.PPI + L3.d.PPI + covid + trend
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Residuals:
 #>       Min        1Q    Median        3Q       Max 
@@ -478,14 +480,13 @@ summary(kardl_model2)
 
 # using '.' in the formula means that all variables in the data will be used
 
-fit_bic <- kardl(formula=CPI~.+deterministic(covid))
+fit_bic <- kardl(formula = CPI ~ . + deterministic(covid))
 fit_bic
 #> Optimal lags for each variable ( AIC ):
 #> CPI: 1, ER: 1, PPI: 1 
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.ER + L1.PPI + L1.d.CPI + L0.d.ER + L1.d.ER + 
-#>     L0.d.PPI + L1.d.PPI + covid
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
 #> (Intercept)       L1.CPI        L1.ER       L1.PPI     L1.d.CPI      L0.d.ER  
@@ -495,16 +496,15 @@ fit_bic
 #> 
 
 # Setting max lag instead of default value [4]
-kardl(imf_example_data,
-      CPI~ER+PPI+Lasymmetric(ER),
-      maxlag = 3, mode = "grid_custom")
+kardl(CPI ~ ER + PPI + Lasymmetric(ER),
+  imf_example_data,
+  maxlag = 3, mode = "grid_custom"
+)
 #> Optimal lags for each variable ( AIC ):
 #> CPI: 2, ER: 1, PPI: 2 
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L2.d.CPI + L0.d.ER + L1.d.ER + L0.d.PPI + L1.d.PPI + 
-#>     L2.d.PPI
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
 #>   (Intercept)         L1.CPI  L1.asyP_ER_PP  L1.asyN_ER_NN         L1.PPI  
@@ -517,14 +517,12 @@ kardl(imf_example_data,
 
 # Using another criterion for finding the best lag
 kardl_set(criterion = "HQ") # setting the criterion to HQ
-kardl( mode = "grid_custom")
+kardl(mode = "grid_custom")
 #> Optimal lags for each variable ( HQ ):
 #> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + 
-#>     L0.d.PPI + covid + trend
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
 #>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
@@ -536,15 +534,12 @@ kardl( mode = "grid_custom")
 #> 
 
 # using default values of lags
-kardl( mode=c(1,2,3,0))
+kardl(mode = c(1, 2, 3, 0))
 #> Optimal lags for each variable ( HQ ):
 #> CPI: 1, asyP_ER_PP: 2, asyN_ER_NN: 3, PPI: 0 
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + L2.d.asyP_ER_PP + 
-#>     L0.d.asyN_ER_NN + L1.d.asyN_ER_NN + L2.d.asyN_ER_NN + L3.d.asyN_ER_NN + 
-#>     L0.d.PPI + covid + trend
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
 #>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
@@ -557,32 +552,37 @@ kardl( mode=c(1,2,3,0))
 #>       2.328e-02        1.650e-02        7.229e-03        3.733e-05  
 #> 
 
-# For using different lag values for negative and positive decompositions of non-linear variables
-# setting the same lags for positive and negative decompositions.
+# For using different lag values for negative and positive decompositions
+# of non-linear variables setting the same lags for positive and negative
+# decompositions.
 
-same<-kardl(formula=CPI~Asymmetric(ER),maxlag=2, mode = "grid_custom",differentAsymLag = FALSE)
-dif<-kardl(formula=CPI~Sasymmetric(ER),maxlag=2, mode = "grid_custom",differentAsymLag = TRUE)
-
-same$lagInfo$OptLag
+same <- kardl(
+  formula = CPI ~ Asymmetric(ER),
+  maxlag = 2, mode = "grid_custom",
+  different_asym_lag = FALSE
+)
+dif <- kardl(
+  formula = CPI ~ Sasymmetric(ER),
+  maxlag = 2, mode = "grid_custom",
+  different_asym_lag = TRUE
+)
+kardl_extract(same, "opt_lag")
 #>        CPI asyP_ER_PP asyN_ER_NN 
 #>          1          1          1 
-dif$lagInfo$OptLag
+kardl_extract(dif, "opt_lag")
 #>        CPI asyP_ER_PP asyN_ER_NN 
 #>          1          1          0 
 
 # Optional: use magrittr if available
 library(magrittr)
-  kardl_model_pipe <-  imf_example_data %>%
-    kardl(mode = "grid_custom")
-
-  kardl_model_pipe
+kardl_model_pipe <- imf_example_data %>%
+  kardl(mode = "grid_custom", data = .)
+kardl_model_pipe
 #> Optimal lags for each variable ( HQ ):
 #> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
 #> 
 #> Call:
-#> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.PPI + 
-#>     L1.d.CPI + L0.d.asyP_ER_PP + L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + 
-#>     L0.d.PPI + covid + trend
+#> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
 #>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  

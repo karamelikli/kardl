@@ -7,15 +7,20 @@
 kardl_set(...)
 }
 \arguments{
-\item{...}{Named arguments corresponding to the options to be set. Valid option names include those defined in the kardl package settings.}
+\item{...}{Named arguments corresponding to the options to be set. Valid
+option names include those defined in the kardl package settings.}
 }
 \value{
-All current settings as a list after applying any updates from the provided named arguments invisibly.
+All current settings as a list after applying any updates from the
+provided named arguments invisibly.
 
-If no arguments are provided, returns all options as a list. If named arguments are provided, sets those options and returns the updated list.
+If no arguments are provided, returns all options as a list. If named
+arguments are provided, sets those options and returns the updated list.
 }
 \description{
-This function allows users to set options for the kardl package. Users can specify named arguments to set options or call the function without arguments to retrieve all current settings.
+This function allows users to set options for the kardl package. Users can
+specify named arguments to set options or call the function without arguments
+to retrieve all current settings.
 }
 \examples{
 # Get default options
@@ -25,12 +30,16 @@ kardl_set(maxlag = 5, mode = "grid")
 # Get specific options
 kardl_get("maxlag", "mode")
 
-# To have the updated settings available in the global environment, assign the output to a variable:
-MySettings<- kardl_set(LongCoef = "LongRun_{varName}", ShortCoef = "ShortRun_{varName}")
-# Now MySettings contains the updated settings, and the kardl package
+# To have the updated settings available in the global environment, assign
+# the output to a variable:
+my_settings <- kardl_set(
+  long_coef = "LongRun_{var_name}",
+  short_coef = "ShortRun_{var_name}"
+)
+# Now my_settings contains the updated settings, and the kardl package
 # will use these settings for subsequent operations.
-MySettings$LongCoef
-MySettings$maxlag
+my_settings$long_coef
+my_settings$maxlag
 
 # Reset to defaults after demonstrating custom settings
 kardl_reset()

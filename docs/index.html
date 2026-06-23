@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,12 +58,10 @@
   </div>
 </nav><div class="container template-home">
 <div class="row">
-  <main id="main" class="col-md-9"><hr>
-<p>editor_options: markdown: wrap: sentence —</p>
-<div class="section level1">
+  <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="kardl-">KARDL <img src="reference/figures/KARDL.png" align="right"><a class="anchor" aria-label="anchor" href="#kardl-"></a>
 </h1></div>
-<p><a href="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/karamelikli/kardl/releases" class="external-link"><img src="https://img.shields.io/github/v/release/karamelikli/kardl" alt="GitHub version"></a> <a href="https://opensource.org/licenses/GPL-3.0" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a> <a href="https://cran.r-project.org/package=kardl" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/kardl" alt="CRAN downloads"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle"></a></p>
+<p><a href="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/karamelikli/kardl/releases" class="external-link"><img src="https://img.shields.io/github/v/release/karamelikli/kardl" alt="GitHub version"></a> <a href="https://opensource.org/licenses/GPL-3.0" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a> <a href="https://cran.r-project.org/package=kardl" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/kardl" alt="CRAN downloads"></a></p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -76,7 +74,11 @@
 <li>
 <strong>Dynamic Analysis</strong>: Compute long-run coefficients, perform cointegration tests (PSS F, PSS t, Narayan), and ECM estimation.</li>
 </ul>
-<p>This vignette demonstrates how to use the <code><a href="reference/kardl.html">kardl()</a></code> function to estimate an asymmetric ARDL model, perform diagnostic tests, and visualize results, using economic data from Turkey. ## Installation</p>
+<p>This vignette demonstrates how to use the <code><a href="reference/kardl.html">kardl()</a></code> function to estimate an asymmetric ARDL model, perform diagnostic tests, and visualize results, using economic data from Turkey.</p>
+</div>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p><code>kardl</code> in R can easily be installed from its CRAN repository:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
@@ -101,7 +103,7 @@
 <p>The <code>kardl</code> package implements several methodological extensions and improvements for ARDL/NARDL modelling that go beyond standard implementations available in R and other software:</p>
 <ul>
 <li>
-<strong>differentAsymLag</strong> option: Enables different lag orders for the positive and negative partial sum decompositions in NARDL models. This provides greater flexibility than the common symmetric lag restriction used in most existing packages.</li>
+<strong>different_asym_lag</strong> option: Enables different lag orders for the positive and negative partial sum decompositions in NARDL models. This provides greater flexibility than the common symmetric lag restriction used in most existing packages.</li>
 <li>
 <strong>Narayan cointegration test</strong> (<code><a href="reference/narayan.html">narayan()</a></code>): A dedicated small-sample bounds test (Narayan, 2005) with automatic handling of critical values for cases II–V. While the test exists in the literature, its seamless integration into a full ARDL/NARDL workflow is unique in R.</li>
 <li>
@@ -111,18 +113,9 @@
 <li>Additional advanced capabilities include highly flexible formula parsing for mixed symmetric/asymmetric regressors, multiple model selection criteria (AIC, BIC, AICc, HQ), parallel processing support, and extensive post-estimation tools tailored for asymmetric analysis.</li>
 </ul>
 <p>These features make <code>kardl</code> particularly suitable for researchers needing fine-grained control over asymmetric dynamics and small-sample inference.</p>
-<div class="section level3">
-<h3 id="prior-art-and-comparisons">Prior Art and Comparisons<a class="anchor" aria-label="anchor" href="#prior-art-and-comparisons"></a>
-</h3>
-<p><code>kardl</code> builds upon the foundational NARDL framework of Shin et al. (2014) and extends it with practical innovations not fully available in other R packages.</p>
-<p><strong>Comparable implementations in R</strong>: - <code>nardl</code> package - <code>ardl.nardl</code> / <code>dynardl</code> - Other tools in the broader <code>ardlverse</code> ecosystem</p>
-<p>While these packages provide solid baseline ARDL/NARDL estimation, <code>kardl</code> offers meaningful improvements in flexibility (especially regarding lag structures for asymmetric components), additional cointegration testing options (including the Narayan test), integrated symmetry testing, and bootstrap inference for dynamic multipliers.</p>
-<p><strong>Key reference</strong>: - Shin, Y., Yu, B., &amp; Greenwood-Nimmo, M. (2014). Modelling Asymmetric Cointegration and Dynamic Multipliers in a Nonlinear ARDL Framework. In <em>Econometric Methods and Their Applications in Finance, Macro and Related Fields</em>. - Narayan, P. K. (2005). The saving and investment nexus for China: evidence from cointegration tests. <em>Applied Economics</em>, 37(17), 1979–1990.</p>
-<p>For a full list of implemented standards and methodological details, see the package vignette and the dedicated SRR standards documentation.</p>
-</div>
 </div>
 <div class="section level2">
-<h2 id="estimating-an-asymmetric-ardl-model">Estimating an Asymmetric ARDL Model<a class="anchor" aria-label="anchor" href="#estimating-an-asymmetric-ardl-model"></a>
+<h2 id="estimating-an-asymmetric-ardl-model">Estimating an asymmetric ARDL Model<a class="anchor" aria-label="anchor" href="#estimating-an-asymmetric-ardl-model"></a>
 </h2>
 <p>This example estimates an asymmetric ARDL model to analyze the dynamics of exchange rate pass-through to domestic prices in Turkey, using a sample dataset (<code>imf_example_data</code>) with variables for Consumer Price Index (CPI), Exchange Rate (ER), Producer Price Index (PPI), and a COVID-19 dummy variable.</p>
 <div class="section level3">
@@ -134,18 +127,24 @@
 <div class="section level3">
 <h3 id="step-2-define-the-model-formula">Step 2: Define the Model Formula<a class="anchor" aria-label="anchor" href="#step-2-define-the-model-formula"></a>
 </h3>
-<p>We define the model formula using R’s formula syntax, incorporating asymmetric effects and deterministic variables. We use <code>asymmetric()</code> for variables with both short- and long-run asymmetry, <code>Lasymmetric()</code> for long-run asymmetry, <code>Sasymmetric()</code> for short-run asymmetry, and <code>deterministic()</code> for fixed dummy variables. The <code>trend</code> term includes a linear time trend in the model.</p>
+<p>We define the model formula using R’s formula syntax, incorporating asymmetric effects and deterministic variables. We use <code>asymmetric()</code> for variables with both short- and long-run asymmetry, <code>lasymmetric()</code> for long-run asymmetry, <code>sasymmetric()</code> for short-run asymmetry, and <code>deterministic()</code> for fixed dummy variables. The <code>trend</code> term includes a linear time trend in the model.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Define the model formula</span></span>
-<span><span class="va">MyFormula</span> <span class="op">&lt;-</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Define the model formula</span></span>
+<span><span class="va">my_formula</span> <span class="op">&lt;-</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="va">trend</span></span></code></pre></div>
 <p>Indeed, the formula syntax is flexible, allowing for various combinations of asymmetric and deterministic variables. The following variations of the formula are equivalent and will yield the same model specification:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">Asymmetric</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">Sasymmetric</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">Lasymmetric</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">Deterministic</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
-<span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">asymmetric</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">Sasymmetric</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">Lasymmetric</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
-<span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">asym</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">sasym</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">lasym</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
-<span><span class="va">sameFormula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span><span class="fu">a</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span><span class="op">+</span><span class="fu">s</span><span class="op">(</span><span class="va">x2</span><span class="op">+</span><span class="va">x3</span><span class="op">)</span><span class="op">+</span><span class="fu">l</span><span class="op">(</span><span class="va">x4</span><span class="op">+</span><span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">d</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">same_formula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">sasymmetric</span><span class="op">(</span><span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">lasymmetric</span><span class="op">(</span><span class="va">x4</span> <span class="op">+</span> <span class="va">x5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">deterministic</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
+<span><span class="va">same_formula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">sasymmetric</span><span class="op">(</span><span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">lasymmetric</span><span class="op">(</span><span class="va">x4</span> <span class="op">+</span> <span class="va">x5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">deterministic</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
+<span><span class="va">same_formula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fu">asym</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">+</span> <span class="fu">sasym</span><span class="op">(</span><span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span><span class="op">)</span> <span class="op">+</span> <span class="fu">lasym</span><span class="op">(</span><span class="va">x4</span> <span class="op">+</span> <span class="va">x5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span>
+<span><span class="va">same_formula</span> <span class="op">&lt;-</span> <span class="va">y</span> <span class="op">~</span> <span class="fu">a</span><span class="op">(</span><span class="va">x1</span><span class="op">)</span> <span class="op">+</span> <span class="fu">s</span><span class="op">(</span><span class="va">x2</span> <span class="op">+</span> <span class="va">x3</span><span class="op">)</span> <span class="op">+</span> <span class="fu">l</span><span class="op">(</span><span class="va">x4</span> <span class="op">+</span> <span class="va">x5</span><span class="op">)</span> <span class="op">+</span> <span class="fu">d</span><span class="op">(</span><span class="va">dummy1</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-3-model-estimation">Step 3: Model Estimation<a class="anchor" aria-label="anchor" href="#step-3-model-estimation"></a>
@@ -157,11 +156,13 @@
 </h4>
 <p>The <code>"grid"</code> mode evaluates all lag combinations up to <code>maxlag</code> and provides console feedback.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Set model options</span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span>, differentAsymLag <span class="op">=</span> <span class="cn">TRUE</span>, data<span class="op">=</span><span class="va">imf_example_data</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># Set model options</span></span>
+<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span>, different_asym_lag <span class="op">=</span> <span class="cn">TRUE</span>, data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span>
 <span><span class="co"># Estimate model with grid mode</span></span>
-<span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">imf_example_data</span>,formula<span class="op">=</span> <span class="va">MyFormula</span>, maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span>
+<span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
 <span><span class="va">kardl_model</span></span></code></pre></div>
 <p>Summary of the model provides detailed information about the estimated coefficients, standard errors, t-values, and significance levels.</p>
@@ -174,10 +175,12 @@
 </h4>
 <p>Specify custom lags to bypass automatic lag selection:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">kardl_model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">imf_example_data</span>, <span class="va">MyFormula</span>, mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">kardl_model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, <span class="va">my_formula</span>,</span>
+<span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
-<span><span class="va">kardl_model2</span><span class="op">$</span><span class="va">lagInfo</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">kardl_model2</span>,<span class="st">"opt_lag"</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Display model summary</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">kardl_model2</span><span class="op">)</span></span></code></pre></div>
@@ -187,41 +190,56 @@
 </h4>
 <p>Use the <code>.</code> operator to include all variables except the dependent variable:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">imf_example_data</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>formula <span class="op">=</span>  <span class="va">CPI</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="visualizing-lag-criteria">Visualizing Lag Criteria<a class="anchor" aria-label="anchor" href="#visualizing-lag-criteria"></a>
 </h4>
-<p>The <code>LagCriteria</code> component contains lag combinations and their criterion values. We visualize these to compare model selection criteria (AIC, BIC, HQ).</p>
+<p>The <code>lag_criteria</code> component contains lag combinations and their criterion values. We visualize these to compare model selection criteria (AIC, BIC, HQ).</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyr.tidyverse.org" class="external-link">tidyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
-<span><span class="co"># Convert LagCriteria to a data frame</span></span>
-<span><span class="va">LagCriteria</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">kardl_model</span><span class="op">$</span><span class="va">lagInfo</span><span class="op">$</span><span class="va">LagCriteria</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">LagCriteria</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lag"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span>, <span class="st">"AICc"</span>, <span class="st">"HQ"</span><span class="op">)</span></span>
-<span><span class="va">LagCriteria</span> <span class="op">&lt;-</span> <span class="va">LagCriteria</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AIC</span>, <span class="va">BIC</span>, <span class="va">HQ</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Convert lag_criteria to a data frame</span></span>
+<span><span class="va">lag_criteria</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">kardl_model</span>, <span class="st">"lag_criteria"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">lag_criteria</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"lag"</span>, <span class="st">"AIC"</span>, <span class="st">"BIC"</span>, <span class="st">"AICc"</span>, <span class="st">"HQ"</span><span class="op">)</span></span>
+<span><span class="va">lag_criteria</span> <span class="op">&lt;-</span> <span class="va">lag_criteria</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html" class="external-link">across</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AIC</span>, <span class="va">BIC</span>, <span class="va">HQ</span><span class="op">)</span>, <span class="va">as.numeric</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Pivot to long format</span></span>
-<span><span class="va">LagCriteria_long</span> <span class="op">&lt;-</span> <span class="va">LagCriteria</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">AICc</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span>cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AIC</span>, <span class="va">BIC</span>, <span class="va">HQ</span><span class="op">)</span>, names_to <span class="op">=</span> <span class="st">"Criteria"</span>, values_to <span class="op">=</span> <span class="st">"Value"</span><span class="op">)</span></span>
+<span><span class="va">lag_criteria_long</span> <span class="op">&lt;-</span> <span class="va">lag_criteria</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">AICc</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
+<span>    cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AIC</span>, <span class="va">BIC</span>, <span class="va">HQ</span><span class="op">)</span>,</span>
+<span>    names_to <span class="op">=</span> <span class="st">"Criteria"</span>,</span>
+<span>    values_to <span class="op">=</span> <span class="st">"Value"</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Find minimum values</span></span>
-<span><span class="va">min_values</span> <span class="op">&lt;-</span> <span class="va">LagCriteria_long</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Criteria</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">Value</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<span><span class="va">min_values</span> <span class="op">&lt;-</span> <span class="va">lag_criteria_long</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">Criteria</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_min</a></span><span class="op">(</span>order_by <span class="op">=</span> <span class="va">Value</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Plot</span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">LagCriteria_long</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lag</span>, y <span class="op">=</span> <span class="va">Value</span>, color <span class="op">=</span> <span class="va">Criteria</span>, group <span class="op">=</span> <span class="va">Criteria</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span></span>
+<span>  <span class="va">lag_criteria_long</span>,</span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lag</span>, y <span class="op">=</span> <span class="va">Value</span>, color <span class="op">=</span> <span class="va">Criteria</span>, group <span class="op">=</span> <span class="va">Criteria</span><span class="op">)</span></span>
+<span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html" class="external-link">geom_line</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">min_values</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lag</span>, y <span class="op">=</span> <span class="va">Value</span><span class="op">)</span>, color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">8</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">min_values</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lag</span>, y <span class="op">=</span> <span class="va">Value</span>, label <span class="op">=</span> <span class="va">lag</span><span class="op">)</span>, vjust <span class="op">=</span> <span class="fl">1.5</span>, color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">3.5</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Lag Criteria Comparison"</span>, x <span class="op">=</span> <span class="st">"Lag Configuration"</span>, y <span class="op">=</span> <span class="st">"Criteria Value"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">min_values</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lag</span>, y <span class="op">=</span> <span class="va">Value</span><span class="op">)</span>,</span>
+<span>    color <span class="op">=</span> <span class="st">"red"</span>, size <span class="op">=</span> <span class="fl">3</span>, shape <span class="op">=</span> <span class="fl">8</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_text.html" class="external-link">geom_text</a></span><span class="op">(</span></span>
+<span>    data <span class="op">=</span> <span class="va">min_values</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lag</span>, y <span class="op">=</span> <span class="va">Value</span>, label <span class="op">=</span> <span class="va">lag</span><span class="op">)</span>,</span>
+<span>    vjust <span class="op">=</span> <span class="fl">1.5</span>, color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">3.5</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Lag Criteria Comparison"</span>,</span>
+<span>    x <span class="op">=</span> <span class="st">"Lag Configuration"</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Criteria Value"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -230,7 +248,10 @@
 </h4>
 <p>The <code><a href="reference/ecm.html">ecm()</a></code> function estimates a Restricted ECM for cointegration testing. We specify the same formula and lag structure as in the ARDL model.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ecm.html">ecm</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">imf_example_data</span>, formula <span class="op">=</span> <span class="va">MyFormula</span>, maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ecm.html">ecm</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ecm_model</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -240,22 +261,27 @@
 </h3>
 <p>We calculate long-run coefficients using <code><a href="reference/kardl_longrun.html">kardl_longrun()</a></code>, which standardizes coefficients by dividing them by the negative of the dependent variable’s long-run parameter.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Long-run coefficients</span></span>
-<span><span class="va">mylong</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl_longrun.html">kardl_longrun</a></span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span>
-<span><span class="va">mylong</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Long-run coefficients</span></span>
+<span><span class="va">my_long</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl_longrun.html">kardl_longrun</a></span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span>
+<span><span class="va">my_long</span></span></code></pre></div>
 <p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function provides detailed information about the long-run coefficients, including standard errors, t-values, and significance levels.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summary of long-run coefficients</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">mylong</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my_long</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-5-asymmetry-test">Step 5: Asymmetry Test<a class="anchor" aria-label="anchor" href="#step-5-asymmetry-test"></a>
+<h3 id="step-5-symmetry-test">Step 5: Symmetry Test<a class="anchor" aria-label="anchor" href="#step-5-symmetry-test"></a>
 </h3>
 <p>The <code><a href="reference/symmetrytest.html">symmetrytest()</a></code> function performs Wald tests to assess short- and long-run asymmetry in the model.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>, mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/symmetrytest.html">symmetrytest</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="va">imf_example_data</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span></span>
+<span>    <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span>
+<span>    mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
+<span>    data <span class="op">=</span> <span class="va">_</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/symmetrytest.html">symmetrytest</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">ast</span></span></code></pre></div>
 <p>Summary of the symmetry test provides detailed results for both long-run and short-run asymmetry tests, including F-values, p-values, hypotheses, and test decisions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
@@ -271,37 +297,33 @@
 </h4>
 <p>The <code><a href="reference/pssf.html">pssf()</a></code> function tests for cointegration using the Pesaran, Shin, and Smith F Bound test.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">A</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/pssf.html">pssf</a></span><span class="op">(</span>case <span class="op">=</span> <span class="fl">3</span>, signif_level <span class="op">=</span> <span class="st">"0.05"</span><span class="op">)</span></span>
-<span><span class="va">A</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">test_result</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/pssf.html">pssf</a></span><span class="op">(</span>case <span class="op">=</span> <span class="fl">3</span>, signif_level <span class="op">=</span> <span class="st">"0.05"</span><span class="op">)</span></span>
+<span><span class="va">test_result</span></span></code></pre></div>
 <p>Summary of the PSS F Bound test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="pss-t-bound-test">PSS t Bound Test<a class="anchor" aria-label="anchor" href="#pss-t-bound-test"></a>
 </h4>
 <p>The <code><a href="reference/psst.html">psst()</a></code> function tests the significance of the lagged dependent variable’s coefficient.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">A</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/psst.html">psst</a></span><span class="op">(</span>case <span class="op">=</span> <span class="fl">3</span>, signif_level <span class="op">=</span> <span class="st">"0.05"</span><span class="op">)</span></span>
-<span><span class="va">A</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">test_result</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/psst.html">psst</a></span><span class="op">(</span>case <span class="op">=</span> <span class="fl">3</span>, signif_level <span class="op">=</span> <span class="st">"0.05"</span><span class="op">)</span></span>
+<span><span class="va">test_result</span></span></code></pre></div>
 <p>Summary of the PSS t Bound test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="narayan-test">Narayan Test<a class="anchor" aria-label="anchor" href="#narayan-test"></a>
 </h4>
 <p>The <code><a href="reference/narayan.html">narayan()</a></code> function is tailored for small sample sizes. It tests for cointegration using critical values optimized for small samples.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">A</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/narayan.html">narayan</a></span><span class="op">(</span>case <span class="op">=</span> <span class="fl">3</span>, signif_level <span class="op">=</span> <span class="st">"0.05"</span><span class="op">)</span></span>
-<span><span class="va">A</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">test_result</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/narayan.html">narayan</a></span><span class="op">(</span>case <span class="op">=</span> <span class="fl">3</span>, signif_level <span class="op">=</span> <span class="st">"0.05"</span><span class="op">)</span></span>
+<span><span class="va">test_result</span></span></code></pre></div>
 <p>Summary of the Narayan test provides detailed information about the test statistic, critical values, hypotheses, and decision regarding cointegration.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">A</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -309,36 +331,36 @@
 </h3>
 <p>The <code><a href="reference/mplier.html">mplier()</a></code> function calculates dynamic multipliers for the model, showing how changes in independent variables affect the dependent variable over time.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">multipliers</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/mplier.html">mplier</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">multipliers</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/mplier.html">mplier</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># View multipliers of the model</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">multipliers</span><span class="op">$</span><span class="va">mpsi</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">multipliers</span>, <span class="st">"multipliers"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co"># View long-run multipliers</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">multipliers</span><span class="op">$</span><span class="va">omega</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">multipliers</span>, <span class="st">"omega"</span><span class="op">)</span></span>
 <span><span class="co"># View short-run multipliers</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">multipliers</span><span class="op">$</span><span class="va">lambda</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">multipliers</span>, <span class="st">"lambda"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Plotting dynamic multipliers for specific variables can be done using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function, which visualizes the response of the dependent variable to changes in independent variables over time.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">multipliers</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ER"</span>, <span class="st">"PPI"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>To handle a large number of variables, you can specify a subset of variables to plot or use <code>variables = "all"</code> to visualize all dynamic multipliers.</p>
 <p>Bootstrap confidence intervals for dynamic multipliers can be calculated using the <code><a href="reference/bootstrap.html">bootstrap()</a></code> function, which provides robust estimates of uncertainty around the multipliers.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">bootstrap_results</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span>   <span class="fu"><a href="reference/bootstrap.html">bootstrap</a></span><span class="op">(</span>horizon <span class="op">=</span> <span class="fl">12</span>,  replications<span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">bootstrap_results</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/bootstrap.html">bootstrap</a></span><span class="op">(</span>horizon <span class="op">=</span> <span class="fl">12</span>, replications <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="co"># View bootstrap summary</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">bootstrap_results</span><span class="op">)</span></span></code></pre></div>
-<p>Vşsualize bootstrap results for specific variables to understand the variability and confidence intervals of the dynamic multipliers.</p>
+<p>Visualize bootstrap results for specific variables to understand the variability and confidence intervals of the dynamic multipliers.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bootstrap_results</span>, variables <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="step-8-customizing-asymmetric-variables">Step 8: Customizing Asymmetric Variables<a class="anchor" aria-label="anchor" href="#step-8-customizing-asymmetric-variables"></a>
+<h3 id="step-8-customizing-asymmetric-variables">Step 8: Customizing asymmetric Variables<a class="anchor" aria-label="anchor" href="#step-8-customizing-asymmetric-variables"></a>
 </h3>
 <p>We demonstrate how to customize prefixes and suffixes for asymmetric variables using <code><a href="reference/kardl_set.html">kardl_set()</a></code>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Set custom prefixes and suffixes</span></span>
+<code class="sourceCode R"><span><span class="co"># Set custom prefixes and suffixes</span></span>
 <span><span class="fu"><a href="reference/kardl_reset.html">kardl_reset</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>AsymPrefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asyP_"</span>, <span class="st">"asyN_"</span><span class="op">)</span>, AsymSuffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_PP"</span>, <span class="st">"_NN"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">kardl_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>data<span class="op">=</span><span class="va">imf_example_data</span>, <span class="va">MyFormula</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>asym_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asyP_"</span>, <span class="st">"asyN_"</span><span class="op">)</span>, asym_suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_PP"</span>, <span class="st">"_NN"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">kardl_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">imf_example_data</span>, <span class="va">my_formula</span><span class="op">)</span></span>
 <span><span class="va">kardl_custom</span></span></code></pre></div>
 </div>
 </div>
@@ -352,14 +374,14 @@
 <li>
 <code>data</code>: A time series dataset (e.g., a data frame with CPI, ER, PPI).</li>
 <li>
-<code>formula</code>: A formula specifying the long-run equation, e.g., <code>y ~ x + z + asymmetric(z) + Lasymmetric(x2 + x3) + Sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend</code>. Supports:
+<code>formula</code>: A formula specifying the long-run equation, e.g., <code>y ~ x + z + asymmetric(z) + lasymmetric(x2 + x3) + sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend</code>. Supports:
 <ul>
 <li>
-<code>asymmetric()</code>: Asymmetric effects for both short- and long-run dynamics.</li>
+<code>asymmetric()</code>: asymmetric effects for both short- and long-run dynamics.</li>
 <li>
-<code>Lasymmetric()</code>: Long-run asymmetric variables.</li>
+<code>lasymmetric()</code>: Long-run asymmetric variables.</li>
 <li>
-<code>Sasymmetric()</code>: Short-run asymmetric variables.</li>
+<code>sasymmetric()</code>: Short-run asymmetric variables.</li>
 <li>
 <code>deterministic()</code>: Fixed dummy variables.</li>
 <li>
@@ -380,16 +402,16 @@
 <li>User-defined vector (e.g., <code>c(1, 2, 4, 5)</code> or <code>c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code>).</li>
 </ul>
 </li>
-<li>Returns a list with components: <code>inputs</code>, <code>finalModel</code>, <code>start_time</code>, <code>end_time</code>, <code>properLag</code>, <code>TimeSpan</code>, <code>OptLag</code>, <code>LagCriteria</code>, <code>type</code> (“kardlmodel”).</li>
+<li>Returns a list with components: <code>inputs</code>, <code>finalModel</code>, <code>start_time</code>, <code>end_time</code>, <code>properLag</code>, <code>time_span</code>, <code>opt_lag</code>, <code>lag_criteria</code>, <code>type</code> (“kardlmodel”).</li>
 </ul>
 </li>
-<li><p><strong><code>kardl_set(...)</code></strong>: Configures options like <code>criterion</code> (AIC, BIC, AICc, HQ), <code>differentAsymLag</code>, <code>AsymPrefix</code>, <code>Sasymuffix</code>, <code>ShortCoef</code>, and <code>LongCoef</code>. Use <code><a href="reference/kardl_get.html">kardl_get()</a></code> to retrieve settings and <code><a href="reference/kardl_reset.html">kardl_reset()</a></code> to restore defaults.</p></li>
+<li><p><strong><code>kardl_set(...)</code></strong>: Configures options like <code>criterion</code> (AIC, BIC, AICc, HQ), <code>different_asym_lag</code>, <code>asym_prefix</code>, <code>Sasymuffix</code>, <code>short_coef</code>, and <code>long_coef</code>. Use <code><a href="reference/kardl_get.html">kardl_get()</a></code> to retrieve settings and <code><a href="reference/kardl_reset.html">kardl_reset()</a></code> to restore defaults.</p></li>
 <li><p><strong><code>kardl_longrun(model)</code></strong>: Calculates standardized long-run coefficients, returning <code>type</code> (“kardl_longrun”), <code>coef</code>, <code>delta_se</code>, <code>results</code>, and <code>starsDesc</code>.</p></li>
 <li><p><strong><code>symmetrytest(model)</code></strong>: Performs Wald tests for short- and long-run asymmetry, returning <code>Lhypotheses</code>, <code>Lwald</code>, <code>Shypotheses</code>, <code>Swald</code>, and <code>type</code> (“symmetrytest”).</p></li>
 <li><p><strong><code>pssf(model, case, signif_level)</code></strong>: Performs the Pesaran, Shin, and Smith F Bound test for cointegration, supporting cases 1–5 and significance levels (“auto”, 0.01, 0.025, 0.05, 0.1, 0.10).</p></li>
 <li><p><strong><code>psst(model, case, signif_level)</code></strong>: Performs the PSS t Bound test, focusing on the lagged dependent variable’s coefficient.</p></li>
 <li><p><strong><code>narayan(model, case, signif_level)</code></strong>: Conducts the Narayan test for cointegration, optimized for small samples (cases 2–5).</p></li>
-<li><p><strong><code>ecm(data, model, maxlag, mode, ...)</code></strong>: Conducts the Restricted ECM test for cointegration, with similar parameters to <code><a href="reference/kardl.html">kardl()</a></code> and case/significance level options.</p></li>
+<li><p><strong><code>ecm(data, model, maxlag, mode,  ...)</code></strong>: Conducts the Restricted ECM test for cointegration, with similar parameters to <code><a href="reference/kardl.html">kardl()</a></code> and case/significance level options.</p></li>
 </ul>
 <p>For detailed documentation, use <code><a href="reference/kardl.html">?kardl</a></code>, <code><a href="reference/kardl_set.html">?kardl_set</a></code>, <code><a href="reference/kardl_longrun.html">?kardl_longrun</a></code>, <code><a href="reference/symmetrytest.html">?symmetrytest</a></code>, <code><a href="reference/pssf.html">?pssf</a></code>, <code><a href="reference/psst.html">?psst</a></code>, <code><a href="reference/narayan.html">?narayan</a></code>, or <code><a href="reference/ecm.html">?ecm</a></code>.</p>
 </div>
@@ -436,27 +458,27 @@
 <td>The criterion for model selection, can be “AIC”, “BIC”, “HQ” or a user-defined function</td>
 </tr>
 <tr>
-<td>differentAsymLag</td>
+<td>different_asym_lag</td>
 <td>FALSE</td>
 <td>If TRUE, the asymmetry lags will be different for positive and negative shocks</td>
 </tr>
 <tr>
-<td>AsymPrefix</td>
+<td>asym_prefix</td>
 <td>c()</td>
 <td>Prefix for asymmetry variables, default is empty</td>
 </tr>
 <tr>
-<td>AsymSuffix</td>
+<td>asym_suffix</td>
 <td>c(“_POS”, “_NEG”)</td>
 <td>Suffix for asymmetry variables, default is “_POS” and “_NEG”</td>
 </tr>
 <tr>
-<td>LongCoef</td>
+<td>long_coef</td>
 <td>“L{lag}.{varName}”</td>
 <td>Prefix for long-run coefficients, default is “L1.”</td>
 </tr>
 <tr>
-<td>ShortCoef</td>
+<td>short_coef</td>
 <td>“L{lag}.d.{varName}”</td>
 <td>Prefix for short-run coefficients, default is “L1.d.”</td>
 </tr>
@@ -516,7 +538,7 @@
 <p><code>criterion</code> is a character string specifying the criterion to be used for selecting the optimal lags. The default value is <code>"AIC"</code>. The available options are:</p>
 <ul>
 <li>
-<strong>User defined function</strong>: For detailed information on the model selection criteria used in the methods, see the documentation for the <code>modelCriterion</code> function.</li>
+<strong>User defined function</strong>: For detailed information on the model selection criteria used in the methods, see the documentation for the <code>model_criterion</code> function.</li>
 <li>
 <strong>AIC</strong>: Akaike Information Criterion (AIC). This criterion balances model fit and complexity, favoring models with a lower AIC value. It is widely used in time series analysis and model selection.</li>
 <li>
@@ -529,7 +551,7 @@
 <div class="section level4">
 <h4 id="details-4">Details<a class="anchor" aria-label="anchor" href="#details-4"></a>
 </h4>
-<p>For detailed information on the model selection criteria used in the methods, see the documentation for the <code>modelCriterion</code> function.</p>
+<p>For detailed information on the model selection criteria used in the methods, see the documentation for the <code>model_criterion</code> function.</p>
 <p>The choice of the criterion can significantly impact the selected lag length and, consequently, the performance of the model. Each criterion has its strengths and is suited to specific scenarios:</p>
 <ul>
 <li>Use <code>"AIC"</code> for general purposes, especially when prioritizing a good fit over simplicity.</li>
@@ -548,7 +570,7 @@
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"AIC"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="using-bic-for-lag-selection">Using BIC for lag selection<a class="anchor" aria-label="anchor" href="#using-bic-for-lag-selection"></a>
@@ -556,7 +578,7 @@
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="using-aicc-for-small-sample-sizes">Using AICc for small sample sizes<a class="anchor" aria-label="anchor" href="#using-aicc-for-small-sample-sizes"></a>
@@ -564,7 +586,7 @@
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"AICc"</span><span class="op">)</span></span>
-<span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">my_formula</span>, data<span class="op">=</span><span class="va">.</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="using-hq-criterion">Using HQ criterion<a class="anchor" aria-label="anchor" href="#using-hq-criterion"></a>
@@ -572,18 +594,18 @@
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"HQ"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="id_6-differentasymlag">6. differentAsymLag<a class="anchor" aria-label="anchor" href="#id_6-differentasymlag"></a>
+<h3 id="id_6-different_asym_lag">6. different_asym_lag<a class="anchor" aria-label="anchor" href="#id_6-different_asym_lag"></a>
 </h3>
-<p><code>differentAsymLag</code> is a logical value (<code>TRUE</code> or <code>FALSE</code>) indicating whether positive and negative asymmetric variables should be assigned different lags during the estimation process. The default value is <code>FALSE</code>, meaning that both positive and negative components will use the same lag.</p>
+<p><code>different_asym_lag</code> is a logical value (<code>TRUE</code> or <code>FALSE</code>) indicating whether positive and negative asymmetric variables should be assigned different lags during the estimation process. The default value is <code>FALSE</code>, meaning that both positive and negative components will use the same lag.</p>
 <div class="section level4">
 <h4 id="details-5">Details<a class="anchor" aria-label="anchor" href="#details-5"></a>
 </h4>
-<p>Asymmetric decomposition separates a variable into its positive and negative changes. In some models, it may be desirable to assign different lags to these components to capture distinct dynamic behaviors. Setting <code>differentAsymLag = TRUE</code> allows the function to optimize lags for positive and negative components independently. When <code>differentAsymLag = FALSE</code>, both components will share the same lag.</p>
+<p>Asymmetric decomposition separates a variable into its positive and negative changes. In some models, it may be desirable to assign different lags to these components to capture distinct dynamic behaviors. Setting <code>different_asym_lag = TRUE</code> allows the function to optimize lags for positive and negative components independently. When <code>different_asym_lag = FALSE</code>, both components will share the same lag.</p>
 <p>This parameter is particularly useful when:</p>
 <ul>
 <li>Positive and negative changes in a variable are expected to have different impacts over time.</li>
@@ -591,8 +613,8 @@
 </ul>
 <p><strong>Attention!</strong></p>
 <ul>
-<li>When <code>differentAsymLag = TRUE</code>, ensure that the model has sufficient data to estimate separate lags reliably.</li>
-<li>For models with limited observations or a high number of variables, <code>differentAsymLag = FALSE</code> may be more robust and computationally efficient.</li>
+<li>When <code>different_asym_lag = TRUE</code>, ensure that the model has sufficient data to estimate separate lags reliably.</li>
+<li>For models with limited observations or a high number of variables, <code>different_asym_lag = FALSE</code> may be more robust and computationally efficient.</li>
 </ul>
 </div>
 <div class="section level4">
@@ -603,23 +625,23 @@
 </h5>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="fu">kadrl_set</span><span class="op">(</span>differentAsymLag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">kadrl_set</span><span class="op">(</span>different_asym_lag <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="assigning-different-lags-for-positive-and-negative-components">Assigning different lags for positive and negative components<a class="anchor" aria-label="anchor" href="#assigning-different-lags-for-positive-and-negative-components"></a>
 </h5>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>differentAsymLag <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>different_asym_lag <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="id_7-asymprefix">7. AsymPrefix<a class="anchor" aria-label="anchor" href="#id_7-asymprefix"></a>
+<h3 id="id_7-asym_prefix">7. asym_prefix<a class="anchor" aria-label="anchor" href="#id_7-asym_prefix"></a>
 </h3>
-<p><code>AsymPrefix</code> is a character vector specifying the prefixes used for naming asymmetric variables created during positive and negative decomposition. The default value is an empty vector <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>, indicating that no prefixes are added by default.</p>
+<p><code>asym_prefix</code> is a character vector specifying the prefixes used for naming asymmetric variables created during positive and negative decomposition. The default value is an empty vector <code><a href="https://rdrr.io/r/base/c.html" class="external-link">c()</a></code>, indicating that no prefixes are added by default.</p>
 <p>When specified, the prefixes are added to the beginning of variable names to represent the positive and negative decomposition:</p>
 <ul>
 <li>The first element in the vector corresponds to the positive decomposition.</li>
@@ -629,17 +651,17 @@
 <h4 id="details-6">Details<a class="anchor" aria-label="anchor" href="#details-6"></a>
 </h4>
 <p>Asymmetric decomposition is used to analyze the separate effects of positive and negative changes in a variable. For example, given a variable <code>X</code>, prefixes can be used to generate <code>POS_X</code> and <code>NEG_X</code> for the positive and negative components, respectively.</p>
-<p>By default, no prefixes are applied (<code>AsymPrefix = c()</code>). However, users can define custom prefixes by providing a vector with two elements. For example:</p>
+<p>By default, no prefixes are applied (<code>asym_prefix = c()</code>). However, users can define custom prefixes by providing a vector with two elements. For example:</p>
 <ul>
 <li>
-<code>kardl_set(AsymPrefix = c("POS_", "NEG_"))</code> results in variable names such as <code>POS_X</code> and <code>NEG_X</code>.</li>
+<code>kardl_set(asym_prefix = c("POS_", "NEG_"))</code> results in variable names such as <code>POS_X</code> and <code>NEG_X</code>.</li>
 <li>
-<code>kardl_set(AsymPrefix = c("Increase_", "Decrease_"))</code> results in variable names such as <code>Increase_X</code> and <code>Decrease_X</code>.</li>
+<code>kardl_set(asym_prefix = c("Increase_", "Decrease_"))</code> results in variable names such as <code>Increase_X</code> and <code>Decrease_X</code>.</li>
 </ul>
 <p><strong>Attention!</strong></p>
 <ul>
 <li>The vector must contain exactly two elements: the first for the positive decomposition and the second for the negative decomposition.</li>
-<li>If prefixes are used in combination with suffixes (via <code>AsymSuffix</code>), ensure that the resulting variable names are meaningful and do not conflict.</li>
+<li>If prefixes are used in combination with suffixes (via <code>asym_suffix</code>), ensure that the resulting variable names are meaningful and do not conflict.</li>
 </ul>
 </div>
 </div>
@@ -651,27 +673,27 @@
 </h4>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span> AsymPrefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span> asym_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="custom-prefixes-for-positive-and-negative-decomposition">Custom prefixes for positive and negative decomposition<a class="anchor" aria-label="anchor" href="#custom-prefixes-for-positive-and-negative-decomposition"></a>
 </h4>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>AsymPrefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POS_"</span>, <span class="st">"NEG_"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>asym_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"POS_"</span>, <span class="st">"NEG_"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="combining-prefixes-with-suffixes">Combining prefixes with suffixes<a class="anchor" aria-label="anchor" href="#combining-prefixes-with-suffixes"></a>
 </h4>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span> AsymPrefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Change_"</span>, <span class="st">"Fall_"</span><span class="op">)</span>, AsymSuffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_High"</span>, <span class="st">"_Low"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span> asym_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Change_"</span>, <span class="st">"Fall_"</span><span class="op">)</span>, asym_suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_High"</span>, <span class="st">"_Low"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
-<h3 id="id_8-asymsuffix">8. AsymSuffix<a class="anchor" aria-label="anchor" href="#id_8-asymsuffix"></a>
+<h3 id="id_8-asym_suffix">8. asym_suffix<a class="anchor" aria-label="anchor" href="#id_8-asym_suffix"></a>
 </h3>
-<p><code>AsymSuffix</code> is a character vector specifying the suffixes used for naming asymmetric variables created during positive and negative decomposition. The default value is <code>c("_POS", "_NEG")</code>, where:</p>
+<p><code>asym_suffix</code> is a character vector specifying the suffixes used for naming asymmetric variables created during positive and negative decomposition. The default value is <code>c("_POS", "_NEG")</code>, where:</p>
 <ul>
 <li>
 <code>"_POS"</code> is the suffix appended to variables representing the positive decomposition.</li>
@@ -690,9 +712,9 @@
 <p>By default, the suffixes <code>"_POS"</code> and <code>"_NEG"</code> are used, but users can customize them as needed by providing a custom vector. For example:</p>
 <ul>
 <li>
-<code>AsymSuffix = c("_Increase", "_Decrease")</code> results in variable names such as <code>X_Increase</code> and <code>X_Decrease</code>.</li>
+<code>asym_suffix = c("_Increase", "_Decrease")</code> results in variable names such as <code>X_Increase</code> and <code>X_Decrease</code>.</li>
 <li>
-<code>AsymSuffix = c("_Up", "_Down")</code> results in variable names such as <code>X_Up</code> and <code>X_Down</code>.</li>
+<code>asym_suffix = c("_Up", "_Down")</code> results in variable names such as <code>X_Up</code> and <code>X_Down</code>.</li>
 </ul>
 <p><strong>Attention!</strong></p>
 <ul>
@@ -707,9 +729,9 @@
 </div>
 </div>
 <div class="section level3">
-<h3 id="id_9-longcoef">9. LongCoef<a class="anchor" aria-label="anchor" href="#id_9-longcoef"></a>
+<h3 id="id_9-long_coef">9. long_coef<a class="anchor" aria-label="anchor" href="#id_9-long_coef"></a>
 </h3>
-<p><code>LongCoef</code> is a character string specifying the prefix format for naming long-run coefficients in the model output. The default value is <code>"L{lag}.{varName}"</code>, where:</p>
+<p><code>long_coef</code> is a character string specifying the prefix format for naming long-run coefficients in the model output. The default value is <code>"L{lag}.{varName}"</code>, where:</p>
 <ul>
 <li>
 <code>{lag}</code> is a placeholder for the lag number.</li>
@@ -720,12 +742,12 @@
 <div class="section level4">
 <h4 id="details-8">Details<a class="anchor" aria-label="anchor" href="#details-8"></a>
 </h4>
-<p>Long-run coefficients represent the long-term relationships between the dependent variable and independent variables in an ARDL or NARDL model. The <code>LongCoef</code> parameter allows users to customize how these coefficients are named in the output, making it easier to identify and interpret them. The default format <code>"L{lag}.{varName}"</code> is widely used and provides clear information about the lag and variable associated with each coefficient. Users can modify the format by changing the <code>LongCoef</code> string. For example:</p>
+<p>Long-run coefficients represent the long-term relationships between the dependent variable and independent variables in an ARDL or NARDL model. The <code>long_coef</code> parameter allows users to customize how these coefficients are named in the output, making it easier to identify and interpret them. The default format <code>"L{lag}.{varName}"</code> is widely used and provides clear information about the lag and variable associated with each coefficient. Users can modify the format by changing the <code>long_coef</code> string. For example:</p>
 <ul>
 <li>
-<code>LongCoef = "LongRun_{varName}_Lag{lag}"</code> results in names like <code>LongRun_X_Lag1</code>.</li>
+<code>long_coef = "LongRun_{varName}_Lag{lag}"</code> results in names like <code>LongRun_X_Lag1</code>.</li>
 <li>
-<code>LongCoef = "LR_{varName}_L{lag}"</code> results in names like <code>LR_X_L1</code>.</li>
+<code>long_coef = "LR_{varName}_L{lag}"</code> results in names like <code>LR_X_L1</code>.</li>
 </ul>
 <p><strong>Attention!</strong></p>
 <ul>
@@ -735,9 +757,9 @@
 </div>
 </div>
 <div class="section level3">
-<h3 id="id_10-shortcoef">10. ShortCoef<a class="anchor" aria-label="anchor" href="#id_10-shortcoef"></a>
+<h3 id="id_10-short_coef">10. short_coef<a class="anchor" aria-label="anchor" href="#id_10-short_coef"></a>
 </h3>
-<p><code>ShortCoef</code> is a character string specifying the prefix format for naming short-run coefficients in the model output. The default value is <code>"L{lag}.d.{varName}"</code>, where:</p>
+<p><code>short_coef</code> is a character string specifying the prefix format for naming short-run coefficients in the model output. The default value is <code>"L{lag}.d.{varName}"</code>, where:</p>
 <ul>
 <li>
 <code>{lag}</code> is a placeholder for the lag number.</li>
@@ -748,12 +770,12 @@
 <div class="section level4">
 <h4 id="details-9">Details<a class="anchor" aria-label="anchor" href="#details-9"></a>
 </h4>
-<p>Short-run coefficients capture the immediate effects of changes in independent variables on the dependent variable in an ARDL or NARDL model. The <code>ShortCoef</code> parameter allows users to customize how these coefficients are named in the output, facilitating easier identification and interpretation. The default format <code>"L{lag}.d.{varName}"</code> is commonly used and provides clear information about the lag, differencing, and variable associated with each coefficient. Users can modify the format by changing the <code>ShortCoef</code> string. For example:</p>
+<p>Short-run coefficients capture the immediate effects of changes in independent variables on the dependent variable in an ARDL or NARDL model. The <code>short_coef</code> parameter allows users to customize how these coefficients are named in the output, facilitating easier identification and interpretation. The default format <code>"L{lag}.d.{varName}"</code> is commonly used and provides clear information about the lag, differencing, and variable associated with each coefficient. Users can modify the format by changing the <code>short_coef</code> string. For example:</p>
 <ul>
 <li>
-<code>ShortCoef = "ShortRun_{varName}_Lag{lag}"</code> results in names like <code>ShortRun_X_Lag1</code>.</li>
+<code>short_coef = "ShortRun_{varName}_Lag{lag}"</code> results in names like <code>ShortRun_X_Lag1</code>.</li>
 <li>
-<code>ShortCoef = "SR_{varName}_L{lag}"</code> results in names like <code>SR_X_L1</code>.</li>
+<code>short_coef = "SR_{varName}_L{lag}"</code> results in names like <code>SR_X_L1</code>.</li>
 </ul>
 <p><strong>Attention!</strong></p>
 <ul>
@@ -792,21 +814,21 @@
 </h5>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>batch <span class="op">=</span> <span class="st">"1/1"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="using-a-batch-size-of-2-out-of-4">Using a batch size of 2 out of 4<a class="anchor" aria-label="anchor" href="#using-a-batch-size-of-2-out-of-4"></a>
 </h5>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>batch <span class="op">=</span> <span class="st">"2/4"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="using-a-batch-size-of-3-out-of-6">Using a batch size of 3 out of 6<a class="anchor" aria-label="anchor" href="#using-a-batch-size-of-3-out-of-6"></a>
 </h5>
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>batch <span class="op">=</span> <span class="st">"3/6"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">MyFormula</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
@@ -880,7 +902,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Huseyin Karamelikli <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-7622-0972" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
+<li>Huseyin karamelikli <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0001-7622-0972" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 <li>Huseyin Utku Demir <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-9140-0362" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
@@ -892,7 +914,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Huseyin Karamelikli, Huseyin Utku Demir.</p>
+  <p>Developed by Huseyin karamelikli, Huseyin Utku Demir.</p>
 </div>
 
 <div class="pkgdown-footer-right">

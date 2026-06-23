@@ -5,7 +5,25 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pesaran, Shin, and Smith Bounds F-Test — pssf"><meta name="description" content="This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to assess the presence of a long-term relationship (cointegration) between variables in the context of an autoregressive distributed lag (ARDL) model. The PSS F Bound test examines the joint significance of lagged levels of the variables in the model. It provides critical values for both the upper and lower bounds, which help determine whether the variables are cointegrated. If the calculated F-statistic falls outside these bounds, it indicates the existence of a long-term equilibrium relationship. This test is particularly useful when the underlying data includes a mix of stationary and non-stationary variables."><meta property="og:description" content="This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to assess the presence of a long-term relationship (cointegration) between variables in the context of an autoregressive distributed lag (ARDL) model. The PSS F Bound test examines the joint significance of lagged levels of the variables in the model. It provides critical values for both the upper and lower bounds, which help determine whether the variables are cointegrated. If the calculated F-statistic falls outside these bounds, it indicates the existence of a long-term equilibrium relationship. This test is particularly useful when the underlying data includes a mix of stationary and non-stationary variables."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pesaran, Shin, and Smith Bounds F-Test — pssf"><meta name="description" content="This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to
+assess the presence of a long-term relationship (cointegration) between
+variables in the context of an autoregressive distributed lag (ARDL) model.
+The PSS F Bound test examines the joint significance of lagged levels of the
+variables in the model. It provides critical values for both the upper and
+lower bounds, which help determine whether the variables are cointegrated.
+If the calculated F-statistic falls outside these bounds, it indicates the
+existence of a long-term equilibrium relationship. This test is particularly
+useful when the underlying data includes a mix of stationary and
+non-stationary variables."><meta property="og:description" content="This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to
+assess the presence of a long-term relationship (cointegration) between
+variables in the context of an autoregressive distributed lag (ARDL) model.
+The PSS F Bound test examines the joint significance of lagged levels of the
+variables in the model. It provides critical values for both the upper and
+lower bounds, which help determine whether the variables are cointegrated.
+If the calculated F-statistic falls outside these bounds, it indicates the
+existence of a long-term equilibrium relationship. This test is particularly
+useful when the underlying data includes a mix of stationary and
+non-stationary variables."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -13,7 +31,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,25 +62,38 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to assess the presence of a long-term relationship (cointegration) between variables in the context of an autoregressive distributed lag (ARDL) model. The PSS F Bound test examines the joint significance of lagged levels of the variables in the model. It provides critical values for both the upper and lower bounds, which help determine whether the variables are cointegrated. If the calculated F-statistic falls outside these bounds, it indicates the existence of a long-term equilibrium relationship. This test is particularly useful when the underlying data includes a mix of stationary and non-stationary variables.</p>
+    <p>This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to
+assess the presence of a long-term relationship (cointegration) between
+variables in the context of an autoregressive distributed lag (ARDL) model.
+The PSS F Bound test examines the joint significance of lagged levels of the
+variables in the model. It provides critical values for both the upper and
+lower bounds, which help determine whether the variables are cointegrated.
+If the calculated F-statistic falls outside these bounds, it indicates the
+existence of a long-term equilibrium relationship. This test is particularly
+useful when the underlying data includes a mix of stationary and
+non-stationary variables.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pssf</span><span class="op">(</span><span class="va">kmodel</span>, case <span class="op">=</span> <span class="fl">3</span>, signif_level <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">pssf</span><span class="op">(</span><span class="va">kardl_model</span>, case <span class="op">=</span> <span class="st">"auto"</span>, signif_level <span class="op">=</span> <span class="st">"auto"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-kmodel">kmodel<a class="anchor" aria-label="anchor" href="#arg-kmodel"></a></dt>
-<dd><p>A fitted KARDL model object of class 'kardl_lm' created using the <code><a href="kardl.html">kardl</a></code> function.</p></dd>
+<dl><dt id="arg-kardl-model">kardl_model<a class="anchor" aria-label="anchor" href="#arg-kardl-model"></a></dt>
+<dd><p>A fitted KARDL model object of class 'kardl_lm' created
+using the <code><a href="kardl.html">kardl</a></code> function.</p></dd>
 
 
 <dt id="arg-case">case<a class="anchor" aria-label="anchor" href="#arg-case"></a></dt>
-<dd><p>Numeric or character. Specifies the case of the test to be used in the function.
-Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the function determines the case automatically based on the model's characteristics. Invalid values will result in an error.</p><ul><li><p><code>1</code>: No intercept and no trend</p></li>
+<dd><p>Numeric or character. Specifies the case of the test to be used
+in the function. Acceptable values are 1, 2, 3, 4, 5, and "auto". If
+"auto" is chosen, the function determines the case automatically
+based on the model's characteristics. Invalid values will result in
+an error.</p><ul><li><p><code>1</code>: No intercept and no trend</p></li>
 <li><p><code>2</code>: Restricted intercept and no trend</p></li>
 <li><p><code>3</code>: Unrestricted intercept and no trend</p></li>
 <li><p><code>4</code>: Unrestricted intercept and restricted trend</p></li>
@@ -71,148 +102,204 @@ Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto" is chosen, the functi
 
 
 <dt id="arg-signif-level">signif_level<a class="anchor" aria-label="anchor" href="#arg-signif-level"></a></dt>
-<dd><p>Character or numeric. Specifies the significance level to be used in the function.
-Acceptable values are "auto", "0.10", "0.1", "0.05", "0.025", and "0.01".
-If a numeric value is provided, it will be converted to a character string.</p>
-<p>When <code>"auto"</code> is selected, the function determines the significance level
-sequentially, starting from the most stringent level (<code>"0.01"</code>) and proceeding
-to <code>"0.025"</code>, <code>"0.05"</code>, and <code>"0.10"</code> until a suitable level is identified.
-Invalid values will result in an error.</p></dd>
+<dd><p>Character or numeric. Specifies the significance level
+to be used in the function. Acceptable values are "auto", "0.10",
+"0.1", "0.05", "0.025", and "0.01". If a numeric value is provided,
+it will be converted to a character string.</p>
+<p>When <code>"auto"</code> is selected, the function determines the
+significance level sequentially, starting from the most stringent
+level (<code>"0.01"</code>) and proceeding to <code>"0.025"</code>, <code>"0.05"</code>,
+and <code>"0.10"</code> until a suitable level is identified. Invalid
+values will result in an error.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Additional arguments (currently not used).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list with class "htest" containing the following components:</p><ul><li><p><code>statistic</code>: The calculated F-statistic for the test.</p></li>
-<li><p><code>caseTxt</code>: A character string describing the case used for the test, based on the specified case parameter.</p></li>
-<li><p><code>alternative</code>: A character string describing the alternative hypothesis of the test.</p></li>
+<li><p><code>case_txt</code>: A character string describing the case used for the
+test, based on the specified case parameter.</p></li>
+<li><p><code>alternative</code>: A character string describing the alternative
+hypothesis of the test.</p></li>
 <li><p><code>sample.size</code>: The number of observations used in the test.</p></li>
-<li><p><code>varnames</code>: A character vector containing the names of the dependent variable and independent variables used in the test.</p></li>
-<li><p><code>k</code>: The number of independent variables (excluding the dependent variable) included in the test.</p></li>
-<li><p><code>sig</code>: The significance level used for the test, either specified by the user or determined automatically.</p></li>
-<li><p><code>notes</code>: A character vector containing any notes or warnings related to
-the test, such as the suitability of the test for small sample sizes or any adjustments made to the case based on the model's characteristics.</p></li>
+<li><p><code>var_names</code>: A character vector containing the names of the
+dependent variable and independent variables used in the test.</p></li>
+<li><p><code>k</code>: The number of independent variables (excluding the dependent
+variable) included in the test.</p></li>
+<li><p><code>sig</code>: The significance level used for the test, either specified
+by the user or determined automatically.</p></li>
+<li><p><code>notes</code>: A character vector containing any notes or warnings
+related to the test, such as the suitability of the test for small
+sample sizes or any adjustments made to the case based on the model's
+characteristics.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a></h2>
 
 
-<p>The null hypothesis (H0) of the F Bound test is that there is no cointegration among the variables in the model. In other words, it tests whether the long-term relationship between the variables is statistically significant. If the calculated F-statistic exceeds the upper critical value, we reject the null hypothesis and conclude that there is cointegration. Conversely, if the F-statistic falls below the lower critical value, we fail to reject the null hypothesis, indicating no evidence of cointegration. If the F-statistic lies between the two critical values, the result is inconclusive.</p>
+<p>The null hypothesis (H0) of the F Bound test is that there is no
+cointegration among the variables in the model. In other words, it tests
+whether the long-term relationship between the variables is statistically
+significant. If the calculated F-statistic exceeds the upper critical value,
+we reject the null hypothesis and conclude that there is cointegration.
+Conversely, if the F-statistic falls below the lower critical value, we fail
+to reject the null hypothesis, indicating no evidence of cointegration. If
+the F-statistic lies between the two critical values, the result is
+inconclusive.</p>
 <p>$$
-  \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  + \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +   \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+ \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
+  \Delta {y}_t =  \psi  + \varphi t  + \eta _0   {y}_{t-1}  +
+  \sum_{i=1}^{k} {  \eta _i   {x}_{i,t-1} }  +
+  \sum_{j=1}^{p} { \gamma_{j}  \Delta {y}_{t-j} }+
+  \sum_{i=1}^{k} {\sum_{j=0}^{q_i} { \beta_{ij}   \Delta {x}_{i,t-j} } }+ e_t
 $$</p>
 <dl><dt>Cases 1, 3, 5:</dt>
 <dd><p>$$\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k  = 0$$
-$$\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k} \neq 0$$</p></dd>
+$$\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}
+           \neq 0$$</p></dd>
 
 <dt>Case 2:</dt>
 <dd><p>$$\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k =  \psi  = 0$$
-$$\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \psi \neq 0$$</p></dd>
-
+$$\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}
+           \neq \psi \neq 0$$</p></dd>
 
 <dt>Case 4:</dt>
 <dd><p>$$\mathbf{H_{0}:} \eta_0  = \eta_1  = \dots = \eta_k = \varphi = 0$$
-$$\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \varphi \neq 0$$</p></dd>
+$$\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}
+           \neq \varphi \neq 0$$</p></dd>
 
 
 </dl></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing Approaches to the Analysis of Level Relationship", Journal of Applied Econometrics, 16(3), 289-326.</p>
+    <p>Pesaran, M. H., Shin, Y. and Smith, R. (2001), "Bounds Testing
+Approaches to the Analysis of Level Relationship", Journal of
+Applied Econometrics, 16(3), 289-326.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="psst.html">psst</a></code>  <code><a href="ecm.html">ecm</a></code>  <code><a href="narayan.html">narayan</a></code></p></div>
+    <div class="dont-index"><p><code><a href="psst.html">psst</a></code> <code><a href="ecm.html">ecm</a></code> <code><a href="narayan.html">narayan</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">imf_example_data</span>,</span></span>
-<span class="r-in"><span>                   <span class="va">CPI</span><span class="op">~</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span>,</span></span>
-<span class="r-in"><span>                   mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">my_pssF</span><span class="op">&lt;-</span><span class="fu">pssf</span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>  <span class="va">imf_example_data</span>,</span></span>
+<span class="r-in"><span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_pssF</span> <span class="op">&lt;-</span> <span class="fu">pssf</span><span class="op">(</span><span class="va">kardl_model</span>, case <span class="op">=</span> <span class="st">"auto"</span>, signif_level <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Getting the results of the test.</span></span></span>
 <span class="r-in"><span><span class="va">my_pssF</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> data:  model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> data:  kardl_model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> F = 10.204</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: Cointegrating relationship exists</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Getting details of the test.</span></span></span>
-<span class="r-in"><span><span class="va">my_summary</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my_pssF</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">my_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my_pssF</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">my_summary</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F  =  10.20356 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> k =  3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 1% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F: 10.2035571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           L    U</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   10%  3.47 4.45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5%   4.01 5.07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2.5% 4.52 5.62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1%   5.17 6.36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.36).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 → Cointegration (at 1% level) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Case: V </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Critical Values (Case  V ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          L    U</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.10  3.47 4.45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.05  4.01 5.07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.025 4.52 5.62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.01  5.17 6.36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting the critical values of the test.</span></span></span>
-<span class="r-in"><span><span class="va">my_summary</span><span class="op">$</span><span class="va">crit_vals</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">my_summary</span>, what <span class="op">=</span> <span class="st">"critical_values"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          L    U</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.10  3.47 4.45</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.05  4.01 5.07</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.025 4.52 5.62</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.01  5.17 6.36</span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using magrittr :</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span>   <span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span><span class="op">~</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span>,</span></span>
-<span class="r-in"><span>                           mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu">pssf</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>    mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">.</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">pssf</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> data:  model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> data:  .</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> F = 10.204</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: Cointegrating relationship exists</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span>   <span class="co"># Getting details of the test results using magrittr:</span></span></span>
-<span class="r-in"><span>   <span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>   <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span><span class="op">~</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span>,</span></span>
-<span class="r-in"><span>                           mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>   <span class="fu">pssf</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F  =  10.20356 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> k =  3 </span>
+<span class="r-in"><span><span class="co"># Getting details of the test results using magrittr:</span></span></span>
+<span class="r-in"><span><span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>    mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">.</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu">pssf</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 1% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   F: 10.2035571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           L    U</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   10%  3.47 4.45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5%   4.01 5.07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2.5% 4.52 5.62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1%   5.17 6.36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.36).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Test Decision:  Reject H0 → Cointegration (at 1% level) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Case: V </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Critical Values (Case  V ):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          L    U</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.10  3.47 4.45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.05  4.01 5.07</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.025 4.52 5.62</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.01  5.17 6.36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -220,7 +307,7 @@ $$\mathbf{H_{1}:} \eta_{0} \neq \eta_{1} \neq \dots \neq \eta_{k}  \neq \varphi 
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Huseyin Karamelikli, Huseyin Utku Demir.</p>
+  <p>Developed by Huseyin karamelikli, Huseyin Utku Demir.</p>
 </div>
 
 <div class="pkgdown-footer-right">

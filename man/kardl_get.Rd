@@ -7,13 +7,17 @@
 kardl_get(...)
 }
 \arguments{
-\item{...}{Option names to retrieve. If no arguments are provided, all options will be returned.}
+\item{...}{Option names to retrieve. If no arguments are provided, all
+options will be returned.}
 }
 \value{
-If no arguments are provided, returns all options as a list. If specific option names are provided, returns their values.
+If no arguments are provided, returns all options as a list. If
+specific option names are provided, returns their values.
 }
 \description{
-This function retrieves the current settings of the kardl package. Users can specify option names to get their values or call the function without arguments to retrieve all current settings.
+This function retrieves the current settings of the kardl package. Users can
+specify option names to get their values or call the function without
+arguments to retrieve all current settings.
 }
 \examples{
 
@@ -22,10 +26,11 @@ kardl_get()
 # Get specific options
 kardl_get("maxlag", "mode")
 
-# Note: In interactive use, avoid calling kardl_get() directly to prevent cluttering the console.
+# Note: In interactive use, avoid calling kardl_get() directly to prevent
+# cluttering the console.
 
-a<-kardl_get()
-a$AsymSuffix
+a <- kardl_get()
+a$asym_suffix
 
 # To reset options and then get a default option:
 mydefaults <- kardl_reset()

@@ -4,118 +4,192 @@
 \alias{symmetrytest}
 \title{Symmetry Test for Nonlinear kardl Models}
 \usage{
-symmetrytest(kmodel, vars = NULL, component = "both", type = "F", ...)
+symmetrytest(
+  kardl_model,
+  selected_vars = NULL,
+  component = "both",
+  type = "F",
+  ...
+)
 }
 \arguments{
-\item{kmodel}{The kardl obejct}
+\item{kardl_model}{An object of class \code{kardl_lm} representing a fitted
+non-linear KARDL model.}
 
-\item{vars}{A character vector specifying the names of the variables to be included in the symmetry test. If NULL (the default), all eligible variables will be tested. The variable names should match those used in the KARDL model, and they can be either long-run or short-run variables. If any specified variable is not found in the model, an error will be raised.}
+\item{selected_vars}{A character vector specifying the names of the variables
+to be included in the symmetry test. If NULL (the default), all eligible
+variables will be tested. The variable names should match those used in the
+KARDL model, and they can be either long-run or short-run variables. If any
+specified variable is not found in the model, an error will be raised.}
 
-\item{component}{A character string specifying which component(s) of the model to test for symmetry. The options are "both" (default), "shortrun", or "longrun". If "both" is selected, the function will perform symmetry tests for both long-run and short-run variables. If "shortrun" is selected, only short-run variables will be tested, and if "longrun" is selected, only long-run variables will be tested. Invalid values will result in an error.}
+\item{component}{A character string specifying which component(s) of the
+model to test for symmetry. The options are "both" (default), "shortrun",
+or "longrun". If "both" is selected, the function will perform symmetry
+tests for both long-run and short-run variables. If "shortrun" is selected,
+only short-run variables will be tested, and if "longrun" is selected, only
+long-run variables will be tested. Invalid values will result in an error.}
 
-\item{type}{A character string specifying the type of test statistic to be used in the Wald tests. The options are "F" (default) or "Chisq". If "F" is selected, the function will perform an F-test, which is appropriate for smaller sample sizes. If "Chisq" is selected, the function will perform a chi-squared test, which is more suitable for larger sample sizes. Invalid values will result in an error.}
+\item{type}{A character string specifying the type of test statistic to be
+used in the Wald tests. The options are "F" (default) or "Chisq". If "F" is
+selected, the function will perform an F-test, which is appropriate for
+smaller sample sizes. If "Chisq" is selected, the function will perform a
+chi-squared test, which is more suitable for larger sample sizes. Invalid
+values will result in an error.}
 
-\item{...}{Additional arguments to be passed to the underlying test functions, such as \code{\link[nlWaldTest]{nlWaldtest}} for long-run tests or \code{\link[car]{linearHypothesis}} for short-run tests. These arguments can include options for controlling the behavior of the tests, such as specifying the type of test statistic or adjusting for multiple comparisons.}
+\item{...}{Additional arguments to be passed to the underlying test
+functions, such as \code{\link[nlWaldTest]{nlWaldtest}} for long-run tests
+or \code{\link[car]{linearHypothesis}} for short-run tests. These arguments
+can include options for controlling the behavior of the tests, such as
+specifying the type of test statistic or adjusting for multiple
+comparisons.}
 }
 \value{
 A list with class "kardl" containing the following components:
 \itemize{
-\item \code{Lwald:} A data frame containing the Wald test results for the long-run variables, including F-statistic, p-value, degrees of freedom, and residual degrees of freedom.
-\item \code{Lhypotheses:} A list containing the null and alternative hypotheses for the long-run variables.
-\item \code{Swald:} A data frame containing the Wald test results for the short-run variables, including F-statistic, p-value, degrees of freedom, residual degrees of freedom, and sum of squares.
-\item \code{Shypotheses:} A list containing the null and alternative hypotheses for the short-run variables.
+\item \code{long_wald_summary:} A data frame containing the Wald test results
+for the long-run variables, including F-statistic, p-value, degrees of
+freedom, and residual degrees of freedom.
+\item \code{long_hypotheses:} A list containing the null and alternative
+hypotheses for the long-run variables.
+\item \code{short_wald_summary:} A data frame containing the Wald test
+results for the short-run variables, including F-statistic, p-value, degrees
+of freedom, residual degrees of freedom, and sum of squares.
+\item \code{short_hypotheses:} A list containing the null and alternative
+hypotheses for the short-run variables.
 }
 }
 \description{
-The symmetry test is a statistical procedure used to assess the presence of symmetry in the relationship between variables in a model. It is particularly useful in econometric analysis, where it helps to identify whether the effects of changes in one variable on another are symmetric or asymmetric. The test involves estimating a model that includes both positive and negative components of the variables and then performing a Wald test to determine if the coefficients of these components are significantly different from each other.
-If the test indicates significant differences, it suggests that the relationship is asymmetric, meaning that the impact of increases and decreases in the variables differs.
-This test returns results for both long-run and short-run variables in a KARDL model. Where applicable, it provides the Wald test statistics, p-values, degrees of freedom, sum of squares, and mean squares for each variable tested.
-If the null hypothesis of symmetry is rejected, it indicates that the effects of positive and negative changes in the variable are significantly different, suggesting an asymmetric relationship.
+The symmetry test is a statistical procedure used to assess the presence of
+symmetry in the relationship between variables in a model. It is particularly
+useful in econometric analysis, where it helps to identify whether the
+effects of changes in one variable on another are symmetric or asymmetric.
+The test involves estimating a model that includes both positive and negative
+components of the variables and then performing a Wald test to determine if
+the coefficients of these components are significantly different from each
+other.
+If the test indicates significant differences, it suggests that the
+relationship is asymmetric, meaning that the impact of increases and
+decreases in the variables differs.
+This test returns results for both long-run and short-run variables in a
+KARDL model. Where applicable, it provides the Wald test statistics,
+p-values, degrees of freedom, sum of squares, and mean squares for each
+variable tested.
+If the null hypothesis of symmetry is rejected, it indicates that the effects
+of positive and negative changes in the variable are significantly different,
+suggesting an asymmetric relationship.
 
 The non-linear model with one asymmetric variables is specified as follows:
 \deqn{
- \Delta{y_{t}} = \psi + \eta_{0}y_{t - 1} + \eta^{+}_{1} x^{+}_{t - 1}+ \eta^{-}_{1} x^{-}_{t - 1} + \sum_{j = 1}^{p}{\gamma_{j}\Delta y_{t - j}} + \sum_{j = 0}^{q}{\beta^{+}_{j}\Delta x^{+}_{t - j}}  + \sum_{j = 0}^{m}{\beta^{-}_{j}\Delta x^{-}_{t - j}} + e_{t}
+ \Delta{y_{t}} = \psi + \eta_{0}y_{t - 1} + \eta^{+}_{1} x^{+}_{t - 1}
+ + \eta^{-}_{1} x^{-}_{t - 1} + \sum_{j = 1}^{p}{\gamma_{j}\Delta y_{t - j}}
+ + \sum_{j = 0}^{q}{\beta^{+}_{j}\Delta x^{+}_{t - j}}
+ + \sum_{j = 0}^{m}{\beta^{-}_{j}\Delta x^{-}_{t - j}} + e_{t}
 }
 
-This function performs the symmetry test both for long-run and short-run variables in a kardl model. It uses the \code{\link[nlWaldTest]{nlWaldtest}} function from the \pkg{nlWaldTest} package for long-run variables and the \code{\link[car]{linearHypothesis}} function from the \pkg{car} package for short-run variables.
+This function performs the symmetry test both for long-run and short-run
+variables in a kardl model. It uses the \code{\link[nlWaldTest]{nlWaldtest}}
+function from the \pkg{nlWaldTest} package for long-run variables and the
+\code{\link[car]{linearHypothesis}} function from the \pkg{car} package for
+short-run variables.
 The hypotheses for the long-run variables are:
 \deqn{
-    H_{0}: -\frac{\eta^{+}_{1}}{\eta_{0}} = -\frac{\eta^{-}_{1}}{\eta_{0}} }
-\deqn{    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
- }
+    H_{0}: -\frac{\eta^{+}_{1}}{\eta_{0}} = -\frac{\eta^{-}_{1}}{\eta_{0}}
+}
+\deqn{
+    H_{1}: -\frac{\eta^{+}_{1}}{\eta_{0}} \neq -\frac{\eta^{-}_{1}}{\eta_{0}}
+}
 
 The hypotheses for the short-run variables are:
 \deqn{
-  H_{0}: \sum_{j = 0}^{q}{\beta^{+}_{j}} = \sum_{j = 0}^{m}{\beta^{-}_{j}} }
-\deqn{H_{1}: \sum_{j = 0}^{q}{\beta^{+}_{j}} \neq \sum_{j = 0}^{m}{\beta^{-}_{j}}
-  }
+  H_{0}: \sum_{j = 0}^{q}{\beta^{+}_{j}} = \sum_{j = 0}^{m}{\beta^{-}_{j}}
+}
+\deqn{
+  H_{1}: \sum_{j = 0}^{q}{\beta^{+}_{j}} \neq \sum_{j = 0}^{m}{\beta^{-}_{j}}
+}
 }
 \details{
-This function performs symmetry tests on non-linear KARDL models to assess whether the effects of positive and negative changes in independent variables are statistically different.
+This function performs symmetry tests on non-linear KARDL models to assess
+whether the effects of positive and negative changes in independent variables
+are statistically different.
 
-This function evaluates whether the inclusion of a particular variable in the model follows a linear relationship or exhibits a non-linear pattern. By analyzing the behavior of the variable, the function helps to identify if the relationship between the variable and the outcome of interest adheres to a straight-line assumption or if it deviates, indicating a non-linear interaction. This distinction is important in model specification, as it ensures that the variable is appropriately represented, which can enhance the model's accuracy and predictive performance.
+This function evaluates whether the inclusion of a particular variable in the
+model follows a linear relationship or exhibits a non-linear pattern. By
+analyzing the behavior of the variable, the function helps to identify if the
+relationship between the variable and the outcome of interest adheres to a
+straight-line assumption or if it deviates, indicating a non-linear
+interaction. This distinction is important in model specification, as it
+ensures that the variable is appropriately represented, which can enhance the
+model's accuracy and predictive performance.
 }
 \examples{
+kardl_model <- kardl(
+  CPI ~ Lasym(PPI + ER) + Sas(ER) + deterministic(covid) + trend,
+  imf_example_data
+)
+ast <- symmetrytest(kardl_model)
+ast
+# Detailed results of the test:
+summary(ast)
+# The null hypothesis of the test is that the model is symmetric, while the
+# alternative hypothesis is that the model is asymmetric. The test statistic
+# and p-value are provided in the output. If the p-value is less than a
+# chosen significance level (e.g., 0.05), we reject the null hypothesis and
+# conclude that there is evidence of asymmetry in the model.
 
- kardl_model<-kardl(imf_example_data,
-                    CPI~Lasym(PPI+ER)+Sas(ER)+deterministic(covid)+trend)
- ast<- symmetrytest(kardl_model)
- ast
- # Detailed results of the test:
- summary(ast)
- # The null hypothesis of the test is that the model is symmetric, while the alternative
- # hypothesis is that the model is asymmetric. The test statistic and p-value are provided
- # in the output. If the p-value is less than a chosen significance level (e.g., 0.05),
- # we reject the null hypothesis and conclude that there is evidence of asymmetry in the model.
+# The default significance level is 0.05, but you can specify a different
+# level using the 'level' argument in the summary function. For example, to
+# use a significance level of 0.01, you can use the following code:
+summary(ast, level = 0.01)
 
- # The default significance level is 0.05, but you can specify a different level using the 'level'
- # argument in the summary function. For example, to use a significance level of 0.01,
- # you can use the following code:
- summary(ast, level = 0.01)
+# To get symmetry test results in long-run, you can use the following code:
+kardl_extract(ast, what = "long_wald_summary")
 
- # To get symmetry test results in long-run, you can use the following code:
- ast$Lwald
+# To get symmetry test results in short-run, you can use the following code:
+kardl_extract(ast, what = "short_wald_summary")
 
- # To get symmetry test results in short-run, you can use the following code:
- ast$Swald
+# To get the null and alternative hypotheses of the test in long-run,
+# you can use the following code:
+kardl_extract(ast, what = "long_hypotheses")
 
- # To get the null and alternative hypotheses of the test in long-run,
- # you can use the following code:
+# To get the null and alternative hypotheses of the test in short-run,
+# you can use the following code:
+kardl_extract(ast, what = "short_hypotheses")
 
- ast$Lhypotheses
+# Alternatively, you can also use the symmetrytest function with the
+# component argument to specify whether you want to test for long-run or
+# short-run symmetry. For example, to test for long-run symmetry, you can use
+# the following code:
+symmetrytest(kardl_model, component = "longrun")
 
- # To get the null and alternative hypotheses of the test in short-run,
- # you can use the following code:
+# To test for short-run symmetry, you can use the following code:
+symmetrytest(kardl_model, component = "shortrun")
 
- ast$Shypotheses
- # Alternatively, you can also use the symmetrytest function with the component
- # argument to specify whether you want to test for long-run or short-run symmetry.
- # For example, to test for long-run symmetry, you can use the following code:
- symmetrytest(kardl_model, component = "longrun")
- # To test for short-run symmetry, you can use the following code:
- symmetrytest(kardl_model, component = "shortrun")
+# If you want to test for symmetry with respect to a specific variable,
+# you can use the selected_vars argument in the symmetrytest function. For
+# example, to test for symmetry with respect to the PPI variable, you can use
+# the following code:
+symmetrytest(kardl_model, selected_vars = "PPI")
 
- # If you want to test for symmetry with respect to a specific variable,
- # you can use the vars argument in the symmetrytest function. For example,
- # to test for symmetry with respect to the PPI variable, you can use the following code:
- symmetrytest(kardl_model, vars = "PPI")
+# To test for symmetry with respect to multiple variables, you can provide
+# a vector of variable names to the selected_vars argument. For example, to
+# test for symmetry with respect to both PPI and ER, you can use the
+# following code:
+symmetrytest(kardl_model, selected_vars = c("PPI", "ER"))
 
- # To test for symmetry with respect to multiple variables, you can provide
- # a vector of variable names to the vars argument. For example, to test for
- # symmetry with respect to both PPI and ER, you can use the following code:
- symmetrytest(kardl_model, vars = c("PPI", "ER"))
-
- # Finally, you can also specify the type of test statistic to be used in the
- # symmetry test. By default, the function uses the Wald test  F statistic,
- # but you can also choose to use the chi-squared test statistic.
- # For example, to use the chi-squared test statistic, you can use the following code:
- symmetrytest(kardl_model, type="Chisq")
-
-
+# Finally, you can also specify the type of test statistic to be used in the
+# symmetry test. By default, the function uses the Wald test F statistic,
+# but you can also choose to use the chi-squared test statistic.
+# For example, to use the chi-squared test statistic, you can use the
+# following code:
+symmetrytest(kardl_model, type = "Chisq")
 }
 \references{
-Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014). Modelling asymmetric cointegration and dynamic multipliers in a nonlinear ARDL framework. Festschrift in honor of Peter Schmidt: Econometric methods and applications, 281-314.
+Shin, Y., Yu, B., & Greenwood-Nimmo, M. (2014). Modelling asymmetric
+cointegration and dynamic multipliers in a nonlinear ARDL framework.
+Festschrift in honor of Peter Schmidt: Econometric methods and applications,
+281-314.
 }
 \seealso{
-\code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}}, \code{\link{ecm}}, \code{\link{narayan}}
+\code{\link{kardl}}, \code{\link{pssf}}, \code{\link{psst}},
+\code{\link{ecm}}, \code{\link{narayan}}
 }

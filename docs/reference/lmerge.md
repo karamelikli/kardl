@@ -51,9 +51,12 @@ values from list `b` over those in list `a`.
 
 ``` r
 
-a<-list("a"="first a","b"="second a","c"=list("w"=12,"k"=c(1,3,6)))
-b<-list("a"="first b","b"="second b","d"=14,"e"=45)
-myMerged<- lmerge(a,b)
+a <- list(
+  "a" = "first a", "b" = "second a",
+  "c" = list("w" = 12, "k" = c(1, 3, 6))
+)
+b <- list("a" = "first b", "b" = "second b", "d" = 14, "e" = 45)
+myMerged <- lmerge(a, b)
 print(unlist(myMerged))
 #>          a          b        c.w       c.k1       c.k2       c.k3          d 
 #>  "first a" "second a"       "12"        "1"        "3"        "6"       "14" 
@@ -61,7 +64,7 @@ print(unlist(myMerged))
 #>       "45" 
 
 # for right merge
-myMerged<- lmerge(b,a)
+myMerged <- lmerge(b, a)
 print(unlist(myMerged))
 #>          a          b          d          e        c.w       c.k1       c.k2 
 #>  "first b" "second b"       "14"       "45"       "12"        "1"        "3" 
@@ -69,7 +72,7 @@ print(unlist(myMerged))
 #>        "6" 
 
 # for more than two lists
-myMerged<- lmerge(a,b,c("v1"=11,22,3,"v5"=5))
+myMerged <- lmerge(a, b, c("v1" = 11, 22, 3, "v5" = 5))
 print(unlist(myMerged))
 #>          a          b        c.w       c.k1       c.k2       c.k3          d 
 #>  "first a" "second a"       "12"        "1"        "3"        "6"       "14" 
@@ -77,19 +80,32 @@ print(unlist(myMerged))
 #>       "45"       "11"       "22"        "3"        "5" 
 
 # for more than two lists with nested lists
-m2<-list("m1"="kk2","m1.2.3"=list("m1.1.1"=333,"m.1.4"=918,"m.1.5"=982,"m.1.6"=981,"m.1.7"=928))
-m3<-list("m1"="kk23","m2.3"=2233,"m1.2.4"=list("m1.1.1"=333444,"m.1.5"=982,"m.1.6"=91,"m.1.7"=928))
-a<-c(32,34,542,"k"=35)
-b<-c(65,"k"=34)
+m2 <- list(
+  "m1" = "kk2",
+  "m1.2.3" = list(
+    "m1.1.1" = 333, "m.1.4" = 918,
+    "m.1.5" = 982, "m.1.6" = 981,
+    "m.1.7" = 928
+  )
+)
+m3 <- list(
+  "m1" = "kk23", "m2.3" = 2233,
+  "m1.2.4" = list(
+    "m1.1.1" = 333444, "m.1.5" = 982,
+    "m.1.6" = 91, "m.1.7" = 928
+  )
+)
+a <- c(32, 34, 542, "k" = 35)
+b <- c(65, "k" = 34)
 
-h1<-lmerge(a, m2)
+h1 <- lmerge(a, m2)
 print(unlist(h1))
 #>                                                       k            m1 
 #>          "32"          "34"         "542"          "35"         "kk2" 
 #> m1.2.3.m1.1.1  m1.2.3.m.1.4  m1.2.3.m.1.5  m1.2.3.m.1.6  m1.2.3.m.1.7 
 #>         "333"         "918"         "982"         "981"         "928" 
 
-h2<-lmerge(a,b,m2,m3,list("m1.1"=4))
+h2 <- lmerge(a, b, m2, m3, list("m1.1" = 4))
 print(unlist(h2))
 #>                                                       k               
 #>          "32"          "34"         "542"          "35"          "65" 

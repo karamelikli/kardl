@@ -11,14 +11,18 @@ variable.
 ## Usage
 
 ``` r
-kardl_longrun(model)
+kardl_longrun(kardl_model, ...)
 ```
 
 ## Arguments
 
-- model:
+- kardl_model:
 
   An object of class `kardl` estimated using the `kardl` function.
+
+- ...:
+
+  Additional arguments (currently not used).
 
 ## Value
 
@@ -79,9 +83,9 @@ multipliers: \$\$SE(LR_i) = \sqrt{(A^2) \cdot Var(\eta_i) + 2 \cdot A
 \cdot B \cdot Cov(\eta_i, \eta_0) + (B^2) \cdot Var(\eta_0)}\$\$ where
 \$\$A = \frac{\partial LRM_i}{\partial \eta_i} = -\frac{1}{\eta_0}\$\$
 and \$\$B = \frac{\partial LRM_i}{\partial \eta_0} =
-\frac{\eta_i}{\eta_0^2}\$\$ . Hence, \\\eta_i\\ is the coefficient of
-the independent variable and \\\eta_0\\ is the coefficient of the
-dependent variable in the original KARDL model.
+\frac{\eta_i}{\eta_0^2}\$\$. Hence, \\\eta_i\\ is the coefficient of the
+independent variable and \\\eta_0\\ is the coefficient of the dependent
+variable in the original KARDL model.
 
 ## See also
 
@@ -92,26 +96,32 @@ dependent variable in the original KARDL model.
 ## Examples
 
 ``` r
-kardl_model<-kardl(imf_example_data,
-                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   mode=c(1,2,3,0))
-long<-kardl_longrun(kardl_model)
+
+kardl_model <- kardl(
+  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+  imf_example_data,
+  mode = c(1, 2, 3, 0)
+)
+long <- kardl_longrun(kardl_model)
+#> Warning: Coefficients, standard errors, t-statistics and p-values are reliably estimated.
+#> Fitted values and residuals are NOT centered (E(u) ≠ 0 by design) → diagnostic plots and residual-based tests are invalid.
 
 # Calculate the long-run multipliers
 long
 #> 
 #> Call:
-#> kardl_longrun(model = kardl_model)
+#> kardl_longrun.kardl_lm(kardl_model = kardl_model)
 #> 
 #> Coefficients:
 #> L1.ER_POS  L1.ER_NEG     L1.PPI  
 #>    0.8249     2.0830     2.6528  
 #> 
+
 # Details of the long-run multipliers
 summary(long)
 #> 
 #> Call:
-#> kardl_longrun(model = kardl_model)
+#> kardl_longrun.kardl_lm(kardl_model = kardl_model)
 #> 
 #> Estimation type:
 #> Long-run multipliers 
@@ -123,21 +133,20 @@ summary(long)
 #> L1.PPI     2.65278    0.84724  3.1311  0.001855 ** 
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#> 
-#> Note:
-#> Coefficients, standard errors, t-statistics and p-values are reliably estimated.
-#> Fitted values and residuals are NOT centered (E(u) ≠ 0 by design) → diagnostic plots and residual-based tests are invalid. 
-
 
 # Using magrittr
-
 library(magrittr)
-     imf_example_data %>%
-     kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend, mode=c(1,2,3,0)) %>%
-     kardl_longrun() %>% summary()
+imf_example_data %>%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) %>%
+  kardl_longrun() %>%
+  summary()
+#> Warning: Coefficients, standard errors, t-statistics and p-values are reliably estimated.
+#> Fitted values and residuals are NOT centered (E(u) ≠ 0 by design) → diagnostic plots and residual-based tests are invalid.
 #> 
 #> Call:
-#> kardl_longrun(model = .)
+#> kardl_longrun.kardl_lm(kardl_model = .)
 #> 
 #> Estimation type:
 #> Long-run multipliers 
@@ -149,8 +158,4 @@ library(magrittr)
 #> L1.PPI     2.65278    0.84724  3.1311  0.001855 ** 
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#> 
-#> Note:
-#> Coefficients, standard errors, t-statistics and p-values are reliably estimated.
-#> Fitted values and residuals are NOT centered (E(u) ≠ 0 by design) → diagnostic plots and residual-based tests are invalid. 
 ```

@@ -52,13 +52,17 @@ kardl_get("maxlag", "mode")
 #> [1] "grid"
 #> 
 
-# To have the updated settings available in the global environment, assign the output to a variable:
-MySettings<- kardl_set(LongCoef = "LongRun_{varName}", ShortCoef = "ShortRun_{varName}")
-# Now MySettings contains the updated settings, and the kardl package
+# To have the updated settings available in the global environment, assign
+# the output to a variable:
+my_settings <- kardl_set(
+  long_coef = "LongRun_{var_name}",
+  short_coef = "ShortRun_{var_name}"
+)
+# Now my_settings contains the updated settings, and the kardl package
 # will use these settings for subsequent operations.
-MySettings$LongCoef
-#> [1] "LongRun_{varName}"
-MySettings$maxlag
+my_settings$long_coef
+#> [1] "LongRun_{var_name}"
+my_settings$maxlag
 #> [1] 5
 
 # Reset to defaults after demonstrating custom settings

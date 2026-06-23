@@ -14,12 +14,12 @@ includes a mix of stationary and non-stationary variables.
 ## Usage
 
 ``` r
-pssf(kmodel, case = 3, signif_level = "auto")
+pssf(kardl_model, case = "auto", signif_level = "auto", ...)
 ```
 
 ## Arguments
 
-- kmodel:
+- kardl_model:
 
   A fitted KARDL model object of class 'kardl_lm' created using the
   [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
@@ -54,13 +54,17 @@ pssf(kmodel, case = 3, signif_level = "auto")
   and proceeding to `"0.025"`, `"0.05"`, and `"0.10"` until a suitable
   level is identified. Invalid values will result in an error.
 
+- ...:
+
+  Additional arguments (currently not used).
+
 ## Value
 
 A list with class "htest" containing the following components:
 
 - `statistic`: The calculated F-statistic for the test.
 
-- `caseTxt`: A character string describing the case used for the test,
+- `case_txt`: A character string describing the case used for the test,
   based on the specified case parameter.
 
 - `alternative`: A character string describing the alternative
@@ -68,7 +72,7 @@ A list with class "htest" containing the following components:
 
 - `sample.size`: The number of observations used in the test.
 
-- `varnames`: A character vector containing the names of the dependent
+- `var_names`: A character vector containing the names of the dependent
   variable and independent variables used in the test.
 
 - `k`: The number of independent variables (excluding the dependent
@@ -132,90 +136,119 @@ Econometrics, 16(3), 289-326.
 ## Examples
 
 ``` r
-kardl_model<-kardl(imf_example_data,
-                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   mode=c(1,2,3,0))
-my_pssF<-pssf(kardl_model)
+
+kardl_model <- kardl(
+  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+  imf_example_data,
+  mode = c(1, 2, 3, 0)
+)
+my_pssF <- pssf(kardl_model, case = "auto", signif_level = "auto")
 # Getting the results of the test.
 my_pssF
 #> 
 #>  Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration
 #> 
-#> data:  model
+#> data:  kardl_model
 #> F = 10.204
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 # Getting details of the test.
-my_summary<-summary(my_pssF)
+my_summary <- summary(my_pssF)
 my_summary
-#> Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration 
-#> F  =  10.20356 
-#> k =  3 
 #> 
-#> Hypotheses:
+#> ========================================
+#> KARDL Cointegration Test Results
+#> ========================================
+#> 
+#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> 
+#>  Test Statistic:
+#>   F: 10.2035571
+#> 
+#>  Critical Values (Lower & Upper Bounds):
+#>           L    U
+#>   10%  3.47 4.45
+#>   5%   4.01 5.07
+#>   2.5% 4.52 5.62
+#>   1%   5.17 6.36
+#> 
+#> 
+#>  Comparison:
+#>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.36).
+#>   This indicates that the variables tend to move together over  time.
+#>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+#> 
+#>  Hypotheses:
 #> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 
+#> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. 
 #> 
-#> Test Decision:  Reject H0 → Cointegration (at 1% level) 
+#>  Model Details:
+#>   Number of regressors (k): 3
+#>   Case: V 
 #> 
-#> Critical Values (Case  V ):
-#>          L    U
-#> 0.10  3.47 4.45
-#> 0.05  4.01 5.07
-#> 0.025 4.52 5.62
-#> 0.01  5.17 6.36
-#> 
-#> Notes:
-#>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-#> 
+#> ========================================
 
 # Getting the critical values of the test.
-my_summary$crit_vals
+kardl_extract(my_summary, what = "critical_values")
 #>          L    U
 #> 0.10  3.47 4.45
 #> 0.05  4.01 5.07
 #> 0.025 4.52 5.62
 #> 0.01  5.17 6.36
-
 
 # Using magrittr :
 
 library(magrittr)
-   imf_example_data %>%
-   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>% pssf()
+imf_example_data %>%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) %>%
+  pssf()
 #> 
 #>  Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration
 #> 
-#> data:  model
+#> data:  .
 #> F = 10.204
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
-   # Getting details of the test results using magrittr:
-   imf_example_data %>%
-   kardl(CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                           mode=c(1,2,3,0)) %>%
-   pssf() %>% summary()
-#> Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration 
-#> F  =  10.20356 
-#> k =  3 
+# Getting details of the test results using magrittr:
+imf_example_data %>%
+  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+    mode = c(1, 2, 3, 0), data = .
+  ) %>%
+  pssf() %>%
+  summary()
 #> 
-#> Hypotheses:
+#> ========================================
+#> KARDL Cointegration Test Results
+#> ========================================
+#> 
+#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> 
+#>  Test Statistic:
+#>   F: 10.2035571
+#> 
+#>  Critical Values (Lower & Upper Bounds):
+#>           L    U
+#>   10%  3.47 4.45
+#>   5%   4.01 5.07
+#>   2.5% 4.52 5.62
+#>   1%   5.17 6.36
+#> 
+#> 
+#>  Comparison:
+#>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.36).
+#>   This indicates that the variables tend to move together over  time.
+#>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
+#> 
+#>  Hypotheses:
 #> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Coef(L1.CPI) ≠ Coef(L1.ER_POS) ≠ Coef(L1.ER_NEG) ≠ Coef(L1.PPI)≠ 0 
+#> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. 
 #> 
-#> Test Decision:  Reject H0 → Cointegration (at 1% level) 
+#>  Model Details:
+#>   Number of regressors (k): 3
+#>   Case: V 
 #> 
-#> Critical Values (Case  V ):
-#>          L    U
-#> 0.10  3.47 4.45
-#> 0.05  4.01 5.07
-#> 0.025 4.52 5.62
-#> 0.01  5.17 6.36
-#> 
-#> Notes:
-#>    • Trend detected in the model. Case automatically adjusted to 5 (unrestricted intercept and trend).
-#> 
-
+#> ========================================
 ```

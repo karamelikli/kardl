@@ -3,13 +3,14 @@
 #' @srrstats {G5.3} Tests verify expected output strings, class labels, and
 #' component values for summary and print methods.
 
-
 local_models <- local({
   kardl_reset()
-  linear <- kardl(imf_example_data, CPI ~ ER + PPI + trend,
-                  mode = c(1, 1, 1))
-  asym <- kardl(imf_example_data, CPI ~ ER + PPI + asymmetric(ER) + trend,
-                mode = c(1, 1, 1, 1))
+  linear <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  asym <- kardl(
+    CPI ~ ER + PPI + asymmetric(ER) + trend,
+    imf_example_data,
+    mode = c(1, 1, 1, 1)
+  )
   list(linear = linear, asym = asym)
 })
 
@@ -18,15 +19,17 @@ local_models <- local({
 #' line for both linear and asymmetric model objects.
 test_that("print.kardl_lm produces expected output", {
   expect_output(print(local_models$linear), "Optimal lags")
-  expect_output(print(local_models$asym),   "Optimal lags")
+  expect_output(print(local_models$asym), "Optimal lags")
 })
 
 
-  #' @srrstats {G5.3} Checks that `kardl_longrun()` returns a `kardl_longrun`
-  #' object with a populated summary table containing estimation type and
-  #' coefficient labels.
+#' @srrstats {G5.3} Checks that `kardl_longrun()` returns a `kardl_longrun`
+#' object with a populated summary table containing estimation type and
+#' coefficient labels.
 test_that("summary_kardl_longrun works (class is kardl_longrun)", {
-  lr <- kardl_longrun(local_models$linear)
+  expect_warning(
+    lr <- kardl_longrun(local_models$linear)
+  )
   # The actual class assigned in longrun.R is "kardl_longrun"
   expect_s3_class(lr, "kardl_longrun")
 
@@ -47,7 +50,6 @@ test_that("print and summary of kardl_symmetric (type F) work", {
   # print.kardl_symmetric
   expect_output(print(st))
 
-  # summary.kardl_symmetric + print.summary.kardl_symmetric
   sm <- summary(st)
   expect_s3_class(sm, "summary.kardl_symmetric")
   expect_output(print(sm), "Long-run symmetry tests")
@@ -75,8 +77,11 @@ test_that("print and summary of kardl_symmetric (type Chisq) work", {
 #' print correctly with the expected heading.
 test_that("print.kardl_symmetric handles short-run-only results", {
   kardl_reset()
-  sasym_model <- kardl(imf_example_data, CPI ~ PPI + sasymmetric(ER),
-                       mode = c(1, 1, 1, 1))
+  sasym_model <- kardl(
+    CPI ~ PPI + sasymmetric(ER),
+    imf_example_data,
+    mode = c(1, 1, 1, 1)
+  )
   st_sr <- symmetrytest(sasym_model, component = "shortrun")
   expect_output(print(st_sr))
 
@@ -85,29 +90,29 @@ test_that("print.kardl_symmetric handles short-run-only results", {
 })
 
 #' @srrstats {G5.3} Checks that `summary()` on a `pssf()` result returns
-#' a `summary_htest` object containing critical values.
+#' a `kardl_test_summary` object containing critical values.
 test_that("summary.kardl_test dispatches correctly for pssf", {
   pf <- pssf(local_models$linear)
   sm <- summary(pf)
-  expect_s3_class(sm, "summary_htest")
+  expect_s3_class(sm, "kardl_test_summary")
   expect_output(print(sm), "Critical Values")
 })
 
 #' @srrstats {G5.3} Checks that `summary()` on a `psst()` result returns
-#' a `summary_htest` object containing critical values.
+#' a `kardl_test_summary` object containing critical values.
 test_that("summary.kardl_test dispatches correctly for psst", {
   pt <- psst(local_models$linear)
   sm <- summary(pt)
-  expect_s3_class(sm, "summary_htest")
+  expect_s3_class(sm, "kardl_test_summary")
   expect_output(print(sm), "Critical Values")
 })
 
 #' @srrstats {G5.3} Checks that `summary()` on a `narayan()` result returns
-#' a `summary_htest` object containing critical values.
+#' a `kardl_test_summary` object containing critical values.
 test_that("summary.kardl_test dispatches correctly for narayan", {
   nr <- narayan(local_models$linear)
   sm <- summary(nr)
-  expect_s3_class(sm, "summary_htest")
+  expect_s3_class(sm, "kardl_test_summary")
   expect_output(print(sm), "Critical Values")
 })
 
@@ -131,8 +136,7 @@ test_that("print and summary for kardl_mplier work", {
 #' method; this test confirms that results are returned correctly.
 test_that("print and summary for kardl_boot work", {
   kardl_reset()
-  asym_only <- kardl(imf_example_data, CPI ~ asymmetric(ER),
-                     mode = c(1, 1, 1))
+  asym_only <- kardl(CPI ~ asymmetric(ER), imf_example_data, mode = c(1, 1, 1))
   bt <- bootstrap(asym_only, horizon = 10, replications = 5, level = 90)
 
   expect_s3_class(bt, "kardl_boot")
@@ -149,7 +153,10 @@ test_that("print and summary for kardl_boot work", {
 #' @srrstats {TS5.8} Verifies that variable-specific plots can be requested.
 test_that("plot.kardl_mplier runs without error", {
   mp <- mplier(local_models$asym, horizon = 5)
-  expect_no_error(plot(mp))
+  expect_warning(
+    plot(mp),
+    "Multiple variables selected. Only the first one will be plotted."
+  )
   expect_no_error(plot(mp, variables = "ER"))
 })
 
@@ -157,13 +164,17 @@ test_that("plot.kardl_mplier runs without error", {
 #' produces a warning rather than a silent failure.
 test_that("plot.kardl_mplier warns for unknown variable", {
   mp <- mplier(local_models$asym, horizon = 5)
-  expect_warning(plot(mp, variables = "NOTAVAR"), "not exits")
+  expect_error(
+    plot(mp, variables = "NOTAVAR"),
+    "NOTAVAR is not exits among independent variables!"
+  )
 })
 
 #' @srrstats {TS5.5} Confirms that plot methods operate on computed model
 #' outputs without error.
 test_that("plot on kardl_longrun runs without error", {
-  # Note: class is "kardl_longrun", so plot.lm is dispatched (not plot.kardl_long_run)
-  lr <- kardl_longrun(local_models$linear)
+  # Note: class is "kardl_longrun", so plot.lm is dispatched
+  # (not plot.kardl_long_run)
+  expect_warning(lr <- kardl_longrun(local_models$linear))
   expect_no_error(plot(lr, which = 1))
 })

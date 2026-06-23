@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.3.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,7 +43,55 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.3.1" id="kardl-131">kardl 1.3.1<a class="anchor" aria-label="anchor" href="#kardl-131"></a></h2>
+<h2 class="pkg-version" data-toc-text="2.0.1" id="kardl-201">kardl 2.0.1<a class="anchor" aria-label="anchor" href="#kardl-201"></a></h2>
+<div class="section level3">
+<h3 id="new-features-2-0-1">New Features<a class="anchor" aria-label="anchor" href="#new-features-2-0-1"></a></h3>
+<ul><li><p>Added S3 methods for major <code>kardl</code> classes, improving integration with standard R workflows.</p></li>
+<li>
+<p>Added <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> methods for:</p>
+<ul><li><code>kardl_test</code></li>
+<li><code>kardl_symmetric</code></li>
+</ul></li>
+<li>
+<p>Added dedicated print methods for:</p>
+<ul><li><code>kardl_decision</code></li>
+<li><code>kardl_mplier</code></li>
+</ul></li>
+<li><p>Introduced the new generic accessor function <code><a href="../reference/kardl_extract.html">kardl_extract()</a></code> to retrieve documented components from <code>kardl</code> objects without relying on internal object structures.</p></li>
+<li>
+<p>Added extraction methods for:</p>
+<ul><li><code>kardl_mplier</code></li>
+<li><code>kardl_symmetric</code></li>
+<li><code>kardl_test_summary</code></li>
+</ul><p>allowing users to access multipliers, hypotheses, Wald test results, critical values, decisions, and other model components through a unified interface.</p>
+</li>
+</ul></div>
+<div class="section level3">
+<h3 id="improvements-2-0-1">Improvements<a class="anchor" aria-label="anchor" href="#improvements-2-0-1"></a></h3>
+<ul><li><p>Standardized object output across <code>kardl</code> classes using S3 methods.</p></li>
+<li><p>Improved consistency of hypothesis reporting and decision summaries for cointegration and symmetry tests.</p></li>
+<li><p>Enhanced printing of critical values, test statistics, and multiplier objects to better respect console width and improve readability.</p></li>
+</ul><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span>  <span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">formula</span>, <span class="va">data</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.3.2" id="kardl-132">kardl 1.3.2<a class="anchor" aria-label="anchor" href="#kardl-132"></a></h2>
+<div class="section level3">
+<h3 id="changes-in-this-version-1-3-2">Changes in this version<a class="anchor" aria-label="anchor" href="#changes-in-this-version-1-3-2"></a></h3>
+<ul><li>Renamed <code>combineVarTypes()</code> to <code><a href="../reference/parse_model_specs.html">parse_model_specs()</a></code>.
+<ul><li>
+<strong>Lifecycle Update</strong>: While previously internal, <code><a href="../reference/parse_model_specs.html">parse_model_specs()</a></code> is now exported to support developers using <code>kardl</code> as a dependency for their own packages.</li>
+</ul></li>
+<li>Refactored <code><a href="../reference/parse_model_specs.html">parse_model_specs()</a></code> (formerly <code>combineVarTypes</code>):
+<ul><li>Several input validation and initial check procedures have been moved to the internal utility function <code>CheckInputs()</code>.</li>
+<li>
+<code>CheckInputs()</code> remains an internal function and is not exported.</li>
+</ul></li>
+</ul></div>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="1.3.1" id="kardl-131">kardl 1.3.1<a class="anchor" aria-label="anchor" href="#kardl-131"></a></h2><p class="text-muted">CRAN release: 2026-04-30</p>
 <div class="section level3">
 <h3 id="changes-in-this-version-1-3-1">Changes in this version<a class="anchor" aria-label="anchor" href="#changes-in-this-version-1-3-1"></a></h3>
 <ul><li>
@@ -130,7 +178,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Huseyin Karamelikli, Huseyin Utku Demir.</p>
+  <p>Developed by Huseyin karamelikli, Huseyin Utku Demir.</p>
 </div>
 
 <div class="pkgdown-footer-right">

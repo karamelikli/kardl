@@ -28,7 +28,7 @@ A list of the settings after reset, returned invisibly.
 ## Examples
 
 ``` r
-kardl_set(criterion = "BIC", differentAsymLag = FALSE)
+kardl_set(criterion = "BIC", different_asym_lag = FALSE)
 
 # Reset all settings to defaults except "criterion"
 kardl_reset(exclude = "criterion")
@@ -38,7 +38,7 @@ print(kardl_get("criterion"))
 #> [1] "BIC"
 
 # This will show "BIC" since it was excluded from the reset,
-#while other settings will be reset to their defaults.
-print(kardl_get("differentAsymLag"))
+# while other settings will be reset to their defaults.
+print(kardl_get("different_asym_lag"))
 #> [1] TRUE
 ```

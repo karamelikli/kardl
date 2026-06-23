@@ -1,10 +1,10 @@
 Package: kardl
 Type: Package
 Title: Make Symmetric and Asymmetric ARDL Estimations
-Version: 1.3.1
+Version: 2.0.1
 Authors@R: 
   c(person(given = "Huseyin",
-           family = "Karamelikli",
+           family = "karamelikli",
            role = c("aut", "cre"),
            email = "hakperest@gmail.com",
            comment = c(ORCID = "0000-0001-7622-0972")),
@@ -13,7 +13,7 @@ Authors@R:
            role = "aut",
            comment = c(ORCID = "0000-0002-9140-0362")) 
            )
-Maintainer: Huseyin Karamelikli <hakperest@gmail.com>
+Maintainer: Huseyin karamelikli <hakperest@gmail.com>
 Description: Implements estimation procedures for Autoregressive Distributed Lag (ARDL) 
     and Nonlinear ARDL (NARDL) models, which allow researchers to investigate both 
     short- and long-run relationships in time series data under mixed orders of integration. 
@@ -26,8 +26,8 @@ Description: Implements estimation procedures for Autoregressive Distributed Lag
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: stats, msm, lmtest, nlWaldTest, car, ggplot2, utils
-RoxygenNote: 7.3.3
+LazyDataCompression: xz
+Imports: stats, msm, lmtest,lifecycle, nlWaldTest, car, ggplot2, utils
 Suggests: 
     knitr,
     rmarkdown,
@@ -43,7 +43,7 @@ Suggests:
 NeedsCompilation: no
 VignetteBuilder: knitr
 Packaged: 2025-06-24 17:22:10 UTC; karamelikli
-Author: Huseyin Karamelikli [aut, cre] (ORCID:
+Author: Huseyin karamelikli [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-7622-0972>),
   Huseyin Utku Demir [aut] (ORCID:
     <https://orcid.org/0000-0002-9140-0362>)
@@ -52,3 +52,5 @@ Config/testthat/edition: 3
 URL: https://karamelikli.github.io/kardl/, https://github.com/karamelikli/kardl
 BugReports: https://github.com/karamelikli/kardl/issues
 Roxygen: list (markdown = TRUE, roclets = c ("namespace", "rd", "srr::srr_stats_roclet"))
+RoxygenNote: 7.3.1 
+Config/roxygen2/version: 8.0.0

@@ -1,74 +1,177 @@
 # Contributing to kardl
 
-This outlines how to propose a change to kardl. For a detailed
-discussion on contributing to this and other tidyverse packages, please
-see the [development contributing guide](https://rstd.io/tidy-contrib)
-and our [code review principles](https://code-review.tidyverse.org/).
+Thank you for your interest in contributing to `kardl`. This document
+outlines the recommended workflow for proposing changes, reporting
+issues, and contributing code or documentation improvements.
 
-## Fixing typos
+## Before contributing
 
-You can fix typos, spelling mistakes, or grammatical errors in the
-documentation directly using the GitHub web interface, as long as the
-changes are made in the *source* file. This generally means you’ll need
-to edit [roxygen2
-comments](https://roxygen2.r-lib.org/articles/roxygen2.html) in an `.R`,
-not a `.Rd` file. You can find the `.R` file that generates the `.Rd` by
-reading the comment in the first line.
+Please first check the existing issues and pull requests to avoid
+duplicate work.
 
-## Bigger changes
+For substantial changes, feature requests, or API modifications, open an
+issue before starting development so the proposed change can be
+discussed.
 
-If you want to make a bigger change, it’s a good idea to first file an
-issue and make sure someone from the team agrees that it’s needed. If
-you’ve found a bug, please file an issue that illustrates the bug with a
-minimal [reprex](https://www.tidyverse.org/help/#reprex) (this will also
-help you write a unit test, if needed). See our guide on [how to create
-a great issue](https://code-review.tidyverse.org/issues/) for more
-advice.
+Repository:
 
-### Pull request process
+[kardl GitHub repository](https://github.com/karamelikli/kardl)
 
-- Fork the package and clone onto your computer. If you haven’t done
-  this before, we recommend using
-  `usethis::create_from_github("karamelikli/kardl", fork = TRUE)`.
+------------------------------------------------------------------------
 
-- Install all development dependencies with
-  [`devtools::install_dev_deps()`](https://devtools.r-lib.org/reference/install_deps.html),
-  and then make sure the package passes R CMD check by running
-  [`devtools::check()`](https://devtools.r-lib.org/reference/check.html).
-  If R CMD check doesn’t pass cleanly, it’s a good idea to ask for help
-  before continuing.
+## Reporting bugs
 
-- Create a Git branch for your pull request (PR). We recommend using
-  `usethis::pr_init("brief-description-of-change")`.
+Bug reports should include a minimal reproducible example using a reprex
+whenever possible.
 
-- Make your changes, commit to git, and then create a PR by running
-  [`usethis::pr_push()`](https://usethis.r-lib.org/reference/pull-requests.html),
-  and following the prompts in your browser. The title of your PR should
-  briefly describe the change. The body of your PR should contain
-  `Fixes #issue-number`.
+Helpful bug reports generally include:
 
-- For user-facing changes, add a bullet to the top of `NEWS.md`
-  (i.e. just below the first header). Follow the style described in
-  <https://style.tidyverse.org/news.html>.
+- A short description of the problem
+- Expected behavior
+- Actual behavior
+- A minimal reproducible example
+- Relevant error messages or warnings
 
-### Code style
+------------------------------------------------------------------------
 
-- New code should follow the tidyverse [style
-  guide](https://style.tidyverse.org). You can use
-  [Air](https://posit-dev.github.io/air/) to apply this style, but
-  please don’t restyle code that has nothing to do with your PR.
+## Fixing documentation issues
 
-- We use [roxygen2](https://cran.r-project.org/package=roxygen2), with
-  [Markdown
-  syntax](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html),
-  for documentation.
+Small documentation improvements such as typo corrections, grammar
+fixes, or clarification edits can be made directly through the GitHub
+web interface.
 
-- We use [testthat](https://cran.r-project.org/package=testthat) for
-  unit tests. Contributions with test cases included are easier to
-  accept.
+Please edit the source `.R` files containing the `roxygen2` comments
+rather than the generated `.Rd` files.
 
-## Code of Conduct
+Useful references:
 
-Please note that the kardl project is released with a [Contributor Code
-of Conduct](https://karamelikli.github.io/kardl/CODE_OF_CONDUCT.md). By
-contributing to this project you agree to abide by its terms.
+- [roxygen2
+  documentation](https://roxygen2.r-lib.org/articles/roxygen2.html)
+- [Roxygen markdown
+  formatting](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html)
+
+------------------------------------------------------------------------
+
+## Development setup
+
+We recommend using the `usethis` workflow for package development.
+
+### 1. Fork and clone the repository
+
+``` r
+
+usethis::create_from_github("karamelikli/kardl", fork = TRUE)
+```
+
+### 2. Install development dependencies
+
+``` r
+
+devtools::install_dev_deps()
+```
+
+### 3. Run package checks
+
+Before making changes, ensure the package passes checks locally:
+
+``` r
+
+devtools::check()
+```
+
+If checks fail for reasons unrelated to your changes, please open an
+issue before continuing.
+
+------------------------------------------------------------------------
+
+## Pull request workflow
+
+### Create a development branch
+
+We recommend creating a dedicated branch for each pull request:
+
+``` r
+
+usethis::pr_init("brief-description-of-change")
+```
+
+### Make changes
+
+After implementing your changes:
+
+- Run tests
+- Run
+  [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
+- Update documentation if necessary
+- Add or update unit tests when appropriate
+
+### Submit the pull request
+
+Push your branch and open a pull request:
+
+``` r
+
+usethis::pr_push()
+```
+
+Please ensure that:
+
+- The PR title clearly summarizes the change
+- The PR description references related issues using:
+
+``` text
+Fixes #issue-number
+```
+
+------------------------------------------------------------------------
+
+## NEWS.md updates
+
+User-facing changes should be added to the top section of `NEWS.md`.
+
+Please follow the tidyverse news style guide:
+
+[tidyverse NEWS style guide](https://style.tidyverse.org/news.html)
+
+------------------------------------------------------------------------
+
+## Code style guidelines
+
+### Documentation
+
+The package uses:
+
+- `roxygen2` for documentation
+- Markdown syntax within roxygen comments
+
+### Testing
+
+Unit tests use the `testthat` framework.
+
+Contributions that include tests are easier to review and merge.
+
+Useful references:
+
+- [testthat documentation](https://testthat.r-lib.org)
+
+------------------------------------------------------------------------
+
+## Package checks and standards
+
+Before submitting a pull request, contributors are encouraged to verify
+that:
+
+``` r
+
+devtools::check()
+```
+
+runs successfully without errors or warnings.
+
+If applicable, also check:
+
+``` r
+
+devtools::document()
+devtools::test()
+```

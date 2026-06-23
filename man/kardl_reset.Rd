@@ -8,7 +8,8 @@ kardl_reset(exclude = NULL)
 }
 \arguments{
 \item{exclude}{Character vector of setting names that should not be reset.
-These settings retain their current values. By default, all settings are reset.}
+These settings retain their current values. By default, all settings are
+reset.}
 }
 \value{
 A list of the settings after reset, returned invisibly.
@@ -17,7 +18,7 @@ A list of the settings after reset, returned invisibly.
 This function resets kardl package options to their default values.
 }
 \examples{
-kardl_set(criterion = "BIC", differentAsymLag = FALSE)
+kardl_set(criterion = "BIC", different_asym_lag = FALSE)
 
 # Reset all settings to defaults except "criterion"
 kardl_reset(exclude = "criterion")
@@ -26,8 +27,8 @@ kardl_reset(exclude = "criterion")
 print(kardl_get("criterion"))
 
 # This will show "BIC" since it was excluded from the reset,
-#while other settings will be reset to their defaults.
-print(kardl_get("differentAsymLag"))
+# while other settings will be reset to their defaults.
+print(kardl_get("different_asym_lag"))
 }
 \seealso{
 \code{\link{kardl_set}}, \code{\link{kardl_get}}
