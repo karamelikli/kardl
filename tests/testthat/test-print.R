@@ -8,7 +8,7 @@
 test_that("print.kardl_mplier works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test that print returns invisibly
@@ -23,7 +23,7 @@ test_that("print.kardl_mplier works correctly", {
 test_that("summary.kardl_mplier works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test summary method
@@ -41,7 +41,7 @@ test_that("summary.kardl_mplier works correctly", {
 test_that("print.kardl_boot works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   boot_result <- bootstrap(model, horizon = 5, replications = 10, level = 95)
 
   # Test that print returns invisibly
@@ -57,7 +57,7 @@ test_that("print.kardl_boot works correctly", {
 test_that("summary.kardl_boot works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   boot_result <- bootstrap(model, horizon = 5, replications = 10, level = 95)
 
   # Test summary method
@@ -72,12 +72,12 @@ test_that("summary.kardl_boot works correctly", {
 test_that("plot.kardl_mplier works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test plot method with single variable
   expect_silent({
-    plots <- plot(mpl, variables = "ER")
+    plots <- plot(mpl, variables = "PetrolPrice")
   })
   expect_type(plots, "list")
 
@@ -91,7 +91,7 @@ test_that("plot.kardl_mplier works correctly", {
 test_that("print.kardl_hypotheses works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test that hypotheses print correctly
@@ -106,7 +106,7 @@ test_that("print.kardl_hypotheses works correctly", {
 test_that("print.summary_kardl_longrun works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   expect_warning(lr <- kardl_longrun(model))
   summ <- summary(lr)
 
@@ -123,7 +123,7 @@ test_that("print.summary_kardl_longrun works correctly", {
 test_that("print.kardl_symmetric works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test that print returns invisibly
@@ -137,7 +137,7 @@ test_that("print.kardl_symmetric works correctly", {
 test_that("summary.kardl_symmetric works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test summary at default significance level
@@ -153,7 +153,7 @@ test_that("summary.kardl_symmetric works correctly", {
 test_that("plot method handles invalid variable names", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test error for non-existent variable
@@ -167,7 +167,7 @@ test_that("print methods handle empty or minimal objects", {
   kardl_reset()
 
   # Create minimal model
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 3)
 
   # Test that minimal object still prints
@@ -179,7 +179,7 @@ test_that("print methods handle empty or minimal objects", {
 test_that("summary.kardl_test works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test pssf summary
   pssf_test <- pssf(model, case = 3, sig = "auto")
@@ -214,7 +214,7 @@ test_that("summary.kardl_test errors for non-test objects", {
 test_that("summary.kardl_test errors for unsupported test functions", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Manually change test.func to unsupported value
@@ -229,7 +229,7 @@ test_that("summary.kardl_test errors for unsupported test functions", {
 test_that("print methods preserve object structure", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 5)
 
   # Capture returned object

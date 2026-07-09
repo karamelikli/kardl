@@ -89,8 +89,8 @@
 #' @examples
 #'
 #' kardl_model <- kardl(
-#'   CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-#'   imf_example_data,
+#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   Seatbelts,
 #'   mode = c(1, 2, 3, 0)
 #' )
 #' long <- kardl_longrun(kardl_model)
@@ -104,8 +104,8 @@
 #' # Using magrittr
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' imf_example_data %>%
-#'   kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#' Seatbelts %>%
+#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   kardl_longrun() %>%
@@ -218,10 +218,15 @@ kardl_longrun.kardl_lm <- function(kardl_model, ...) {
 #' @srrstats {TS4.2} The summary documents coefficients, standard errors,
 #' t-values, and p-values for each long-run multiplier.
 #' @noRd
-summary.kardl_longrun <- function(object, ...) {
+summary.kardl_longrun <- function(object, vcov = NULL, ...) {
   obj_coef <- object$original_model$coefficients
 
-  vcov_matrix <- stats::vcov(object$original_model)
+  if (is.null(vcov)) {
+    vcov_matrix <- stats::vcov(object$original_model)
+  } else {
+    vcov_matrix <- vcov
+  }
+
 
   my_dep <- object$depvar
 

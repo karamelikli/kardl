@@ -7,7 +7,7 @@
 test_that("kardl_extract errors with invalid what for kardl_lm", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Invalid what value
   expect_error(
@@ -18,7 +18,7 @@ test_that("kardl_extract errors with invalid what for kardl_lm", {
 test_that("kardl_extract errors with invalid what for kardl_mplier", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Invalid what value should error
@@ -30,7 +30,7 @@ test_that("kardl_extract errors with invalid what for kardl_mplier", {
 test_that("kardl_extract errors with invalid what for kardl_test", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Invalid what value should error
@@ -42,7 +42,7 @@ test_that("kardl_extract errors with invalid what for kardl_test", {
 test_that("summary.kardl_test errors with wrong test function", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Modify test.func to invalid value
@@ -57,7 +57,7 @@ test_that("summary.kardl_test errors with wrong test function", {
 test_that("mplier errors with invalid horizon", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Negative horizon
   expect_error(
@@ -76,7 +76,7 @@ test_that("kardl_get returns current options", {
 test_that("model_criterion handles custom function", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Custom criterion function
   custom_crit <- function(x) AIC(x) + BIC(x)
@@ -88,7 +88,7 @@ test_that("model_criterion handles custom function", {
 test_that("bounds tests handle 0.025 significance level", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test with 0.025 significance level
   pssf_025 <- pssf(model, case = 3, sig = "0.025")
@@ -101,7 +101,7 @@ test_that("bounds tests handle 0.025 significance level", {
 test_that("plot functions error with invalid inputs", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Invalid variable name
@@ -115,7 +115,7 @@ test_that("kardl handles formula with I() transformation", {
 
   # Formula with I() transformation
   expect_silent({
-    model <- kardl(I(log(CPI)) ~ ER, data = imf_example_data, maxlag = 1)
+    model <- kardl(I(log(DriversKilled)) ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   })
   expect_s3_class(model, "kardl_lm")
 })
@@ -125,8 +125,8 @@ test_that("kardl works with different criterion functions", {
 
   # Test with BIC
   model_bic <- kardl(
-    CPI ~ ER + PPI,
-    data = imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
     maxlag = 2,
     criterion = "BIC"
   )
@@ -134,8 +134,8 @@ test_that("kardl works with different criterion functions", {
 
   # Test with HQ
   model_hq <- kardl(
-    CPI ~ ER + PPI,
-    data = imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
     maxlag = 2,
     criterion = "HQ"
   )
@@ -145,7 +145,7 @@ test_that("kardl works with different criterion functions", {
 test_that("case mapping in tests is correct", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test that case 2 maps correctly (should map to 3 in some contexts)
   pssf_c2 <- pssf(model, case = 2, sig = "auto")
@@ -160,8 +160,8 @@ test_that("kardl works with Lasymmetric specification", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ Lasymmetric(ER),
-    data = imf_example_data,
+    DriversKilled ~ Lasymmetric(PetrolPrice),
+    data = Seatbelts,
     maxlag = 1
   )
   expect_s3_class(model, "kardl_lm")
@@ -175,8 +175,8 @@ test_that("kardl works with Sasymmetric specification", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ Sasymmetric(ER),
-    data = imf_example_data,
+    DriversKilled ~ Sasymmetric(PetrolPrice),
+    data = Seatbelts,
     maxlag = 1
   )
   expect_s3_class(model, "kardl_lm")
@@ -189,7 +189,7 @@ test_that("kardl works with Sasymmetric specification", {
 test_that("kardl_longrun works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   expect_warning(
     lr <- kardl_longrun(model)
   )
@@ -201,7 +201,7 @@ test_that("kardl_longrun works correctly", {
 test_that("bootstrap seed produces reproducible results", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Run with same seed
   set.seed(123)
@@ -220,7 +220,7 @@ test_that("bootstrap seed produces reproducible results", {
 test_that("summary.kardl_symmetric handles different levels", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test with different levels
@@ -237,8 +237,8 @@ test_that("kardl works with trend specification", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ ER + trend,
-    data = imf_example_data,
+    DriversKilled ~ PetrolPrice + trend,
+    data = Seatbelts,
     maxlag = 1
   )
   expect_s3_class(model, "kardl_lm")
@@ -252,8 +252,8 @@ test_that("kardl works without intercept", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ ER - 1,
-    data = imf_example_data,
+    DriversKilled ~ PetrolPrice - 1,
+    data = Seatbelts,
     maxlag = 1
   )
   expect_s3_class(model, "kardl_lm")
@@ -266,10 +266,10 @@ test_that("kardl works without intercept", {
 test_that("mplier variables parameter works", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test with specific variable selection
-  mpl_er <- mplier(model, horizon = 10, variables = "ER")
+  mpl_er <- mplier(model, horizon = 10, variables = "PetrolPrice")
   expect_s3_class(mpl_er, "kardl_mplier")
 
   # Check multipliers exist
@@ -280,10 +280,10 @@ test_that("mplier variables parameter works", {
 test_that("bootstrap variables parameter works", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test with specific variable selection
-  boot_er <- bootstrap(model, horizon = 5, replications = 10, variables = "ER")
+  boot_er <- bootstrap(model, horizon = 5, replications = 10, variables = "PetrolPrice")
   expect_s3_class(boot_er, "kardl_boot")
 
   # Check that bootstrap completed
@@ -294,7 +294,7 @@ test_that("bootstrap variables parameter works", {
 test_that("bootstrap confidence levels work", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Test with 90% confidence
   boot_90 <- bootstrap(model, horizon = 5, replications = 10, level = 0.90)
@@ -308,7 +308,7 @@ test_that("bootstrap confidence levels work", {
 test_that("narayan handles all observation numbers", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Narayan test should work
   narayan_test <- narayan(model, case = 2, sig = "auto")
@@ -321,7 +321,7 @@ test_that("narayan handles all observation numbers", {
 test_that("pssf and psst produce consistent output", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   pssf_result <- pssf(model, case = 3, sig = "auto")
   psst_result <- psst(model, case = 3, sig = "auto")
@@ -338,8 +338,8 @@ test_that("kardl handles asymmetric models", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ ER + asym(PPI),
-    data = imf_example_data,
+    DriversKilled ~ PetrolPrice + asym(drivers),
+    data = Seatbelts,
     maxlag = 1
   )
   expect_s3_class(model, "kardl_lm")

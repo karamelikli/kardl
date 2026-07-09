@@ -15,7 +15,7 @@ components from objects produced by the kardl package."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -250,7 +250,8 @@ symmetry test results, enabling users to extract specific components
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">DriversKilled</span> <span class="op">~</span> <span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">Seatbelts</span>,</span></span>
+<span class="r-in"><span>mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">0</span> <span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Examples of extracting components from a fitted kardl_lm model object</span></span></span>
 <span class="r-in"><span><span class="co"># kardl_extract(kardl_model, what = "data_ts_info")</span></span></span>
@@ -259,138 +260,128 @@ symmetry test results, enabling users to extract specific components
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"data_class"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mts"    "ts"     "matrix" "array" </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"data_start"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1985    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1969    1</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"data_end"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2024    2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1984   12</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"data_frequency"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 12</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"data_deltat"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.08333333</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"data_tsp"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1985.000 2024.083   12.000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1969.000 1984.917   12.000</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"data_time"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           Jan      Feb      Mar      Apr      May      Jun</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1985 1985.000 1985.083 1985.167 1985.250 1985.333 1985.417</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1969 1969.000 1969.083 1969.167 1969.250 1969.333 1969.417</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"no_constant"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"trend"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] FALSE</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"asym_long_vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ER"  "PPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PetrolPrice" "drivers"    </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"asym_short_vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ER"  "PPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PetrolPrice" "drivers"    </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"deterministic"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"dependent_var"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "DriversKilled"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"independent_vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ER"  "PPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PetrolPrice" "drivers"    </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"all_vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CPI" "ER"  "PPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "DriversKilled" "PetrolPrice"   "drivers"      </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"all_asym_vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ER"  "PPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PetrolPrice" "drivers"    </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"indep_as_excluded"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"indep_al_excluded"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> character(0)</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"short_run_vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CPI"         "asyP_ER_PP"  "asyN_ER_NN"  "asyP_PPI_PP" "asyN_PPI_NN"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "DriversKilled"       "asyP_PetrolPrice_PP" "asyN_PetrolPrice_NN"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "asyP_drivers_PP"     "asyN_drivers_NN"    </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"long_run_vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "CPI"         "asyP_ER_PP"  "asyN_ER_NN"  "asyP_PPI_PP" "asyN_PPI_NN"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "DriversKilled"       "asyP_PetrolPrice_PP" "asyN_PetrolPrice_NN"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4] "asyP_drivers_PP"     "asyN_drivers_NN"    </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"shortrun_length"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"lag_rows_number"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"source")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kardl_set"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 768</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"model_type"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NN"</span>
 <span class="r-in"><span><span class="co"># kardl_extract(kardl_model, what = "data")</span></span></span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"start_time"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-06-23 12:52:46 +03"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-07-09 15:55:03 +03"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"end_time"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-06-23 12:52:46 +03"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-07-09 15:55:03 +03"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"span"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time difference of 0.1266224 secs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time difference of 0.002799988 secs</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"opt_lag"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>         CPI  asyP_ER_PP  asyN_ER_NN asyP_PPI_PP asyN_PPI_NN </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           2           1           0           2           0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN     asyP_drivers_PP </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   2                   1                   0                   4 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     asyN_drivers_NN </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   0 </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"lag_criteria"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       CPI asyP_ER_PP asyN_ER_NN asyP_PPI_PP asyN_PPI_NN criterion_value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]   1          1          1           1           1       -5.454878</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]   1          1          0           1           1       -5.461673</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]   1          1          0           2           1       -5.470084</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]   1          1          0           2           0       -5.476656</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]   2          2          2           2           2       -5.445008</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]   2          1          2           2           2       -5.452059</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]   2          1          1           2           2       -5.458604</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]   2          1          1           2           1       -5.464976</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]   2          1          0           2           1       -5.472368</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [10,]   2          1          0           2           0       -5.478817</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"all_cr_lags"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> NULL</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"model_formula"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.asyN_PPI_NN + L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + L0.d.asyP_PPI_PP + L1.d.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L2.d.asyP_PPI_PP + L0.d.asyN_PPI_NN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5e0fb5fcfc00&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.DriversKilled ~ L1.DriversKilled + L1.asyP_PetrolPrice_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.asyN_PetrolPrice_NN + L1.asyP_drivers_PP + L1.asyN_drivers_NN + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.DriversKilled + L2.d.DriversKilled + L0.d.asyP_PetrolPrice_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x6340b19e7250&gt;</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"k"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 466</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 186</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Examples of extracting components from a kardl_mplier object</span></span></span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="co"># This long-running example won't be tested by CRAN</span></span></span>
 <span class="r-in"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="mplier.html">mplier</a></span><span class="op">(</span><span class="va">kardl_model</span>, horizon <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">m</span>, what <span class="op">=</span> <span class="st">"multipliers"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      h asyP_ER_PP   asyN_ER_NN     ER_dif asyP_PPI_PP   asyN_PPI_NN    PPI_dif</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0  0.1057965 -0.006028027 0.09976851  0.04297899 -0.0004242681 0.04255472</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1  0.2453959 -0.045465559 0.19993033  0.10372436 -0.0379403879 0.06578397</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 2  0.3001933 -0.097080173 0.20311316  0.12828159 -0.0896455500 0.03863604</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 3  0.3170421 -0.149695553 0.16734650  0.17178502 -0.1428250573 0.02895996</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 4  0.3260237 -0.200725384 0.12529835  0.22539686 -0.1944183210 0.03097854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 5  0.3351129 -0.250165085 0.08494783  0.28044714 -0.2443690451 0.03607809</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      h asyP_PetrolPrice_PP asyN_PetrolPrice_NN PetrolPrice_dif asyP_drivers_PP</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0         -352.594515         -1036.63715     -1389.23167      0.07657003</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 1         -128.915185            18.50466      -110.41053      0.09324058</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 2            7.693244           138.57168       146.26492      0.05889118</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 3           30.569985           166.80773       197.37771      0.07772017</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 4            6.221079            77.68728        83.90836      0.07421712</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 5           -7.338373            61.43681        54.09843      0.07541212</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      asyN_drivers_NN   drivers_dif</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     -0.07535387  0.0012161619</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]     -0.08524853  0.0079920489</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]     -0.08146087 -0.0225696959</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]     -0.07468890  0.0030312672</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]     -0.07373551  0.0004816077</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]     -0.07437305  0.0010390648</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">m</span>, what <span class="op">=</span> <span class="st">"omega"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  1.38376029 -0.49062085  0.08991344</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1]  0.05704919 -0.05775601 -0.07941748</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">m</span>, what <span class="op">=</span> <span class="st">"lambda"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        asyP_ER_PP  asyN_ER_NN  asyP_PPI_PP  asyN_PPI_NN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.105796542 0.006028027  0.042978991 0.0004242681</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.006797711 0.031096187  0.001272744 0.0369290345</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.086468588 0.000000000 -0.038413400 0.0000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]  0.000000000 0.000000000  0.035460649 0.0000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]  0.000000000 0.000000000  0.000000000 0.0000000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]  0.000000000 0.000000000  0.000000000 0.0000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      asyP_PetrolPrice_PP asyN_PetrolPrice_NN asyP_drivers_PP asyN_drivers_NN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]           -352.5945            1036.637     0.076570029     0.075353867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]            243.7946           -1114.281     0.012302290     0.005595784</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]            103.4832               0.000    -0.030878063     0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,]              0.0000               0.000     0.027832419     0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,]              0.0000               0.000    -0.005237174     0.000000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,]              0.0000               0.000    -0.000245614     0.000000000</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">m</span>, what <span class="op">=</span> <span class="st">"horizon"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 40</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Examples of extracting components from a kardl_boot object</span></span></span>
-<span class="r-in"><span><span class="va">boot_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.html">bootstrap</a></span><span class="op">(</span><span class="va">kardl_model</span>, horizon <span class="op">=</span> <span class="fl">40</span>, replications <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">boot_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="bootstrap.html">bootstrap</a></span><span class="op">(</span><span class="va">kardl_model</span>, horizon <span class="op">=</span> <span class="fl">40</span>, replications <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in attr(x, "tsp") &lt;- c(1, NROW(x), 1):</span> invalid time series parameters specified (1)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">boot_results</span>, what <span class="op">=</span> <span class="st">"multipliers"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   h asyP_ER_PP   asyN_ER_NN     ER_dif asyP_PPI_PP   asyN_PPI_NN    PPI_dif</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0  0.1057965 -0.006028027 0.09976851  0.04297899 -0.0004242681 0.04255472</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1  0.2453959 -0.045465559 0.19993033  0.10372436 -0.0379403879 0.06578397</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2  0.3001933 -0.097080173 0.20311316  0.12828159 -0.0896455500 0.03863604</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3  0.3170421 -0.149695553 0.16734650  0.17178502 -0.1428250573 0.02895996</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5 4  0.3260237 -0.200725384 0.12529835  0.22539686 -0.1944183210 0.03097854</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6 5  0.3351129 -0.250165085 0.08494783  0.28044714 -0.2443690451 0.03607809</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   ER_CI_upper  ER_CI_lower PPI_CI_upper PPI_CI_lower</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.2254097  0.002611729   0.09247899 -0.011620596</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.3703336  0.057705118   0.14383395 -0.008644037</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.3688363  0.054623643   0.13442562 -0.054535138</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.3225953  0.013908883   0.12176919 -0.066785643</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.2804250 -0.026865966   0.12449582 -0.065102667</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   0.2400915 -0.063614397   0.12950162 -0.061786937</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot_results' not found</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">boot_results</span>, what <span class="op">=</span> <span class="st">"level"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 95</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot_results' not found</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">boot_results</span>, what <span class="op">=</span> <span class="st">"replications"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot_results' not found</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">boot_results</span>, what <span class="op">=</span> <span class="st">"horizon"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 40</span>
-<span class="r-in"><span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot_results' not found</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span><span class="co"># Examples of extracting components from a kardl_test object</span></span></span>
 <span class="r-in"><span><span class="va">test_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="psst.html">psst</a></span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"type"</span><span class="op">)</span></span></span>
@@ -399,7 +390,7 @@ symmetry test results, enabling users to extract specific components
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"statistic"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         t </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -4.416905 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -9.917541 </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"method"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"alternative"</span><span class="op">)</span></span></span>
@@ -407,20 +398,18 @@ symmetry test results, enabling users to extract specific components
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"data.name"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "model"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"sample.size"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 469</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"source")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "kardl_set"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 191</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"hypotheses"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.CPI) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.CPI) ≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.DriversKilled) = 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.DriversKilled) ≠ 0 </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"var_names"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L1.CPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L1.DriversKilled"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"k"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 192</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"sig"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "auto"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_results</span>, what <span class="op">=</span> <span class="st">"notes"</span><span class="op">)</span></span></span>
@@ -430,22 +419,22 @@ symmetry test results, enabling users to extract specific components
 <span class="r-in"><span><span class="va">test_summary</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_results</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"statistic"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         t </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -4.416905 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -9.917541 </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"case"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "III"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"variables"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L1.CPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L1.DriversKilled"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"decision"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Reject H0 → Cointegration (at 2.5% level)"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "Reject H0 → Cointegration (at 1% level)"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"hypotheses"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.CPI) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.CPI) ≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.DriversKilled) = 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.DriversKilled) ≠ 0 </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"numeric_decision"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"significance_level"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0.025"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0.01"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">test_summary</span>, what <span class="op">=</span> <span class="st">"critical_values"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           L     U</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 0.10  -2.57 -3.66</span>
@@ -462,97 +451,95 @@ symmetry test results, enabling users to extract specific components
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"long_wald_summary"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value   Pr(&gt;F)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00160447 0.00160447  7.1413 0.007806 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00037012 0.00037012  1.6474 0.199979   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    33.094  33.094  0.2587 0.6117</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1    19.680  19.680  0.1538 0.6954</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"long_hypotheses"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.asyP_ER_PP)/Coef(L1.CPI) = - Coef(L1.asyN_ER_NN)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.asyP_PetrolPrice_PP)/Coef(L1.DriversKilled) = - Coef(L1.asyN_PetrolPrice_NN)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.asyP_PPI_PP)/Coef(L1.CPI) = - Coef(L1.asyN_PPI_NN)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.asyP_drivers_PP)/Coef(L1.DriversKilled) = - Coef(L1.asyN_drivers_NN)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"short_wald_summary"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value    Pr(&gt;F)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00256486 0.00256486 11.4158 0.0007914 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00001981 0.00001981  0.0882 0.7666595    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    203.66  203.66  1.5919 0.2088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1      7.90    7.90  0.0618 0.8041</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"short_hypotheses"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_ER_PP) + Coef(L1.d.asyP_ER_PP) = Coef(L0.d.asyN_ER_NN) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_ER_PP) + Coef(L1.d.asyP_ER_PP) ≠ Coef(L0.d.asyN_ER_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) ≠ Coef(L0.d.asyN_PetrolPrice_NN) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_PPI_PP) + Coef(L1.d.asyP_PPI_PP) + Coef(L2.d.asyP_PPI_PP) = Coef(L0.d.asyN_PPI_NN) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_PPI_PP) + Coef(L1.d.asyP_PPI_PP) + Coef(L2.d.asyP_PPI_PP) ≠ Coef(L0.d.asyN_PPI_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_drivers_PP) + Coef(L1.d.asyP_drivers_PP) + Coef(L2.d.asyP_drivers_PP) + Coef(L3.d.asyP_drivers_PP) + Coef(L4.d.asyP_drivers_PP) = Coef(L0.d.asyN_drivers_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_drivers_PP) + Coef(L1.d.asyP_drivers_PP) + Coef(L2.d.asyP_drivers_PP) + Coef(L3.d.asyP_drivers_PP) + Coef(L4.d.asyP_drivers_PP) ≠ Coef(L0.d.asyN_drivers_NN) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"long_wald_tests"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ER</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $PetrolPrice</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Wald F test of a restriction on model parameters</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  kardl_model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F = 7.1413, df1 = 1, df2 = 451, p-value = 0.007806</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F = 0.25868, df1 = 1, df2 = 169, p-value = 0.6117</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $PPI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $drivers</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Wald F test of a restriction on model parameters</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  kardl_model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F = 1.6474, df1 = 1, df2 = 451, p-value = 0.2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F = 0.15383, df1 = 1, df2 = 169, p-value = 0.6954</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"short_wald_tests"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $ER</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $PetrolPrice</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Linear hypothesis test:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.asyP_ER_PP  + L1.d.asyP_ER_PP - L0.d.asyN_ER_NN = 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.asyP_PetrolPrice_PP  + L1.d.asyP_PetrolPrice_PP - L0.d.asyN_PetrolPrice_NN = 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model 1: restricted model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model 2: L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.asyN_PPI_NN + L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + L0.d.asyP_PPI_PP + L1.d.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L2.d.asyP_PPI_PP + L0.d.asyN_PPI_NN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model 2: L0.d.DriversKilled ~ L1.DriversKilled + L1.asyP_PetrolPrice_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.asyN_PetrolPrice_NN + L1.asyP_drivers_PP + L1.asyN_drivers_NN + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.DriversKilled + L2.d.DriversKilled + L0.d.asyP_PetrolPrice_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Res.Df     RSS Df Sum of Sq      F    Pr(&gt;F)    </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    452 0.10389                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    451 0.10133  1 0.0025649 11.416 0.0007914 ***</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    170 21824                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    169 21620  1    203.66 1.5919 0.2088</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $PPI</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $drivers</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Linear hypothesis test:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.asyP_PPI_PP  + L1.d.asyP_PPI_PP  + L2.d.asyP_PPI_PP - L0.d.asyN_PPI_NN = 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.asyP_drivers_PP  + L1.d.asyP_drivers_PP  + L2.d.asyP_drivers_PP  + L3.d.asyP_drivers_PP  + L4.d.asyP_drivers_PP - L0.d.asyN_drivers_NN = 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Model 1: restricted model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model 2: L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.asyN_PPI_NN + L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + L0.d.asyP_PPI_PP + L1.d.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L2.d.asyP_PPI_PP + L0.d.asyN_PPI_NN</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model 2: L0.d.DriversKilled ~ L1.DriversKilled + L1.asyP_PetrolPrice_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.asyN_PetrolPrice_NN + L1.asyP_drivers_PP + L1.asyN_drivers_NN + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.DriversKilled + L2.d.DriversKilled + L0.d.asyP_PetrolPrice_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Res.Df     RSS Df  Sum of Sq      F Pr(&gt;F)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    452 0.10135                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    451 0.10133  1 1.9809e-05 0.0882 0.7667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Res.Df   RSS Df Sum of Sq      F Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    170 21628                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    169 21620  1    7.8998 0.0618 0.8041</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"vars"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "ER"  "PPI"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "PetrolPrice" "drivers"    </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"type"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "F"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"call"</span><span class="op">)</span></span></span>
@@ -560,72 +547,39 @@ symmetry test results, enabling users to extract specific components
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example of extracting specific components from symmetry test results</span></span></span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"short_wald_tests"</span>, variable <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Linear hypothesis test:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> L0.d.asyP_PPI_PP  + L1.d.asyP_PPI_PP  + L2.d.asyP_PPI_PP - L0.d.asyN_PPI_NN = 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model 1: restricted model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Model 2: L0.d.CPI ~ L1.CPI + L1.asyP_ER_PP + L1.asyN_ER_NN + L1.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.asyN_PPI_NN + L1.d.CPI + L2.d.CPI + L0.d.asyP_ER_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_ER_PP + L0.d.asyN_ER_NN + L0.d.asyP_PPI_PP + L1.d.asyP_PPI_PP + </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     L2.d.asyP_PPI_PP + L0.d.asyN_PPI_NN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Res.Df     RSS Df  Sum of Sq      F Pr(&gt;F)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    452 0.10135                            </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    451 0.10133  1 1.9809e-05 0.0882 0.7667</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Variable(s) not found: PPI. Available variables: PetrolPrice, drivers</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"long_wald_tests"</span>, variable <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Wald F test of a restriction on model parameters</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> data:  kardl_model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> F = 1.6474, df1 = 1, df2 = 451, p-value = 0.2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Variable(s) not found: PPI. Available variables: PetrolPrice, drivers</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"long_hypotheses"</span>, variable <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.asyP_PPI_PP)/Coef(L1.CPI) = - Coef(L1.asyN_PPI_NN)/Coef(L1.CPI) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Variable(s) not found: PPI. Available variables: PetrolPrice, drivers</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"short_hypotheses"</span>, variable <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_PPI_PP) + Coef(L1.d.asyP_PPI_PP) + Coef(L2.d.asyP_PPI_PP) = Coef(L0.d.asyN_PPI_NN) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_PPI_PP) + Coef(L1.d.asyP_PPI_PP) + Coef(L2.d.asyP_PPI_PP) ≠ Coef(L0.d.asyN_PPI_NN) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Variable(s) not found: PPI. Available variables: PetrolPrice, drivers</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"short_hypotheses"</span>, component <span class="op">=</span> <span class="st">"H0"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_ER_PP) + Coef(L1.d.asyP_ER_PP) = Coef(L0.d.asyN_ER_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_PPI_PP) + Coef(L1.d.asyP_PPI_PP) + Coef(L2.d.asyP_PPI_PP) = Coef(L0.d.asyN_PPI_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_drivers_PP) + Coef(L1.d.asyP_drivers_PP) + Coef(L2.d.asyP_drivers_PP) + Coef(L3.d.asyP_drivers_PP) + Coef(L4.d.asyP_drivers_PP) = Coef(L0.d.asyN_drivers_NN) </span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>, what <span class="op">=</span> <span class="st">"short_hypotheses"</span>, component <span class="op">=</span> <span class="st">"H1"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_ER_PP) + Coef(L1.d.asyP_ER_PP) ≠ Coef(L0.d.asyN_ER_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) ≠ Coef(L0.d.asyN_PetrolPrice_NN) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_PPI_PP) + Coef(L1.d.asyP_PPI_PP) + Coef(L2.d.asyP_PPI_PP) ≠ Coef(L0.d.asyN_PPI_NN) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.asyP_drivers_PP) + Coef(L1.d.asyP_drivers_PP) + Coef(L2.d.asyP_drivers_PP) + Coef(L3.d.asyP_drivers_PP) + Coef(L4.d.asyP_drivers_PP) ≠ Coef(L0.d.asyN_drivers_NN) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">symmetry_results</span>,</span></span>
 <span class="r-in"><span>  what <span class="op">=</span> <span class="st">"short_hypotheses"</span>,</span></span>
 <span class="r-in"><span>  variable <span class="op">=</span> <span class="st">"PPI"</span>, component <span class="op">=</span> <span class="st">"H0"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.asyP_PPI_PP) + Coef(L1.d.asyP_PPI_PP) + Coef(L2.d.asyP_PPI_PP) = Coef(L0.d.asyN_PPI_NN) </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> Variable(s) not found: PPI. Available variables: PetrolPrice, drivers</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

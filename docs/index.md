@@ -101,23 +101,20 @@ inference.
 
 ## Estimating an asymmetric ARDL Model
 
-This example estimates an asymmetric ARDL model to analyze the dynamics
-of exchange rate pass-through to domestic prices in Turkey, using a
-sample dataset (`imf_example_data`) with variables for Consumer Price
-Index (CPI), Exchange Rate (ER), Producer Price Index (PPI), and a
-COVID-19 dummy variable.
+This example estimates an asymmetric ARDL model to analyze the impact of
+petrol prices and driving patterns on road fatalities in the UK, using
+the built-in `Seatbelts` dataset with variables for DriversKilled,
+PetrolPrice, drivers, kms, and a seatbelt law dummy variable.
 
 ### Step 1: Data Preparation
 
-Assume `imf_example_data` contains monthly data for CPI, ER, PPI, and a
-COVID dummy variable. We prepare the data by ensuring proper formatting
-and adding the dummy variable. We retrieve data from the IMF’s
-International Financial Statistics (IFS) dataset and prepare it for
-analysis.
+The `Seatbelts` dataset contains monthly data on road casualties in
+Great Britain from 1969 to 1984. It is a built-in R time series dataset
+that can be used directly.
 
-Note: The `imf_example_data` is a placeholder for demonstration
-purposes. You should replace it with your actual dataset. The data can
-be loaded by `readxl` or other data import functions.
+Note: The `Seatbelts` dataset is a built-in R dataset included in the
+`datasets` package. The data can be accessed directly without any
+conversion.
 
 ### Step 2: Define the Model Formula
 
@@ -131,7 +128,7 @@ linear time trend in the model.
 ``` r
 
 # Define the model formula
-my_formula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) +
+my_formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice + drivers) + deterministic(law) +
   trend
 ```
 
@@ -171,10 +168,10 @@ provides console feedback.
 ``` r
 
 # Set model options
-kardl_set(criterion = "BIC", different_asym_lag = TRUE, data = imf_example_data)
+kardl_set(criterion = "BIC", different_asym_lag = TRUE, data = Seatbelts)
 # Estimate model with grid mode
 kardl_model <- kardl(
-  data = imf_example_data, formula = my_formula,
+  data = Seatbelts, formula = my_formula,
   maxlag = 4, mode = "grid"
 )
 # View results
@@ -197,7 +194,7 @@ Specify custom lags to bypass automatic lag selection:
 ``` r
 
 kardl_model2 <- kardl(
-  data = imf_example_data, my_formula,
+  data = Seatbelts, my_formula,
   mode = c(2, 1, 1, 3, 0)
 )
 # View results
@@ -217,8 +214,8 @@ variable:
 
 ``` r
 
-kardl_set(data = imf_example_data)
-kardl(formula = CPI ~ . + deterministic(covid), mode = "grid")
+kardl_set(data = Seatbelts)
+kardl(formula = DriversKilled ~ . + deterministic(law), mode = "grid")
 ```
 
 #### Visualizing Lag Criteria
@@ -284,7 +281,7 @@ specify the same formula and lag structure as in the ARDL model.
 ``` r
 
 ecm_model <- ecm(
-  data = imf_example_data, formula = my_formula,
+  data = Seatbelts, formula = my_formula,
   maxlag = 4, mode = "grid_custom"
 )
 # View results
@@ -324,10 +321,10 @@ the model.
 
 ``` r
 
-ast <- imf_example_data |>
+ast <- Seatbelts |>
   kardl(
-    CPI ~ ER + PPI + asymmetric(ER + PPI) +
-      deterministic(covid) + trend,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice + drivers) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0, 1),
     data = _
   ) |>
@@ -442,7 +439,7 @@ independent variables over time.
 
 ``` r
 
-plot(multipliers, variables = c("ER", "PPI"))
+plot(multipliers, variables = c("PetrolPrice", "drivers"))
 ```
 
 To handle a large number of variables, you can specify a subset of
@@ -468,7 +465,7 @@ variability and confidence intervals of the dynamic multipliers.
 
 ``` r
 
-plot(bootstrap_results, variables = "ER")
+plot(bootstrap_results, variables = "PetrolPrice")
 ```
 
 ### Step 8: Customizing asymmetric Variables
@@ -482,7 +479,7 @@ variables using
 # Set custom prefixes and suffixes
 kardl_reset()
 kardl_set(asym_prefix = c("asyP_", "asyN_"), asym_suffix = c("_PP", "_NN"))
-kardl_custom <- kardl(data = imf_example_data, my_formula)
+kardl_custom <- kardl(data = Seatbelts, my_formula)
 kardl_custom
 ```
 

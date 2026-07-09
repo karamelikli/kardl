@@ -392,11 +392,11 @@ the \code{kardl_set()} function.
 
 \examples{
 
-# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
-# TO DOMESTIC PRICES IN TURKEY
+# Example: Road safety analysis using UK Seatbelts data
+# Analyzing the effect of seatbelt law on driver deaths
 kardl_set(
-  formula = CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-  data = imf_example_data,
+  formula = DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  data = Seatbelts,
   maxlag = 3
 )
 
@@ -427,7 +427,7 @@ ecm_model2
 summary(ecm_model2)
 
 # Alternative specification
-summary(ecm(CPI ~ PPI + asym(ER) + trend, imf_example_data))
+summary(ecm(DriversKilled ~ drivers + asym(PetrolPrice) + trend, Seatbelts))
 
 # For increasing the performance of finding the most fitted lag vector
 ecm(mode = "grid_custom")
@@ -455,7 +455,7 @@ kardl_set(
   asym_prefix = c("asyP_", "asyN_"),
   asym_suffix = c("_PP", "_NN")
 )
-customizedNames <- ecm(CPI ~ ER + PPI + asym(ER), imf_example_data)
+customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice), Seatbelts)
 customizedNames
 
 }

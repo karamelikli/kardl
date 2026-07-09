@@ -8,7 +8,7 @@
 test_that("pssf, psst, and narayan tests work with different cases", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test pssf with different cases
   for (case_num in c(1, 2, 3, 4, 5)) {
@@ -36,7 +36,7 @@ test_that("pssf, psst, and narayan tests work with different cases", {
 test_that("bounds tests work with specific significance levels", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test pssf with specific significance levels
   for (sig in c("0.10", "0.05", "0.025", "0.01")) {
@@ -63,7 +63,7 @@ test_that("bounds tests work with specific significance levels", {
 test_that("test summaries produce correct decision structures", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test pssf decision structure
   pssf_result <- pssf(model, case = 3, sig = "auto")
@@ -92,7 +92,7 @@ test_that("test summaries produce correct decision structures", {
 test_that("hypotheses are generated correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   pssf_result <- pssf(model, case = 3, sig = "auto")
 
   # Check hypotheses structure
@@ -102,15 +102,15 @@ test_that("hypotheses are generated correctly", {
 
   # Check hypotheses contain variable names
   expect_true(
-    grepl("ER", pssf_result$hypotheses$H0) ||
-      grepl("PPI", pssf_result$hypotheses$H0)
+    grepl("PetrolPrice", pssf_result$hypotheses$H0) ||
+      grepl("drivers", pssf_result$hypotheses$H0)
   )
 })
 
 test_that("critical values are retrieved correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test pssf critical values
   pssf_result <- pssf(model, case = 3, sig = "auto")
@@ -145,7 +145,7 @@ test_that("bounds tests handle edge cases", {
   kardl_reset()
 
   # Test with minimal model
-  model_min <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model_min <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   pssf_min <- pssf(model_min, case = 3, sig = "auto")
   expect_s3_class(pssf_min, "htest")
@@ -154,7 +154,7 @@ test_that("bounds tests handle edge cases", {
   expect_s3_class(psst_min, "htest")
 
   # Test with more variables
-  model_max <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 2)
+  model_max <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 2)
 
   pssf_max <- pssf(model_max, case = 3, sig = "auto")
   expect_s3_class(pssf_max, "htest")
@@ -163,7 +163,7 @@ test_that("bounds tests handle edge cases", {
 test_that("test case labels are correct", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test that case labels exist and are Roman numerals
   for (case_num in c(1, 2, 3, 4, 5)) {
@@ -178,7 +178,7 @@ test_that("test case labels are correct", {
 test_that("bounds tests preserve model information", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   pssf_result <- pssf(model, case = 3, sig = "auto")
 
   # Check that test preserves variable names
@@ -195,7 +195,7 @@ test_that("bounds tests preserve model information", {
 test_that("decision text is informative", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test pssf decision text
   pssf_result <- pssf(model, case = 3, sig = "auto")
@@ -219,7 +219,7 @@ test_that("decision text is informative", {
 test_that("auto significance selection works correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test with auto significance
   pssf_auto <- pssf(model, case = 3, sig = "auto")
@@ -241,8 +241,8 @@ test_that("bounds tests work with asymmetric models", {
   kardl_reset()
 
   model_asym <- kardl(
-    CPI ~ lasymmetric(ER) + PPI,
-    data = imf_example_data,
+    DriversKilled ~ lasymmetric(PetrolPrice) + drivers,
+    data = Seatbelts,
     maxlag = 1
   )
 
@@ -260,7 +260,7 @@ test_that("bounds tests work with asymmetric models", {
 test_that("test methods are consistent", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test that method descriptions are present
   pssf_result <- pssf(model, case = 3, sig = "auto")

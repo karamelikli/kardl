@@ -93,23 +93,20 @@ inference.
 
 ## Estimating an asymmetric ARDL Model
 
-This example estimates an asymmetric ARDL model to analyze the dynamics
-of exchange rate pass-through to domestic prices in Turkey, using a
-sample dataset (`imf_example_data`) with variables for Consumer Price
-Index (CPI), Exchange Rate (ER), Producer Price Index (PPI), and a
-COVID-19 dummy variable.
+This example estimates an asymmetric ARDL model to analyze the impact of
+petrol prices and driving patterns on road fatalities in the UK, using
+the built-in `Seatbelts` dataset with variables for DriversKilled,
+PetrolPrice, drivers, kms, and a seatbelt law dummy variable.
 
 ### Step 1: Data Preparation
 
-Assume `imf_example_data` contains monthly data for CPI, ER, PPI, and a
-COVID dummy variable. We prepare the data by ensuring proper formatting
-and adding the dummy variable. We retrieve data from the IMF’s
-International Financial Statistics (IFS) dataset and prepare it for
+The `Seatbelts` dataset contains monthly data on road casualties in
+Great Britain from 1969 to 1984. We convert it to a data frame for
 analysis.
 
-Note: The `imf_example_data` is a placeholder for demonstration
-purposes. You should replace it with your actual dataset. The data can
-be loaded by `readxl` or other data import functions.
+Note: The `Seatbelts` dataset is a built-in R dataset included in the
+`datasets` package. The data can be accessed directly by converting the
+time series object to a data frame.
 
 ### Step 2: Define the Model Formula
 
@@ -123,7 +120,7 @@ linear time trend in the model.
 ``` r
 
 # Define the model formula
-my_formula <- CPI ~ ER + PPI + asymmetric(ER + PPI) + deterministic(covid) +
+my_formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice + drivers) + deterministic(law) +
   trend
 ```
 
@@ -163,10 +160,10 @@ provides console feedback.
 ``` r
 
 # Set model options
-kardl_set(criterion = "BIC", different_asym_lag = TRUE, data = imf_example_data)
+kardl_set(criterion = "BIC", different_asym_lag = TRUE, data = Seatbelts)
 # Estimate model with grid mode
 kardl_model <- kardl(
-  data = imf_example_data, formula = my_formula,
+  data = Seatbelts, formula = my_formula,
   maxlag = 4, mode = "grid"
 )
 ```
@@ -178,18 +175,22 @@ kardl_model
 ```
 
     ## Optimal lags for each variable ( BIC ):
-    ## CPI: 1, ER_POS: 1, ER_NEG: 0, PPI_POS: 3, PPI_NEG: 0 
+    ## DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers_POS: 0, drivers_NEG: 0 
     ## 
     ## Call:
     ## lm(formula = my_formula, data = model_data)
     ## 
     ## Coefficients:
-    ##  (Intercept)        L1.CPI     L1.ER_POS     L1.ER_NEG    L1.PPI_POS  
-    ##   -0.0662799    -0.0167504     0.0138795     0.0346587     0.0420485  
-    ##   L1.PPI_NEG      L1.d.CPI   L0.d.ER_POS   L0.d.ER_NEG  L0.d.PPI_POS  
-    ##    0.0396081     0.3969313     0.1242241    -0.0229369     0.0420020  
-    ## L0.d.PPI_NEG         covid         trend  
-    ##   -0.0039507     0.0036707    -0.0000213
+    ##          (Intercept)      L1.DriversKilled    L1.PetrolPrice_POS  
+    ##            134.84809              -1.11975             -58.85309  
+    ##   L1.PetrolPrice_NEG        L1.drivers_POS        L1.drivers_NEG  
+    ##            -43.01060               0.08228               0.08886  
+    ##   L1.d.DriversKilled  L0.d.PetrolPrice_POS  L0.d.PetrolPrice_NEG  
+    ##              0.13726            -285.05578            1028.03999  
+    ##     L0.d.drivers_POS      L0.d.drivers_NEG                   law  
+    ##              0.07562               0.07997              -0.61874  
+    ##                trend  
+    ##              0.63798
 
 Summary of the model provides detailed information about the estimated
 coefficients, standard errors, t-values, and significance levels.
@@ -205,31 +206,31 @@ summary(kardl_model)
     ## lm(formula = my_formula, data = model_data)
     ## 
     ## Residuals:
-    ##       Min        1Q    Median        3Q       Max 
-    ## -0.044033 -0.009369 -0.001300  0.007786  0.113556 
+    ##     Min      1Q  Median      3Q     Max 
+    ## -27.425  -7.449  -1.070   7.966  34.134 
     ## 
     ## Coefficients:
-    ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  -0.0662799  0.0233710  -2.836 0.004772 ** 
-    ## L1.CPI       -0.0167504  0.0048668  -3.442 0.000631 ***
-    ## L1.ER_POS     0.0138795  0.0052938   2.622 0.009039 ** 
-    ## L1.ER_NEG     0.0346587  0.0081800   4.237 2.74e-05 ***
-    ## L1.PPI_POS    0.0420485  0.0096352   4.364 1.58e-05 ***
-    ## L1.PPI_NEG    0.0396081  0.0110457   3.586 0.000372 ***
-    ## L1.d.CPI      0.3969313  0.0399609   9.933  < 2e-16 ***
-    ## L0.d.ER_POS   0.1242241  0.0185934   6.681 6.94e-11 ***
-    ## L0.d.ER_NEG  -0.0229369  0.0495520  -0.463 0.643668    
-    ## L0.d.PPI_POS  0.0420020  0.0166326   2.525 0.011899 *  
-    ## L0.d.PPI_NEG -0.0039507  0.0139364  -0.283 0.776936    
-    ## covid         0.0036707  0.0053298   0.689 0.491354    
-    ## trend        -0.0000213  0.0002533  -0.084 0.933010    
+    ##                        Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)           1.348e+02  1.151e+01  11.720  < 2e-16 ***
+    ## L1.DriversKilled     -1.120e+00  8.866e-02 -12.630  < 2e-16 ***
+    ## L1.PetrolPrice_POS   -5.885e+01  9.949e+01  -0.592  0.55489    
+    ## L1.PetrolPrice_NEG   -4.301e+01  1.633e+02  -0.263  0.79252    
+    ## L1.drivers_POS        8.228e-02  9.405e-03   8.748 1.66e-15 ***
+    ## L1.drivers_NEG        8.886e-02  8.341e-03  10.653  < 2e-16 ***
+    ## L1.d.DriversKilled    1.373e-01  4.699e-02   2.921  0.00394 ** 
+    ## L0.d.PetrolPrice_POS -2.851e+02  3.313e+02  -0.860  0.39069    
+    ## L0.d.PetrolPrice_NEG  1.028e+03  9.132e+02   1.126  0.26179    
+    ## L0.d.drivers_POS      7.562e-02  8.643e-03   8.750 1.65e-15 ***
+    ## L0.d.drivers_NEG      7.997e-02  7.494e-03  10.672  < 2e-16 ***
+    ## law                  -6.187e-01  4.503e+00  -0.137  0.89086    
+    ## trend                 6.380e-01  5.028e-01   1.269  0.20620    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.0156 on 455 degrees of freedom
+    ## Residual standard error: 11.36 on 177 degrees of freedom
     ##   (2 observations deleted due to missingness)
-    ## Multiple R-squared:  0.6099, Adjusted R-squared:  0.5996 
-    ## F-statistic: 59.28 on 12 and 455 DF,  p-value: < 2.2e-16
+    ## Multiple R-squared:  0.7486, Adjusted R-squared:  0.7316 
+    ## F-statistic: 43.93 on 12 and 177 DF,  p-value: < 2.2e-16
 
 #### Using User-Defined Lags
 
@@ -238,15 +239,15 @@ Specify custom lags to bypass automatic lag selection:
 ``` r
 
 kardl_model2 <- kardl(
-  data = imf_example_data, my_formula,
+  data = Seatbelts, my_formula,
   mode = c(2, 1, 1, 3, 0)
 )
 # View results
 kardl_extract(kardl_model2, "opt_lag")
 ```
 
-    ##     CPI  ER_POS  ER_NEG PPI_POS PPI_NEG 
-    ##       2       1       1       3       0
+    ##   DriversKilled PetrolPrice_POS PetrolPrice_NEG     drivers_POS     drivers_NEG 
+    ##               2               1               1               3               0
 
 ``` r
 
@@ -259,37 +260,37 @@ summary(kardl_model2)
     ## lm(formula = my_formula, data = model_data)
     ## 
     ## Residuals:
-    ##       Min        1Q    Median        3Q       Max 
-    ## -0.054516 -0.008329 -0.001178  0.006787  0.104278 
+    ##      Min       1Q   Median       3Q      Max 
+    ## -26.5337  -7.5749  -0.5198   7.5158  31.0525 
     ## 
     ## Coefficients:
-    ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)  -0.0382834  0.0226694  -1.689 0.091962 .  
-    ## L1.CPI       -0.0123942  0.0047187  -2.627 0.008921 ** 
-    ## L1.ER_POS     0.0110505  0.0051609   2.141 0.032798 *  
-    ## L1.ER_NEG     0.0268623  0.0080054   3.356 0.000860 ***
-    ## L1.PPI_POS    0.0532642  0.0096979   5.492 6.67e-08 ***
-    ## L1.PPI_NEG    0.0452663  0.0107751   4.201 3.21e-05 ***
-    ## L1.d.CPI      0.3750078  0.0444934   8.428 4.88e-16 ***
-    ## L2.d.CPI     -0.0865443  0.0423947  -2.041 0.041800 *  
-    ## L0.d.ER_POS   0.1119077  0.0179998   6.217 1.16e-09 ***
-    ## L1.d.ER_POS   0.0889105  0.0189930   4.681 3.79e-06 ***
-    ## L0.d.ER_NEG  -0.0051813  0.0476798  -0.109 0.913515    
-    ## L1.d.ER_NEG   0.0047909  0.0475913   0.101 0.919860    
-    ## L0.d.PPI_POS  0.0487238  0.0160447   3.037 0.002532 ** 
-    ## L1.d.PPI_POS -0.0010288  0.0144643  -0.071 0.943329    
-    ## L2.d.PPI_POS -0.0544024  0.0143719  -3.785 0.000174 ***
-    ## L3.d.PPI_POS -0.0499891  0.0137240  -3.642 0.000302 ***
-    ## L0.d.PPI_NEG  0.0056668  0.0134844   0.420 0.674505    
-    ## covid         0.0031412  0.0050898   0.617 0.537448    
-    ## trend        -0.0003309  0.0002472  -1.338 0.181531    
+    ##                        Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)           1.297e+02  1.462e+01   8.873 1.03e-15 ***
+    ## L1.DriversKilled     -1.077e+00  1.060e-01 -10.159  < 2e-16 ***
+    ## L1.PetrolPrice_POS   -8.365e+01  1.167e+02  -0.717   0.4744    
+    ## L1.PetrolPrice_NEG   -4.826e+01  1.801e+02  -0.268   0.7891    
+    ## L1.drivers_POS        7.411e-02  1.255e-02   5.904 1.92e-08 ***
+    ## L1.drivers_NEG        8.073e-02  1.019e-02   7.926 3.00e-13 ***
+    ## L1.d.DriversKilled    1.281e-01  6.923e-02   1.851   0.0660 .  
+    ## L2.d.DriversKilled    7.203e-02  5.195e-02   1.387   0.1674    
+    ## L0.d.PetrolPrice_POS -3.189e+02  3.390e+02  -0.941   0.3482    
+    ## L1.d.PetrolPrice_POS -5.298e+01  3.639e+02  -0.146   0.8844    
+    ## L0.d.PetrolPrice_NEG  7.248e+02  9.573e+02   0.757   0.4500    
+    ## L1.d.PetrolPrice_NEG  6.564e+01  8.720e+02   0.075   0.9401    
+    ## L0.d.drivers_POS      7.499e-02  8.845e-03   8.478 1.12e-14 ***
+    ## L1.d.drivers_POS      1.236e-02  1.272e-02   0.972   0.3327    
+    ## L2.d.drivers_POS     -1.852e-02  1.111e-02  -1.668   0.0972 .  
+    ## L3.d.drivers_POS      7.892e-03  9.504e-03   0.830   0.4075    
+    ## L0.d.drivers_NEG      7.555e-02  7.797e-03   9.689  < 2e-16 ***
+    ## law                  -1.353e+00  5.002e+00  -0.270   0.7871    
+    ## trend                 6.507e-01  5.907e-01   1.101   0.2723    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.01479 on 446 degrees of freedom
+    ## Residual standard error: 11.31 on 168 degrees of freedom
     ##   (5 observations deleted due to missingness)
-    ## Multiple R-squared:  0.655,  Adjusted R-squared:  0.641 
-    ## F-statistic: 47.03 on 18 and 446 DF,  p-value: < 2.2e-16
+    ## Multiple R-squared:  0.7601, Adjusted R-squared:  0.7344 
+    ## F-statistic: 29.57 on 18 and 168 DF,  p-value: < 2.2e-16
 
 #### Using All Variables
 
@@ -298,21 +299,25 @@ variable:
 
 ``` r
 
-kardl_set(data = imf_example_data)
-kardl(formula = CPI ~ . + deterministic(covid), mode = "grid")
+kardl_set(data = Seatbelts)
+kardl(formula = DriversKilled ~ . + deterministic(law), maxlag = 2)
 ```
 
     ## Optimal lags for each variable ( BIC ):
-    ## CPI: 1, ER: 1, PPI: 1 
+    ## DriversKilled: 1, drivers: 0, front: 0, rear: 0, kms: 0, PetrolPrice: 0, VanKilled: 0 
     ## 
     ## Call:
     ## lm(formula = my_formula, data = model_data)
     ## 
     ## Coefficients:
-    ## (Intercept)       L1.CPI        L1.ER       L1.PPI     L1.d.CPI      L0.d.ER  
-    ##    0.075004    -0.019754     0.020240     0.001600     0.489064     0.113932  
-    ##    L0.d.PPI        covid  
-    ##   -0.001353    -0.002127
+    ##        (Intercept)    L1.DriversKilled          L1.drivers            L1.front  
+    ##         -5.480e+00          -1.107e+00           8.236e-02           3.755e-03  
+    ##            L1.rear              L1.kms      L1.PetrolPrice        L1.VanKilled  
+    ##         -5.576e-03           4.442e-04          -5.069e+01           1.232e-01  
+    ## L1.d.DriversKilled        L0.d.drivers          L0.d.front           L0.d.rear  
+    ##          1.380e-01           7.928e-02          -5.884e-04          -6.872e-03  
+    ##           L0.d.kms    L0.d.PetrolPrice      L0.d.VanKilled                 law  
+    ##         -7.470e-04          -3.693e+01          -1.215e-01           4.680e+00
 
 #### Visualizing Lag Criteria
 
@@ -379,7 +384,7 @@ specify the same formula and lag structure as in the ARDL model.
 ``` r
 
 ecm_model <- ecm(
-  data = imf_example_data, formula = my_formula,
+  data = Seatbelts, formula = my_formula,
   maxlag = 4, mode = "grid_custom"
 )
 # View results
@@ -391,30 +396,26 @@ summary(ecm_model)
     ## lm(formula = shortrun_eq, data = ecm_data)
     ## 
     ## Residuals:
-    ##       Min        1Q    Median        3Q       Max 
-    ## -0.069034 -0.008966 -0.000360  0.007383  0.098004 
+    ##     Min      1Q  Median      3Q     Max 
+    ## -28.232  -7.445  -0.876   7.570  34.774 
     ## 
     ## Coefficients:
-    ##                Estimate Std. Error t value Pr(>|t|)    
-    ## (Intercept)   1.840e-02  2.767e-03   6.650 8.50e-11 ***
-    ## EcmRes       -7.988e-03  4.168e-03  -1.916 0.055947 .  
-    ## L1.d.CPI      4.566e-01  3.738e-02  12.217  < 2e-16 ***
-    ## L0.d.ER_POS   1.237e-01  1.863e-02   6.643 8.86e-11 ***
-    ## L1.d.ER_POS   9.888e-02  1.895e-02   5.218 2.76e-07 ***
-    ## L0.d.ER_NEG   4.782e-02  4.861e-02   0.984 0.325705    
-    ## L0.d.PPI_POS  1.974e-02  1.524e-02   1.296 0.195793    
-    ## L1.d.PPI_POS  2.079e-02  1.461e-02   1.423 0.155302    
-    ## L2.d.PPI_POS -3.840e-02  1.460e-02  -2.631 0.008815 ** 
-    ## L3.d.PPI_POS -3.676e-02  1.403e-02  -2.620 0.009085 ** 
-    ## L0.d.PPI_NEG -6.570e-04  1.387e-02  -0.047 0.962248    
-    ## covid         1.182e-02  3.231e-03   3.657 0.000285 ***
-    ## trend        -4.622e-05  7.953e-06  -5.812 1.17e-08 ***
+    ##                        Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)           1.882e+00  2.152e+00   0.875  0.38295    
+    ## EcmRes               -1.116e+00  8.791e-02 -12.691  < 2e-16 ***
+    ## L1.d.DriversKilled    1.279e-01  4.407e-02   2.903  0.00415 ** 
+    ## L0.d.PetrolPrice_POS -1.892e+02  3.158e+02  -0.599  0.54987    
+    ## L0.d.PetrolPrice_NEG  8.670e+02  8.224e+02   1.054  0.29322    
+    ## L0.d.drivers_POS      7.794e-02  8.380e-03   9.300  < 2e-16 ***
+    ## L0.d.drivers_NEG      8.337e-02  6.251e-03  13.338  < 2e-16 ***
+    ## law                   3.554e+00  3.218e+00   1.104  0.27088    
+    ## trend                -7.841e-03  1.873e-02  -0.419  0.67599    
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
     ## 
-    ## Residual standard error: 0.0156 on 452 degrees of freedom
-    ## Multiple R-squared:  0.611,  Adjusted R-squared:  0.6007 
-    ## F-statistic: 59.16 on 12 and 452 DF,  p-value: < 2.2e-16
+    ## Residual standard error: 11.3 on 181 degrees of freedom
+    ## Multiple R-squared:  0.7455, Adjusted R-squared:  0.7342 
+    ## F-statistic: 66.27 on 8 and 181 DF,  p-value: < 2.2e-16
 
 ### Step 4: Long-Run Coefficients
 
@@ -435,8 +436,8 @@ my_long
     ## kardl_longrun.kardl_lm(kardl_model = kardl_model)
     ## 
     ## Coefficients:
-    ##  L1.ER_POS   L1.ER_NEG  L1.PPI_POS  L1.PPI_NEG  
-    ##     0.8286      2.0691      2.5103      2.3646
+    ## L1.PetrolPrice_POS  L1.PetrolPrice_NEG      L1.drivers_POS      L1.drivers_NEG  
+    ##          -52.55915           -38.41091             0.07348             0.07935
 
 The [`summary()`](https://rdrr.io/r/base/summary.html) function provides
 detailed information about the long-run coefficients, including standard
@@ -456,11 +457,11 @@ summary(my_long)
     ## Long-run multipliers 
     ## 
     ## Coefficients:
-    ##            Estimate Std. Error t value  Pr(>|t|)    
-    ## L1.ER_POS   0.82861    0.15902  5.2107 2.858e-07 ***
-    ## L1.ER_NEG   2.06913    0.41649  4.9680 9.593e-07 ***
-    ## L1.PPI_POS  2.51030    0.85303  2.9428 0.0034187 ** 
-    ## L1.PPI_NEG  2.36460    0.71337  3.3147 0.0009908 ***
+    ##                       Estimate  Std. Error t value Pr(>|t|)    
+    ## L1.PetrolPrice_POS -52.5591494  88.7809404 -0.5920   0.5546    
+    ## L1.PetrolPrice_NEG -38.4109100 145.6977929 -0.2636   0.7924    
+    ## L1.drivers_POS       0.0734767   0.0056809 12.9340   <2e-16 ***
+    ## L1.drivers_NEG       0.0793527   0.0041634 19.0594   <2e-16 ***
     ## ---
     ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -473,10 +474,10 @@ the model.
 
 ``` r
 
-ast <- imf_example_data |>
+ast <- Seatbelts |>
   kardl(
-    CPI ~ ER + PPI + asymmetric(ER + PPI) +
-      deterministic(covid) + trend,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice + drivers) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0, 1),
     data = _
   ) |>
@@ -488,15 +489,15 @@ ast
     ## KARDL Symmetry Test Results
     ## Symmetry Test Results - Long-run:
     ## =======================
-    ##     Df  Sum of Sq    Mean Sq F value Pr(>F)
-    ## ER   1 0.00049756 0.00049756  2.1649 0.1419
-    ## PPI  1 0.00016439 0.00016439  0.7153 0.3982
+    ##             Df Sum of Sq Mean Sq F value Pr(>F)
+    ## PetrolPrice  1     2.663   2.663   0.020 0.8877
+    ## drivers      1   175.149 175.149   1.316 0.2530
     ## 
     ## Symmetry Test Results - Short-run:
     ## =======================
-    ##     Df  Sum of Sq    Mean Sq F value Pr(>F)
-    ## ER   1 0.00038607 0.00038607  1.6798 0.1956
-    ## PPI  1 0.00017426 0.00017426  0.7582 0.3844
+    ##             Df Sum of Sq Mean Sq F value Pr(>F)
+    ## PetrolPrice  1     2.649   2.649  0.0199 0.8880
+    ## drivers      1    35.235  35.235  0.2647 0.6076
 
 Summary of the symmetry test provides detailed results for both long-run
 and short-run asymmetry tests, including F-values, p-values, hypotheses,
@@ -511,40 +512,40 @@ summary(ast)
     ## 
     ## Long-run symmetry tests
     ## -----------------------
-    ##           F  Pr(>F)
-    ## ER  2.16491 0.14190
-    ## PPI 0.71527 0.39815
+    ##                   F  Pr(>F)
+    ## PetrolPrice 0.02001 0.88768
+    ## drivers     1.31595 0.25295
     ## 
     ## Hypotheses and decisions:
     ## 
-    ## Variable: ER 
-    ## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+    ## Variable: PetrolPrice 
+    ## H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) 
     ## H1: At least one coefficient differs from zero. 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice. 
     ## 
-    ## Variable: PPI 
-    ## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+    ## Variable: drivers 
+    ## H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) 
     ## H1: At least one coefficient differs from zero. 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers. 
     ## 
     ## 
     ## Short-run symmetry tests
     ## ------------------------
-    ##           F  Pr(>F)
-    ## ER  1.67981 0.19562
-    ## PPI 0.75820 0.38436
+    ##                   F  Pr(>F)
+    ## PetrolPrice 0.01990 0.88797
+    ## drivers     0.26473 0.60756
     ## 
     ## Hypotheses and decisions:
     ## 
-    ## Variable: ER 
-    ## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG) 
-    ## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG) 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. 
+    ## Variable: PetrolPrice 
+    ## H0: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) 
+    ## H1: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice. 
     ## 
-    ## Variable: PPI 
-    ## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG) 
-    ## H1: Coef(L0.d.PPI_POS) ≠ Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG) 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI.
+    ## Variable: drivers 
+    ## H0: Coef(L0.d.drivers_POS) = Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) 
+    ## H1: Coef(L0.d.drivers_POS) ≠ Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) 
+    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable drivers.
 
 ### Step 6: Cointegration Tests
 
@@ -569,7 +570,7 @@ test_result
     ##  Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration
     ## 
     ## data:  kardl_model
-    ## F = 10.792
+    ## F = 32.345
     ## alternative hypothesis: Cointegrating relationship exists
 
 Summary of the PSS F Bound test provides detailed information about the
@@ -589,7 +590,7 @@ summary(test_result)
     ##  Decision: Reject H0 → Cointegration (at 5% level)
     ## 
     ##  Test Statistic:
-    ##   F: 10.7918266
+    ##   F: 32.3445539
     ## 
     ##  Critical Values (Lower & Upper Bounds):
     ##           L    U
@@ -600,13 +601,13 @@ summary(test_result)
     ## 
     ## 
     ##  Comparison:
-    ##   At the 5% significance level, F (10.7918266) exceeds the upper bound (4.57).
+    ##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.57).
     ##   This indicates that the variables tend to move together over  time.
     ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
     ## 
     ##  Hypotheses:
-    ## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 
-    ## H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI_POS), Coef(L1.PPI_NEG) are zero. 
+    ## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 
+    ## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. 
     ## 
     ##  Model Details:
     ##   Number of regressors (k): 4
@@ -630,7 +631,7 @@ test_result
     ##  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
     ## 
     ## data:  model
-    ## t = -3.4418
+    ## t = -12.63
     ## alternative hypothesis: Cointegrating relationship exists
 
 Summary of the PSS t Bound test provides detailed information about the
@@ -647,10 +648,10 @@ summary(test_result)
     ## KARDL Cointegration Test Results
     ## ========================================
     ## 
-    ##  Decision: Inconclusive
+    ##  Decision: Reject H0 → Cointegration (at 5% level)
     ## 
     ##  Test Statistic:
-    ##   t: -3.4418095
+    ##   t: -12.6296459
     ## 
     ##  Critical Values (Lower & Upper Bounds):
     ##            L     U
@@ -661,13 +662,13 @@ summary(test_result)
     ## 
     ## 
     ##  Comparison:
-    ##   At the 5% significance level, t (3.4418095) falls between the lower bound (3.41) and upper bound (4.36).
-    ##   This is an inconclusive zone where we cannot make a definitive  judgment.
-    ##   Conclusion: The test does not provide clear evidence either way.
+    ##   At the 5% significance level, t (12.6296459) exceeds the upper bound (4.36).
+    ##   This indicates that the variables tend to move together over  time.
+    ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
     ## 
     ##  Hypotheses:
-    ## H0: Coef(L1.CPI) = 0 
-    ## H1: Coef(L1.CPI) ≠ 0 
+    ## H0: Coef(L1.DriversKilled) = 0 
+    ## H1: Coef(L1.DriversKilled) ≠ 0 
     ## 
     ##  Model Details:
     ##   Number of regressors (k): 4
@@ -692,7 +693,7 @@ test_result
     ##  Narayan F Test for Cointegration
     ## 
     ## data:  model
-    ## F = 10.792
+    ## F = 32.345
     ## alternative hypothesis: Cointegrating relationship exists
 
 Summary of the Narayan test provides detailed information about the test
@@ -712,7 +713,7 @@ summary(test_result)
     ##  Decision: Reject H0 → Cointegration (at 5% level)
     ## 
     ##  Test Statistic:
-    ##   F: 10.7918266
+    ##   F: 32.3445539
     ## 
     ##  Critical Values (Lower & Upper Bounds):
     ##           L     U
@@ -722,13 +723,13 @@ summary(test_result)
     ## 
     ## 
     ##  Comparison:
-    ##   At the 5% significance level, F (10.7918266) exceeds the upper bound (4.84).
+    ##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.84).
     ##   This indicates that the variables tend to move together over  time.
     ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
     ## 
     ##  Hypotheses:
-    ## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 
-    ## H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI_POS), Coef(L1.PPI_NEG) are zero. 
+    ## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 
+    ## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. 
     ## 
     ##  Model Details:
     ##   Number of regressors (k): 4
@@ -753,13 +754,20 @@ multipliers <- kardl_model |> mplier()
 head(kardl_extract(multipliers, "multipliers"))
 ```
 
-    ##      h    ER_POS       ER_NEG     ER_dif    PPI_POS      PPI_NEG     PPI_dif
-    ## [1,] 0 0.1242241  0.022936894 0.14716099 0.04200204  0.003950724  0.04595277
-    ## [2,] 1 0.1853312 -0.003001657 0.18232956 0.05797042 -0.034155367  0.02381505
-    ## [3,] 2 0.2203617 -0.047905918 0.17245575 0.06333773 -0.088316829 -0.02497909
-    ## [4,] 3 0.2444547 -0.099586097 0.14486860 0.06440726 -0.147943943 -0.08353668
-    ## [5,] 4 0.2638028 -0.153090186 0.11071257 0.06375294 -0.208741767 -0.14498883
-    ## [6,] 5 0.2809433 -0.206422027 0.07452128 0.06242533 -0.268985893 -0.20656056
+    ##      h PetrolPrice_POS PetrolPrice_NEG PetrolPrice_dif drivers_POS drivers_NEG
+    ## [1,] 0      -285.05578     -1028.03999    -1313.095765  0.07562484 -0.07997262
+    ## [2,] 1       -63.84422        25.01033      -38.833893  0.08359961 -0.09025538
+    ## [3,] 2       -20.84449       184.55623      163.711736  0.07335905 -0.07945846
+    ## [4,] 3       -50.45487        42.80916       -7.645706  0.07208514 -0.07785801
+    ## [5,] 4       -56.87543        18.42816      -38.447262  0.07346844 -0.07931196
+    ## [6,] 5       -52.92356        37.45733      -15.466230  0.07366752 -0.07955710
+    ##       drivers_dif
+    ## [1,] -0.004347775
+    ## [2,] -0.006655767
+    ## [3,] -0.006099407
+    ## [4,] -0.005772873
+    ## [5,] -0.005843521
+    ## [6,] -0.005889578
 
 ``` r
 
@@ -767,7 +775,7 @@ head(kardl_extract(multipliers, "multipliers"))
 kardl_extract(multipliers, "omega")
 ```
 
-    ## [1]  1.3801808 -0.3969313
+    ## [1]  0.01750931 -0.13725897
 
 ``` r
 
@@ -775,13 +783,13 @@ kardl_extract(multipliers, "omega")
 head(kardl_extract(multipliers, "lambda"))
 ```
 
-    ##          ER_POS      ER_NEG     PPI_POS      PPI_NEG
-    ## [1,]  0.1242241 -0.02293689  0.04200204 -0.003950724
-    ## [2,] -0.1103446  0.05759561 -0.04200204  0.043558804
-    ## [3,]  0.0000000  0.00000000  0.00000000  0.000000000
-    ## [4,]  0.0000000  0.00000000  0.00000000  0.000000000
-    ## [5,]  0.0000000  0.00000000  0.00000000  0.000000000
-    ## [6,]  0.0000000  0.00000000  0.00000000  0.000000000
+    ##      PetrolPrice_POS PetrolPrice_NEG drivers_POS drivers_NEG
+    ## [1,]       -285.0558        1028.040 0.075624845  0.07997262
+    ## [2,]        226.2027       -1071.051 0.006650624  0.00888249
+    ## [3,]          0.0000           0.000 0.000000000  0.00000000
+    ## [4,]          0.0000           0.000 0.000000000  0.00000000
+    ## [5,]          0.0000           0.000 0.000000000  0.00000000
+    ## [6,]          0.0000           0.000 0.000000000  0.00000000
 
 Plotting dynamic multipliers for specific variables can be done using
 the [`plot()`](https://rdrr.io/r/graphics/plot.default.html) function,
@@ -790,7 +798,7 @@ independent variables over time.
 
 ``` r
 
-plot(multipliers, variables = c("ER", "PPI"))
+plot(multipliers, variables = c("PetrolPrice", "drivers"))
 ```
 
 ![](intro_files/figure-html/plot-multipliers-1.png)
@@ -816,34 +824,34 @@ summary(bootstrap_results)
     ## Summary of Dynamic Multipliers
     ## Horizon: 12 
     ## 
-    ##        h          ER_POS           ER_NEG             ER_dif        
-    ##  Min.   : 0   Min.   :0.1242   Min.   :-0.54519   Min.   :-0.16380  
-    ##  1st Qu.: 3   1st Qu.:0.2445   1st Qu.:-0.40804   1st Qu.:-0.06693  
-    ##  Median : 6   Median :0.2969   Median :-0.25879   Median : 0.03813  
-    ##  Mean   : 6   Mean   :0.2847   Mean   :-0.25573   Mean   : 0.02895  
-    ##  3rd Qu.: 9   3rd Qu.:0.3411   3rd Qu.:-0.09959   3rd Qu.: 0.14487  
-    ##  Max.   :12   Max.   :0.3814   Max.   : 0.02294   Max.   : 0.18233  
-    ##     PPI_POS           PPI_NEG             PPI_dif          ER_CI_upper    
-    ##  Min.   :0.04200   Min.   :-0.650249   Min.   :-0.59891   Min.   :0.1689  
-    ##  1st Qu.:0.05437   1st Qu.:-0.495965   1st Qu.:-0.44002   1st Qu.:0.1745  
-    ##  Median :0.05797   Median :-0.328001   Median :-0.26715   Median :0.2723  
-    ##  Mean   :0.05739   Mean   :-0.322665   Mean   :-0.26528   Mean   :0.2682  
-    ##  3rd Qu.:0.06243   3rd Qu.:-0.147944   3rd Qu.:-0.08354   3rd Qu.:0.3491  
-    ##  Max.   :0.06441   Max.   : 0.003951   Max.   : 0.04595   Max.   :0.3977  
-    ##   ER_CI_lower         PPI_CI_upper       PPI_CI_lower      
-    ##  Min.   :-0.456249   Min.   :-0.49442   Min.   :-0.789906  
-    ##  1st Qu.:-0.302609   1st Qu.:-0.36962   1st Qu.:-0.615389  
-    ##  Median :-0.133211   Median :-0.23505   Median :-0.418502  
-    ##  Mean   :-0.159183   Mean   :-0.21177   Mean   :-0.407860  
-    ##  3rd Qu.: 0.003771   3rd Qu.:-0.04240   3rd Qu.:-0.191493  
-    ##  Max.   : 0.049601   Max.   : 0.07719   Max.   :-0.006423
+    ##        h      PetrolPrice_POS   PetrolPrice_NEG    PetrolPrice_dif   
+    ##  Min.   : 0   Min.   :-285.06   Min.   :-1028.04   Min.   :-1313.10  
+    ##  1st Qu.: 3   1st Qu.: -52.92   1st Qu.:   37.46   1st Qu.:  -15.47  
+    ##  Median : 6   Median : -52.56   Median :   38.40   Median :  -14.16  
+    ##  Mean   : 6   Mean   : -69.03   Mean   :  -34.49   Mean   : -103.52  
+    ##  3rd Qu.: 9   3rd Qu.: -52.50   3rd Qu.:   38.59   3rd Qu.:  -13.91  
+    ##  Max.   :12   Max.   : -20.84   Max.   :  184.56   Max.   :  163.71  
+    ##   drivers_POS       drivers_NEG        drivers_dif        PetrolPrice_CI_upper
+    ##  Min.   :0.07209   Min.   :-0.09026   Min.   :-0.006656   Min.   :167.7       
+    ##  1st Qu.:0.07347   1st Qu.:-0.07946   1st Qu.:-0.005881   1st Qu.:224.4       
+    ##  Median :0.07348   Median :-0.07935   Median :-0.005876   Median :225.6       
+    ##  Mean   :0.07432   Mean   :-0.08014   Mean   :-0.005826   Mean   :286.2       
+    ##  3rd Qu.:0.07348   3rd Qu.:-0.07935   3rd Qu.:-0.005874   3rd Qu.:233.8       
+    ##  Max.   :0.08360   Max.   :-0.07786   Max.   :-0.004348   Max.   :638.4       
+    ##  PetrolPrice_CI_lower drivers_CI_upper     drivers_CI_lower  
+    ##  Min.   :-3769.4      Min.   :-0.0023941   Min.   :-0.02943  
+    ##  1st Qu.: -299.5      1st Qu.:-0.0021219   1st Qu.:-0.01328  
+    ##  Median : -298.7      Median :-0.0021181   Median :-0.01327  
+    ##  Mean   : -561.1      Mean   :-0.0008551   Mean   :-0.01448  
+    ##  3rd Qu.: -297.4      3rd Qu.:-0.0021174   3rd Qu.:-0.01323  
+    ##  Max.   : -255.9      Max.   : 0.0146270   Max.   :-0.01113
 
 Visualize bootstrap results for specific variables to understand the
 variability and confidence intervals of the dynamic multipliers.
 
 ``` r
 
-plot(bootstrap_results, variables = "ER")
+plot(bootstrap_results, variables = "drivers")
 ```
 
 ![](intro_files/figure-html/plot-bootstrap-multipliers-1.png)
@@ -859,27 +867,27 @@ variables using
 # Set custom prefixes and suffixes
 kardl_reset()
 kardl_set(asym_prefix = c("asyP_", "asyN_"), asym_suffix = c("_PP", "_NN"))
-kardl_custom <- kardl(data = imf_example_data, my_formula)
+kardl_custom <- kardl(data = Seatbelts, my_formula)
 kardl_custom
 ```
 
     ## Optimal lags for each variable ( AIC ):
-    ## CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 0, asyP_PPI_PP: 4, asyN_PPI_NN: 0 
+    ## DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, asyP_drivers_PP: 2, asyN_drivers_NN: 0 
     ## 
     ## Call:
     ## lm(formula = my_formula, data = model_data)
     ## 
     ## Coefficients:
-    ##      (Intercept)            L1.CPI     L1.asyP_ER_PP     L1.asyN_ER_NN  
-    ##       -0.0404958        -0.0128695         0.0120635         0.0258122  
-    ##   L1.asyP_PPI_PP    L1.asyN_PPI_NN          L1.d.CPI          L2.d.CPI  
-    ##        0.0511977         0.0433195         0.3830822        -0.0920420  
-    ##  L0.d.asyP_ER_PP   L1.d.asyP_ER_PP   L0.d.asyN_ER_NN  L0.d.asyP_PPI_PP  
-    ##        0.1122301         0.0880910        -0.0017889         0.0509193  
-    ## L1.d.asyP_PPI_PP  L2.d.asyP_PPI_PP  L3.d.asyP_PPI_PP  L4.d.asyP_PPI_PP  
-    ##        0.0003349        -0.0535510        -0.0435529         0.0118365  
-    ## L0.d.asyN_PPI_NN             covid             trend  
-    ##       -0.0011170         0.0026926        -0.0003479
+    ##              (Intercept)          L1.DriversKilled    L1.asyP_PetrolPrice_PP  
+    ##                123.16543                  -1.02076                 -64.65463  
+    ##   L1.asyN_PetrolPrice_NN        L1.asyP_drivers_PP        L1.asyN_drivers_NN  
+    ##                -67.68843                   0.07313                   0.07991  
+    ##       L1.d.DriversKilled  L0.d.asyP_PetrolPrice_PP  L0.d.asyN_PetrolPrice_NN  
+    ##                  0.07062                -314.39843                 805.57820  
+    ##     L0.d.asyP_drivers_PP      L1.d.asyP_drivers_PP      L2.d.asyP_drivers_PP  
+    ##                  0.07503                   0.01619                  -0.01497  
+    ##     L0.d.asyN_drivers_NN                       law                     trend  
+    ##                  0.07760                  -0.99053                   0.63124
 
 ## Key Functions and Parameters
 

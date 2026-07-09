@@ -33,8 +33,6 @@
 #' @srrstats {G2.0} Implements assertions on input ranges through case-based
 #'   logic.
 #' @srrstats {G2.1} Validates that case and k are appropriate integer types.
-#' @srrstats {G5.0} Uses standard reference datasets (critical value tables
-#'   from published research).
 #'
 #' @references
 #' Pesaran, M. H., Shin, Y., & Smith, R. J. (2001). Bounds testing approaches

@@ -334,13 +334,13 @@ the \code{kardl_set()} function.
 \examples{
 
 
-# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
-# TO DOMESTIC PRICES IN TURKEY
+# Example: Road safety analysis using UK Seatbelts data
+# Analyzing the effect of seatbelt law on driver deaths
 
 kardl_set(
-  formula = CPI ~ ER + PPI + Asymmetr(ER) +
-    deterministic(covid) + trend,
-  data = imf_example_data,
+  formula = DriversKilled ~ PetrolPrice + drivers + Asymmetr(PetrolPrice) +
+    deterministic(law) + trend,
+  data = Seatbelts,
   maxlag = 2
 ) # setting the default values of the kardl function
 
@@ -364,12 +364,12 @@ summary(kardl_model2)
 
 # using '.' in the formula means that all variables in the data will be used
 
-fit_bic <- kardl(formula = CPI ~ . + deterministic(covid))
+fit_bic <- kardl(formula = DriversKilled ~ . + deterministic(law))
 fit_bic
 
 # Setting max lag instead of default value [4]
-kardl(CPI ~ ER + PPI + Lasymmetric(ER),
-  imf_example_data,
+kardl(DriversKilled ~ PetrolPrice + drivers + Lasymmetric(PetrolPrice),
+  Seatbelts,
   maxlag = 3, mode = "grid_custom"
 )
 
@@ -385,12 +385,12 @@ kardl(mode = c(1, 2, 3, 0))
 # decompositions.
 
 same <- kardl(
-  formula = CPI ~ Asymmetric(ER),
+  formula = DriversKilled ~ Asymmetric(PetrolPrice),
   maxlag = 2, mode = "grid_custom",
   different_asym_lag = FALSE
 )
 dif <- kardl(
-  formula = CPI ~ Sasymmetric(ER),
+  formula = DriversKilled ~ Sasymmetric(PetrolPrice),
   maxlag = 2, mode = "grid_custom",
   different_asym_lag = TRUE
 )
@@ -400,7 +400,7 @@ kardl_extract(dif, "opt_lag")
 # Optional: use magrittr if available
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-kardl_model_pipe <- imf_example_data \%>\%
+kardl_model_pipe <- Seatbelts \%>\%
   kardl(mode = "grid_custom", data = .)
 kardl_model_pipe
 \dontshow{\}) # examplesIf}

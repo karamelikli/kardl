@@ -8,7 +8,7 @@ test_that("print methods handle objects with minimal data", {
   kardl_reset()
 
   # Minimal model
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Test print of minimal model components
   mpl <- mplier(model, horizon = 3)
@@ -23,7 +23,7 @@ test_that("print methods handle objects with minimal data", {
 test_that("summary.kardl_symmetric handles different levels", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test with different significance levels
@@ -40,7 +40,7 @@ test_that("summary.kardl_symmetric handles different levels", {
 test_that("print.kardl_symmetric handles NULL summaries", {
   kardl_reset()
 
-  model <- kardl(CPI ~ lasymmetric(ER), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ lasymmetric(PetrolPrice), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Print should work even if some summaries might be NULL
@@ -50,7 +50,7 @@ test_that("print.kardl_symmetric handles NULL summaries", {
 test_that("summary.kardl_symmetric decision logic works", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Get summary and check decision structure
@@ -70,7 +70,7 @@ test_that("summary.kardl_symmetric decision logic works", {
 test_that("print.kardl_hypotheses handles named vs unnamed hypotheses", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   pssf_result <- pssf(model, case = 3, sig = "auto")
 
   # Print hypotheses
@@ -83,12 +83,12 @@ test_that("print.kardl_hypotheses handles named vs unnamed hypotheses", {
 test_that("plot.kardl_mplier handles custom title", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test with custom title
   expect_silent({
-    plots <- plot(mpl, variables = "ER", title = "Custom Title")
+    plots <- plot(mpl, variables = "PetrolPrice", title = "Custom Title")
   })
   expect_type(plots, "list")
 })
@@ -96,12 +96,12 @@ test_that("plot.kardl_mplier handles custom title", {
 test_that("plot.kardl_mplier handles single variable selection", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test with specific variable
   expect_silent({
-    plots <- plot(mpl, variables = "ER")
+    plots <- plot(mpl, variables = "PetrolPrice")
   })
   expect_type(plots, "list")
   expect_equal(length(plots), 1)
@@ -110,7 +110,7 @@ test_that("plot.kardl_mplier handles single variable selection", {
 test_that("summary methods return correct class", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Test mplier summary class
   mpl <- mplier(model, horizon = 5)
@@ -126,7 +126,7 @@ test_that("summary methods return correct class", {
 test_that("print methods work with different object states", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test longrun print
   expect_warning(lr <- kardl_longrun(model))
@@ -142,7 +142,7 @@ test_that("print methods work with different object states", {
 test_that("print.kardl_hypotheses handles UTF-8 characters", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Print should handle UTF-8 in hypotheses
@@ -153,7 +153,7 @@ test_that("print.kardl_hypotheses handles UTF-8 characters", {
 test_that("summary.kardl_symmetric handles edge cases", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test with very small significance level
@@ -168,7 +168,7 @@ test_that("summary.kardl_symmetric handles edge cases", {
 test_that("print methods preserve invisible return", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Test mplier
   mpl <- mplier(model, horizon = 5)
@@ -184,12 +184,12 @@ test_that("print methods preserve invisible return", {
 test_that("plot handles asymmetric models correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ lasymmetric(ER), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ lasymmetric(PetrolPrice), data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Plot should work with asymmetric models
   expect_silent({
-    plots <- plot(mpl, variables = "ER")
+    plots <- plot(mpl, variables = "PetrolPrice")
   })
   expect_type(plots, "list")
 })
@@ -197,7 +197,7 @@ test_that("plot handles asymmetric models correctly", {
 test_that("summary.kardl_mplier contains correct components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
   summ <- summary(mpl)
 
@@ -209,7 +209,7 @@ test_that("summary.kardl_mplier contains correct components", {
 test_that("summary.kardl_boot contains correct components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   boot_result <- bootstrap(model, horizon = 5, replications = 10)
   summ <- summary(boot_result)
 
@@ -221,21 +221,21 @@ test_that("summary.kardl_boot contains correct components", {
 test_that("print.kardl_hypotheses handles variable-specific hypotheses", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Get and print variable-specific hypotheses
-  er_hyp <- kardl_extract(sym_result, what = "long_hypotheses", variable = "ER")
+  er_hyp <- kardl_extract(sym_result, what = "long_hypotheses", variable = "PetrolPrice")
   expect_invisible(print(er_hyp))
 
   output <- capture.output(print(er_hyp))
-  expect_true(any(grepl("ER", output)))
+  expect_true(any(grepl("PetrolPrice", output)))
 })
 
 test_that("print methods handle empty outputs gracefully", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 5)
 
   # Even with small horizon, print should work
@@ -245,13 +245,13 @@ test_that("print methods handle empty outputs gracefully", {
 test_that("summary.kardl_symmetric decision includes all variables", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
   summ <- summary(sym_result, level = 0.05)
 
   # Check that decisions cover both variables
   if (!is.null(summ$decision$long_run)) {
-    # Should have decisions for ER and/or PPI
+    # Should have decisions for PetrolPrice and/or drivers
     expect_true(length(summ$decision$long_run) > 0)
   }
 })

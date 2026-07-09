@@ -81,8 +81,8 @@ model_criterion(mylm, "AIC")
 
 # Example usage of model_criterion function with a kardl model
 kardl_model <- kardl(
-  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-  imf_example_data,
+  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  Seatbelts,
   mode = c(1, 2, 3, 0)
 )
 

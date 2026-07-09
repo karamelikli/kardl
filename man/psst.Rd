@@ -12,6 +12,8 @@ psst(kardl_model, ...)
 produced by \code{\link{kardl_longrun}}.}
 
 \item{...}{Additional arguments (currently not used).}
+
+\item{vcov}{A variance-covariance matrix for the model coefficients.}
 }
 \value{
 The function returns an object of class "htest" containing the
@@ -66,8 +68,8 @@ different cases, depending on the model specification.
 
 \examples{
 kardl_model<-kardl(
-                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   imf_example_data,
+                   DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+                   Seatbelts,
                    mode=c(1,2,3,0))
 my_test<-psst(kardl_model)
 # Getting the results of the test.
@@ -86,15 +88,15 @@ kardl_extract(my_summary, what = "critical_values")
 
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-imf_example_data \%>\%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts \%>\%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) \%>\%
   psst()
 
 # Getting details of the test results using magrittr:
-imf_example_data \%>\%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts \%>\%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) \%>\%
   psst() \%>\%

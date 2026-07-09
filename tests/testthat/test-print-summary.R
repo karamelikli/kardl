@@ -5,10 +5,10 @@
 
 local_models <- local({
   kardl_reset()
-  linear <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  linear <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   asym <- kardl(
-    CPI ~ ER + PPI + asymmetric(ER) + trend,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   list(linear = linear, asym = asym)
@@ -78,8 +78,8 @@ test_that("print and summary of kardl_symmetric (type Chisq) work", {
 test_that("print.kardl_symmetric handles short-run-only results", {
   kardl_reset()
   sasym_model <- kardl(
-    CPI ~ PPI + sasymmetric(ER),
-    imf_example_data,
+    DriversKilled ~ drivers + sasymmetric(PetrolPrice),
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   st_sr <- symmetrytest(sasym_model, component = "shortrun")
@@ -136,7 +136,7 @@ test_that("print and summary for kardl_mplier work", {
 #' method; this test confirms that results are returned correctly.
 test_that("print and summary for kardl_boot work", {
   kardl_reset()
-  asym_only <- kardl(CPI ~ asymmetric(ER), imf_example_data, mode = c(1, 1, 1))
+  asym_only <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
   bt <- bootstrap(asym_only, horizon = 10, replications = 5, level = 90)
 
   expect_s3_class(bt, "kardl_boot")
@@ -150,14 +150,13 @@ test_that("print and summary for kardl_boot work", {
 
 #' @srrstats {TS5.0} Confirms that `plot.kardl_mplier()` runs without error
 #' for both default (all variables) and single-variable calls.
-#' @srrstats {TS5.8} Verifies that variable-specific plots can be requested.
 test_that("plot.kardl_mplier runs without error", {
   mp <- mplier(local_models$asym, horizon = 5)
   expect_warning(
     plot(mp),
     "Multiple variables selected. Only the first one will be plotted."
   )
-  expect_no_error(plot(mp, variables = "ER"))
+  expect_no_error(plot(mp, variables = "PetrolPrice"))
 })
 
 #' @srrstats {G5.2a} Checks that requesting an unknown variable in `plot()`

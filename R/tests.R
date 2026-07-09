@@ -688,8 +688,8 @@ kardl_critvals <- function(x, ...) {
 #'   \code{\link{ecm}}, \code{\link{narayan}}
 #' @examples
 #' kardl_model <- kardl(
-#'   CPI ~ Lasym(PPI + ER) + Sas(ER) + deterministic(covid) + trend,
-#'   imf_example_data
+#'   DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) + deterministic(law) + trend,
+#'   Seatbelts
 #' )
 #' ast <- symmetrytest(kardl_model)
 #' ast
@@ -771,11 +771,11 @@ symmetrytest.default <- function(kardl_model,
 #' @export
 #' @method symmetrytest kardl_longrun
 symmetrytest.kardl_longrun <- function(
-    kardl_model,
-    selected_vars = NULL,
-    component = "both",
-    type = "F",
-    ...
+  kardl_model,
+  selected_vars = NULL,
+  component = "both",
+  type = "F",
+  ...
 ) {
   symmetrytest.kardl_lm(
     kardl_model = kardl_model$original_model,
@@ -1326,8 +1326,8 @@ symmetrytest.kardl_lm <- function(
 #' @examples
 #'
 #' kardl_model <- kardl(
-#'   CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-#'   imf_example_data,
+#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   Seatbelts,
 #'   mode = c(1, 2, 3, 0)
 #' )
 #' my_pssF <- pssf(kardl_model, case = "auto", signif_level = "auto")
@@ -1344,15 +1344,15 @@ symmetrytest.kardl_lm <- function(
 #'
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' imf_example_data %>%
-#'   kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#' Seatbelts %>%
+#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   pssf()
 #'
 #' # Getting details of the test results using magrittr:
-#' imf_example_data %>%
-#'   kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#' Seatbelts %>%
+#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   pssf() %>%
@@ -1370,8 +1370,9 @@ pssf <- function(kardl_model,
 #' @export
 #' @method pssf kardl_longrun
 pssf.kardl_longrun <- function(
-    kardl_model, case = "auto", signif_level = "auto",
-                               ...) {
+  kardl_model, case = "auto", signif_level = "auto",
+  ...
+) {
   pssf.kardl_lm(
     kardl_model = kardl_model$original_model,
     case = case,
@@ -1379,7 +1380,6 @@ pssf.kardl_longrun <- function(
     ...
   )
 }
-
 
 
 #' @exportS3Method
@@ -1628,8 +1628,8 @@ pssf.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
 #' @examples
 
 #' kardl_model<-kardl(
-#'                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                    imf_example_data,
+#'                    DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+#'                    Seatbelts,
 #'                    mode=c(1,2,3,0))
 #' my_test<-narayan(kardl_model, case=3, signif_level="auto")
 #' # Getting the results of the test.
@@ -1648,15 +1648,15 @@ pssf.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
 #'
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' imf_example_data %>%
-#'   kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#' Seatbelts %>%
+#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   narayan()
 #'
 #' # Getting details of the test results using magrittr:
-#' imf_example_data %>%
-#'   kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#' Seatbelts %>%
+#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   narayan() %>%
@@ -1871,6 +1871,7 @@ narayan.kardl_lm <- function(kardl_model,
 #'   cointegration. This test is particularly useful when working with datasets
 #'   containing both stationary and non-stationary variables.
 #' @inheritParams pssf
+#' @param vcov A variance-covariance matrix for the model coefficients.
 #'
 
 #' @section Hypothesis testing:
@@ -1919,6 +1920,8 @@ narayan.kardl_lm <- function(kardl_model,
 #' @srrstats {G2.3} The `case` argument is validated against
 #' `c(1,2,3,4,5,"auto")`; `signif_level` against the set of accepted character
 #' strings.
+#' @srrstats {G3.1} Variance-covariance matrix is used to calculate the
+#' t-statistic for the test.
 #' @srrstats {TS2.2} The PSS t-test evaluates the error-correction coefficient,
 #' which is relevant to the cointegration and stationarity assumptions of the
 #' ARDL framework.
@@ -1933,8 +1936,8 @@ narayan.kardl_lm <- function(kardl_model,
 #' @examples
 
 #' kardl_model<-kardl(
-#'                    CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-#'                    imf_example_data,
+#'                    DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+#'                    Seatbelts,
 #'                    mode=c(1,2,3,0))
 #' my_test<-psst(kardl_model)
 #' # Getting the results of the test.
@@ -1953,15 +1956,15 @@ narayan.kardl_lm <- function(kardl_model,
 #'
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' imf_example_data %>%
-#'   kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#' Seatbelts %>%
+#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   psst()
 #'
 #' # Getting details of the test results using magrittr:
-#' imf_example_data %>%
-#'   kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+#' Seatbelts %>%
+#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   psst() %>%
@@ -1987,7 +1990,7 @@ psst.default <- function(kardl_model, ...) {
 #' @export
 #' @method psst kardl_longrun
 psst.kardl_longrun <- function(kardl_model, case = "auto",
-                              signif_level = "auto", ...) {
+                               signif_level = "auto", ...) {
   psst.kardl_lm(
     kardl_model = kardl_model$original_model,
     case = case,
@@ -2010,6 +2013,7 @@ psst.kardl_longrun <- function(kardl_model, case = "auto",
 #' @noRd
 #' @export
 psst.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
+                          vcov = NULL,
                           ...) {
   notes_array <- c()
   if (!case %in% c(1, 2, 3, 4, 5, "auto")) {
@@ -2071,7 +2075,11 @@ psst.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
     case <- 3
   }
 
-  vcov_matrix <- stats::vcov(kardl_model)
+  if (!is.null(vcov)) {
+    vcov_matrix <- vcov
+  } else {
+    vcov_matrix <- stats::vcov(kardl_model)
+  }
   coef_test <- lmtest::coeftest(kardl_model, vcov = vcov_matrix)
 
   if (kardl_model$est_info$type == "ecm") {

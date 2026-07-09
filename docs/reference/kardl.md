@@ -383,13 +383,13 @@ function.
 ``` r
 
 
-# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
-# TO DOMESTIC PRICES IN TURKEY
+# Example: Road safety analysis using UK Seatbelts data
+# Analyzing the effect of seatbelt law on driver deaths
 
 kardl_set(
-  formula = CPI ~ ER + PPI + Asymmetr(ER) +
-    deterministic(covid) + trend,
-  data = imf_example_data,
+  formula = DriversKilled ~ PetrolPrice + drivers + Asymmetr(PetrolPrice) +
+    deterministic(law) + trend,
+  data = Seatbelts,
   maxlag = 2
 ) # setting the default values of the kardl function
 
@@ -403,18 +403,20 @@ kardl_model_grid <- kardl(
 )
 kardl_model_grid
 #> Optimal lags for each variable ( BIC ):
-#> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
+#> DriversKilled: 1, asyP_PetrolPrice_PP: 1, asyN_PetrolPrice_NN: 0, drivers: 0 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
-#>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
-#>      -1.945e-01       -1.466e-02        1.080e-02        3.356e-02  
-#>          L1.PPI         L1.d.CPI  L0.d.asyP_ER_PP  L1.d.asyP_ER_PP  
-#>       3.945e-02        3.471e-01        1.073e-01        9.488e-02  
-#> L0.d.asyN_ER_NN         L0.d.PPI            covid            trend  
-#>       6.284e-03        1.649e-02        7.898e-03        9.699e-05  
+#>              (Intercept)          L1.DriversKilled    L1.asyP_PetrolPrice_PP  
+#>               -9.189e+00                -1.124e+00                 3.881e+00  
+#>   L1.asyN_PetrolPrice_NN                L1.drivers        L1.d.DriversKilled  
+#>               -1.580e+01                 8.782e-02                 1.391e-01  
+#> L0.d.asyP_PetrolPrice_PP  L1.d.asyP_PetrolPrice_PP  L0.d.asyN_PetrolPrice_NN  
+#>               -2.913e+02                -9.587e+01                 1.200e+03  
+#>             L0.d.drivers                       law                     trend  
+#>                7.932e-02                 2.909e+00                 2.484e-03  
 #> 
 
 kardl_model2 <- kardl(mode = c(2, 1, 1, 3))
@@ -422,22 +424,24 @@ kardl_model2 <- kardl(mode = c(2, 1, 1, 3))
 # Getting the results
 kardl_model2
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 1, PPI: 3 
+#> DriversKilled: 2, asyP_PetrolPrice_PP: 1, asyN_PetrolPrice_NN: 1, drivers: 3 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
-#>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
-#>      -2.760e-01       -1.745e-02        1.566e-02        3.488e-02  
-#>          L1.PPI         L1.d.CPI         L2.d.CPI  L0.d.asyP_ER_PP  
-#>       6.005e-02        3.893e-01       -8.462e-02        1.062e-01  
-#> L1.d.asyP_ER_PP  L0.d.asyN_ER_NN  L1.d.asyN_ER_NN         L0.d.PPI  
-#>       7.988e-02        1.612e-02        1.762e-02        2.207e-02  
-#>        L1.d.PPI         L2.d.PPI         L3.d.PPI            covid  
-#>      -1.508e-02       -3.872e-02       -3.269e-02        7.771e-03  
-#>           trend  
-#>      -5.595e-05  
+#>              (Intercept)          L1.DriversKilled    L1.asyP_PetrolPrice_PP  
+#>               -8.687e+00                -1.145e+00                 1.859e+00  
+#>   L1.asyN_PetrolPrice_NN                L1.drivers        L1.d.DriversKilled  
+#>               -4.498e+01                 8.940e-02                 1.752e-01  
+#>       L2.d.DriversKilled  L0.d.asyP_PetrolPrice_PP  L1.d.asyP_PetrolPrice_PP  
+#>                1.204e-01                -3.019e+02                -1.294e+02  
+#> L0.d.asyN_PetrolPrice_NN  L1.d.asyN_PetrolPrice_NN              L0.d.drivers  
+#>                8.779e+02                 1.254e+02                 7.815e-02  
+#>             L1.d.drivers              L2.d.drivers              L3.d.drivers  
+#>               -1.617e-03                -1.313e-02                -2.473e-05  
+#>                      law                     trend  
+#>                3.193e+00                -2.662e-02  
 #> 
 
 # Getting the summary of the results
@@ -447,109 +451,121 @@ summary(kardl_model2)
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Residuals:
-#>       Min        1Q    Median        3Q       Max 
-#> -0.055270 -0.007958 -0.001177  0.006413  0.102447 
+#>     Min      1Q  Median      3Q     Max 
+#> -27.109  -7.140  -0.834   7.803  34.126 
 #> 
 #> Coefficients:
-#>                   Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)     -2.760e-01  4.805e-02  -5.743 1.72e-08 ***
-#> L1.CPI          -1.745e-02  3.777e-03  -4.620 5.01e-06 ***
-#> L1.asyP_ER_PP    1.566e-02  4.894e-03   3.200 0.001472 ** 
-#> L1.asyN_ER_NN    3.488e-02  6.323e-03   5.517 5.85e-08 ***
-#> L1.PPI           6.005e-02  1.169e-02   5.135 4.21e-07 ***
-#> L1.d.CPI         3.893e-01  4.407e-02   8.833  < 2e-16 ***
-#> L2.d.CPI        -8.462e-02  4.221e-02  -2.005 0.045604 *  
-#> L0.d.asyP_ER_PP  1.062e-01  1.817e-02   5.847 9.62e-09 ***
-#> L1.d.asyP_ER_PP  7.988e-02  1.914e-02   4.174 3.60e-05 ***
-#> L0.d.asyN_ER_NN  1.612e-02  4.721e-02   0.341 0.732959    
-#> L1.d.asyN_ER_NN  1.762e-02  4.773e-02   0.369 0.712125    
-#> L0.d.PPI         2.207e-02  8.615e-03   2.561 0.010751 *  
-#> L1.d.PPI        -1.508e-02  1.100e-02  -1.371 0.170929    
-#> L2.d.PPI        -3.872e-02  1.027e-02  -3.770 0.000185 ***
-#> L3.d.PPI        -3.269e-02  8.718e-03  -3.749 0.000200 ***
-#> covid            7.771e-03  3.919e-03   1.983 0.047998 *  
-#> trend           -5.595e-05  1.314e-04  -0.426 0.670546    
+#>                            Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept)              -8.687e+00  1.136e+01  -0.764   0.4457    
+#> L1.DriversKilled         -1.145e+00  1.352e-01  -8.470 1.09e-14 ***
+#> L1.asyP_PetrolPrice_PP    1.859e+00  9.999e+01   0.019   0.9852    
+#> L1.asyN_PetrolPrice_NN   -4.498e+01  1.793e+02  -0.251   0.8022    
+#> L1.drivers                8.940e-02  1.340e-02   6.671 3.38e-10 ***
+#> L1.d.DriversKilled        1.752e-01  1.092e-01   1.605   0.1103    
+#> L2.d.DriversKilled        1.204e-01  7.687e-02   1.567   0.1190    
+#> L0.d.asyP_PetrolPrice_PP -3.019e+02  3.368e+02  -0.896   0.3713    
+#> L1.d.asyP_PetrolPrice_PP -1.294e+02  3.548e+02  -0.365   0.7158    
+#> L0.d.asyN_PetrolPrice_NN  8.779e+02  9.494e+02   0.925   0.3564    
+#> L1.d.asyN_PetrolPrice_NN  1.254e+02  8.730e+02   0.144   0.8860    
+#> L0.d.drivers              7.815e-02  4.743e-03  16.478  < 2e-16 ***
+#> L1.d.drivers             -1.617e-03  1.000e-02  -0.162   0.8717    
+#> L2.d.drivers             -1.313e-02  7.416e-03  -1.770   0.0785 .  
+#> L3.d.drivers             -2.473e-05  4.581e-03  -0.005   0.9957    
+#> law                       3.193e+00  3.762e+00   0.849   0.3973    
+#> trend                    -2.662e-02  1.577e-01  -0.169   0.8662    
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Residual standard error: 0.01486 on 449 degrees of freedom
+#> Residual standard error: 11.37 on 171 degrees of freedom
 #>   (4 observations deleted due to missingness)
-#> Multiple R-squared:  0.6498, Adjusted R-squared:  0.6373 
-#> F-statistic: 52.06 on 16 and 449 DF,  p-value: < 2.2e-16
+#> Multiple R-squared:  0.7563, Adjusted R-squared:  0.7335 
+#> F-statistic: 33.16 on 16 and 171 DF,  p-value: < 2.2e-16
 #> 
 
 # using '.' in the formula means that all variables in the data will be used
 
-fit_bic <- kardl(formula = CPI ~ . + deterministic(covid))
+fit_bic <- kardl(formula = DriversKilled ~ . + deterministic(law))
 fit_bic
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 1, ER: 1, PPI: 1 
+#> DriversKilled: 2, drivers: 2, front: 0, rear: 0, kms: 1, PetrolPrice: 0, VanKilled: 0 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
-#> (Intercept)       L1.CPI        L1.ER       L1.PPI     L1.d.CPI      L0.d.ER  
-#>   0.0721925   -0.0151379    0.0156144   -0.0017714    0.4453614    0.0995449  
-#>     L1.d.ER     L0.d.PPI     L1.d.PPI        covid  
-#>   0.0871452    0.0058383    0.0238530    0.0008534  
+#>        (Intercept)    L1.DriversKilled          L1.drivers            L1.front  
+#>         -2.953e+00          -1.119e+00           8.015e-02           5.054e-03  
+#>            L1.rear              L1.kms      L1.PetrolPrice        L1.VanKilled  
+#>          1.553e-03           4.528e-04          -6.138e+01           1.090e-01  
+#> L1.d.DriversKilled  L2.d.DriversKilled        L0.d.drivers        L1.d.drivers  
+#>          1.786e-01           1.324e-01           7.579e-02          -3.126e-03  
+#>       L2.d.drivers          L0.d.front           L0.d.rear            L0.d.kms  
+#>         -1.783e-02          -4.833e-03           3.029e-03          -1.175e-03  
+#>           L1.d.kms    L0.d.PetrolPrice      L0.d.VanKilled                 law  
+#>         -1.172e-03          -1.108e+02          -9.841e-02           3.699e+00  
 #> 
 
 # Setting max lag instead of default value [4]
-kardl(CPI ~ ER + PPI + Lasymmetric(ER),
-  imf_example_data,
+kardl(DriversKilled ~ PetrolPrice + drivers + Lasymmetric(PetrolPrice),
+  Seatbelts,
   maxlag = 3, mode = "grid_custom"
 )
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, ER: 1, PPI: 2 
+#> DriversKilled: 1, PetrolPrice: 0, drivers: 1 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
-#>   (Intercept)         L1.CPI  L1.asyP_ER_PP  L1.asyN_ER_NN         L1.PPI  
-#>     -0.236543      -0.020302       0.018788       0.035472       0.044559  
-#>      L1.d.CPI       L2.d.CPI        L0.d.ER        L1.d.ER       L0.d.PPI  
-#>      0.414961      -0.073800       0.089085       0.078131       0.018947  
-#>      L1.d.PPI       L2.d.PPI  
-#>     -0.002251      -0.019242  
+#>            (Intercept)        L1.DriversKilled  L1.asyP_PetrolPrice_PP  
+#>               -0.93070                -0.99602               -60.09542  
+#> L1.asyN_PetrolPrice_NN              L1.drivers      L1.d.DriversKilled  
+#>              -82.44844                 0.07285                 0.02822  
+#>       L0.d.PetrolPrice            L0.d.drivers            L1.d.drivers  
+#>              -25.55978                 0.07852                 0.01329  
 #> 
 
 # Using another criterion for finding the best lag
 kardl_set(criterion = "HQ") # setting the criterion to HQ
 kardl(mode = "grid_custom")
 #> Optimal lags for each variable ( HQ ):
-#> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
+#> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 0 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
-#>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
-#>      -1.945e-01       -1.466e-02        1.080e-02        3.356e-02  
-#>          L1.PPI         L1.d.CPI  L0.d.asyP_ER_PP  L1.d.asyP_ER_PP  
-#>       3.945e-02        3.471e-01        1.073e-01        9.488e-02  
-#> L0.d.asyN_ER_NN         L0.d.PPI            covid            trend  
-#>       6.284e-03        1.649e-02        7.898e-03        9.699e-05  
+#>              (Intercept)          L1.DriversKilled    L1.asyP_PetrolPrice_PP  
+#>               -9.988e+00                -1.122e+00                -5.514e+00  
+#>   L1.asyN_PetrolPrice_NN                L1.drivers        L1.d.DriversKilled  
+#>               -2.496e+01                 8.791e-02                 1.396e-01  
+#> L0.d.asyP_PetrolPrice_PP  L0.d.asyN_PetrolPrice_NN              L0.d.drivers  
+#>               -2.829e+02                 1.146e+03                 7.957e-02  
+#>                      law                     trend  
+#>                3.079e+00                 4.598e-03  
 #> 
 
 # using default values of lags
 kardl(mode = c(1, 2, 3, 0))
 #> Optimal lags for each variable ( HQ ):
-#> CPI: 1, asyP_ER_PP: 2, asyN_ER_NN: 3, PPI: 0 
+#> DriversKilled: 1, asyP_PetrolPrice_PP: 2, asyN_PetrolPrice_NN: 3, drivers: 0 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
-#>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
-#>      -1.915e-01       -1.471e-02        1.214e-02        3.064e-02  
-#>          L1.PPI         L1.d.CPI  L0.d.asyP_ER_PP  L1.d.asyP_ER_PP  
-#>       3.903e-02        3.401e-01        1.079e-01        8.900e-02  
-#> L2.d.asyP_ER_PP  L0.d.asyN_ER_NN  L1.d.asyN_ER_NN  L2.d.asyN_ER_NN  
-#>       1.156e-02        5.755e-03        2.990e-02        2.946e-02  
-#> L3.d.asyN_ER_NN         L0.d.PPI            covid            trend  
-#>       2.328e-02        1.650e-02        7.229e-03        3.733e-05  
+#>              (Intercept)          L1.DriversKilled    L1.asyP_PetrolPrice_PP  
+#>                -10.32621                  -1.13684                 -17.04269  
+#>   L1.asyN_PetrolPrice_NN                L1.drivers        L1.d.DriversKilled  
+#>                -76.15138                   0.08935                   0.14099  
+#> L0.d.asyP_PetrolPrice_PP  L1.d.asyP_PetrolPrice_PP  L2.d.asyP_PetrolPrice_PP  
+#>               -304.28093                 -43.50931                 175.62124  
+#> L0.d.asyN_PetrolPrice_NN  L1.d.asyN_PetrolPrice_NN  L2.d.asyN_PetrolPrice_NN  
+#>               1061.52868                 284.12478                -642.56827  
+#> L3.d.asyN_PetrolPrice_NN              L0.d.drivers                       law  
+#>               -788.63175                   0.07966                   4.59374  
+#>                    trend  
+#>                 -0.04246  
 #> 
 
 # For using different lag values for negative and positive decompositions
@@ -557,39 +573,41 @@ kardl(mode = c(1, 2, 3, 0))
 # decompositions.
 
 same <- kardl(
-  formula = CPI ~ Asymmetric(ER),
+  formula = DriversKilled ~ Asymmetric(PetrolPrice),
   maxlag = 2, mode = "grid_custom",
   different_asym_lag = FALSE
 )
 dif <- kardl(
-  formula = CPI ~ Sasymmetric(ER),
+  formula = DriversKilled ~ Sasymmetric(PetrolPrice),
   maxlag = 2, mode = "grid_custom",
   different_asym_lag = TRUE
 )
 kardl_extract(same, "opt_lag")
-#>        CPI asyP_ER_PP asyN_ER_NN 
-#>          1          1          1 
+#>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN 
+#>                   1                   0                   0 
 kardl_extract(dif, "opt_lag")
-#>        CPI asyP_ER_PP asyN_ER_NN 
-#>          1          1          0 
+#>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN 
+#>                   1                   0                   0 
 
 # Optional: use magrittr if available
 library(magrittr)
-kardl_model_pipe <- imf_example_data %>%
+kardl_model_pipe <- Seatbelts %>%
   kardl(mode = "grid_custom", data = .)
 kardl_model_pipe
 #> Optimal lags for each variable ( HQ ):
-#> CPI: 1, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 0 
+#> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 0 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
 #> 
 #> Coefficients:
-#>     (Intercept)           L1.CPI    L1.asyP_ER_PP    L1.asyN_ER_NN  
-#>      -1.945e-01       -1.466e-02        1.080e-02        3.356e-02  
-#>          L1.PPI         L1.d.CPI  L0.d.asyP_ER_PP  L1.d.asyP_ER_PP  
-#>       3.945e-02        3.471e-01        1.073e-01        9.488e-02  
-#> L0.d.asyN_ER_NN         L0.d.PPI            covid            trend  
-#>       6.284e-03        1.649e-02        7.898e-03        9.699e-05  
+#>              (Intercept)          L1.DriversKilled    L1.asyP_PetrolPrice_PP  
+#>               -9.988e+00                -1.122e+00                -5.514e+00  
+#>   L1.asyN_PetrolPrice_NN                L1.drivers        L1.d.DriversKilled  
+#>               -2.496e+01                 8.791e-02                 1.396e-01  
+#> L0.d.asyP_PetrolPrice_PP  L0.d.asyN_PetrolPrice_NN              L0.d.drivers  
+#>               -2.829e+02                 1.146e+03                 7.957e-02  
+#>                      law                     trend  
+#>                3.079e+00                 4.598e-03  
 #> 
 ```

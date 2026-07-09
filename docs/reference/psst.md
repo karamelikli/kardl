@@ -12,13 +12,18 @@ psst(kardl_model, ...)
 
 - kardl_model:
 
-  A fitted KARDL model object of class 'kardl_lm' created using the
-  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
-  function.
+  An object of class `kardl_lm` produced by
+  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md) or
+  an object of class `kardl_longrun` produced by
+  [`kardl_longrun`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md).
 
 - ...:
 
   Additional arguments (currently not used).
+
+- vcov:
+
+  A variance-covariance matrix for the model coefficients.
 
 ## Value
 
@@ -106,8 +111,8 @@ Econometrics, 16(3), 289-326.
 
 ``` r
 kardl_model<-kardl(
-                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   imf_example_data,
+                   DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+                   Seatbelts,
                    mode=c(1,2,3,0))
 my_test<-psst(kardl_model)
 # Getting the results of the test.
@@ -116,7 +121,7 @@ my_test
 #>  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
 #> data:  model
-#> t = -3.872
+#> t = -12.553
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 # Getting details of the test.
@@ -127,10 +132,10 @@ my_summary
 #> KARDL Cointegration Test Results
 #> ========================================
 #> 
-#>  Decision: Reject H0 → Weak evidence of cointegration (at 10% level)
+#>  Decision: Reject H0 → Cointegration (at 1% level)
 #> 
 #>  Test Statistic:
-#>   t: -3.8719990
+#>   t: -12.5530733
 #> 
 #>  Critical Values (Lower & Upper Bounds):
 #>            L     U
@@ -141,13 +146,13 @@ my_summary
 #> 
 #> 
 #>  Comparison:
-#>   At the 10% significance level, t (3.8719990) exceeds the upper bound (3.84).
+#>   At the 1% significance level, t (12.5530733) exceeds the upper bound (4.73).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
 #>  Hypotheses:
-#> H0: Coef(L1.CPI) = 0 
-#> H1: Coef(L1.CPI) ≠ 0 
+#> H0: Coef(L1.DriversKilled) = 0 
+#> H1: Coef(L1.DriversKilled) ≠ 0 
 #> 
 #>  Model Details:
 #>   Number of regressors (k): 3
@@ -169,8 +174,8 @@ kardl_extract(my_summary, what = "critical_values")
 # Using magrittr :
 
 library(magrittr)
-imf_example_data %>%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts %>%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) %>%
   psst()
@@ -178,13 +183,13 @@ imf_example_data %>%
 #>  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
 #> data:  model
-#> t = -3.872
+#> t = -12.553
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
 # Getting details of the test results using magrittr:
-imf_example_data %>%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts %>%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) %>%
   psst() %>%
@@ -194,10 +199,10 @@ imf_example_data %>%
 #> KARDL Cointegration Test Results
 #> ========================================
 #> 
-#>  Decision: Reject H0 → Weak evidence of cointegration (at 10% level)
+#>  Decision: Reject H0 → Cointegration (at 1% level)
 #> 
 #>  Test Statistic:
-#>   t: -3.8719990
+#>   t: -12.5530733
 #> 
 #>  Critical Values (Lower & Upper Bounds):
 #>            L     U
@@ -208,13 +213,13 @@ imf_example_data %>%
 #> 
 #> 
 #>  Comparison:
-#>   At the 10% significance level, t (3.8719990) exceeds the upper bound (3.84).
+#>   At the 1% significance level, t (12.5530733) exceeds the upper bound (4.73).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
 #>  Hypotheses:
-#> H0: Coef(L1.CPI) = 0 
-#> H1: Coef(L1.CPI) ≠ 0 
+#> H0: Coef(L1.DriversKilled) = 0 
+#> H1: Coef(L1.DriversKilled) ≠ 0 
 #> 
 #>  Model Details:
 #>   Number of regressors (k): 3

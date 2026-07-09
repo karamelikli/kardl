@@ -42,6 +42,11 @@ prepare <- function(inputs) {
     )
 
     colnames(spec$args_info$data) <- temp_names
+    warning(
+      "The data is not a time series. It has been converted to a time series ",
+      "with start = 1 and frequency = 1.",
+      call. = FALSE
+    )
   }
 
 

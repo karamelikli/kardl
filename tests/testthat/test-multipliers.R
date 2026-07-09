@@ -10,7 +10,7 @@
 #'  not differ by more than 10% of the signal range.
 
 test_that("bootstrap results are stable across different seeds", {
-  fit_base <- kardl(CPI ~ asymmetric(ER), imf_example_data, mode = c(1, 1, 1))
+  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
   b1 <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 1L)
   b2 <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 99L)
 
@@ -49,7 +49,7 @@ test_that("bootstrap results are stable across different seeds", {
 #'  not differ by more than 10% of the signal range.
 
 test_that("Same seed yields identical bootstrap output", {
-  fit_base <- kardl(CPI ~ asymmetric(ER), imf_example_data, mode = c(1, 1, 1))
+  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
   b_a <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 42L)
   b_b <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 42L)
 
@@ -61,9 +61,9 @@ test_that("Same seed yields identical bootstrap output", {
 #'  meaningfully change point estimates or confidence interval bounds.
 
 test_that("Adding machine-epsilon noise to data does not change results", {
-  fit_base <- kardl(CPI ~ asymmetric(ER), imf_example_data, mode = c(1, 1, 1))
+  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
 
-  data_noisy <- imf_example_data
+  data_noisy <- Seatbelts
   numeric_cols <- sapply(data_noisy, is.numeric)
 
   # Scale noise relative to each column's magnitude, not absolute eps.
@@ -89,7 +89,7 @@ test_that("Adding machine-epsilon noise to data does not change results", {
   data_noisy[, numeric_cols] <- data_noisy[, numeric_cols] +
     noise_matrix
 
-  fit_noisy <- kardl(CPI ~ asymmetric(ER), data_noisy, mode = c(1, 1, 1))
+  fit_noisy <- kardl(DriversKilled ~ asymmetric(PetrolPrice), data_noisy, mode = c(1, 1, 1))
 
   b_clean <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 7L)
   b_noisy <- bootstrap(fit_noisy, horizon = 10, replications = 10, seed = 7L)

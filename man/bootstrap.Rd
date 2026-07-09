@@ -81,8 +81,8 @@ values are provided for each variable and at each time horizon.
 
 # Fit a model using kardl
 kardl_model <- kardl(
-  CPI ~ ER + PPI + asy(ER) + det(covid) + trend,
-  imf_example_data,
+  DriversKilled ~ PetrolPrice + drivers + asy(PetrolPrice) + det(law) + trend,
+  Seatbelts,
   mode = c(1, 2, 3, 0)
 )
 
@@ -105,16 +105,16 @@ summary(boot)
 plot(boot)
 
 # Accessing the plot for a specific variable by its name
-plot(boot, variable = "PPI")
-plot(boot, variable = "ER")
+plot(boot, variable = "drivers")
+plot(boot, variable = "PetrolPrice")
 
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
 
-imf_example_data \%>\%
-  kardl(CPI ~ PPI + asym(ER) + trend, maxlag = 2, data = .) \%>\%
+Seatbelts \%>\%
+  kardl(DriversKilled ~ drivers + asym(PetrolPrice) + trend, maxlag = 2, data = .) \%>\%
   bootstrap(replications = 5) \%>\%
-  plot(variable = "ER")
+  plot(variable = "PetrolPrice")
 \dontshow{\}) # examplesIf}
 }
 \seealso{

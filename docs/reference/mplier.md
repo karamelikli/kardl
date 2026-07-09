@@ -1,24 +1,26 @@
-# Compute Dynamic Multipliers for kardl Models
+# Compute Dynamic Multipliers for KARDL Models
 
-Computes cumulative dynamic multipliers based on a model estimated using
-the `kardl` framework. The function supports different configurations of
-linearity and asymmetry in both short-run and long-run dynamics.
+Computes cumulative dynamic multipliers from fitted KARDL models. The
+method supports linear, asymmetric, and mixed asymmetric specifications
+estimated using the
+[`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
+framework. Dynamic multipliers can be computed from objects of class
+`kardl_lm` as well as from long-run representations obtained via
+[`kardl_longrun()`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md),
+using the corresponding S3 methods.
 
 ## Usage
 
 ``` r
-mplier(kardl_model, ...)
+mplier(kardl_model, horizon = 80, min_prob = 0, ...)
 ```
 
 ## Arguments
 
 - kardl_model:
 
-  An object of class `kardl_lm` produced by the `kardl` function.
-
-- ...:
-
-  Additional arguments (currently not used).
+  An object of class `kardl_lm` or `kardl_longrun`, representing a
+  fitted KARDL model or its long-run representation.
 
 - horizon:
 
@@ -34,6 +36,10 @@ mplier(kardl_model, ...)
   based on their statistical significance. Setting a threshold can help
   focus the analysis on more relevant variables, but it may also exclude
   potentially important effects if set too stringently.
+
+- ...:
+
+  Additional arguments (currently not used).
 
 ## Value
 
@@ -125,44 +131,44 @@ separately. Otherwise, the same dynamic path is used.
 # Calculating dynamic multipliers for a linear model in short and long run
 # (NN)
 
-kardl_model <- kardl(CPI ~ ER, imf_example_data)
+kardl_model <- kardl(DriversKilled ~ PetrolPrice, Seatbelts)
 m <- mplier(kardl_model, 40)
 head(m$mpsi)
-#>      h    ER_POS     ER_NEG ER_dif
-#> [1,] 0 0.1011301 -0.1011301      0
-#> [2,] 1 0.2430853 -0.2430853      0
-#> [3,] 2 0.3149552 -0.3149552      0
-#> [4,] 3 0.3564520 -0.3564520      0
-#> [5,] 4 0.3891548 -0.3891548      0
-#> [6,] 5 0.4154632 -0.4154632      0
+#>      h PetrolPrice_POS PetrolPrice_NEG PetrolPrice_dif
+#> [1,] 0       -490.8080        490.8080               0
+#> [2,] 1       -721.1955        721.1955               0
+#> [3,] 2       -794.5612        794.5612               0
+#> [4,] 3       -806.3901        806.3901               0
+#> [5,] 4       -802.6589        802.6589               0
+#> [6,] 5       -798.3919        798.3919               0
 plot(m)
 
 
 # Calculating dynamic multipliers for a model with
 # Short-run linear, long-run asymmetric (SA)
-kardl_model <- kardl(CPI ~ lasym(ER), imf_example_data)
+kardl_model <- kardl(DriversKilled ~ lasym(PetrolPrice), Seatbelts)
 m <- mplier(kardl_model, horizon = 40, min_prob = 0)
 head(kardl_extract(m, "multipliers"))
-#>      h    ER_POS     ER_NEG ER_dif
-#> [1,] 0 0.1016347 -0.1016347      0
-#> [2,] 1 0.2438260 -0.2438260      0
-#> [3,] 2 0.3149033 -0.3149033      0
-#> [4,] 3 0.3546481 -0.3546481      0
-#> [5,] 4 0.3853433 -0.3853433      0
-#> [6,] 5 0.4103829 -0.4103829      0
+#>      h PetrolPrice_POS PetrolPrice_NEG PetrolPrice_dif
+#> [1,] 0       -395.0500        395.0500               0
+#> [2,] 1       -593.0817        593.0817               0
+#> [3,] 2       -668.0545        668.0545               0
+#> [4,] 3       -659.7015        659.7015               0
+#> [5,] 4       -593.6678        593.6678               0
+#> [6,] 5       -531.0524        531.0524               0
 plot(m)
 
 
 # Calculating dynamic multipliers for a model with
 # Short-run asymmetric, long-run linear (AS)
-kardl_model <- kardl(CPI ~ sasym(ER), imf_example_data)
+kardl_model <- kardl(DriversKilled ~ sasym(PetrolPrice), Seatbelts)
 m <- mplier(kardl_model, 40)
 plot(m)
 
 
 # Calculating dynamic multipliers for a model with
 # asymmetric effects in both short and long run (NN)
-kardl_model <- kardl(CPI ~ asym(ER) + PPI, imf_example_data)
+kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice) + drivers, Seatbelts)
 m <- mplier(kardl_model, 40)
 plot(m)
 #> Warning: Multiple variables selected. Only the first one will be plotted.
@@ -175,26 +181,34 @@ plot(m)
 # dynamics captured by the model.
 
 head(kardl_extract(m, "multipliers"))
-#>      h    PPI_POS     PPI_NEG PPI_dif    ER_POS      ER_NEG     ER_dif
-#> [1,] 0 0.02132813 -0.02132813       0 0.1063165 -0.03176480 0.07455172
-#> [2,] 1 0.07315202 -0.07315202       0 0.2435925 -0.08346931 0.16012314
-#> [3,] 2 0.11052625 -0.11052625       0 0.3036652 -0.13943921 0.16422600
-#> [4,] 3 0.14464258 -0.14464258       0 0.3292762 -0.19429402 0.13498218
-#> [5,] 4 0.20964369 -0.20964369       0 0.3467835 -0.24716862 0.09961483
-#> [6,] 5 0.28576074 -0.28576074       0 0.3634339 -0.29819112 0.06524275
+#>      h drivers_POS drivers_NEG drivers_dif PetrolPrice_POS PetrolPrice_NEG
+#> [1,] 0  0.07814436 -0.07814436           0     -283.148538    -1172.694364
+#> [2,] 1  0.08894958 -0.08894958           0      -24.694623        8.116859
+#> [3,] 2  0.07452635 -0.07452635           0       -6.876406       84.849854
+#> [4,] 3  0.07372508 -0.07372508           0      -16.390854       41.256389
+#> [5,] 4  0.07426117 -0.07426117           0      -17.332576       37.131221
+#> [6,] 5  0.07430640 -0.07430640           0      -16.989924       38.706236
+#>      PetrolPrice_dif
+#> [1,]     -1455.84290
+#> [2,]       -16.57776
+#> [3,]        77.97345
+#> [4,]        24.86554
+#> [5,]        19.79864
+#> [6,]        21.71631
 head(kardl_extract(m, "omega"))
-#> [1]  1.37561845 -0.47712514  0.07968277
+#> [1]  0.02660202 -0.03864692
 head(kardl_extract(m, "lambda"))
-#>           PPI_POS      PPI_NEG       ER_POS      ER_NEG
-#> [1,]  0.021328127  0.021328127  0.106316519 0.031764799
-#> [2,]  0.022484531  0.022484531 -0.008975032 0.008008269
-#> [3,] -0.023739497 -0.023739497 -0.078040265 0.000000000
-#> [4,]  0.005730656  0.005730656  0.000000000 0.000000000
-#> [5,]  0.031772768  0.031772768  0.000000000 0.000000000
-#> [6,]  0.000000000  0.000000000  0.000000000 0.000000000
+#>       drivers_POS  drivers_NEG PetrolPrice_POS PetrolPrice_NEG
+#> [1,]  0.078144356  0.078144356       -283.1485        1172.694
+#> [2,]  0.008726426  0.008726426        265.9862       -1212.007
+#> [3,] -0.011690630 -0.011690630          0.0000           0.000
+#> [4,]  0.000000000  0.000000000          0.0000           0.000
+#> [5,]  0.000000000  0.000000000          0.0000           0.000
+#> [6,]  0.000000000  0.000000000          0.0000           0.000
 
 # For plotting specific variables, you can specify them in the plot
 # function. For example, to plot the multipliers for the variable "PPI":
 
 plot(m, variable = "PPI", title = "Dynamic Multipliers for PPI")
+#> Error: PPI is not exits among independent variables!
 ```

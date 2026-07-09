@@ -140,17 +140,21 @@
 #' does not treat list columns as valid model variables for estimation.
 #' @srrstats {G2.13} Missing observations introduced by lagging and differencing
 #' are handled during model-frame construction before estimation is performed.
-#' @srrstats {G2.14} Missing data behaviour follows the documented estimation
-#' workflow, where observations unavailable after lag construction are excluded
-#' from the estimation sample.
-#' @srrstats {G2.14a} Invalid model inputs that cannot be transformed into an
-#' estimable ARDL specification generate errors before post-estimation routines
-#' are run.
-#' @srrstats {G2.14b} The estimation workflow removes structurally missing
-#' lagged observations created by differencing and lag construction.
-#' @srrstats {G2.14c} The package does not impute missing time-series
-#' observations because imputation would change the dynamic structure of the
-#' fitted ARDL model.
+#' @srrstats {G2.14} Missing-value handling is inherited from
+#'   `stats::lm()` through the `na.action` argument. Users can select any
+#'   supported `na.action` method (e.g., `na.fail`, `na.omit`, `na.exclude`,
+#'   or `na.pass`).
+#'
+#' @srrstats {G2.14a} Missing values can generate an error by specifying
+#'   `na.action = stats::na.fail`.
+#'
+#' @srrstats {G2.14b} Missing values can be omitted by specifying
+#'   `na.action = stats::na.omit` or `stats::na.exclude`, following the
+#'   standard behaviour of `stats::lm()`.
+#'
+#' @srrstats {G2.14c} Missing-value imputation is not implemented within
+#'   `kardl`. Users should impute missing values prior to model fitting using
+#'   appropriate external methods when required.
 #' @srrstats {G2.15} Estimation and post-estimation calculations are based on
 #' the cleaned model object rather than passing unprocessed missing values to
 #' lower-level numeric routines.
@@ -166,8 +170,12 @@
 #' @srrstats {G3.1a} Multiplier documentation describes standard-error
 #' calculation from the fitted model covariance matrix and examples show how
 #' users can inspect the resulting estimates.
-#' @srrstats {G5.0} Tests and examples use the package example data and fixed
-#' model specifications with known expected structure.
+#' @srrstats {G5.0} The package includes an example dataset derived from
+#'   publicly available IMF time-series data. The example data have been
+#'   preprocessed solely for illustrative purposes by applying natural
+#'   logarithm transformations to selected variables and creating a COVID-19
+#'   dummy variable. These transformations are documented and are intended
+#'   only to facilitate reproducible examples in the package.
 #' @srrstats {G5.1} The example data used in documentation and tests are
 #' included with the package so users can reproduce examples and test
 #' calculations.
@@ -318,10 +326,7 @@
 #' user.
 #' @srrstats {TS5.5} Plot methods operate on computed model and multiplier
 #' outputs after missing-value handling in the fitted object.
-#' @srrstats {TS5.7} Dynamic multiplier plots display the computed response path
-#' from the fitted model over the selected horizon.
-#' @srrstats {TS5.8} Plot methods distinguish multiplier components by variable
-#' and shock direction where asymmetric effects are present.
+
 #' @noRd
 NULL
 
@@ -374,5 +379,10 @@ NULL
 #' spectral visualisation, so frequency-axis conventions are not applicable.
 #' @srrstatsNA {TS5.6} Forecast distributional limits are not plotted because
 #' the package does not implement forecast plots.
+#' srrstatsNA {TS5.7} The package does not implement forecast visualisation,
+#' so forecast plotting conventions are not applicable.
+#' @srrstatsNA {TS5.8} The package does not implement forecast visualisation,
+#' so forecast visualisation conventions are not applicable.
+#'
 #' @noRd
 NULL

@@ -183,7 +183,10 @@
 #'  (long-run or short-run) and/or results for specific variables of interest.
 #'
 #' @examples
-#' kardl_model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data)
+#' kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers),
+#'   data = Seatbelts,
+#'   mode = c(2, 1, 0, 4, 0)
+#' )
 #'
 #' # Examples of extracting components from a fitted kardl_lm model object
 #' # kardl_extract(kardl_model, what = "data_ts_info")
@@ -223,10 +226,9 @@
 #' kardl_extract(kardl_model, what = "n")
 #'
 #'
-#'
-#'
 #' # Examples of extracting components from a kardl_mplier object
-#'
+#' \donttest{
+#' # This long-running example won't be tested by CRAN
 #' m <- mplier(kardl_model, horizon = 40)
 #' head(kardl_extract(m, what = "multipliers"))
 #' kardl_extract(m, what = "omega")
@@ -234,12 +236,12 @@
 #' kardl_extract(m, what = "horizon")
 #'
 #' # Examples of extracting components from a kardl_boot object
-#' boot_results <- bootstrap(kardl_model, horizon = 40, replications = 100)
+#' boot_results <- bootstrap(kardl_model, horizon = 40, replications = 2)
 #' head(kardl_extract(boot_results, what = "multipliers"))
 #' kardl_extract(boot_results, what = "level")
 #' kardl_extract(boot_results, what = "replications")
 #' kardl_extract(boot_results, what = "horizon")
-#'
+#' }
 #' # Examples of extracting components from a kardl_test object
 #' test_results <- psst(kardl_model)
 #' kardl_extract(test_results, what = "type")
@@ -313,8 +315,8 @@ kardl_extract <- function(
 #' @method kardl_extract default
 #' @noRd
 kardl_extract.default <- function(
-    kardl_object, what, variable = NULL, component = NULL
-  ) {
+  kardl_object, what, variable = NULL, component = NULL
+) {
   stop(
     "No kardl_extract() method for objects of class: ",
     paste(class(kardl_object), collapse = ", "),
@@ -342,7 +344,7 @@ kardl_extract.default <- function(
 #' The selected component from the `kardl_mplier` object.
 #'
 #' @examples
-#' kardl_model <- kardl(CPI ~ ER, data = imf_example_data)
+#' kardl_model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts)
 #' m <- mplier(kardl_model, horizon = 40)
 #'
 #' head(kardl_extract(m, what = "multipliers"))
@@ -351,7 +353,7 @@ kardl_extract.default <- function(
 #' @method kardl_extract kardl_mplier
 #' @noRd
 kardl_extract.kardl_mplier <- function(
-    kardl_object, what, variable = NULL, component = NULL
+  kardl_object, what, variable = NULL, component = NULL
 ) {
   what <- match.arg(what, c(
     "multipliers",
@@ -440,7 +442,7 @@ kardl_extract.kardl_boot <- function(
 #' @method kardl_extract kardl_test
 #' @noRd
 kardl_extract.kardl_test <- function(
-    kardl_object,
+  kardl_object,
   what, variable = NULL, component = NULL
 ) {
   what <- match.arg(
@@ -577,7 +579,7 @@ kardl_extract.kardl_test_summary <- function(
 #' The selected component from the fitted `kardl_lm` object.
 #'
 #' @examples
-#' kardl_model <- kardl(CPI ~ ER + PPI, data = imf_example_data)
+#' kardl_model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts)
 #'
 #' kardl_extract(kardl_model, what = "dependent_var")
 #' kardl_extract(kardl_model, what = "independent_vars")
@@ -696,8 +698,8 @@ kardl_extract.kardl_lm <- function(
 #'   results for that variable are returned.
 #' @examples
 #' # Example usage:
-#' my_asymmetry_model <- kardl(CPI ~ asym(ER + PPI),
-#'   data = imf_example_data,
+#' my_asymmetry_model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers),
+#'   data = Seatbelts,
 #'   max_lags = 1
 #' )
 #' symmetry_results <- symmetrytest(my_asymmetry_model)

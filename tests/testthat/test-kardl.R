@@ -8,10 +8,10 @@
 
 test_that("kardl model estimates correctly in quick mode", {
   kardl_reset()
-  formula <- CPI ~ ER + PPI + asymmetric(ER) + trend
+  formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend
 
   model <- kardl(
-    data = imf_example_data,
+    data = Seatbelts,
     formula = formula,
     mode = "quick",
     maxlag = 2
@@ -28,10 +28,10 @@ test_that("kardl model estimates correctly in quick mode", {
 #' and recoverable from the fitted object.
 test_that("kardl model estimates correctly with custom lags", {
   kardl_reset()
-  formula <- CPI ~ ER + PPI + asymmetric(ER) + deterministic(covid) + trend
+  formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + deterministic(law) + trend
 
   model <- kardl(
-    data = imf_example_data,
+    data = Seatbelts,
     formula = formula,
     mode = c(2, 1, 1, 0)
   )
@@ -46,8 +46,8 @@ test_that("kardl model estimates correctly with custom lags", {
 test_that("kardl with grid_custom mode works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers,
+    Seatbelts,
     mode = "grid_custom",
     maxlag = 2
   )
@@ -62,8 +62,8 @@ test_that("kardl with grid_custom mode works", {
 test_that("kardl with grid_custom mode and BIC criterion works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers,
+    Seatbelts,
     mode = "grid_custom",
     maxlag = 2,
     criterion = "BIC"
@@ -77,7 +77,7 @@ test_that("kardl with grid_custom mode and BIC criterion works", {
 #' @srrstats {G5.7} Tests the full grid-search estimation path.
 test_that("kardl with grid mode works", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI, imf_example_data, mode = "grid", maxlag = 2)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = "grid", maxlag = 2)
 
   expect_s3_class(model, "kardl_lm")
   expect_identical(model$est_info$method, "grid")
@@ -87,12 +87,12 @@ test_that("kardl with grid mode works", {
 #' valid estimable model.
 test_that("kardl with dot formula works", {
   kardl_reset()
-  #' Dot expands to ER, PPI, covid; covid goes to deterministic -> 3
+  #' Dot expands to all variables; law goes to deterministic
   #' short_run_vars
   model <- kardl(
-    CPI ~ . + deterministic(covid),
-    imf_example_data,
-    mode = c(1, 1, 1)
+    DriversKilled ~ . + deterministic(law),
+    Seatbelts,
+    mode = c(1, 1, 1, 1, 1, 1, 1)
   )
   expect_s3_class(model, "kardl_lm")
 })
@@ -102,7 +102,7 @@ test_that("kardl with dot formula works", {
 #' configuration.
 test_that("kardl with lasymmetric produces correct structure", {
   kardl_reset()
-  model <- kardl(CPI ~ lasymmetric(ER), imf_example_data, mode = c(1, 1))
+  model <- kardl(DriversKilled ~ lasymmetric(PetrolPrice), Seatbelts, mode = c(1, 1))
   expect_s3_class(model, "kardl_lm")
   expect_gt(length(model$extracted_info$asym_long_vars), 0)
   expect_length(model$extracted_info$asym_short_vars, 0)
@@ -114,8 +114,8 @@ test_that("kardl with lasymmetric produces correct structure", {
 test_that("kardl with sasymmetric produces correct structure", {
   kardl_reset()
   model <- kardl(
-    CPI ~ PPI + sasymmetric(ER),
-    imf_example_data,
+    DriversKilled ~ drivers + sasymmetric(PetrolPrice),
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   expect_s3_class(model, "kardl_lm")
@@ -127,8 +127,8 @@ test_that("kardl with sasymmetric produces correct structure", {
 test_that("kardl grid_custom with batch processing works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers,
+    Seatbelts,
     mode = "grid_custom",
     maxlag = 2,
     batch = "1/2"
@@ -141,7 +141,7 @@ test_that("kardl grid_custom with batch processing works", {
 #' any estimation occurs.
 test_that("kardl fails informatively when formula missing in kardl_set", {
   kardl_reset()
-  expect_error(kardl(data = imf_example_data, mode = c(1, 1, 1)))
+  expect_error(kardl(data = Seatbelts, mode = c(1, 1, 1)))
 })
 
 #' @srrstats {G5.2} Tests all four predefined string criterion options.
@@ -175,7 +175,7 @@ test_that("model_criterion works with a user-defined function", {
 #' differenced variables correctly.
 test_that("ecm model estimates correctly", {
   kardl_reset()
-  ec <- ecm(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   expect_s3_class(ec, "kardl_lm")
   expect_identical(ec$est_info$type, "ecm")
 })
@@ -183,7 +183,7 @@ test_that("ecm model estimates correctly", {
 #' a coefficient table.
 test_that("ecm summary works", {
   kardl_reset()
-  ec <- ecm(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   sm <- summary(ec)
   expect_false(is.null(sm$coefficients))
 })
@@ -192,6 +192,6 @@ test_that("ecm summary works", {
 #' even when the ECM coefficient triggers a note.
 test_that("ecm model with notes when ECM coeff is non-negative or < -1", {
   kardl_reset()
-  ec <- ecm(CPI ~ ER + PPI, imf_example_data, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(1, 1, 1))
   expect_s3_class(ec, "kardl_lm")
 })

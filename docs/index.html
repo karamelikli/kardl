@@ -28,7 +28,7 @@
 
     <a class="navbar-brand me-2" href="index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,12 +117,12 @@
 <div class="section level2">
 <h2 id="estimating-an-asymmetric-ardl-model">Estimating an asymmetric ARDL Model<a class="anchor" aria-label="anchor" href="#estimating-an-asymmetric-ardl-model"></a>
 </h2>
-<p>This example estimates an asymmetric ARDL model to analyze the dynamics of exchange rate pass-through to domestic prices in Turkey, using a sample dataset (<code>imf_example_data</code>) with variables for Consumer Price Index (CPI), Exchange Rate (ER), Producer Price Index (PPI), and a COVID-19 dummy variable.</p>
+<p>This example estimates an asymmetric ARDL model to analyze the impact of petrol prices and driving patterns on road fatalities in the UK, using the built-in <code>Seatbelts</code> dataset with variables for DriversKilled, PetrolPrice, drivers, kms, and a seatbelt law dummy variable.</p>
 <div class="section level3">
 <h3 id="step-1-data-preparation">Step 1: Data Preparation<a class="anchor" aria-label="anchor" href="#step-1-data-preparation"></a>
 </h3>
-<p>Assume <code>imf_example_data</code> contains monthly data for CPI, ER, PPI, and a COVID dummy variable. We prepare the data by ensuring proper formatting and adding the dummy variable. We retrieve data from the IMF’s International Financial Statistics (IFS) dataset and prepare it for analysis.</p>
-<p>Note: The <code>imf_example_data</code> is a placeholder for demonstration purposes. You should replace it with your actual dataset. The data can be loaded by <code>readxl</code> or other data import functions.</p>
+<p>The <code>Seatbelts</code> dataset contains monthly data on road casualties in Great Britain from 1969 to 1984. It is a built-in R time series dataset that can be used directly.</p>
+<p>Note: The <code>Seatbelts</code> dataset is a built-in R dataset included in the <code>datasets</code> package. The data can be accessed directly without any conversion.</p>
 </div>
 <div class="section level3">
 <h3 id="step-2-define-the-model-formula">Step 2: Define the Model Formula<a class="anchor" aria-label="anchor" href="#step-2-define-the-model-formula"></a>
@@ -130,7 +130,7 @@
 <p>We define the model formula using R’s formula syntax, incorporating asymmetric effects and deterministic variables. We use <code>asymmetric()</code> for variables with both short- and long-run asymmetry, <code>lasymmetric()</code> for long-run asymmetry, <code>sasymmetric()</code> for short-run asymmetry, and <code>deterministic()</code> for fixed dummy variables. The <code>trend</code> term includes a linear time trend in the model.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define the model formula</span></span>
-<span><span class="va">my_formula</span> <span class="op">&lt;-</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">my_formula</span> <span class="op">&lt;-</span> <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="va">trend</span></span></code></pre></div>
 <p>Indeed, the formula syntax is flexible, allowing for various combinations of asymmetric and deterministic variables. The following variations of the formula are equivalent and will yield the same model specification:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -157,10 +157,10 @@
 <p>The <code>"grid"</code> mode evaluates all lag combinations up to <code>maxlag</code> and provides console feedback.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set model options</span></span>
-<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span>, different_asym_lag <span class="op">=</span> <span class="cn">TRUE</span>, data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span>, different_asym_lag <span class="op">=</span> <span class="cn">TRUE</span>, data <span class="op">=</span> <span class="va">Seatbelts</span><span class="op">)</span></span>
 <span><span class="co"># Estimate model with grid mode</span></span>
 <span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Seatbelts</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
@@ -176,7 +176,7 @@
 <p>Specify custom lags to bypass automatic lag selection:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kardl_model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Seatbelts</span>, <span class="va">my_formula</span>,</span>
 <span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
@@ -190,8 +190,8 @@
 </h4>
 <p>Use the <code>.</code> operator to include all variables except the dependent variable:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Seatbelts</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="visualizing-lag-criteria">Visualizing Lag Criteria<a class="anchor" aria-label="anchor" href="#visualizing-lag-criteria"></a>
@@ -249,7 +249,7 @@
 <p>The <code><a href="reference/ecm.html">ecm()</a></code> function estimates a Restricted ECM for cointegration testing. We specify the same formula and lag structure as in the ARDL model.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ecm.html">ecm</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Seatbelts</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
@@ -274,10 +274,10 @@
 </h3>
 <p>The <code><a href="reference/symmetrytest.html">symmetrytest()</a></code> function performs Wald tests to assess short- and long-run asymmetry in the model.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="va">imf_example_data</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="va">Seatbelts</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span></span>
-<span>    <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span>
+<span>    <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span>
 <span>    mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">_</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -340,7 +340,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">multipliers</span>, <span class="st">"lambda"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Plotting dynamic multipliers for specific variables can be done using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function, which visualizes the response of the dependent variable to changes in independent variables over time.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">multipliers</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ER"</span>, <span class="st">"PPI"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">multipliers</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PetrolPrice"</span>, <span class="st">"drivers"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>To handle a large number of variables, you can specify a subset of variables to plot or use <code>variables = "all"</code> to visualize all dynamic multipliers.</p>
 <p>Bootstrap confidence intervals for dynamic multipliers can be calculated using the <code><a href="reference/bootstrap.html">bootstrap()</a></code> function, which provides robust estimates of uncertainty around the multipliers.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -350,7 +350,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">bootstrap_results</span><span class="op">)</span></span></code></pre></div>
 <p>Visualize bootstrap results for specific variables to understand the variability and confidence intervals of the dynamic multipliers.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bootstrap_results</span>, variables <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bootstrap_results</span>, variables <span class="op">=</span> <span class="st">"PetrolPrice"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="step-8-customizing-asymmetric-variables">Step 8: Customizing asymmetric Variables<a class="anchor" aria-label="anchor" href="#step-8-customizing-asymmetric-variables"></a>
@@ -360,7 +360,7 @@
 <code class="sourceCode R"><span><span class="co"># Set custom prefixes and suffixes</span></span>
 <span><span class="fu"><a href="reference/kardl_reset.html">kardl_reset</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>asym_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asyP_"</span>, <span class="st">"asyN_"</span><span class="op">)</span>, asym_suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_PP"</span>, <span class="st">"_NN"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">kardl_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">imf_example_data</span>, <span class="va">my_formula</span><span class="op">)</span></span>
+<span><span class="va">kardl_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Seatbelts</span>, <span class="va">my_formula</span><span class="op">)</span></span>
 <span><span class="va">kardl_custom</span></span></code></pre></div>
 </div>
 </div>

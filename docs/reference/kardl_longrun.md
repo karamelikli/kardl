@@ -98,8 +98,8 @@ variable in the original KARDL model.
 ``` r
 
 kardl_model <- kardl(
-  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-  imf_example_data,
+  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  Seatbelts,
   mode = c(1, 2, 3, 0)
 )
 long <- kardl_longrun(kardl_model)
@@ -113,8 +113,8 @@ long
 #> kardl_longrun.kardl_lm(kardl_model = kardl_model)
 #> 
 #> Coefficients:
-#> L1.ER_POS  L1.ER_NEG     L1.PPI  
-#>    0.8249     2.0830     2.6528  
+#> L1.PetrolPrice_POS  L1.PetrolPrice_NEG          L1.drivers  
+#>           -14.9912            -66.9849              0.0786  
 #> 
 
 # Details of the long-run multipliers
@@ -127,17 +127,17 @@ summary(long)
 #> Long-run multipliers 
 #> 
 #> Coefficients:
-#>           Estimate Std. Error t value  Pr(>|t|)    
-#> L1.ER_POS  0.82494    0.18150  4.5453 7.064e-06 ***
-#> L1.ER_NEG  2.08297    0.48083  4.3320 1.825e-05 ***
-#> L1.PPI     2.65278    0.84724  3.1311  0.001855 ** 
+#>                       Estimate  Std. Error t value Pr(>|t|)    
+#> L1.PetrolPrice_POS -14.9912274  87.7377465 -0.1709   0.8645    
+#> L1.PetrolPrice_NEG -66.9848916 171.4328226 -0.3907   0.6965    
+#> L1.drivers           0.0785960   0.0040583 19.3670   <2e-16 ***
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
 # Using magrittr
 library(magrittr)
-imf_example_data %>%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts %>%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) %>%
   kardl_longrun() %>%
@@ -152,10 +152,10 @@ imf_example_data %>%
 #> Long-run multipliers 
 #> 
 #> Coefficients:
-#>           Estimate Std. Error t value  Pr(>|t|)    
-#> L1.ER_POS  0.82494    0.18150  4.5453 7.064e-06 ***
-#> L1.ER_NEG  2.08297    0.48083  4.3320 1.825e-05 ***
-#> L1.PPI     2.65278    0.84724  3.1311  0.001855 ** 
+#>                       Estimate  Std. Error t value Pr(>|t|)    
+#> L1.PetrolPrice_POS -14.9912274  87.7377465 -0.1709   0.8645    
+#> L1.PetrolPrice_NEG -66.9848916 171.4328226 -0.3907   0.6965    
+#> L1.drivers           0.0785960   0.0040583 19.3670   <2e-16 ***
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 ```

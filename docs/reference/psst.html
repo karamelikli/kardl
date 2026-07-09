@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,12 +57,17 @@
 
 
 <dl><dt id="arg-kardl-model">kardl_model<a class="anchor" aria-label="anchor" href="#arg-kardl-model"></a></dt>
-<dd><p>A fitted KARDL model object of class 'kardl_lm' created
-using the <code><a href="kardl.html">kardl</a></code> function.</p></dd>
+<dd><p>An object of class <code>kardl_lm</code> produced by
+<code><a href="kardl.html">kardl</a></code> or an object of class <code>kardl_longrun</code>
+produced by <code><a href="kardl_longrun.html">kardl_longrun</a></code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments (currently not used).</p></dd>
+
+
+<dt id="arg-vcov">vcov<a class="anchor" aria-label="anchor" href="#arg-vcov"></a></dt>
+<dd><p>A variance-covariance matrix for the model coefficients.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -142,8 +147,8 @@ Econometrics, 16(3), 289-326.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">kardl_model</span><span class="op">&lt;-</span><span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>                   <span class="va">CPI</span><span class="op">~</span><span class="va">ER</span><span class="op">+</span><span class="va">PPI</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span>,</span></span>
-<span class="r-in"><span>                   <span class="va">imf_example_data</span>,</span></span>
+<span class="r-in"><span>                   <span class="va">DriversKilled</span><span class="op">~</span><span class="va">PetrolPrice</span><span class="op">+</span><span class="va">drivers</span><span class="op">+</span><span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span><span class="op">+</span><span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span><span class="op">+</span><span class="va">trend</span>,</span></span>
+<span class="r-in"><span>                   <span class="va">Seatbelts</span>,</span></span>
 <span class="r-in"><span>                   mode<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">my_test</span><span class="op">&lt;-</span><span class="fu">psst</span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Getting the results of the test.</span></span></span>
@@ -152,7 +157,7 @@ Econometrics, 16(3), 289-326.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t = -3.872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t = -12.553</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: Cointegrating relationship exists</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Getting details of the test.</span></span></span>
@@ -163,10 +168,10 @@ Econometrics, 16(3), 289-326.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Weak evidence of cointegration (at 10% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 1% level)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   t: -3.8719990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   t: -12.5530733</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            L     U</span>
@@ -177,13 +182,13 @@ Econometrics, 16(3), 289-326.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   At the 10% significance level, t (3.8719990) exceeds the upper bound (3.84).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   At the 1% significance level, t (12.5530733) exceeds the upper bound (4.73).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.CPI) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.CPI) ≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.DriversKilled) = 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.DriversKilled) ≠ 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>
@@ -205,8 +210,8 @@ Econometrics, 16(3), 289-326.</p>
 <span class="r-in"><span><span class="co"># Using magrittr :</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span><span class="va">Seatbelts</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
 <span class="r-in"><span>    mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">.</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">psst</span><span class="op">(</span><span class="op">)</span></span></span>
@@ -214,13 +219,13 @@ Econometrics, 16(3), 289-326.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> t = -3.872</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t = -12.553</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: Cointegrating relationship exists</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting details of the test results using magrittr:</span></span></span>
-<span class="r-in"><span><span class="va">imf_example_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span><span class="va">Seatbelts</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
 <span class="r-in"><span>    mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">.</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">psst</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
@@ -230,10 +235,10 @@ Econometrics, 16(3), 289-326.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Weak evidence of cointegration (at 10% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 1% level)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   t: -3.8719990</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   t: -12.5530733</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            L     U</span>
@@ -244,13 +249,13 @@ Econometrics, 16(3), 289-326.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   At the 10% significance level, t (3.8719990) exceeds the upper bound (3.84).</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   At the 1% significance level, t (12.5530733) exceeds the upper bound (4.73).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.CPI) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.CPI) ≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.DriversKilled) = 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L1.DriversKilled) ≠ 0 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>

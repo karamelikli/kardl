@@ -57,8 +57,10 @@ symmetrytest(
 
 - kardl_model:
 
-  An object of class `kardl_lm` representing a fitted non-linear KARDL
-  model.
+  An object of class `kardl_lm` produced by
+  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md) or
+  an object of class `kardl_longrun` produced by
+  [`kardl_longrun`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md).
 
 - selected_vars:
 
@@ -152,8 +154,8 @@ applications, 281-314.
 
 ``` r
 kardl_model <- kardl(
-  CPI ~ Lasym(PPI + ER) + Sas(ER) + deterministic(covid) + trend,
-  imf_example_data
+  DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) + deterministic(law) + trend,
+  Seatbelts
 )
 ast <- symmetrytest(kardl_model)
 ast
@@ -161,56 +163,48 @@ ast
 #> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
-#>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
-#> ER   1 0.00093159 0.00093159  4.2217 0.04049 *
-#> PPI  1 0.00002915 0.00002915  0.1321 0.71644  
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> PetrolPrice  1    14.688  14.688  0.1154 0.7345
+#> drivers      1   215.576 215.576  1.6940 0.1948
 #> 
 #> Symmetry Test Results - Short-run:
 #> =======================
-#>    Df Sum of Sq   Mean Sq F value   Pr(>F)   
-#> ER  1 0.0021074 0.0021074  9.5499 0.002124 **
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> PetrolPrice  1    161.38  161.38  1.2681 0.2616
 #> 
 # Detailed results of the test:
 summary(ast)
 #> 
 #> Long-run symmetry tests
 #> -----------------------
-#>           F   Pr(>F)  
-#> ER  4.22169 0.040489 *
-#> PPI 0.13210 0.716440  
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>                   F  Pr(>F)
+#> PetrolPrice 0.11542 0.73446
+#> drivers     1.69404 0.19476
 #> 
 #> Hypotheses and decisions:
 #> 
-#> Variable: ER 
-#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+#> Variable: PetrolPrice 
+#> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) 
 #> H1: At least one coefficient differs from zero. 
-#> Decision: Reject H0 at 5% level. Indicating long-run asymmetry for variable ER. 
+#> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice. 
 #> 
-#> Variable: PPI 
-#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+#> Variable: drivers 
+#> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) 
 #> H1: At least one coefficient differs from zero. 
-#> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. 
+#> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers. 
 #> 
 #> 
 #> Short-run symmetry tests
 #> ------------------------
-#>          F    Pr(>F)   
-#> ER 9.54985 0.0021239 **
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>                   F  Pr(>F)
+#> PetrolPrice 1.26814 0.26164
 #> 
 #> Hypotheses and decisions:
 #> 
-#> Variable: ER 
-#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) 
-#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) 
-#> Decision: Reject H0 at 5% level. Indicating short-run asymmetry for variable ER. 
+#> Variable: PetrolPrice 
+#> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) 
+#> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) 
+#> Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice. 
 # The null hypothesis of the test is that the model is symmetric, while the
 # alternative hypothesis is that the model is asymmetric. The test statistic
 # and p-value are provided in the output. If the p-value is less than a
@@ -224,57 +218,49 @@ summary(ast, level = 0.01)
 #> 
 #> Long-run symmetry tests
 #> -----------------------
-#>           F   Pr(>F)  
-#> ER  4.22169 0.040489 *
-#> PPI 0.13210 0.716440  
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>                   F  Pr(>F)
+#> PetrolPrice 0.11542 0.73446
+#> drivers     1.69404 0.19476
 #> 
 #> Hypotheses and decisions:
 #> 
-#> Variable: ER 
-#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+#> Variable: PetrolPrice 
+#> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) 
 #> H1: At least one coefficient differs from zero. 
-#> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable ER. 
+#> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PetrolPrice. 
 #> 
-#> Variable: PPI 
-#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+#> Variable: drivers 
+#> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) 
 #> H1: At least one coefficient differs from zero. 
-#> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PPI. 
+#> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable drivers. 
 #> 
 #> 
 #> Short-run symmetry tests
 #> ------------------------
-#>          F    Pr(>F)   
-#> ER 9.54985 0.0021239 **
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>                   F  Pr(>F)
+#> PetrolPrice 1.26814 0.26164
 #> 
 #> Hypotheses and decisions:
 #> 
-#> Variable: ER 
-#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) 
-#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) 
-#> Decision: Reject H0 at 1% level. Indicating short-run asymmetry for variable ER. 
+#> Variable: PetrolPrice 
+#> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) 
+#> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) 
+#> Decision: Fail to Reject H0 at 1% level. Indicating short-run symmetry for variable PetrolPrice. 
 
 # To get symmetry test results in long-run, you can use the following code:
 kardl_extract(ast, what = "long_wald_summary")
 #> Symmetry Test Results - Long-run:
 #> =======================
-#>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
-#> ER   1 0.00093159 0.00093159  4.2217 0.04049 *
-#> PPI  1 0.00002915 0.00002915  0.1321 0.71644  
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> PetrolPrice  1    14.688  14.688  0.1154 0.7345
+#> drivers      1   215.576 215.576  1.6940 0.1948
 
 # To get symmetry test results in short-run, you can use the following code:
 kardl_extract(ast, what = "short_wald_summary")
 #> Symmetry Test Results - Short-run:
 #> =======================
-#>    Df Sum of Sq   Mean Sq F value   Pr(>F)   
-#> ER  1 0.0021074 0.0021074  9.5499 0.002124 **
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> PetrolPrice  1    161.38  161.38  1.2681 0.2616
 
 # To get the null and alternative hypotheses of the test in long-run,
 # you can use the following code:
@@ -282,13 +268,13 @@ kardl_extract(ast, what = "long_hypotheses")
 #> 
 #> Hypotheses:
 #> 
-#> Variable: ER 
-#> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) 
+#> Variable: PetrolPrice 
+#> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) 
 #> H1: At least one coefficient differs from zero. 
 #> 
 #> 
-#> Variable: PPI 
-#> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) 
+#> Variable: drivers 
+#> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) 
 #> H1: At least one coefficient differs from zero. 
 #> 
 
@@ -298,9 +284,9 @@ kardl_extract(ast, what = "short_hypotheses")
 #> 
 #> Hypotheses:
 #> 
-#> Variable: ER 
-#> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) 
-#> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) 
+#> Variable: PetrolPrice 
+#> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) 
+#> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) 
 #> 
 
 # Alternatively, you can also use the symmetrytest function with the
@@ -312,11 +298,9 @@ symmetrytest(kardl_model, component = "longrun")
 #> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
-#>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
-#> ER   1 0.00093159 0.00093159  4.2217 0.04049 *
-#> PPI  1 0.00002915 0.00002915  0.1321 0.71644  
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> PetrolPrice  1    14.688  14.688  0.1154 0.7345
+#> drivers      1   215.576 215.576  1.6940 0.1948
 #> 
 
 # To test for short-run symmetry, you can use the following code:
@@ -325,10 +309,8 @@ symmetrytest(kardl_model, component = "shortrun")
 #> KARDL Symmetry Test Results
 #> Symmetry Test Results - Short-run:
 #> =======================
-#>    Df Sum of Sq   Mean Sq F value   Pr(>F)   
-#> ER  1 0.0021074 0.0021074  9.5499 0.002124 **
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> PetrolPrice  1    161.38  161.38  1.2681 0.2616
 #> 
 
 # If you want to test for symmetry with respect to a specific variable,
@@ -336,36 +318,14 @@ symmetrytest(kardl_model, component = "shortrun")
 # example, to test for symmetry with respect to the PPI variable, you can use
 # the following code:
 symmetrytest(kardl_model, selected_vars = "PPI")
-#> 
-#> KARDL Symmetry Test Results
-#> Symmetry Test Results - Long-run:
-#> =======================
-#>     Df  Sum of Sq    Mean Sq F value Pr(>F)
-#> PPI  1 2.9149e-05 2.9149e-05  0.1321 0.7164
-#> 
+#> Error: These variables are not available for symmetry testing: PPI
 
 # To test for symmetry with respect to multiple variables, you can provide
 # a vector of variable names to the selected_vars argument. For example, to
 # test for symmetry with respect to both PPI and ER, you can use the
 # following code:
 symmetrytest(kardl_model, selected_vars = c("PPI", "ER"))
-#> 
-#> KARDL Symmetry Test Results
-#> Symmetry Test Results - Long-run:
-#> =======================
-#>     Df  Sum of Sq    Mean Sq F value  Pr(>F)  
-#> PPI  1 0.00002915 0.00002915  0.1321 0.71644  
-#> ER   1 0.00093159 0.00093159  4.2217 0.04049 *
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#> 
-#> Symmetry Test Results - Short-run:
-#> =======================
-#>    Df Sum of Sq   Mean Sq F value   Pr(>F)   
-#> ER  1 0.0021074 0.0021074  9.5499 0.002124 **
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-#> 
+#> Error: These variables are not available for symmetry testing: PPI, ER
 
 # Finally, you can also specify the type of test statistic to be used in the
 # symmetry test. By default, the function uses the Wald test F statistic,
@@ -377,17 +337,13 @@ symmetrytest(kardl_model, type = "Chisq")
 #> KARDL Symmetry Test Results
 #> Symmetry Test Results - Long-run:
 #> =======================
-#>     Df  Chisq Pr(>Chisq)  
-#> ER   1 4.2217    0.03991 *
-#> PPI  1 0.1321    0.71627  
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df  Chisq Pr(>Chisq)
+#> PetrolPrice  1 0.1154     0.7341
+#> drivers      1 1.6940     0.1931
 #> 
 #> Symmetry Test Results - Short-run:
 #> =======================
-#>    Df Sum of Sq  Chisq Pr(>Chisq)   
-#> ER  1 0.0021074 9.5499      0.002 **
-#> ---
-#> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+#>             Df Sum of Sq  Chisq Pr(>Chisq)
+#> PetrolPrice  1    161.38 1.2681     0.2601
 #> 
 ```

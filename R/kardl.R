@@ -368,13 +368,13 @@
 #' @examples
 #'
 #'
-#' # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
-#' # TO DOMESTIC PRICES IN TURKEY
+#' # Example: Road safety analysis using UK Seatbelts data
+#' # Analyzing the effect of seatbelt law on driver deaths
 #'
 #' kardl_set(
-#'   formula = CPI ~ ER + PPI + Asymmetr(ER) +
-#'     deterministic(covid) + trend,
-#'   data = imf_example_data,
+#'   formula = DriversKilled ~ PetrolPrice + drivers + Asymmetr(PetrolPrice) +
+#'     deterministic(law) + trend,
+#'   data = Seatbelts,
 #'   maxlag = 2
 #' ) # setting the default values of the kardl function
 #'
@@ -398,12 +398,12 @@
 #'
 #' # using '.' in the formula means that all variables in the data will be used
 #'
-#' fit_bic <- kardl(formula = CPI ~ . + deterministic(covid))
+#' fit_bic <- kardl(formula = DriversKilled ~ . + deterministic(law))
 #' fit_bic
 #'
 #' # Setting max lag instead of default value [4]
-#' kardl(CPI ~ ER + PPI + Lasymmetric(ER),
-#'   imf_example_data,
+#' kardl(DriversKilled ~ PetrolPrice + drivers + Lasymmetric(PetrolPrice),
+#'   Seatbelts,
 #'   maxlag = 3, mode = "grid_custom"
 #' )
 #'
@@ -419,12 +419,12 @@
 #' # decompositions.
 #'
 #' same <- kardl(
-#'   formula = CPI ~ Asymmetric(ER),
+#'   formula = DriversKilled ~ Asymmetric(PetrolPrice),
 #'   maxlag = 2, mode = "grid_custom",
 #'   different_asym_lag = FALSE
 #' )
 #' dif <- kardl(
-#'   formula = CPI ~ Sasymmetric(ER),
+#'   formula = DriversKilled ~ Sasymmetric(PetrolPrice),
 #'   maxlag = 2, mode = "grid_custom",
 #'   different_asym_lag = TRUE
 #' )
@@ -434,7 +434,7 @@
 #' # Optional: use magrittr if available
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
-#' kardl_model_pipe <- imf_example_data %>%
+#' kardl_model_pipe <- Seatbelts %>%
 #'   kardl(mode = "grid_custom", data = .)
 #' kardl_model_pipe
 #'
@@ -667,11 +667,11 @@ kardl <- function(
 #'
 #' @examples
 #'
-#' # Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
-#' # TO DOMESTIC PRICES IN TURKEY
+#' # Example: Road safety analysis using UK Seatbelts data
+#' # Analyzing the effect of seatbelt law on driver deaths
 #' kardl_set(
-#'   formula = CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-#'   data = imf_example_data,
+#'   formula = DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   data = Seatbelts,
 #'   maxlag = 3
 #' )
 #'
@@ -702,7 +702,7 @@ kardl <- function(
 #' summary(ecm_model2)
 #'
 #' # Alternative specification
-#' summary(ecm(CPI ~ PPI + asym(ER) + trend, imf_example_data))
+#' summary(ecm(DriversKilled ~ drivers + asym(PetrolPrice) + trend, Seatbelts))
 #'
 #' # For increasing the performance of finding the most fitted lag vector
 #' ecm(mode = "grid_custom")
@@ -730,7 +730,7 @@ kardl <- function(
 #'   asym_prefix = c("asyP_", "asyN_"),
 #'   asym_suffix = c("_PP", "_NN")
 #' )
-#' customizedNames <- ecm(CPI ~ ER + PPI + asym(ER), imf_example_data)
+#' customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice), Seatbelts)
 #' customizedNames
 #'
 ecm <- function(
@@ -971,8 +971,8 @@ predict.kardl_lm <- function(object, newdata = NULL, ...) {
 #'
 #' # Example usage of model_criterion function with a kardl model
 #' kardl_model <- kardl(
-#'   CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-#'   imf_example_data,
+#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   Seatbelts,
 #'   mode = c(1, 2, 3, 0)
 #' )
 #'

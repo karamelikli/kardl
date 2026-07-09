@@ -11,17 +11,17 @@ test_that("kardl_extract works for kardl_lm objects", {
   kardl_reset()
 
   # Create a simple kardl model
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 2)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 2)
 
   # Test extraction of basic components
   expect_type(kardl_extract(model, "dependent_var"), "character")
-  expect_equal(kardl_extract(model, "dependent_var"), "CPI")
+  expect_equal(kardl_extract(model, "dependent_var"), "DriversKilled")
 
   expect_type(kardl_extract(model, "independent_vars"), "character")
-  expect_true(all(c("ER", "PPI") %in% kardl_extract(model, "independent_vars")))
+  expect_true(all(c("PetrolPrice", "drivers") %in% kardl_extract(model, "independent_vars")))
 
   expect_type(kardl_extract(model, "all_vars"), "character")
-  expect_true("CPI" %in% kardl_extract(model, "all_vars"))
+  expect_true("DriversKilled" %in% kardl_extract(model, "all_vars"))
 
   # Test extraction of model info
   expect_type(kardl_extract(model, "opt_lag"), "double")
@@ -39,7 +39,7 @@ test_that("kardl_extract works for kardl_lm objects", {
 test_that("kardl_extract works for kardl_mplier objects", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test extraction of multipliers
@@ -62,7 +62,7 @@ test_that("kardl_extract works for kardl_mplier objects", {
 test_that("kardl_extract works for kardl_boot objects", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   boot_result <- bootstrap(model, horizon = 5, replications = 10, level = 95)
 
   # Test extraction of multipliers
@@ -82,7 +82,7 @@ test_that("kardl_extract works for kardl_boot objects", {
 test_that("kardl_extract works for kardl_test objects", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test extraction of test components
@@ -99,7 +99,7 @@ test_that("kardl_extract works for kardl_test objects", {
 test_that("kardl_extract works for kardl_test_summary objects", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summary <- summary(test_result)
 
@@ -120,7 +120,7 @@ test_that("kardl_extract works for kardl_test_summary objects", {
 test_that("kardl_extract works for kardl_symmetric objects", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test extraction of summary tables
@@ -145,7 +145,7 @@ test_that("kardl_extract works for kardl_symmetric objects", {
   expect_type(long_tests, "list")
 
   # Test extraction for specific variable
-  er_test <- kardl_extract(sym_result, "long_wald_tests", variable = "ER")
+  er_test <- kardl_extract(sym_result, "long_wald_tests", variable = "PetrolPrice")
   expect_s3_class(er_test, "htest")
 
   # expect error for non-existent variable
@@ -158,7 +158,7 @@ test_that("kardl_extract works for kardl_symmetric objects", {
   expect_s3_class(long_hyp, "kardl_hypotheses")
 
   # Test extraction of hypotheses for specific variable
-  er_hyp <- kardl_extract(sym_result, "long_hypotheses", variable = "ER")
+  er_hyp <- kardl_extract(sym_result, "long_hypotheses", variable = "PetrolPrice")
   expect_s3_class(er_hyp, "kardl_hypotheses")
 
   # Test extraction of specific hypothesis component
@@ -181,7 +181,7 @@ test_that("kardl_extract errors appropriately for unsupported classes", {
 test_that("kardl_extract errors for invalid 'what' arguments", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Invalid what for kardl_lm
   expect_error(
@@ -199,18 +199,18 @@ test_that("kardl_extract errors for invalid 'what' arguments", {
 test_that("kardl_extract handles variable extraction correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test extraction with multiple variables
   multi_vars <- kardl_extract(
     sym_result,
     "long_wald_tests",
-    variable = c("ER", "PPI")
+    variable = c("PetrolPrice", "drivers")
   )
   expect_type(multi_vars, "list")
   expect_equal(length(multi_vars), 2)
-  expect_true(all(c("ER", "PPI") %in% names(multi_vars)))
+  expect_true(all(c("PetrolPrice", "drivers") %in% names(multi_vars)))
 
   # Test error for non-existent variable
   expect_error(
@@ -223,8 +223,8 @@ test_that("kardl_extract handles asymmetric variable extraction", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ lasymmetric(ER) + sasymmetric(PPI),
-    data = imf_example_data,
+    DriversKilled ~ lasymmetric(PetrolPrice) + sasymmetric(drivers),
+    data = Seatbelts,
     maxlag = 1
   )
 
@@ -233,9 +233,9 @@ test_that("kardl_extract handles asymmetric variable extraction", {
   asym_short <- kardl_extract(model, "asym_short_vars")
   all_asym <- kardl_extract(model, "all_asym_vars")
 
-  expect_true("ER" %in% asym_long)
-  expect_true("PPI" %in% asym_short)
-  expect_true(all(c("ER", "PPI") %in% all_asym))
+  expect_true("PetrolPrice" %in% asym_long)
+  expect_true("drivers" %in% asym_short)
+  expect_true(all(c("PetrolPrice", "drivers") %in% all_asym))
 
   # Test extraction of excluded variables
   indep_al_excluded <- kardl_extract(model, "indep_al_excluded")
@@ -249,8 +249,8 @@ test_that("kardl_extract retrieves model specification correctly", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ ER + PPI + deterministic(covid) + trend - 1,
-    data = imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers + deterministic(law) + trend - 1,
+    data = Seatbelts,
     maxlag = 2
   )
 
@@ -262,7 +262,7 @@ test_that("kardl_extract retrieves model specification correctly", {
 
   # Test deterministic variables
   det_vars <- kardl_extract(model, "deterministic")
-  expect_true("covid" %in% det_vars)
+  expect_true("law" %in% det_vars)
 
   # Test model type
   model_type <- kardl_extract(model, "model_type")
@@ -272,7 +272,7 @@ test_that("kardl_extract retrieves model specification correctly", {
 test_that("kardl_extract handles lag information correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 3)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 3)
 
   # Test lag criteria extraction
   lag_criteria <- kardl_extract(model, "lag_criteria")

@@ -7,7 +7,7 @@
 test_that("kardl_extract.kardl_symmetric handles all component combinations", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test extraction with component = "both"
@@ -38,7 +38,7 @@ test_that("kardl_extract.kardl_symmetric handles all component combinations", {
 test_that("kardl_extract handles H1 hypothesis extraction", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Extract H1 hypotheses
@@ -51,14 +51,14 @@ test_that("kardl_extract handles H1 hypothesis extraction", {
 test_that("kardl_extract handles variable and component together", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Extract specific variable with specific component
   er_h0 <- kardl_extract(
     sym_result,
     what = "short_hypotheses",
-    variable = "ER",
+    variable = "PetrolPrice",
     component = "H0"
   )
   expect_type(er_h0, "list")
@@ -68,7 +68,7 @@ test_that("kardl_extract handles variable and component together", {
 test_that("kardl_extract handles span extraction", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Test span extraction
   span <- kardl_extract(model, "span")
@@ -79,7 +79,7 @@ test_that("kardl_extract handles span extraction", {
 test_that("kardl_extract handles short_run_vars and long_run_vars", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 2)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 2)
 
   # Test short run variables
   short_vars <- kardl_extract(model, "short_run_vars")
@@ -93,7 +93,7 @@ test_that("kardl_extract handles short_run_vars and long_run_vars", {
 test_that("kardl_extract handles alternative hypothesis extraction", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test alternative hypothesis extraction
@@ -103,7 +103,7 @@ test_that("kardl_extract handles alternative hypothesis extraction", {
 test_that("kardl_extract handles data.name extraction", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test data.name extraction
@@ -114,7 +114,7 @@ test_that("kardl_extract handles data.name extraction", {
 test_that("kardl_extract handles sample.size extraction", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test sample.size extraction if available
@@ -127,7 +127,7 @@ test_that("kardl_extract handles sample.size extraction", {
 test_that("kardl_extract handles hypotheses extraction from test objects", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test hypotheses extraction
@@ -140,7 +140,7 @@ test_that("kardl_extract handles hypotheses extraction from test objects", {
 test_that("kardl_extract handles sig extraction", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "0.05")
 
   # Test sig extraction
@@ -151,7 +151,7 @@ test_that("kardl_extract handles sig extraction", {
 test_that("kardl_extract handles notes extraction when present", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- psst(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 
@@ -164,7 +164,7 @@ test_that("kardl_extract handles notes extraction when present", {
 test_that("kardl_extract handles vars extraction from mplier", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test vars extraction through the "vars" option
@@ -176,14 +176,14 @@ test_that("kardl_extract handles vars extraction from mplier", {
 test_that("kardl_extract handles multiple variable extraction correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Extract multiple variables from hypotheses
   multi_hyp <- kardl_extract(
     sym_result,
     what = "long_hypotheses",
-    variable = c("ER", "PPI")
+    variable = c("PetrolPrice", "drivers")
   )
   expect_s3_class(multi_hyp, "kardl_hypotheses")
   expect_equal(length(multi_hyp$H0), 2)
@@ -192,7 +192,7 @@ test_that("kardl_extract handles multiple variable extraction correctly", {
 test_that("kardl_extract preserves class structure", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Extract hypotheses and verify class is preserved
@@ -202,7 +202,7 @@ test_that("kardl_extract preserves class structure", {
   # Extract with variable and verify class is preserved
   hyp_var <- kardl_extract(sym_result,
     what = "long_hypotheses",
-    variable = "ER"
+    variable = "PetrolPrice"
   )
   expect_s3_class(hyp_var, "kardl_hypotheses")
 })
@@ -211,7 +211,7 @@ test_that("kardl_extract handles empty variable lists", {
   kardl_reset()
 
   # Model without asymmetry
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Extract asymmetric variables (should be empty)
   asym_long <- kardl_extract(model, "asym_long_vars")
@@ -224,7 +224,7 @@ test_that("kardl_extract handles empty variable lists", {
 test_that("kardl_extract handles type extraction from test objects", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test type extraction
@@ -235,7 +235,7 @@ test_that("kardl_extract handles type extraction from test objects", {
 test_that("kardl_extract handles case extraction from test_summary", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 
@@ -248,7 +248,7 @@ test_that("kardl_extract handles case extraction from test_summary", {
 test_that("kardl_extract handles variables extraction from test_summary", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 
@@ -261,7 +261,7 @@ test_that("kardl_extract handles variables extraction from test_summary", {
 test_that("kardl_extract handles k extraction from test_summary", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 

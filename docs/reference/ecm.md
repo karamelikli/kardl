@@ -402,11 +402,11 @@ function.
 
 ``` r
 
-# Sample article: THE DYNAMICS OF EXCHANGE RATE PASS-THROUGH
-# TO DOMESTIC PRICES IN TURKEY
+# Example: Road safety analysis using UK Seatbelts data
+# Analyzing the effect of seatbelt law on driver deaths
 kardl_set(
-  formula = CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-  data = imf_example_data,
+  formula = DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  data = Seatbelts,
   maxlag = 3
 )
 
@@ -415,16 +415,22 @@ ecm_model_grid <- ecm(mode = "grid")
 #> 
 ecm_model_grid
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 
+#> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L0.d.ER_NEG     L0.d.PPI  
-#>   0.0181865   -0.0172809    0.4703704    0.1341552    0.0207522   -0.0007262  
-#>       covid        trend  
-#>   0.0027255   -0.0000378  
+#>          (Intercept)                EcmRes    L1.d.DriversKilled  
+#>            1.760e+00            -1.122e+00             1.317e-01  
+#> L0.d.PetrolPrice_POS  L0.d.PetrolPrice_NEG          L0.d.drivers  
+#>           -2.577e+02             1.038e+03             8.092e-02  
+#>                  law                 trend  
+#>            3.896e+00            -9.601e-03  
+#> 
+#> 
+#> Notes:
+#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
 #> 
 
 # Checking the cointegration test results using Pesaran t test
@@ -433,7 +439,7 @@ psst(ecm_model_grid)
 #>  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
 #> data:  model
-#> t = -4.5607
+#> t = -12.828
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
@@ -444,10 +450,10 @@ summary(psst(ecm_model_grid))
 #> KARDL Cointegration Test Results
 #> ========================================
 #> 
-#>  Decision: Reject H0 → Cointegration (at 2.5% level)
+#>  Decision: Reject H0 → Cointegration (at 1% level)
 #> 
 #>  Test Statistic:
-#>   t: -4.5606582
+#>   t: -12.8280123
 #> 
 #>  Critical Values (Lower & Upper Bounds):
 #>            L     U
@@ -458,7 +464,7 @@ summary(psst(ecm_model_grid))
 #> 
 #> 
 #>  Comparison:
-#>   At the 2% significance level, t (4.5606582) exceeds the upper bound (4.42).
+#>   At the 1% significance level, t (12.8280123) exceeds the upper bound (4.73).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
@@ -479,16 +485,22 @@ ecm_model <- ecm(
 )
 ecm_model
 #> Optimal lags for each variable ( HQ ):
-#> CPI: 1, ER_POS: 2, ER_NEG: 0, PPI: 0 
+#> DriversKilled: 2, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 0 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L2.d.ER_POS  
-#>   1.815e-02   -1.394e-02    4.154e-01    1.168e-01    9.272e-02    6.635e-03  
-#> L0.d.ER_NEG     L0.d.PPI        covid        trend  
-#>   4.541e-02   -1.953e-03    4.998e-03   -4.241e-05  
+#>          (Intercept)                EcmRes    L1.d.DriversKilled  
+#>            1.690e+00            -1.137e+00             1.376e-01  
+#>   L2.d.DriversKilled  L0.d.PetrolPrice_POS  L0.d.PetrolPrice_NEG  
+#>            1.610e-02            -2.480e+02             1.045e+03  
+#>         L0.d.drivers                   law                 trend  
+#>            8.094e-02             3.983e+00            -9.322e-03  
+#> 
+#> 
+#> Notes:
+#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
 #> 
 
 # Estimating the model with user-defined lag values
@@ -497,18 +509,26 @@ ecm_model2 <- ecm(mode = c(2, 1, 1, 3))
 # Getting the results
 ecm_model2
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, ER_POS: 1, ER_NEG: 1, PPI: 3 
+#> DriversKilled: 2, PetrolPrice_POS: 1, PetrolPrice_NEG: 1, drivers: 3 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
-#>   1.879e-02   -1.421e-02    4.480e-01   -2.922e-02    1.150e-01    8.085e-02  
-#> L0.d.ER_NEG  L1.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI     L3.d.PPI  
-#>   3.857e-02    7.378e-02    5.352e-03    1.761e-02   -1.359e-02   -1.685e-02  
-#>       covid        trend  
-#>   4.482e-03   -4.053e-05  
+#>          (Intercept)                EcmRes    L1.d.DriversKilled  
+#>            1.836e+00            -1.151e+00             1.796e-01  
+#>   L2.d.DriversKilled  L0.d.PetrolPrice_POS  L1.d.PetrolPrice_POS  
+#>            1.239e-01            -3.127e+02            -1.161e+02  
+#> L0.d.PetrolPrice_NEG  L1.d.PetrolPrice_NEG          L0.d.drivers  
+#>            8.225e+02             8.272e+01             7.906e-02  
+#>         L1.d.drivers          L2.d.drivers          L3.d.drivers  
+#>           -3.097e-03            -1.436e-02            -8.408e-04  
+#>                  law                 trend  
+#>            3.852e+00            -9.890e-03  
+#> 
+#> 
+#> Notes:
+#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
 #> 
 
 # Getting the summary of the results
@@ -518,110 +538,122 @@ summary(ecm_model2)
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Residuals:
-#>       Min        1Q    Median        3Q       Max 
-#> -0.066291 -0.008125 -0.000967  0.007027  0.099847 
+#>     Min      1Q  Median      3Q     Max 
+#> -26.596  -6.808  -0.674   7.842  34.317 
 #> 
 #> Coefficients:
-#>               Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)  1.879e-02  2.512e-03   7.482 3.84e-13 ***
-#> EcmRes      -1.421e-02  3.752e-03  -3.787 0.000173 ***
-#> L1.d.CPI     4.480e-01  4.453e-02  10.059  < 2e-16 ***
-#> L2.d.CPI    -2.922e-02  4.264e-02  -0.685 0.493482    
-#> L0.d.ER_POS  1.150e-01  1.847e-02   6.227 1.09e-09 ***
-#> L1.d.ER_POS  8.085e-02  1.986e-02   4.072 5.51e-05 ***
-#> L0.d.ER_NEG  3.857e-02  4.845e-02   0.796 0.426383    
-#> L1.d.ER_NEG  7.378e-02  4.806e-02   1.535 0.125395    
-#> L0.d.PPI     5.352e-03  8.254e-03   0.648 0.517029    
-#> L1.d.PPI     1.761e-02  9.115e-03   1.932 0.053946 .  
-#> L2.d.PPI    -1.359e-02  9.214e-03  -1.475 0.140875    
-#> L3.d.PPI    -1.685e-02  8.365e-03  -2.014 0.044618 *  
-#> covid        4.482e-03  3.747e-03   1.196 0.232270    
-#> trend       -4.053e-05  8.226e-06  -4.928 1.17e-06 ***
+#>                        Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept)           1.836e+00  1.950e+00   0.941   0.3478    
+#> EcmRes               -1.151e+00  1.326e-01  -8.684  2.7e-15 ***
+#> L1.d.DriversKilled    1.796e-01  1.076e-01   1.668   0.0970 .  
+#> L2.d.DriversKilled    1.239e-01  7.579e-02   1.635   0.1038    
+#> L0.d.PetrolPrice_POS -3.127e+02  3.193e+02  -0.979   0.3288    
+#> L1.d.PetrolPrice_POS -1.161e+02  3.227e+02  -0.360   0.7194    
+#> L0.d.PetrolPrice_NEG  8.225e+02  8.621e+02   0.954   0.3414    
+#> L1.d.PetrolPrice_NEG  8.272e+01  8.521e+02   0.097   0.9228    
+#> L0.d.drivers          7.906e-02  4.022e-03  19.656  < 2e-16 ***
+#> L1.d.drivers         -3.097e-03  8.929e-03  -0.347   0.7291    
+#> L2.d.drivers         -1.436e-02  6.567e-03  -2.187   0.0301 *  
+#> L3.d.drivers         -8.408e-04  3.978e-03  -0.211   0.8329    
+#> law                   3.852e+00  3.280e+00   1.174   0.2418    
+#> trend                -9.890e-03  1.932e-02  -0.512   0.6094    
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Residual standard error: 0.01542 on 452 degrees of freedom
-#> Multiple R-squared:  0.6203, Adjusted R-squared:  0.6094 
-#> F-statistic:  56.8 on 13 and 452 DF,  p-value: < 2.2e-16
+#> Residual standard error: 11.28 on 174 degrees of freedom
+#> Multiple R-squared:  0.7558, Adjusted R-squared:  0.7376 
+#> F-statistic: 41.43 on 13 and 174 DF,  p-value: < 2.2e-16
 #> 
 
 # Alternative specification
-summary(ecm(CPI ~ PPI + asym(ER) + trend, imf_example_data))
+summary(ecm(DriversKilled ~ drivers + asym(PetrolPrice) + trend, Seatbelts))
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Residuals:
-#>       Min        1Q    Median        3Q       Max 
-#> -0.068335 -0.008206 -0.001157  0.006550  0.098538 
+#>     Min      1Q  Median      3Q     Max 
+#> -25.229  -7.337  -0.904   6.959  36.079 
 #> 
 #> Coefficients:
-#>               Estimate Std. Error t value Pr(>|t|)    
-#> (Intercept)  1.751e-02  2.375e-03   7.373 8.00e-13 ***
-#> EcmRes      -1.718e-02  3.055e-03  -5.623 3.28e-08 ***
-#> L1.d.CPI     4.530e-01  4.451e-02  10.178  < 2e-16 ***
-#> L2.d.CPI    -3.108e-02  4.261e-02  -0.730   0.4661    
-#> L0.d.PPI     5.638e-03  8.274e-03   0.681   0.4960    
-#> L1.d.PPI     1.746e-02  9.135e-03   1.912   0.0565 .  
-#> L2.d.PPI    -1.351e-02  9.235e-03  -1.463   0.1442    
-#> L3.d.PPI    -1.668e-02  8.385e-03  -1.990   0.0472 *  
-#> L0.d.ER_POS  1.157e-01  1.851e-02   6.250 9.46e-10 ***
-#> L1.d.ER_POS  8.638e-02  1.905e-02   4.535 7.39e-06 ***
-#> L0.d.ER_NEG  6.431e-02  4.695e-02   1.370   0.1714    
-#> trend       -3.565e-05  6.225e-06  -5.726 1.87e-08 ***
+#>                        Estimate Std. Error t value Pr(>|t|)    
+#> (Intercept)           1.139e+00  1.798e+00   0.634    0.527    
+#> EcmRes               -1.039e+00  1.034e-01 -10.050   <2e-16 ***
+#> L1.d.DriversKilled    5.270e-02  7.429e-02   0.709    0.479    
+#> L0.d.drivers          8.118e-02  3.877e-03  20.941   <2e-16 ***
+#> L1.d.drivers          7.803e-03  6.292e-03   1.240    0.217    
+#> L0.d.PetrolPrice_POS -2.959e+02  3.099e+02  -0.955    0.341    
+#> L0.d.PetrolPrice_NEG  1.225e+03  7.909e+02   1.549    0.123    
+#> trend                 3.711e-03  1.498e-02   0.248    0.805    
 #> ---
 #> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 #> 
-#> Residual standard error: 0.01546 on 454 degrees of freedom
-#> Multiple R-squared:  0.6167, Adjusted R-squared:  0.6074 
-#> F-statistic:  66.4 on 11 and 454 DF,  p-value: < 2.2e-16
+#> Residual standard error: 11.27 on 182 degrees of freedom
+#> Multiple R-squared:  0.7456, Adjusted R-squared:  0.7358 
+#> F-statistic:  76.2 on 7 and 182 DF,  p-value: < 2.2e-16
 #> 
 
 # For increasing the performance of finding the most fitted lag vector
 ecm(mode = "grid_custom")
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 2 
+#> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
-#>   1.861e-02   -1.384e-02    4.448e-01   -4.173e-02    1.149e-01    9.347e-02  
-#> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI     L1.d.PPI     L2.d.PPI        covid  
-#>   9.679e-03    4.914e-02    6.999e-03    2.102e-02   -5.382e-03    5.425e-03  
-#>       trend  
-#>  -4.375e-05  
+#>          (Intercept)                EcmRes    L1.d.DriversKilled  
+#>            1.688e+00            -1.053e+00             5.880e-02  
+#> L0.d.PetrolPrice_POS  L0.d.PetrolPrice_NEG          L0.d.drivers  
+#>           -2.285e+02             9.629e+02             8.138e-02  
+#>         L1.d.drivers                   law                 trend  
+#>            7.649e-03             3.816e+00            -9.604e-03  
+#> 
+#> 
+#> Notes:
+#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
 #> 
 
 # Setting max lag instead of default value [4]
 ecm(maxlag = 2, mode = "grid_custom")
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 1, ER_POS: 1, ER_NEG: 0, PPI: 0 
+#> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#> (Intercept)       EcmRes     L1.d.CPI  L0.d.ER_POS  L1.d.ER_POS  L0.d.ER_NEG  
-#>   1.778e-02   -1.396e-02    4.200e-01    1.170e-01    9.431e-02    4.268e-02  
-#>    L0.d.PPI        covid        trend  
-#>  -1.735e-03    4.758e-03   -4.099e-05  
+#>          (Intercept)                EcmRes    L1.d.DriversKilled  
+#>            1.688e+00            -1.053e+00             5.880e-02  
+#> L0.d.PetrolPrice_POS  L0.d.PetrolPrice_NEG          L0.d.drivers  
+#>           -2.285e+02             9.629e+02             8.138e-02  
+#>         L1.d.drivers                   law                 trend  
+#>            7.649e-03             3.816e+00            -9.604e-03  
+#> 
+#> 
+#> Notes:
+#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
 #> 
 
 # Using another criterion for finding the best lag
 ecm(criterion = "HQ", mode = "grid_custom")
 #> Optimal lags for each variable ( HQ ):
-#> CPI: 2, ER_POS: 2, ER_NEG: 0, PPI: 0 
+#> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 0 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#> (Intercept)       EcmRes     L1.d.CPI     L2.d.CPI  L0.d.ER_POS  L1.d.ER_POS  
-#>   1.905e-02   -1.444e-02    4.362e-01   -4.183e-02    1.178e-01    9.046e-02  
-#> L2.d.ER_POS  L0.d.ER_NEG     L0.d.PPI        covid        trend  
-#>   9.602e-03    4.823e-02   -1.485e-03    5.218e-03   -4.422e-05  
+#>          (Intercept)                EcmRes    L1.d.DriversKilled  
+#>            1.760e+00            -1.122e+00             1.317e-01  
+#> L0.d.PetrolPrice_POS  L0.d.PetrolPrice_NEG          L0.d.drivers  
+#>           -2.577e+02             1.038e+03             8.092e-02  
+#>                  law                 trend  
+#>            3.896e+00            -9.601e-03  
+#> 
+#> 
+#> Notes:
+#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
 #> 
 
 # For using different lag values for positive and negative decompositions
@@ -630,14 +662,14 @@ kardl_set(different_asym_lag = FALSE)
 
 diffAsymLags <- ecm(mode = "grid_custom")
 kardl_extract(diffAsymLags, "opt_lag")
-#>    CPI ER_POS ER_NEG    PPI 
-#>      2      2      2      2 
+#>   DriversKilled PetrolPrice_POS PetrolPrice_NEG         drivers 
+#>               1               0               0               1 
 
 # Setting different lags for positive and negative decompositions
 sameAsymLags <- ecm(different_asym_lag = TRUE, mode = "grid_custom")
 kardl_extract(sameAsymLags, "opt_lag")
-#>    CPI ER_POS ER_NEG    PPI 
-#>      2      2      0      2 
+#>   DriversKilled PetrolPrice_POS PetrolPrice_NEG         drivers 
+#>               1               0               0               1 
 
 # Setting the prefixes and suffixes for nonlinear variables
 kardl_reset()
@@ -645,20 +677,24 @@ kardl_set(
   asym_prefix = c("asyP_", "asyN_"),
   asym_suffix = c("_PP", "_NN")
 )
-customizedNames <- ecm(CPI ~ ER + PPI + asym(ER), imf_example_data)
+customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice), Seatbelts)
 customizedNames
 #> Optimal lags for each variable ( AIC ):
-#> CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 0, PPI: 3 
+#> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 1 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
 #> 
 #> Coefficients:
-#>     (Intercept)           EcmRes         L1.d.CPI         L2.d.CPI  
-#>        0.006415        -0.012739         0.511436         0.026934  
-#> L0.d.asyP_ER_PP  L1.d.asyP_ER_PP  L0.d.asyN_ER_NN         L0.d.PPI  
-#>        0.113081         0.086826         0.101459         0.006790  
-#>        L1.d.PPI         L2.d.PPI         L3.d.PPI  
-#>        0.019350        -0.013874        -0.017945  
+#>              (Intercept)                    EcmRes        L1.d.DriversKilled  
+#>                1.483e+00                -1.039e+00                 5.249e-02  
+#> L0.d.asyP_PetrolPrice_PP  L0.d.asyN_PetrolPrice_NN              L0.d.drivers  
+#>               -2.899e+02                 1.210e+03                 8.119e-02  
+#>             L1.d.drivers  
+#>                7.827e-03  
+#> 
+#> 
+#> Notes:
+#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
 #> 
 ```

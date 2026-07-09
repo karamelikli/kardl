@@ -76,8 +76,8 @@ KARDL model.
 \examples{
 
 kardl_model <- kardl(
-  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-  imf_example_data,
+  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  Seatbelts,
   mode = c(1, 2, 3, 0)
 )
 long <- kardl_longrun(kardl_model)
@@ -91,8 +91,8 @@ summary(long)
 # Using magrittr
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
-imf_example_data \%>\%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts \%>\%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) \%>\%
   kardl_longrun() \%>\%

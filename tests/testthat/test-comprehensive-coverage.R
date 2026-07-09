@@ -8,9 +8,9 @@ test_that("kardl with fixed lags (mode parameter)", {
 
   # Test with fixed lags for each variable
   model <- kardl(
-    CPI ~ ER + PPI,
-    data = imf_example_data,
-    mode = c(2, 1, 1), # Dependent, ER, PPI
+    DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    mode = c(2, 1, 1), # Dependent, PetrolPrice, drivers
     maxlag = 3
   )
   expect_s3_class(model, "kardl_lm")
@@ -21,8 +21,8 @@ test_that("kardl with Sasymmetric and Lasymmetric combinations", {
 
   # Model with both S and L asymmetric
   model <- kardl(
-    CPI ~ Lasymmetric(ER) + Sasymmetric(PPI),
-    data = imf_example_data,
+    DriversKilled ~ Lasymmetric(PetrolPrice) + Sasymmetric(drivers),
+    data = Seatbelts,
     maxlag = 1
   )
   expect_s3_class(model, "kardl_lm")
@@ -31,16 +31,16 @@ test_that("kardl with Sasymmetric and Lasymmetric combinations", {
   asym_long <- kardl_extract(model, "asym_long_vars")
   asym_short <- kardl_extract(model, "asym_short_vars")
 
-  expect_true("ER" %in% asym_long)
-  expect_true("PPI" %in% asym_short)
+  expect_true("PetrolPrice" %in% asym_long)
+  expect_true("drivers" %in% asym_short)
 })
 
 test_that("symmetrytest with Lasymmetric only", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ Lasymmetric(ER),
-    data = imf_example_data,
+    DriversKilled ~ Lasymmetric(PetrolPrice),
+    data = Seatbelts,
     maxlag = 1
   )
 
@@ -57,8 +57,8 @@ test_that("symmetrytest with Sasymmetric only", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ Sasymmetric(ER),
-    data = imf_example_data,
+    DriversKilled ~ Sasymmetric(PetrolPrice),
+    data = Seatbelts,
     maxlag = 1
   )
 
@@ -75,8 +75,8 @@ test_that("kardl handles AICc criterion", {
   kardl_reset()
 
   model <- kardl(
-    CPI ~ ER + PPI,
-    data = imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
     maxlag = 2,
     criterion = "AICc"
   )
@@ -86,7 +86,7 @@ test_that("kardl handles AICc criterion", {
 test_that("bootstrap with progress=FALSE", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Bootstrap without progress
   boot_result <- bootstrap(
@@ -101,10 +101,10 @@ test_that("bootstrap with progress=FALSE", {
 test_that("mplier with specific variable subset", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test extracting multipliers for single variable
-  mpl_single <- mplier(model, horizon = 10, variables = "PPI")
+  mpl_single <- mplier(model, horizon = 10, variables = "drivers")
   expect_s3_class(mpl_single, "kardl_mplier")
 
   mults <- kardl_extract(mpl_single, "multipliers")
@@ -114,7 +114,7 @@ test_that("mplier with specific variable subset", {
 test_that("plot.kardl_mplier with different parameters", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 15)
 
   # Test plot with no specific variables (should plot all)
@@ -129,7 +129,7 @@ test_that("plot.kardl_mplier with different parameters", {
 test_that("kardl_extract handles case_txt from test_summary", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test case 1 - but it may map to a different case internally
   test_c1 <- pssf(model, case = 1, sig = "auto")
@@ -153,7 +153,7 @@ test_that("kardl_extract handles case_txt from test_summary", {
 test_that("narayan decision with auto selects correct significance", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
 
   # Test narayan with auto
   narayan_auto <- narayan(model, case = 2, sig = "auto")
@@ -166,7 +166,7 @@ test_that("narayan decision with auto selects correct significance", {
 test_that("psst and pssf with all significance levels", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Test all four significance levels for pssf
   for (sig in c("0.10", "0.05", "0.025", "0.01")) {
@@ -186,8 +186,8 @@ test_that("psst and pssf with all significance levels", {
 test_that("kardl_extract handles all kardl_lm components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI + trend - 1,
-    data = imf_example_data, maxlag = 1
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend - 1,
+    data = Seatbelts, maxlag = 1
   )
 
   # Test all extraction options
@@ -210,7 +210,7 @@ test_that("kardl_extract handles all kardl_lm components", {
 test_that("kardl_extract handles all kardl_mplier components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   mpl <- mplier(model, horizon = 10)
 
   # Test all mplier extraction options
@@ -223,7 +223,7 @@ test_that("kardl_extract handles all kardl_mplier components", {
 test_that("kardl_extract handles all kardl_boot components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
   boot_result <- bootstrap(model, horizon = 5, replications = 10, level = 0.95)
 
   # Test all boot extraction options
@@ -236,7 +236,7 @@ test_that("kardl_extract handles all kardl_boot components", {
 test_that("kardl_extract handles all kardl_test components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test all test extraction options
@@ -255,7 +255,7 @@ test_that("kardl_extract handles all kardl_test components", {
 test_that("kardl_extract handles all kardl_test_summary components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 
@@ -274,7 +274,7 @@ test_that("kardl_extract handles all kardl_test_summary components", {
 test_that("kardl_extract handles all kardl_symmetric components", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
 
   # Test all symmetric extraction options
@@ -303,7 +303,7 @@ test_that("kardl_extract handles all kardl_symmetric components", {
 test_that("print.kardl_test_summary produces output", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER + PPI, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 
@@ -316,7 +316,7 @@ test_that("print.kardl_test_summary produces output", {
 test_that("summary.kardl_symmetric prints correctly", {
   kardl_reset()
 
-  model <- kardl(CPI ~ asym(ER), data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice), data = Seatbelts, maxlag = 1)
   sym_result <- symmetrytest(model)
   summ <- summary(sym_result, level = 0.05)
 
@@ -340,7 +340,7 @@ test_that("lmerge with complex nested structures", {
 test_that("model_criterion with different criteria strings", {
   kardl_reset()
 
-  model <- kardl(CPI ~ ER, data = imf_example_data, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice, data = Seatbelts, maxlag = 1)
 
   # Test all criteria
   aic <- model_criterion(model, "AIC")

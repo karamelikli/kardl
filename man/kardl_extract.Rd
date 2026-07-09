@@ -206,7 +206,8 @@ symmetry test results, enabling users to extract specific components
 }
 
 \examples{
-kardl_model <- kardl(CPI ~ asym(ER + PPI), data = imf_example_data)
+kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts,
+mode = c(2, 1, 0, 4, 0 ))
 
 # Examples of extracting components from a fitted kardl_lm model object
 # kardl_extract(kardl_model, what = "data_ts_info")
@@ -249,7 +250,8 @@ kardl_extract(kardl_model, what = "n")
 
 
 # Examples of extracting components from a kardl_mplier object
-
+\donttest{
+# This long-running example won't be tested by CRAN
 m <- mplier(kardl_model, horizon = 40)
 head(kardl_extract(m, what = "multipliers"))
 kardl_extract(m, what = "omega")
@@ -257,12 +259,12 @@ head(kardl_extract(m, what = "lambda"))
 kardl_extract(m, what = "horizon")
 
 # Examples of extracting components from a kardl_boot object
-boot_results <- bootstrap(kardl_model, horizon = 40, replications = 100)
+boot_results <- bootstrap(kardl_model, horizon = 40, replications = 2)
 head(kardl_extract(boot_results, what = "multipliers"))
 kardl_extract(boot_results, what = "level")
 kardl_extract(boot_results, what = "replications")
 kardl_extract(boot_results, what = "horizon")
-
+}
 # Examples of extracting components from a kardl_test object
 test_results <- psst(kardl_model)
 kardl_extract(test_results, what = "type")

@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Huseyin
 karamelikli and Huseyin Utku Demir</h4>
             
-            <h4 data-toc-skip class="date">2026-06-23</h4>
+            <h4 data-toc-skip class="date">2026-07-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/karamelikli/kardl/blob/HEAD/vignettes/intro.Rmd" class="external-link"><code>vignettes/intro.Rmd</code></a></small>
       <div class="d-none name"><code>intro.Rmd</code></div>
@@ -169,23 +169,20 @@ small-sample inference.</p>
 <div class="section level2">
 <h2 id="estimating-an-asymmetric-ardl-model">Estimating an asymmetric ARDL Model<a class="anchor" aria-label="anchor" href="#estimating-an-asymmetric-ardl-model"></a>
 </h2>
-<p>This example estimates an asymmetric ARDL model to analyze the
-dynamics of exchange rate pass-through to domestic prices in Turkey,
-using a sample dataset (<code>imf_example_data</code>) with variables
-for Consumer Price Index (CPI), Exchange Rate (ER), Producer Price Index
-(PPI), and a COVID-19 dummy variable.</p>
+<p>This example estimates an asymmetric ARDL model to analyze the impact
+of petrol prices and driving patterns on road fatalities in the UK,
+using the built-in <code>Seatbelts</code> dataset with variables for
+DriversKilled, PetrolPrice, drivers, kms, and a seatbelt law dummy
+variable.</p>
 <div class="section level3">
 <h3 id="step-1-data-preparation">Step 1: Data Preparation<a class="anchor" aria-label="anchor" href="#step-1-data-preparation"></a>
 </h3>
-<p>Assume <code>imf_example_data</code> contains monthly data for CPI,
-ER, PPI, and a COVID dummy variable. We prepare the data by ensuring
-proper formatting and adding the dummy variable. We retrieve data from
-the IMF’s International Financial Statistics (IFS) dataset and prepare
-it for analysis.</p>
-<p>Note: The <code>imf_example_data</code> is a placeholder for
-demonstration purposes. You should replace it with your actual dataset.
-The data can be loaded by <code>readxl</code> or other data import
-functions.</p>
+<p>The <code>Seatbelts</code> dataset contains monthly data on road
+casualties in Great Britain from 1969 to 1984. We convert it to a data
+frame for analysis.</p>
+<p>Note: The <code>Seatbelts</code> dataset is a built-in R dataset
+included in the <code>datasets</code> package. The data can be accessed
+directly by converting the time series object to a data frame.</p>
 </div>
 <div class="section level3">
 <h3 id="step-2-define-the-model-formula">Step 2: Define the Model Formula<a class="anchor" aria-label="anchor" href="#step-2-define-the-model-formula"></a>
@@ -199,7 +196,7 @@ asymmetry, <code>lasymmetric()</code> for long-run asymmetry,
 <code>trend</code> term includes a linear time trend in the model.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define the model formula</span></span>
-<span><span class="va">my_formula</span> <span class="op">&lt;-</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span></span>
+<span><span class="va">my_formula</span> <span class="op">&lt;-</span> <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="va">trend</span></span></code></pre></div>
 <p>Indeed, the formula syntax is flexible, allowing for various
 combinations of asymmetric and deterministic variables. The following
@@ -233,28 +230,32 @@ vector.</p>
 <code>maxlag</code> and provides console feedback.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set model options</span></span>
-<span><span class="fu"><a href="../reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span>, different_asym_lag <span class="op">=</span> <span class="cn">TRUE</span>, data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"BIC"</span>, different_asym_lag <span class="op">=</span> <span class="cn">TRUE</span>, data <span class="op">=</span> <span class="va">Seatbelts</span><span class="op">)</span></span>
 <span><span class="co"># Estimate model with grid mode</span></span>
 <span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Seatbelts</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View results</span></span>
 <span><span class="va">kardl_model</span></span></code></pre></div>
 <pre><code><span><span class="co">## Optimal lags for each variable ( BIC ):</span></span>
-<span><span class="co">## CPI: 1, ER_POS: 1, ER_NEG: 0, PPI_POS: 3, PPI_NEG: 0 </span></span>
+<span><span class="co">## DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers_POS: 0, drivers_NEG: 0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##  (Intercept)        L1.CPI     L1.ER_POS     L1.ER_NEG    L1.PPI_POS  </span></span>
-<span><span class="co">##   -0.0662799    -0.0167504     0.0138795     0.0346587     0.0420485  </span></span>
-<span><span class="co">##   L1.PPI_NEG      L1.d.CPI   L0.d.ER_POS   L0.d.ER_NEG  L0.d.PPI_POS  </span></span>
-<span><span class="co">##    0.0396081     0.3969313     0.1242241    -0.0229369     0.0420020  </span></span>
-<span><span class="co">## L0.d.PPI_NEG         covid         trend  </span></span>
-<span><span class="co">##   -0.0039507     0.0036707    -0.0000213</span></span></code></pre>
+<span><span class="co">##          (Intercept)      L1.DriversKilled    L1.PetrolPrice_POS  </span></span>
+<span><span class="co">##            134.84809              -1.11975             -58.85309  </span></span>
+<span><span class="co">##   L1.PetrolPrice_NEG        L1.drivers_POS        L1.drivers_NEG  </span></span>
+<span><span class="co">##            -43.01060               0.08228               0.08886  </span></span>
+<span><span class="co">##   L1.d.DriversKilled  L0.d.PetrolPrice_POS  L0.d.PetrolPrice_NEG  </span></span>
+<span><span class="co">##              0.13726            -285.05578            1028.03999  </span></span>
+<span><span class="co">##     L0.d.drivers_POS      L0.d.drivers_NEG                   law  </span></span>
+<span><span class="co">##              0.07562               0.07997              -0.61874  </span></span>
+<span><span class="co">##                trend  </span></span>
+<span><span class="co">##              0.63798</span></span></code></pre>
 <p>Summary of the model provides detailed information about the
 estimated coefficients, standard errors, t-values, and significance
 levels.</p>
@@ -266,31 +267,31 @@ levels.</p>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residuals:</span></span>
-<span><span class="co">##       Min        1Q    Median        3Q       Max </span></span>
-<span><span class="co">## -0.044033 -0.009369 -0.001300  0.007786  0.113556 </span></span>
+<span><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">## -27.425  -7.449  -1.070   7.966  34.134 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##                Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">## (Intercept)  -0.0662799  0.0233710  -2.836 0.004772 ** </span></span>
-<span><span class="co">## L1.CPI       -0.0167504  0.0048668  -3.442 0.000631 ***</span></span>
-<span><span class="co">## L1.ER_POS     0.0138795  0.0052938   2.622 0.009039 ** </span></span>
-<span><span class="co">## L1.ER_NEG     0.0346587  0.0081800   4.237 2.74e-05 ***</span></span>
-<span><span class="co">## L1.PPI_POS    0.0420485  0.0096352   4.364 1.58e-05 ***</span></span>
-<span><span class="co">## L1.PPI_NEG    0.0396081  0.0110457   3.586 0.000372 ***</span></span>
-<span><span class="co">## L1.d.CPI      0.3969313  0.0399609   9.933  &lt; 2e-16 ***</span></span>
-<span><span class="co">## L0.d.ER_POS   0.1242241  0.0185934   6.681 6.94e-11 ***</span></span>
-<span><span class="co">## L0.d.ER_NEG  -0.0229369  0.0495520  -0.463 0.643668    </span></span>
-<span><span class="co">## L0.d.PPI_POS  0.0420020  0.0166326   2.525 0.011899 *  </span></span>
-<span><span class="co">## L0.d.PPI_NEG -0.0039507  0.0139364  -0.283 0.776936    </span></span>
-<span><span class="co">## covid         0.0036707  0.0053298   0.689 0.491354    </span></span>
-<span><span class="co">## trend        -0.0000213  0.0002533  -0.084 0.933010    </span></span>
+<span><span class="co">##                        Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)           1.348e+02  1.151e+01  11.720  &lt; 2e-16 ***</span></span>
+<span><span class="co">## L1.DriversKilled     -1.120e+00  8.866e-02 -12.630  &lt; 2e-16 ***</span></span>
+<span><span class="co">## L1.PetrolPrice_POS   -5.885e+01  9.949e+01  -0.592  0.55489    </span></span>
+<span><span class="co">## L1.PetrolPrice_NEG   -4.301e+01  1.633e+02  -0.263  0.79252    </span></span>
+<span><span class="co">## L1.drivers_POS        8.228e-02  9.405e-03   8.748 1.66e-15 ***</span></span>
+<span><span class="co">## L1.drivers_NEG        8.886e-02  8.341e-03  10.653  &lt; 2e-16 ***</span></span>
+<span><span class="co">## L1.d.DriversKilled    1.373e-01  4.699e-02   2.921  0.00394 ** </span></span>
+<span><span class="co">## L0.d.PetrolPrice_POS -2.851e+02  3.313e+02  -0.860  0.39069    </span></span>
+<span><span class="co">## L0.d.PetrolPrice_NEG  1.028e+03  9.132e+02   1.126  0.26179    </span></span>
+<span><span class="co">## L0.d.drivers_POS      7.562e-02  8.643e-03   8.750 1.65e-15 ***</span></span>
+<span><span class="co">## L0.d.drivers_NEG      7.997e-02  7.494e-03  10.672  &lt; 2e-16 ***</span></span>
+<span><span class="co">## law                  -6.187e-01  4.503e+00  -0.137  0.89086    </span></span>
+<span><span class="co">## trend                 6.380e-01  5.028e-01   1.269  0.20620    </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Residual standard error: 0.0156 on 455 degrees of freedom</span></span>
+<span><span class="co">## Residual standard error: 11.36 on 177 degrees of freedom</span></span>
 <span><span class="co">##   (2 observations deleted due to missingness)</span></span>
-<span><span class="co">## Multiple R-squared:  0.6099, Adjusted R-squared:  0.5996 </span></span>
-<span><span class="co">## F-statistic: 59.28 on 12 and 455 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
+<span><span class="co">## Multiple R-squared:  0.7486, Adjusted R-squared:  0.7316 </span></span>
+<span><span class="co">## F-statistic: 43.93 on 12 and 177 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="using-user-defined-lags">Using User-Defined Lags<a class="anchor" aria-label="anchor" href="#using-user-defined-lags"></a>
@@ -298,13 +299,13 @@ levels.</p>
 <p>Specify custom lags to bypass automatic lag selection:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">kardl_model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Seatbelts</span>, <span class="va">my_formula</span>,</span>
 <span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
 <span><span class="fu"><a href="../reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">kardl_model2</span>, <span class="st">"opt_lag"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##     CPI  ER_POS  ER_NEG PPI_POS PPI_NEG </span></span>
-<span><span class="co">##       2       1       1       3       0</span></span></code></pre>
+<pre><code><span><span class="co">##   DriversKilled PetrolPrice_POS PetrolPrice_NEG     drivers_POS     drivers_NEG </span></span>
+<span><span class="co">##               2               1               1               3               0</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Display model summary</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">kardl_model2</span><span class="op">)</span></span></code></pre></div>
@@ -313,37 +314,37 @@ levels.</p>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residuals:</span></span>
-<span><span class="co">##       Min        1Q    Median        3Q       Max </span></span>
-<span><span class="co">## -0.054516 -0.008329 -0.001178  0.006787  0.104278 </span></span>
+<span><span class="co">##      Min       1Q   Median       3Q      Max </span></span>
+<span><span class="co">## -26.5337  -7.5749  -0.5198   7.5158  31.0525 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##                Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">## (Intercept)  -0.0382834  0.0226694  -1.689 0.091962 .  </span></span>
-<span><span class="co">## L1.CPI       -0.0123942  0.0047187  -2.627 0.008921 ** </span></span>
-<span><span class="co">## L1.ER_POS     0.0110505  0.0051609   2.141 0.032798 *  </span></span>
-<span><span class="co">## L1.ER_NEG     0.0268623  0.0080054   3.356 0.000860 ***</span></span>
-<span><span class="co">## L1.PPI_POS    0.0532642  0.0096979   5.492 6.67e-08 ***</span></span>
-<span><span class="co">## L1.PPI_NEG    0.0452663  0.0107751   4.201 3.21e-05 ***</span></span>
-<span><span class="co">## L1.d.CPI      0.3750078  0.0444934   8.428 4.88e-16 ***</span></span>
-<span><span class="co">## L2.d.CPI     -0.0865443  0.0423947  -2.041 0.041800 *  </span></span>
-<span><span class="co">## L0.d.ER_POS   0.1119077  0.0179998   6.217 1.16e-09 ***</span></span>
-<span><span class="co">## L1.d.ER_POS   0.0889105  0.0189930   4.681 3.79e-06 ***</span></span>
-<span><span class="co">## L0.d.ER_NEG  -0.0051813  0.0476798  -0.109 0.913515    </span></span>
-<span><span class="co">## L1.d.ER_NEG   0.0047909  0.0475913   0.101 0.919860    </span></span>
-<span><span class="co">## L0.d.PPI_POS  0.0487238  0.0160447   3.037 0.002532 ** </span></span>
-<span><span class="co">## L1.d.PPI_POS -0.0010288  0.0144643  -0.071 0.943329    </span></span>
-<span><span class="co">## L2.d.PPI_POS -0.0544024  0.0143719  -3.785 0.000174 ***</span></span>
-<span><span class="co">## L3.d.PPI_POS -0.0499891  0.0137240  -3.642 0.000302 ***</span></span>
-<span><span class="co">## L0.d.PPI_NEG  0.0056668  0.0134844   0.420 0.674505    </span></span>
-<span><span class="co">## covid         0.0031412  0.0050898   0.617 0.537448    </span></span>
-<span><span class="co">## trend        -0.0003309  0.0002472  -1.338 0.181531    </span></span>
+<span><span class="co">##                        Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)           1.297e+02  1.462e+01   8.873 1.03e-15 ***</span></span>
+<span><span class="co">## L1.DriversKilled     -1.077e+00  1.060e-01 -10.159  &lt; 2e-16 ***</span></span>
+<span><span class="co">## L1.PetrolPrice_POS   -8.365e+01  1.167e+02  -0.717   0.4744    </span></span>
+<span><span class="co">## L1.PetrolPrice_NEG   -4.826e+01  1.801e+02  -0.268   0.7891    </span></span>
+<span><span class="co">## L1.drivers_POS        7.411e-02  1.255e-02   5.904 1.92e-08 ***</span></span>
+<span><span class="co">## L1.drivers_NEG        8.073e-02  1.019e-02   7.926 3.00e-13 ***</span></span>
+<span><span class="co">## L1.d.DriversKilled    1.281e-01  6.923e-02   1.851   0.0660 .  </span></span>
+<span><span class="co">## L2.d.DriversKilled    7.203e-02  5.195e-02   1.387   0.1674    </span></span>
+<span><span class="co">## L0.d.PetrolPrice_POS -3.189e+02  3.390e+02  -0.941   0.3482    </span></span>
+<span><span class="co">## L1.d.PetrolPrice_POS -5.298e+01  3.639e+02  -0.146   0.8844    </span></span>
+<span><span class="co">## L0.d.PetrolPrice_NEG  7.248e+02  9.573e+02   0.757   0.4500    </span></span>
+<span><span class="co">## L1.d.PetrolPrice_NEG  6.564e+01  8.720e+02   0.075   0.9401    </span></span>
+<span><span class="co">## L0.d.drivers_POS      7.499e-02  8.845e-03   8.478 1.12e-14 ***</span></span>
+<span><span class="co">## L1.d.drivers_POS      1.236e-02  1.272e-02   0.972   0.3327    </span></span>
+<span><span class="co">## L2.d.drivers_POS     -1.852e-02  1.111e-02  -1.668   0.0972 .  </span></span>
+<span><span class="co">## L3.d.drivers_POS      7.892e-03  9.504e-03   0.830   0.4075    </span></span>
+<span><span class="co">## L0.d.drivers_NEG      7.555e-02  7.797e-03   9.689  &lt; 2e-16 ***</span></span>
+<span><span class="co">## law                  -1.353e+00  5.002e+00  -0.270   0.7871    </span></span>
+<span><span class="co">## trend                 6.507e-01  5.907e-01   1.101   0.2723    </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Residual standard error: 0.01479 on 446 degrees of freedom</span></span>
+<span><span class="co">## Residual standard error: 11.31 on 168 degrees of freedom</span></span>
 <span><span class="co">##   (5 observations deleted due to missingness)</span></span>
-<span><span class="co">## Multiple R-squared:  0.655,  Adjusted R-squared:  0.641 </span></span>
-<span><span class="co">## F-statistic: 47.03 on 18 and 446 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
+<span><span class="co">## Multiple R-squared:  0.7601, Adjusted R-squared:  0.7344 </span></span>
+<span><span class="co">## F-statistic: 29.57 on 18 and 168 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="using-all-variables">Using All Variables<a class="anchor" aria-label="anchor" href="#using-all-variables"></a>
@@ -351,19 +352,23 @@ levels.</p>
 <p>Use the <code>.</code> operator to include all variables except the
 dependent variable:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">imf_example_data</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">CPI</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span>, mode <span class="op">=</span> <span class="st">"grid"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Seatbelts</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span>, maxlag <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Optimal lags for each variable ( BIC ):</span></span>
-<span><span class="co">## CPI: 1, ER: 1, PPI: 1 </span></span>
+<span><span class="co">## DriversKilled: 1, drivers: 0, front: 0, rear: 0, kms: 0, PetrolPrice: 0, VanKilled: 0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">## (Intercept)       L1.CPI        L1.ER       L1.PPI     L1.d.CPI      L0.d.ER  </span></span>
-<span><span class="co">##    0.075004    -0.019754     0.020240     0.001600     0.489064     0.113932  </span></span>
-<span><span class="co">##    L0.d.PPI        covid  </span></span>
-<span><span class="co">##   -0.001353    -0.002127</span></span></code></pre>
+<span><span class="co">##        (Intercept)    L1.DriversKilled          L1.drivers            L1.front  </span></span>
+<span><span class="co">##         -5.480e+00          -1.107e+00           8.236e-02           3.755e-03  </span></span>
+<span><span class="co">##            L1.rear              L1.kms      L1.PetrolPrice        L1.VanKilled  </span></span>
+<span><span class="co">##         -5.576e-03           4.442e-04          -5.069e+01           1.232e-01  </span></span>
+<span><span class="co">## L1.d.DriversKilled        L0.d.drivers          L0.d.front           L0.d.rear  </span></span>
+<span><span class="co">##          1.380e-01           7.928e-02          -5.884e-04          -6.872e-03  </span></span>
+<span><span class="co">##           L0.d.kms    L0.d.PetrolPrice      L0.d.VanKilled                 law  </span></span>
+<span><span class="co">##         -7.470e-04          -3.693e+01          -1.215e-01           4.680e+00</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="visualizing-lag-criteria">Visualizing Lag Criteria<a class="anchor" aria-label="anchor" href="#visualizing-lag-criteria"></a>
@@ -426,7 +431,7 @@ cointegration testing. We specify the same formula and lag structure as
 in the ARDL model.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ecm.html">ecm</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">imf_example_data</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">Seatbelts</span>, formula <span class="op">=</span> <span class="va">my_formula</span>,</span>
 <span>  maxlag <span class="op">=</span> <span class="fl">4</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co"># View results</span></span>
@@ -436,30 +441,26 @@ in the ARDL model.</p>
 <span><span class="co">## lm(formula = shortrun_eq, data = ecm_data)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Residuals:</span></span>
-<span><span class="co">##       Min        1Q    Median        3Q       Max </span></span>
-<span><span class="co">## -0.069034 -0.008966 -0.000360  0.007383  0.098004 </span></span>
+<span><span class="co">##     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">## -28.232  -7.445  -0.876   7.570  34.774 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##                Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
-<span><span class="co">## (Intercept)   1.840e-02  2.767e-03   6.650 8.50e-11 ***</span></span>
-<span><span class="co">## EcmRes       -7.988e-03  4.168e-03  -1.916 0.055947 .  </span></span>
-<span><span class="co">## L1.d.CPI      4.566e-01  3.738e-02  12.217  &lt; 2e-16 ***</span></span>
-<span><span class="co">## L0.d.ER_POS   1.237e-01  1.863e-02   6.643 8.86e-11 ***</span></span>
-<span><span class="co">## L1.d.ER_POS   9.888e-02  1.895e-02   5.218 2.76e-07 ***</span></span>
-<span><span class="co">## L0.d.ER_NEG   4.782e-02  4.861e-02   0.984 0.325705    </span></span>
-<span><span class="co">## L0.d.PPI_POS  1.974e-02  1.524e-02   1.296 0.195793    </span></span>
-<span><span class="co">## L1.d.PPI_POS  2.079e-02  1.461e-02   1.423 0.155302    </span></span>
-<span><span class="co">## L2.d.PPI_POS -3.840e-02  1.460e-02  -2.631 0.008815 ** </span></span>
-<span><span class="co">## L3.d.PPI_POS -3.676e-02  1.403e-02  -2.620 0.009085 ** </span></span>
-<span><span class="co">## L0.d.PPI_NEG -6.570e-04  1.387e-02  -0.047 0.962248    </span></span>
-<span><span class="co">## covid         1.182e-02  3.231e-03   3.657 0.000285 ***</span></span>
-<span><span class="co">## trend        -4.622e-05  7.953e-06  -5.812 1.17e-08 ***</span></span>
+<span><span class="co">##                        Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## (Intercept)           1.882e+00  2.152e+00   0.875  0.38295    </span></span>
+<span><span class="co">## EcmRes               -1.116e+00  8.791e-02 -12.691  &lt; 2e-16 ***</span></span>
+<span><span class="co">## L1.d.DriversKilled    1.279e-01  4.407e-02   2.903  0.00415 ** </span></span>
+<span><span class="co">## L0.d.PetrolPrice_POS -1.892e+02  3.158e+02  -0.599  0.54987    </span></span>
+<span><span class="co">## L0.d.PetrolPrice_NEG  8.670e+02  8.224e+02   1.054  0.29322    </span></span>
+<span><span class="co">## L0.d.drivers_POS      7.794e-02  8.380e-03   9.300  &lt; 2e-16 ***</span></span>
+<span><span class="co">## L0.d.drivers_NEG      8.337e-02  6.251e-03  13.338  &lt; 2e-16 ***</span></span>
+<span><span class="co">## law                   3.554e+00  3.218e+00   1.104  0.27088    </span></span>
+<span><span class="co">## trend                -7.841e-03  1.873e-02  -0.419  0.67599    </span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Residual standard error: 0.0156 on 452 degrees of freedom</span></span>
-<span><span class="co">## Multiple R-squared:  0.611,  Adjusted R-squared:  0.6007 </span></span>
-<span><span class="co">## F-statistic: 59.16 on 12 and 452 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
+<span><span class="co">## Residual standard error: 11.3 on 181 degrees of freedom</span></span>
+<span><span class="co">## Multiple R-squared:  0.7455, Adjusted R-squared:  0.7342 </span></span>
+<span><span class="co">## F-statistic: 66.27 on 8 and 181 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -478,8 +479,8 @@ parameter.</p>
 <span><span class="co">## kardl_longrun.kardl_lm(kardl_model = kardl_model)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##  L1.ER_POS   L1.ER_NEG  L1.PPI_POS  L1.PPI_NEG  </span></span>
-<span><span class="co">##     0.8286      2.0691      2.5103      2.3646</span></span></code></pre>
+<span><span class="co">## L1.PetrolPrice_POS  L1.PetrolPrice_NEG      L1.drivers_POS      L1.drivers_NEG  </span></span>
+<span><span class="co">##          -52.55915           -38.41091             0.07348             0.07935</span></span></code></pre>
 <p>The <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function provides detailed information
 about the long-run coefficients, including standard errors, t-values,
 and significance levels.</p>
@@ -494,11 +495,11 @@ and significance levels.</p>
 <span><span class="co">## Long-run multipliers </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##            Estimate Std. Error t value  Pr(&gt;|t|)    </span></span>
-<span><span class="co">## L1.ER_POS   0.82861    0.15902  5.2107 2.858e-07 ***</span></span>
-<span><span class="co">## L1.ER_NEG   2.06913    0.41649  4.9680 9.593e-07 ***</span></span>
-<span><span class="co">## L1.PPI_POS  2.51030    0.85303  2.9428 0.0034187 ** </span></span>
-<span><span class="co">## L1.PPI_NEG  2.36460    0.71337  3.3147 0.0009908 ***</span></span>
+<span><span class="co">##                       Estimate  Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">## L1.PetrolPrice_POS -52.5591494  88.7809404 -0.5920   0.5546    </span></span>
+<span><span class="co">## L1.PetrolPrice_NEG -38.4109100 145.6977929 -0.2636   0.7924    </span></span>
+<span><span class="co">## L1.drivers_POS       0.0734767   0.0056809 12.9340   &lt;2e-16 ***</span></span>
+<span><span class="co">## L1.drivers_NEG       0.0793527   0.0041634 19.0594   &lt;2e-16 ***</span></span>
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span></code></pre>
 </div>
@@ -508,10 +509,10 @@ and significance levels.</p>
 <p>The <code><a href="../reference/symmetrytest.html">symmetrytest()</a></code> function performs Wald tests to
 assess short- and long-run asymmetry in the model.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="va">imf_example_data</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="va">Seatbelts</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span></span>
-<span>    <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span><span class="op">)</span> <span class="op">+</span></span>
-<span>      <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span>
+<span>    <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asymmetric</span><span class="op">(</span><span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span>
 <span>    mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>,</span>
 <span>    data <span class="op">=</span> <span class="va">_</span></span>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -521,15 +522,15 @@ assess short- and long-run asymmetry in the model.</p>
 <span><span class="co">## KARDL Symmetry Test Results</span></span>
 <span><span class="co">## Symmetry Test Results - Long-run:</span></span>
 <span><span class="co">## =======================</span></span>
-<span><span class="co">##     Df  Sum of Sq    Mean Sq F value Pr(&gt;F)</span></span>
-<span><span class="co">## ER   1 0.00049756 0.00049756  2.1649 0.1419</span></span>
-<span><span class="co">## PPI  1 0.00016439 0.00016439  0.7153 0.3982</span></span>
+<span><span class="co">##             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span><span class="co">## PetrolPrice  1     2.663   2.663   0.020 0.8877</span></span>
+<span><span class="co">## drivers      1   175.149 175.149   1.316 0.2530</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Symmetry Test Results - Short-run:</span></span>
 <span><span class="co">## =======================</span></span>
-<span><span class="co">##     Df  Sum of Sq    Mean Sq F value Pr(&gt;F)</span></span>
-<span><span class="co">## ER   1 0.00038607 0.00038607  1.6798 0.1956</span></span>
-<span><span class="co">## PPI  1 0.00017426 0.00017426  0.7582 0.3844</span></span></code></pre>
+<span><span class="co">##             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span><span class="co">## PetrolPrice  1     2.649   2.649  0.0199 0.8880</span></span>
+<span><span class="co">## drivers      1    35.235  35.235  0.2647 0.6076</span></span></code></pre>
 <p>Summary of the symmetry test provides detailed results for both
 long-run and short-run asymmetry tests, including F-values, p-values,
 hypotheses, and test decisions.</p>
@@ -539,40 +540,40 @@ hypotheses, and test decisions.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## Long-run symmetry tests</span></span>
 <span><span class="co">## -----------------------</span></span>
-<span><span class="co">##           F  Pr(&gt;F)</span></span>
-<span><span class="co">## ER  2.16491 0.14190</span></span>
-<span><span class="co">## PPI 0.71527 0.39815</span></span>
+<span><span class="co">##                   F  Pr(&gt;F)</span></span>
+<span><span class="co">## PetrolPrice 0.02001 0.88768</span></span>
+<span><span class="co">## drivers     1.31595 0.25295</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Hypotheses and decisions:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: ER </span></span>
-<span><span class="co">## H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) </span></span>
+<span><span class="co">## Variable: PetrolPrice </span></span>
+<span><span class="co">## H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span></span>
 <span><span class="co">## H1: At least one coefficient differs from zero. </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable ER. </span></span>
+<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice. </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: PPI </span></span>
-<span><span class="co">## H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) </span></span>
+<span><span class="co">## Variable: drivers </span></span>
+<span><span class="co">## H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) </span></span>
 <span><span class="co">## H1: At least one coefficient differs from zero. </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. </span></span>
+<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers. </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Short-run symmetry tests</span></span>
 <span><span class="co">## ------------------------</span></span>
-<span><span class="co">##           F  Pr(&gt;F)</span></span>
-<span><span class="co">## ER  1.67981 0.19562</span></span>
-<span><span class="co">## PPI 0.75820 0.38436</span></span>
+<span><span class="co">##                   F  Pr(&gt;F)</span></span>
+<span><span class="co">## PetrolPrice 0.01990 0.88797</span></span>
+<span><span class="co">## drivers     0.26473 0.60756</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Hypotheses and decisions:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: ER </span></span>
-<span><span class="co">## H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) = Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG) </span></span>
-<span><span class="co">## H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) + Coef(L2.d.ER_POS) ≠ Coef(L0.d.ER_NEG) + Coef(L1.d.ER_NEG) + Coef(L2.d.ER_NEG) + Coef(L3.d.ER_NEG) </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable ER. </span></span>
+<span><span class="co">## Variable: PetrolPrice </span></span>
+<span><span class="co">## H0: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) </span></span>
+<span><span class="co">## H1: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) </span></span>
+<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice. </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: PPI </span></span>
-<span><span class="co">## H0: Coef(L0.d.PPI_POS) = Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG) </span></span>
-<span><span class="co">## H1: Coef(L0.d.PPI_POS) ≠ Coef(L0.d.PPI_NEG) + Coef(L1.d.PPI_NEG) </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PPI.</span></span></code></pre>
+<span><span class="co">## Variable: drivers </span></span>
+<span><span class="co">## H0: Coef(L0.d.drivers_POS) = Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) </span></span>
+<span><span class="co">## H1: Coef(L0.d.drivers_POS) ≠ Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) </span></span>
+<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable drivers.</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="step-6-cointegration-tests">Step 6: Cointegration Tests<a class="anchor" aria-label="anchor" href="#step-6-cointegration-tests"></a>
@@ -592,7 +593,7 @@ Pesaran, Shin, and Smith F Bound test.</p>
 <span><span class="co">##  Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  kardl_model</span></span>
-<span><span class="co">## F = 10.792</span></span>
+<span><span class="co">## F = 32.345</span></span>
 <span><span class="co">## alternative hypothesis: Cointegrating relationship exists</span></span></code></pre>
 <p>Summary of the PSS F Bound test provides detailed information about
 the test statistic, critical values, hypotheses, and decision regarding
@@ -607,7 +608,7 @@ cointegration.</p>
 <span><span class="co">##  Decision: Reject H0 → Cointegration (at 5% level)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Test Statistic:</span></span>
-<span><span class="co">##   F: 10.7918266</span></span>
+<span><span class="co">##   F: 32.3445539</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Critical Values (Lower &amp; Upper Bounds):</span></span>
 <span><span class="co">##           L    U</span></span>
@@ -618,13 +619,13 @@ cointegration.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Comparison:</span></span>
-<span><span class="co">##   At the 5% significance level, F (10.7918266) exceeds the upper bound (4.57).</span></span>
+<span><span class="co">##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.57).</span></span>
 <span><span class="co">##   This indicates that the variables tend to move together over  time.</span></span>
 <span><span class="co">##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 </span></span>
-<span><span class="co">## H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI_POS), Coef(L1.PPI_NEG) are zero. </span></span>
+<span><span class="co">## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 </span></span>
+<span><span class="co">## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Model Details:</span></span>
 <span><span class="co">##   Number of regressors (k): 4</span></span>
@@ -644,7 +645,7 @@ dependent variable’s coefficient.</p>
 <span><span class="co">##  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  model</span></span>
-<span><span class="co">## t = -3.4418</span></span>
+<span><span class="co">## t = -12.63</span></span>
 <span><span class="co">## alternative hypothesis: Cointegrating relationship exists</span></span></code></pre>
 <p>Summary of the PSS t Bound test provides detailed information about
 the test statistic, critical values, hypotheses, and decision regarding
@@ -656,10 +657,10 @@ cointegration.</p>
 <span><span class="co">## KARDL Cointegration Test Results</span></span>
 <span><span class="co">## ========================================</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Decision: Inconclusive</span></span>
+<span><span class="co">##  Decision: Reject H0 → Cointegration (at 5% level)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Test Statistic:</span></span>
-<span><span class="co">##   t: -3.4418095</span></span>
+<span><span class="co">##   t: -12.6296459</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Critical Values (Lower &amp; Upper Bounds):</span></span>
 <span><span class="co">##            L     U</span></span>
@@ -670,13 +671,13 @@ cointegration.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Comparison:</span></span>
-<span><span class="co">##   At the 5% significance level, t (3.4418095) falls between the lower bound (3.41) and upper bound (4.36).</span></span>
-<span><span class="co">##   This is an inconclusive zone where we cannot make a definitive  judgment.</span></span>
-<span><span class="co">##   Conclusion: The test does not provide clear evidence either way.</span></span>
+<span><span class="co">##   At the 5% significance level, t (12.6296459) exceeds the upper bound (4.36).</span></span>
+<span><span class="co">##   This indicates that the variables tend to move together over  time.</span></span>
+<span><span class="co">##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.CPI) = 0 </span></span>
-<span><span class="co">## H1: Coef(L1.CPI) ≠ 0 </span></span>
+<span><span class="co">## H0: Coef(L1.DriversKilled) = 0 </span></span>
+<span><span class="co">## H1: Coef(L1.DriversKilled) ≠ 0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Model Details:</span></span>
 <span><span class="co">##   Number of regressors (k): 4</span></span>
@@ -697,7 +698,7 @@ small samples.</p>
 <span><span class="co">##  Narayan F Test for Cointegration</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  model</span></span>
-<span><span class="co">## F = 10.792</span></span>
+<span><span class="co">## F = 32.345</span></span>
 <span><span class="co">## alternative hypothesis: Cointegrating relationship exists</span></span></code></pre>
 <p>Summary of the Narayan test provides detailed information about the
 test statistic, critical values, hypotheses, and decision regarding
@@ -712,7 +713,7 @@ cointegration.</p>
 <span><span class="co">##  Decision: Reject H0 → Cointegration (at 5% level)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Test Statistic:</span></span>
-<span><span class="co">##   F: 10.7918266</span></span>
+<span><span class="co">##   F: 32.3445539</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Critical Values (Lower &amp; Upper Bounds):</span></span>
 <span><span class="co">##           L     U</span></span>
@@ -722,13 +723,13 @@ cointegration.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Comparison:</span></span>
-<span><span class="co">##   At the 5% significance level, F (10.7918266) exceeds the upper bound (4.84).</span></span>
+<span><span class="co">##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.84).</span></span>
 <span><span class="co">##   This indicates that the variables tend to move together over  time.</span></span>
 <span><span class="co">##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI_POS) = Coef(L1.PPI_NEG) = 0 </span></span>
-<span><span class="co">## H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI_POS), Coef(L1.PPI_NEG) are zero. </span></span>
+<span><span class="co">## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 </span></span>
+<span><span class="co">## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">##  Model Details:</span></span>
 <span><span class="co">##   Number of regressors (k): 4</span></span>
@@ -749,32 +750,39 @@ dependent variable over time.</p>
 <code class="sourceCode R"><span><span class="va">multipliers</span> <span class="op">&lt;-</span> <span class="va">kardl_model</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/mplier.html">mplier</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># View multipliers of the model</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">multipliers</span>, <span class="st">"multipliers"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      h    ER_POS       ER_NEG     ER_dif    PPI_POS      PPI_NEG     PPI_dif</span></span>
-<span><span class="co">## [1,] 0 0.1242241  0.022936894 0.14716099 0.04200204  0.003950724  0.04595277</span></span>
-<span><span class="co">## [2,] 1 0.1853312 -0.003001657 0.18232956 0.05797042 -0.034155367  0.02381505</span></span>
-<span><span class="co">## [3,] 2 0.2203617 -0.047905918 0.17245575 0.06333773 -0.088316829 -0.02497909</span></span>
-<span><span class="co">## [4,] 3 0.2444547 -0.099586097 0.14486860 0.06440726 -0.147943943 -0.08353668</span></span>
-<span><span class="co">## [5,] 4 0.2638028 -0.153090186 0.11071257 0.06375294 -0.208741767 -0.14498883</span></span>
-<span><span class="co">## [6,] 5 0.2809433 -0.206422027 0.07452128 0.06242533 -0.268985893 -0.20656056</span></span></code></pre>
+<pre><code><span><span class="co">##      h PetrolPrice_POS PetrolPrice_NEG PetrolPrice_dif drivers_POS drivers_NEG</span></span>
+<span><span class="co">## [1,] 0      -285.05578     -1028.03999    -1313.095765  0.07562484 -0.07997262</span></span>
+<span><span class="co">## [2,] 1       -63.84422        25.01033      -38.833893  0.08359961 -0.09025538</span></span>
+<span><span class="co">## [3,] 2       -20.84449       184.55623      163.711736  0.07335905 -0.07945846</span></span>
+<span><span class="co">## [4,] 3       -50.45487        42.80916       -7.645706  0.07208514 -0.07785801</span></span>
+<span><span class="co">## [5,] 4       -56.87543        18.42816      -38.447262  0.07346844 -0.07931196</span></span>
+<span><span class="co">## [6,] 5       -52.92356        37.45733      -15.466230  0.07366752 -0.07955710</span></span>
+<span><span class="co">##       drivers_dif</span></span>
+<span><span class="co">## [1,] -0.004347775</span></span>
+<span><span class="co">## [2,] -0.006655767</span></span>
+<span><span class="co">## [3,] -0.006099407</span></span>
+<span><span class="co">## [4,] -0.005772873</span></span>
+<span><span class="co">## [5,] -0.005843521</span></span>
+<span><span class="co">## [6,] -0.005889578</span></span></code></pre>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View long-run multipliers</span></span>
 <span><span class="fu"><a href="../reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">multipliers</span>, <span class="st">"omega"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1]  1.3801808 -0.3969313</span></span></code></pre>
+<pre><code><span><span class="co">## [1]  0.01750931 -0.13725897</span></span></code></pre>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># View short-run multipliers</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">multipliers</span>, <span class="st">"lambda"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##          ER_POS      ER_NEG     PPI_POS      PPI_NEG</span></span>
-<span><span class="co">## [1,]  0.1242241 -0.02293689  0.04200204 -0.003950724</span></span>
-<span><span class="co">## [2,] -0.1103446  0.05759561 -0.04200204  0.043558804</span></span>
-<span><span class="co">## [3,]  0.0000000  0.00000000  0.00000000  0.000000000</span></span>
-<span><span class="co">## [4,]  0.0000000  0.00000000  0.00000000  0.000000000</span></span>
-<span><span class="co">## [5,]  0.0000000  0.00000000  0.00000000  0.000000000</span></span>
-<span><span class="co">## [6,]  0.0000000  0.00000000  0.00000000  0.000000000</span></span></code></pre>
+<pre><code><span><span class="co">##      PetrolPrice_POS PetrolPrice_NEG drivers_POS drivers_NEG</span></span>
+<span><span class="co">## [1,]       -285.0558        1028.040 0.075624845  0.07997262</span></span>
+<span><span class="co">## [2,]        226.2027       -1071.051 0.006650624  0.00888249</span></span>
+<span><span class="co">## [3,]          0.0000           0.000 0.000000000  0.00000000</span></span>
+<span><span class="co">## [4,]          0.0000           0.000 0.000000000  0.00000000</span></span>
+<span><span class="co">## [5,]          0.0000           0.000 0.000000000  0.00000000</span></span>
+<span><span class="co">## [6,]          0.0000           0.000 0.000000000  0.00000000</span></span></code></pre>
 <p>Plotting dynamic multipliers for specific variables can be done using
 the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function, which visualizes the response of the
 dependent variable to changes in independent variables over time.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">multipliers</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ER"</span>, <span class="st">"PPI"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">multipliers</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PetrolPrice"</span>, <span class="st">"drivers"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="intro_files/figure-html/plot-multipliers-1.png" class="r-plt" alt="" width="700"></p>
 <p>To handle a large number of variables, you can specify a subset of
 variables to plot or use <code>variables = "all"</code> to visualize all
@@ -790,31 +798,31 @@ robust estimates of uncertainty around the multipliers.</p>
 <pre><code><span><span class="co">## Summary of Dynamic Multipliers</span></span>
 <span><span class="co">## Horizon: 12 </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##        h          ER_POS           ER_NEG             ER_dif        </span></span>
-<span><span class="co">##  Min.   : 0   Min.   :0.1242   Min.   :-0.54519   Min.   :-0.16380  </span></span>
-<span><span class="co">##  1st Qu.: 3   1st Qu.:0.2445   1st Qu.:-0.40804   1st Qu.:-0.06693  </span></span>
-<span><span class="co">##  Median : 6   Median :0.2969   Median :-0.25879   Median : 0.03813  </span></span>
-<span><span class="co">##  Mean   : 6   Mean   :0.2847   Mean   :-0.25573   Mean   : 0.02895  </span></span>
-<span><span class="co">##  3rd Qu.: 9   3rd Qu.:0.3411   3rd Qu.:-0.09959   3rd Qu.: 0.14487  </span></span>
-<span><span class="co">##  Max.   :12   Max.   :0.3814   Max.   : 0.02294   Max.   : 0.18233  </span></span>
-<span><span class="co">##     PPI_POS           PPI_NEG             PPI_dif          ER_CI_upper    </span></span>
-<span><span class="co">##  Min.   :0.04200   Min.   :-0.650249   Min.   :-0.59891   Min.   :0.1689  </span></span>
-<span><span class="co">##  1st Qu.:0.05437   1st Qu.:-0.495965   1st Qu.:-0.44002   1st Qu.:0.1745  </span></span>
-<span><span class="co">##  Median :0.05797   Median :-0.328001   Median :-0.26715   Median :0.2723  </span></span>
-<span><span class="co">##  Mean   :0.05739   Mean   :-0.322665   Mean   :-0.26528   Mean   :0.2682  </span></span>
-<span><span class="co">##  3rd Qu.:0.06243   3rd Qu.:-0.147944   3rd Qu.:-0.08354   3rd Qu.:0.3491  </span></span>
-<span><span class="co">##  Max.   :0.06441   Max.   : 0.003951   Max.   : 0.04595   Max.   :0.3977  </span></span>
-<span><span class="co">##   ER_CI_lower         PPI_CI_upper       PPI_CI_lower      </span></span>
-<span><span class="co">##  Min.   :-0.456249   Min.   :-0.49442   Min.   :-0.789906  </span></span>
-<span><span class="co">##  1st Qu.:-0.302609   1st Qu.:-0.36962   1st Qu.:-0.615389  </span></span>
-<span><span class="co">##  Median :-0.133211   Median :-0.23505   Median :-0.418502  </span></span>
-<span><span class="co">##  Mean   :-0.159183   Mean   :-0.21177   Mean   :-0.407860  </span></span>
-<span><span class="co">##  3rd Qu.: 0.003771   3rd Qu.:-0.04240   3rd Qu.:-0.191493  </span></span>
-<span><span class="co">##  Max.   : 0.049601   Max.   : 0.07719   Max.   :-0.006423</span></span></code></pre>
+<span><span class="co">##        h      PetrolPrice_POS   PetrolPrice_NEG    PetrolPrice_dif   </span></span>
+<span><span class="co">##  Min.   : 0   Min.   :-285.06   Min.   :-1028.04   Min.   :-1313.10  </span></span>
+<span><span class="co">##  1st Qu.: 3   1st Qu.: -52.92   1st Qu.:   37.46   1st Qu.:  -15.47  </span></span>
+<span><span class="co">##  Median : 6   Median : -52.56   Median :   38.40   Median :  -14.16  </span></span>
+<span><span class="co">##  Mean   : 6   Mean   : -69.03   Mean   :  -34.49   Mean   : -103.52  </span></span>
+<span><span class="co">##  3rd Qu.: 9   3rd Qu.: -52.50   3rd Qu.:   38.59   3rd Qu.:  -13.91  </span></span>
+<span><span class="co">##  Max.   :12   Max.   : -20.84   Max.   :  184.56   Max.   :  163.71  </span></span>
+<span><span class="co">##   drivers_POS       drivers_NEG        drivers_dif        PetrolPrice_CI_upper</span></span>
+<span><span class="co">##  Min.   :0.07209   Min.   :-0.09026   Min.   :-0.006656   Min.   :167.7       </span></span>
+<span><span class="co">##  1st Qu.:0.07347   1st Qu.:-0.07946   1st Qu.:-0.005881   1st Qu.:224.4       </span></span>
+<span><span class="co">##  Median :0.07348   Median :-0.07935   Median :-0.005876   Median :225.6       </span></span>
+<span><span class="co">##  Mean   :0.07432   Mean   :-0.08014   Mean   :-0.005826   Mean   :286.2       </span></span>
+<span><span class="co">##  3rd Qu.:0.07348   3rd Qu.:-0.07935   3rd Qu.:-0.005874   3rd Qu.:233.8       </span></span>
+<span><span class="co">##  Max.   :0.08360   Max.   :-0.07786   Max.   :-0.004348   Max.   :638.4       </span></span>
+<span><span class="co">##  PetrolPrice_CI_lower drivers_CI_upper     drivers_CI_lower  </span></span>
+<span><span class="co">##  Min.   :-3769.4      Min.   :-0.0023941   Min.   :-0.02943  </span></span>
+<span><span class="co">##  1st Qu.: -299.5      1st Qu.:-0.0021219   1st Qu.:-0.01328  </span></span>
+<span><span class="co">##  Median : -298.7      Median :-0.0021181   Median :-0.01327  </span></span>
+<span><span class="co">##  Mean   : -561.1      Mean   :-0.0008551   Mean   :-0.01448  </span></span>
+<span><span class="co">##  3rd Qu.: -297.4      3rd Qu.:-0.0021174   3rd Qu.:-0.01323  </span></span>
+<span><span class="co">##  Max.   : -255.9      Max.   : 0.0146270   Max.   :-0.01113</span></span></code></pre>
 <p>Visualize bootstrap results for specific variables to understand the
 variability and confidence intervals of the dynamic multipliers.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bootstrap_results</span>, variables <span class="op">=</span> <span class="st">"ER"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bootstrap_results</span>, variables <span class="op">=</span> <span class="st">"drivers"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="intro_files/figure-html/plot-bootstrap-multipliers-1.png" class="r-plt" alt="" width="700"></p>
 </div>
 <div class="section level3">
@@ -826,25 +834,25 @@ variables using <code><a href="../reference/kardl_set.html">kardl_set()</a></cod
 <code class="sourceCode R"><span><span class="co"># Set custom prefixes and suffixes</span></span>
 <span><span class="fu"><a href="../reference/kardl_reset.html">kardl_reset</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>asym_prefix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"asyP_"</span>, <span class="st">"asyN_"</span><span class="op">)</span>, asym_suffix <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"_PP"</span>, <span class="st">"_NN"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">kardl_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">imf_example_data</span>, <span class="va">my_formula</span><span class="op">)</span></span>
+<span><span class="va">kardl_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Seatbelts</span>, <span class="va">my_formula</span><span class="op">)</span></span>
 <span><span class="va">kardl_custom</span></span></code></pre></div>
 <pre><code><span><span class="co">## Optimal lags for each variable ( AIC ):</span></span>
-<span><span class="co">## CPI: 2, asyP_ER_PP: 1, asyN_ER_NN: 0, asyP_PPI_PP: 4, asyN_PPI_NN: 0 </span></span>
+<span><span class="co">## DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, asyP_drivers_PP: 2, asyN_drivers_NN: 0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Coefficients:</span></span>
-<span><span class="co">##      (Intercept)            L1.CPI     L1.asyP_ER_PP     L1.asyN_ER_NN  </span></span>
-<span><span class="co">##       -0.0404958        -0.0128695         0.0120635         0.0258122  </span></span>
-<span><span class="co">##   L1.asyP_PPI_PP    L1.asyN_PPI_NN          L1.d.CPI          L2.d.CPI  </span></span>
-<span><span class="co">##        0.0511977         0.0433195         0.3830822        -0.0920420  </span></span>
-<span><span class="co">##  L0.d.asyP_ER_PP   L1.d.asyP_ER_PP   L0.d.asyN_ER_NN  L0.d.asyP_PPI_PP  </span></span>
-<span><span class="co">##        0.1122301         0.0880910        -0.0017889         0.0509193  </span></span>
-<span><span class="co">## L1.d.asyP_PPI_PP  L2.d.asyP_PPI_PP  L3.d.asyP_PPI_PP  L4.d.asyP_PPI_PP  </span></span>
-<span><span class="co">##        0.0003349        -0.0535510        -0.0435529         0.0118365  </span></span>
-<span><span class="co">## L0.d.asyN_PPI_NN             covid             trend  </span></span>
-<span><span class="co">##       -0.0011170         0.0026926        -0.0003479</span></span></code></pre>
+<span><span class="co">##              (Intercept)          L1.DriversKilled    L1.asyP_PetrolPrice_PP  </span></span>
+<span><span class="co">##                123.16543                  -1.02076                 -64.65463  </span></span>
+<span><span class="co">##   L1.asyN_PetrolPrice_NN        L1.asyP_drivers_PP        L1.asyN_drivers_NN  </span></span>
+<span><span class="co">##                -67.68843                   0.07313                   0.07991  </span></span>
+<span><span class="co">##       L1.d.DriversKilled  L0.d.asyP_PetrolPrice_PP  L0.d.asyN_PetrolPrice_NN  </span></span>
+<span><span class="co">##                  0.07062                -314.39843                 805.57820  </span></span>
+<span><span class="co">##     L0.d.asyP_drivers_PP      L1.d.asyP_drivers_PP      L2.d.asyP_drivers_PP  </span></span>
+<span><span class="co">##                  0.07503                   0.01619                  -0.01497  </span></span>
+<span><span class="co">##     L0.d.asyN_drivers_NN                       law                     trend  </span></span>
+<span><span class="co">##                  0.07760                  -0.99053                   0.63124</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">

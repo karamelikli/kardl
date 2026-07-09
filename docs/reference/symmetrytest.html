@@ -99,7 +99,7 @@ $$"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -192,8 +192,9 @@ $$</p>
 
 
 <dl><dt id="arg-kardl-model">kardl_model<a class="anchor" aria-label="anchor" href="#arg-kardl-model"></a></dt>
-<dd><p>An object of class <code>kardl_lm</code> representing a fitted
-non-linear KARDL model.</p></dd>
+<dd><p>An object of class <code>kardl_lm</code> produced by
+<code><a href="kardl.html">kardl</a></code> or an object of class <code>kardl_longrun</code>
+produced by <code><a href="kardl_longrun.html">kardl_longrun</a></code>.</p></dd>
 
 
 <dt id="arg-selected-vars">selected_vars<a class="anchor" aria-label="anchor" href="#arg-selected-vars"></a></dt>
@@ -274,8 +275,8 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">CPI</span> <span class="op">~</span> <span class="fu">Lasym</span><span class="op">(</span><span class="va">PPI</span> <span class="op">+</span> <span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">Sas</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
-<span class="r-in"><span>  <span class="va">imf_example_data</span></span></span>
+<span class="r-in"><span>  <span class="va">DriversKilled</span> <span class="op">~</span> <span class="fu">Lasym</span><span class="op">(</span><span class="va">drivers</span> <span class="op">+</span> <span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">Sas</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>  <span class="va">Seatbelts</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ast</span></span></span>
@@ -283,56 +284,48 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq   Mean Sq F value   Pr(&gt;F)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 0.0021074  9.5499 0.002124 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Detailed results of the test:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ast</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Long-run symmetry tests</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -----------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           F   Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER  4.22169 0.040489 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI 0.13210 0.716440  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 0.11542 0.73446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers     1.69404 0.19476</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Reject H0 at 5% level. Indicating long-run asymmetry for variable ER. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PPI. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Short-run symmetry tests</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          F    Pr(&gt;F)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER 9.54985 0.0021239 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 1.26814 0.26164</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Reject H0 at 5% level. Indicating short-run asymmetry for variable ER. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice. </span>
 <span class="r-in"><span><span class="co"># The null hypothesis of the test is that the model is symmetric, while the</span></span></span>
 <span class="r-in"><span><span class="co"># alternative hypothesis is that the model is asymmetric. The test statistic</span></span></span>
 <span class="r-in"><span><span class="co"># and p-value are provided in the output. If the p-value is less than a</span></span></span>
@@ -346,57 +339,49 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Long-run symmetry tests</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -----------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>           F   Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER  4.22169 0.040489 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI 0.13210 0.716440  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 0.11542 0.73446</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers     1.69404 0.19476</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable ER. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PetrolPrice. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PPI. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable drivers. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Short-run symmetry tests</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          F    Pr(&gt;F)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER 9.54985 0.0021239 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 1.26814 0.26164</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Reject H0 at 1% level. Indicating short-run asymmetry for variable ER. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating short-run symmetry for variable PetrolPrice. </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get symmetry test results in long-run, you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">ast</span>, what <span class="op">=</span> <span class="st">"long_wald_summary"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get symmetry test results in short-run, you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">ast</span>, what <span class="op">=</span> <span class="st">"short_wald_summary"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq   Mean Sq F value   Pr(&gt;F)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 0.0021074  9.5499 0.002124 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the null and alternative hypotheses of the test in long-run,</span></span></span>
 <span class="r-in"><span><span class="co"># you can use the following code:</span></span></span>
@@ -404,13 +389,13 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.ER_POS)/Coef(L1.CPI) = - Coef(L1.ER_NEG)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PPI </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PPI_POS)/Coef(L1.CPI) = - Coef(L1.PPI_NEG)/Coef(L1.CPI) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
@@ -420,9 +405,9 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: ER </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) = Coef(L0.d.ER_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.ER_POS) + Coef(L1.d.ER_POS) ≠ Coef(L0.d.ER_NEG) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Alternatively, you can also use the symmetrytest function with the</span></span></span>
@@ -434,11 +419,9 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To test for short-run symmetry, you can use the following code:</span></span></span>
@@ -447,10 +430,8 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq   Mean Sq F value   Pr(&gt;F)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 0.0021074  9.5499 0.002124 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you want to test for symmetry with respect to a specific variable,</span></span></span>
@@ -458,36 +439,14 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="co"># example, to test for symmetry with respect to the PPI variable, you can use</span></span></span>
 <span class="r-in"><span><span class="co"># the following code:</span></span></span>
 <span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value Pr(&gt;F)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 2.9149e-05 2.9149e-05  0.1321 0.7164</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> These variables are not available for symmetry testing: PPI</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To test for symmetry with respect to multiple variables, you can provide</span></span></span>
 <span class="r-in"><span><span class="co"># a vector of variable names to the selected_vars argument. For example, to</span></span></span>
 <span class="r-in"><span><span class="co"># test for symmetry with respect to both PPI and ER, you can use the</span></span></span>
 <span class="r-in"><span><span class="co"># following code:</span></span></span>
 <span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PPI"</span>, <span class="st">"ER"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Sum of Sq    Mean Sq F value  Pr(&gt;F)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.00002915 0.00002915  0.1321 0.71644  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 0.00093159 0.00093159  4.2217 0.04049 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq   Mean Sq F value   Pr(&gt;F)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 0.0021074  9.5499 0.002124 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> These variables are not available for symmetry testing: PPI, ER</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Finally, you can also specify the type of test statistic to be used in the</span></span></span>
 <span class="r-in"><span><span class="co"># symmetry test. By default, the function uses the Wald test F statistic,</span></span></span>
@@ -499,18 +458,14 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     Df  Chisq Pr(&gt;Chisq)  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER   1 4.2217    0.03991 *</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PPI  1 0.1321    0.71627  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df  Chisq Pr(&gt;Chisq)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1 0.1154     0.7341</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1 1.6940     0.1931</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Df Sum of Sq  Chisq Pr(&gt;Chisq)   </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ER  1 0.0021074 9.5499      0.002 **</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ---</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq  Chisq Pr(&gt;Chisq)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38 1.2681     0.2601</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

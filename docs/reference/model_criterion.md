@@ -98,33 +98,33 @@ model_criterion(mylm, "AIC")
 
 # Example usage of model_criterion function with a kardl model
 kardl_model <- kardl(
-  CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
-  imf_example_data,
+  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  Seatbelts,
   mode = c(1, 2, 3, 0)
 )
 
 # Using AIC as the kardl package's built-in criterion function which is
 # different from the base R AIC function.
 model_criterion(kardl_model, "AIC")
-#> [1] -5.499093
+#> [1] 7.802762
 
 # Using the base R AIC function directly on the fitted model object
 model_criterion(kardl_model, AIC)
-#> [1] -2555.078
+#> [1] 1461.117
 # Using the base R AIC function outside of model_criterion to compute AIC for
 #  the fitted model
 AIC(kardl_model)
-#> [1] -2555.078
+#> [1] 1461.117
 
 # Using BIC as the criterion for the kardl model which is different from the
 # base R BIC function.
 model_criterion(kardl_model, "BIC")
-#> [1] -5.356571
+#> [1] 8.079221
 
 # Using a custom criterion function that divides AIC by the sample size
 my_cr_fun <- function(mod, ...) {
   AIC(mod) / length(mod$model[[1]])
 }
 model_criterion(kardl_model, my_cr_fun)
-#> [1] -5.494792
+#> [1] 7.813457
 ```

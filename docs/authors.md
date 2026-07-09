@@ -14,13 +14,13 @@ Source:
 [`DESCRIPTION`](https://github.com/karamelikli/kardl/blob/HEAD/DESCRIPTION)
 
 karamelikli H, Demir H (2026). *kardl: Make Symmetric and Asymmetric
-ARDL Estimations*. R package version 2.0.1,
+ARDL Estimations*. R package version 2.0.2,
 <https://karamelikli.github.io/kardl/>.
 
     @Manual{,
       title = {kardl: Make Symmetric and Asymmetric ARDL Estimations},
       author = {Huseyin karamelikli and Huseyin Utku Demir},
       year = {2026},
-      note = {R package version 2.0.1},
+      note = {R package version 2.0.2},
       url = {https://karamelikli.github.io/kardl/},
     }

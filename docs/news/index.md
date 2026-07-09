@@ -1,5 +1,22 @@
 # Changelog
 
+## kardl 2.0.2
+
+CRAN release: 2026-06-24
+
+### Improvements
+
+- Expanded S3 method support throughout the package. Functions including
+  [`bootstrap()`](https://karamelikli.github.io/kardl/reference/bootstrap.md),
+  [`kardl_longrun()`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md),
+  [`mplier()`](https://karamelikli.github.io/kardl/reference/mplier.md),
+  [`narayan()`](https://karamelikli.github.io/kardl/reference/narayan.md),
+  [`pssf()`](https://karamelikli.github.io/kardl/reference/pssf.md),
+  [`psst()`](https://karamelikli.github.io/kardl/reference/psst.md), and
+  [`symmetrytest()`](https://karamelikli.github.io/kardl/reference/symmetrytest.md)
+  are now implemented as S3 methods for `kardl_lm` objects, with
+  extended support for `kardl_longrun` objects where appropriate.
+
 ## kardl 2.0.1
 
 ### New Features

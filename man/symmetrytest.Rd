@@ -124,8 +124,8 @@ model's accuracy and predictive performance.
 }
 \examples{
 kardl_model <- kardl(
-  CPI ~ Lasym(PPI + ER) + Sas(ER) + deterministic(covid) + trend,
-  imf_example_data
+  DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) + deterministic(law) + trend,
+  Seatbelts
 )
 ast <- symmetrytest(kardl_model)
 ast

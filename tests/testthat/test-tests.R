@@ -8,10 +8,10 @@
 #' expected structural properties of ARDL and NARDL models.
 test_that("Post-estimation tests run correctly", {
   kardl_reset()
-  formula <- CPI ~ ER + PPI + trend
+  formula <- DriversKilled ~ PetrolPrice + drivers + trend
 
   model <- kardl(
-    data = imf_example_data,
+    data = Seatbelts,
     formula = formula,
     mode = "quick",
     maxlag = 2
@@ -26,8 +26,8 @@ test_that("Post-estimation tests run correctly", {
 
   #' Test symmetrytest
   symm_model <- kardl(
-    data = imf_example_data,
-    formula = CPI ~ ER + PPI + asymmetric(ER) + trend,
+    data = Seatbelts,
+    formula = DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
     mode = "quick",
     maxlag = 2
   )
@@ -63,7 +63,7 @@ test_that("Post-estimation tests run correctly", {
   #' Test ecm
   ec <- ecm(
     formula = formula,
-    data = imf_example_data,
+    data = Seatbelts,
     mode = "quick"
   )
   expect_s3_class(ec, c("kardl_lm", "lm"))
@@ -75,8 +75,8 @@ test_that("Post-estimation tests run correctly", {
 test_that("symmetrytest with component = 'longrun' only works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI + asymmetric(ER) + trend,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   st <- symmetrytest(model, component = "longrun")
@@ -90,8 +90,8 @@ test_that("symmetrytest with component = 'longrun' only works", {
 test_that("symmetrytest with component = 'shortrun' only works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ PPI + sasymmetric(ER),
-    imf_example_data,
+    DriversKilled ~ drivers + sasymmetric(PetrolPrice),
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   st <- symmetrytest(model, component = "shortrun")
@@ -104,8 +104,8 @@ test_that("symmetrytest with component = 'shortrun' only works", {
 test_that("symmetrytest with type = 'Chisq' works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI + asymmetric(ER) + trend,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   st <- symmetrytest(model, type = "Chisq")
@@ -118,13 +118,13 @@ test_that("symmetrytest with type = 'Chisq' works", {
 test_that("symmetrytest with specific vars argument works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI + asymmetric(ER) + trend,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
-  st <- symmetrytest(model, selected_vars = "ER")
+  st <- symmetrytest(model, selected_vars = "PetrolPrice")
   expect_s3_class(st, "kardl_symmetric")
-  expect_identical(rownames(st$long_wald_summary), "ER")
+  expect_identical(rownames(st$long_wald_summary), "PetrolPrice")
 })
 #' @srrstats {G5.2b} Checks that a variable name not in the model produces
 #' an informative error.
@@ -133,8 +133,8 @@ test_that("symmetrytest with specific vars argument works", {
 test_that("symmetrytest errors on bad vars", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI + asymmetric(ER) + trend,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   expect_error(symmetrytest(model, selected_vars = "NOTAVAR"))
@@ -143,7 +143,7 @@ test_that("symmetrytest errors on bad vars", {
 #' triggers an informative error.
 test_that("symmetrytest errors on ECM model", {
   kardl_reset()
-  ec <- ecm(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   expect_error(symmetrytest(ec), "ECM")
 })
 
@@ -156,7 +156,7 @@ test_that("symmetrytest errors on non-kardl_lm input", {
 #' level, confirming both test and summary objects are returned correctly.
 test_that("pssf with specific signif_level works", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   pf <- pssf(model, signif_level = "0.05")
   expect_s3_class(pf, "kardl_test")
   sm <- summary(pf)
@@ -167,7 +167,7 @@ test_that("pssf with specific signif_level works", {
 #' coerced to a character value internally.
 test_that("pssf with numeric signif_level works", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   pf <- pssf(model, signif_level = 0.05)
   expect_s3_class(pf, "kardl_test")
 })
@@ -176,7 +176,7 @@ test_that("pssf with numeric signif_level works", {
 #' case specification.
 test_that("pssf with case = 5 (trend model) works", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   pf <- pssf(model, case = 5)
   expect_s3_class(pf, "kardl_test")
 })
@@ -185,14 +185,14 @@ test_that("pssf with case = 5 (trend model) works", {
 #' an informative error.
 test_that("pssf errors on ECM model", {
   kardl_reset()
-  ec <- ecm(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   expect_error(pssf(ec))
 })
 
 #' @srrstats {G5.8} Checks that an out-of-range case value is rejected.
 test_that("pssf errors on invalid case", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   expect_error(pssf(model, case = 99))
 })
 
@@ -200,7 +200,7 @@ test_that("pssf errors on invalid case", {
 #' is rejected before the test is performed.
 test_that("pssf errors on invalid signif_level", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   expect_error(pssf(model, signif_level = "0.03"))
 })
 
@@ -208,7 +208,7 @@ test_that("pssf errors on invalid signif_level", {
 #' error-correction residual is the test variable.
 test_that("psst with ECM model works (uses EcmRes as test var)", {
   kardl_reset()
-  ec <- ecm(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   pt <- psst(ec)
   expect_s3_class(pt, "kardl_test")
   sm <- summary(pt)
@@ -219,7 +219,7 @@ test_that("psst with ECM model works (uses EcmRes as test var)", {
 #' detects a trend term and elevates the case to 5.
 test_that("psst with trend model auto-adjusts to case 5", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   pt <- psst(model, case = 3)
   expect_s3_class(pt, "kardl_test")
   expect_identical(pt$case, 5) #' auto-adjusted because model has trend
@@ -228,14 +228,14 @@ test_that("psst with trend model auto-adjusts to case 5", {
 #' @srrstats {G5.8} Verifies that an invalid case value is rejected.
 test_that("psst errors on invalid case", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   expect_error(psst(model, case = 99))
 })
 
 #' @srrstats {G5.7} Tests the Narayan small-sample bounds test under case 5.
 test_that("narayan with case = 5 works", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   nr <- narayan(model, case = 5)
   expect_s3_class(nr, "kardl_test")
 })
@@ -244,7 +244,7 @@ test_that("narayan with case = 5 works", {
 #' and confirms that `summary()` dispatches correctly.
 test_that("narayan with specific signif_level works", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(1, 1, 1))
   nr <- narayan(model, signif_level = "0.01")
   expect_s3_class(nr, "kardl_test")
   sm <- summary(nr)
@@ -255,14 +255,14 @@ test_that("narayan with specific signif_level works", {
 #' rejected.
 test_that("narayan errors on ECM model", {
   kardl_reset()
-  ec <- ecm(CPI ~ ER + PPI + trend, imf_example_data, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
   expect_error(narayan(ec))
 })
 
 #' @srrstats {G5.8} Verifies that case = 1 (unsupported by Narayan) is rejected.
 test_that("narayan errors on invalid case", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(1, 1, 1))
   expect_error(narayan(model, case = 1))
 })
 
@@ -273,8 +273,8 @@ test_that("narayan errors on invalid case", {
 test_that("mplier with min_prob > 0 works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ ER + PPI + asymmetric(ER) + trend,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   mp <- mplier(model, horizon = 10, min_prob = 0.1)
@@ -290,7 +290,7 @@ test_that("mplier errors on non-kardl_lm input", {
 #' @srrstats {G5.7} Tests `mplier()` on a long-run-asymmetric (SA) model.
 test_that("mplier with lasymmetric model works", {
   kardl_reset()
-  model <- kardl(CPI ~ lasymmetric(ER), imf_example_data, mode = c(1, 1))
+  model <- kardl(DriversKilled ~ lasymmetric(PetrolPrice), Seatbelts, mode = c(1, 1))
   mp <- mplier(model, horizon = 10)
   expect_s3_class(mp, "kardl_mplier")
 })
@@ -299,8 +299,8 @@ test_that("mplier with lasymmetric model works", {
 test_that("mplier with sasymmetric model works", {
   kardl_reset()
   model <- kardl(
-    CPI ~ PPI + sasymmetric(ER),
-    imf_example_data,
+    DriversKilled ~ drivers + sasymmetric(PetrolPrice),
+    Seatbelts,
     mode = c(1, 1, 1, 1)
   )
   mp <- mplier(model, horizon = 10)
@@ -314,7 +314,7 @@ test_that("mplier with sasymmetric model works", {
 #' correct class, level, horizon, and a non-NULL `mpsi` component.
 test_that("bootstrap with asymmetric model works", {
   kardl_reset()
-  model <- kardl(CPI ~ asymmetric(ER), imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
   bt <- bootstrap(model, horizon = 10, replications = 5, level = 95)
   expect_s3_class(bt, "kardl_boot")
   expect_identical(bt$level, 95)
@@ -332,7 +332,7 @@ test_that("bootstrap errors on non-kardl_lm input", {
 #' model without attempting to compute confidence interval columns.
 test_that("bootstrap with linear model (no CI columns) still works", {
   kardl_reset()
-  model <- kardl(CPI ~ ER + PPI, imf_example_data, mode = c(1, 1, 1))
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(1, 1, 1))
   bt <- bootstrap(model, horizon = 5, replications = 3)
   expect_s3_class(bt, "kardl_boot")
 })

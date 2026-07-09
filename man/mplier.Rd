@@ -113,27 +113,27 @@ separately. Otherwise, the same dynamic path is used.
 # Calculating dynamic multipliers for a linear model in short and long run
 # (NN)
 
-kardl_model <- kardl(CPI ~ ER, imf_example_data)
+kardl_model <- kardl(DriversKilled ~ PetrolPrice, Seatbelts)
 m <- mplier(kardl_model, 40)
 head(m$mpsi)
 plot(m)
 
 # Calculating dynamic multipliers for a model with
 # Short-run linear, long-run asymmetric (SA)
-kardl_model <- kardl(CPI ~ lasym(ER), imf_example_data)
+kardl_model <- kardl(DriversKilled ~ lasym(PetrolPrice), Seatbelts)
 m <- mplier(kardl_model, horizon = 40, min_prob = 0)
 head(kardl_extract(m, "multipliers"))
 plot(m)
 
 # Calculating dynamic multipliers for a model with
 # Short-run asymmetric, long-run linear (AS)
-kardl_model <- kardl(CPI ~ sasym(ER), imf_example_data)
+kardl_model <- kardl(DriversKilled ~ sasym(PetrolPrice), Seatbelts)
 m <- mplier(kardl_model, 40)
 plot(m)
 
 # Calculating dynamic multipliers for a model with
 # asymmetric effects in both short and long run (NN)
-kardl_model <- kardl(CPI ~ asym(ER) + PPI, imf_example_data)
+kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice) + drivers, Seatbelts)
 m <- mplier(kardl_model, 40)
 plot(m)
 

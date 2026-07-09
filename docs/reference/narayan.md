@@ -19,9 +19,10 @@ narayan(kardl_model, case = "auto", signif_level = "auto", ...)
 
 - kardl_model:
 
-  A fitted KARDL model object of class 'kardl_lm' created using the
-  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md)
-  function.
+  An object of class `kardl_lm` produced by
+  [`kardl`](https://karamelikli.github.io/kardl/reference/kardl.md) or
+  an object of class `kardl_longrun` produced by
+  [`kardl_longrun`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md).
 
 - case:
 
@@ -135,8 +136,8 @@ evidence from cointegration tests. Applied economics, 37(17), 1979-1990.
 
 ``` r
 kardl_model<-kardl(
-                   CPI~ER+PPI+asym(ER)+deterministic(covid)+trend,
-                   imf_example_data,
+                   DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+                   Seatbelts,
                    mode=c(1,2,3,0))
 my_test<-narayan(kardl_model, case=3, signif_level="auto")
 # Getting the results of the test.
@@ -145,7 +146,7 @@ my_test
 #>  Narayan F Test for Cointegration
 #> 
 #> data:  model
-#> F = 10.204
+#> F = 39.508
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 # Getting details of the test.
@@ -159,7 +160,7 @@ my_summary
 #>  Decision: Reject H0 → Cointegration (at 1% level)
 #> 
 #>  Test Statistic:
-#>   F: 10.2035571
+#>   F: 39.5080601
 #> 
 #>  Critical Values (Lower & Upper Bounds):
 #>           L     U
@@ -169,13 +170,13 @@ my_summary
 #> 
 #> 
 #>  Comparison:
-#>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.908).
+#>   At the 1% significance level, F (39.5080601) exceeds the upper bound (6.908).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
 #>  Hypotheses:
-#> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. 
+#> H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0 
+#> H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero. 
 #> 
 #>  Model Details:
 #>   Number of regressors (k): 3
@@ -198,8 +199,8 @@ kardl_extract(my_summary, what = "critical_values")
 # Using magrittr :
 
 library(magrittr)
-imf_example_data %>%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts %>%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) %>%
   narayan()
@@ -207,13 +208,13 @@ imf_example_data %>%
 #>  Narayan F Test for Cointegration
 #> 
 #> data:  model
-#> F = 10.204
+#> F = 39.508
 #> alternative hypothesis: Cointegrating relationship exists
 #> 
 
 # Getting details of the test results using magrittr:
-imf_example_data %>%
-  kardl(CPI ~ ER + PPI + asym(ER) + deterministic(covid) + trend,
+Seatbelts %>%
+  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) %>%
   narayan() %>%
@@ -226,7 +227,7 @@ imf_example_data %>%
 #>  Decision: Reject H0 → Cointegration (at 1% level)
 #> 
 #>  Test Statistic:
-#>   F: 10.2035571
+#>   F: 39.5080601
 #> 
 #>  Critical Values (Lower & Upper Bounds):
 #>           L     U
@@ -236,13 +237,13 @@ imf_example_data %>%
 #> 
 #> 
 #>  Comparison:
-#>   At the 1% significance level, F (10.2035571) exceeds the upper bound (6.908).
+#>   At the 1% significance level, F (39.5080601) exceeds the upper bound (6.908).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
 #>  Hypotheses:
-#> H0: Coef(L1.CPI) = Coef(L1.ER_POS) = Coef(L1.ER_NEG) = Coef(L1.PPI) = 0 
-#> H1: Not all of Coef(L1.CPI), Coef(L1.ER_POS), Coef(L1.ER_NEG), Coef(L1.PPI) are zero. 
+#> H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0 
+#> H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero. 
 #> 
 #>  Model Details:
 #>   Number of regressors (k): 3

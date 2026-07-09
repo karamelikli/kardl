@@ -15,7 +15,7 @@ a user-defined function to evaluate a statistical model."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -132,35 +132,35 @@ additional arguments passed through <code>...</code>.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Example usage of model_criterion function with a kardl model</span></span></span>
 <span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">CPI</span> <span class="op">~</span> <span class="va">ER</span> <span class="op">+</span> <span class="va">PPI</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">ER</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">covid</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
-<span class="r-in"><span>  <span class="va">imf_example_data</span>,</span></span>
+<span class="r-in"><span>  <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>  <span class="va">Seatbelts</span>,</span></span>
 <span class="r-in"><span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using AIC as the kardl package's built-in criterion function which is</span></span></span>
 <span class="r-in"><span><span class="co"># different from the base R AIC function.</span></span></span>
 <span class="r-in"><span><span class="fu">model_criterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="st">"AIC"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.499093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.802762</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using the base R AIC function directly on the fitted model object</span></span></span>
 <span class="r-in"><span><span class="fu">model_criterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="va">AIC</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2555.078</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1461.117</span>
 <span class="r-in"><span><span class="co"># Using the base R AIC function outside of model_criterion to compute AIC for</span></span></span>
 <span class="r-in"><span><span class="co">#  the fitted model</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -2555.078</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1461.117</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using BIC as the criterion for the kardl model which is different from the</span></span></span>
 <span class="r-in"><span><span class="co"># base R BIC function.</span></span></span>
 <span class="r-in"><span><span class="fu">model_criterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="st">"BIC"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.356571</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.079221</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using a custom criterion function that divides AIC by the sample size</span></span></span>
 <span class="r-in"><span><span class="va">my_cr_fun</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">mod</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/stats/AIC.html" class="external-link">AIC</a></span><span class="op">(</span><span class="va">mod</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mod</span><span class="op">$</span><span class="va">model</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-in"><span><span class="fu">model_criterion</span><span class="op">(</span><span class="va">kardl_model</span>, <span class="va">my_cr_fun</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -5.494792</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 7.813457</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

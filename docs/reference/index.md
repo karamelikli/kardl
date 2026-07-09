@@ -6,8 +6,6 @@
   : Bootstrap Confidence Intervals for Dynamic Multipliers
 - [`ecm()`](https://karamelikli.github.io/kardl/reference/ecm.md) :
   Estimate a Restricted ECM Model
-- [`imf_example_data`](https://karamelikli.github.io/kardl/reference/imf_example_data.md)
-  : IMF Example Data
 - [`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md) :
   Estimate ARDL and NARDL Models with Automatic Lag Selection
 - [`kardl_extract()`](https://karamelikli.github.io/kardl/reference/kardl_extract.md)
@@ -25,7 +23,7 @@
 - [`model_criterion()`](https://karamelikli.github.io/kardl/reference/model_criterion.md)
   : Model Selection Criteria
 - [`mplier()`](https://karamelikli.github.io/kardl/reference/mplier.md)
-  : Compute Dynamic Multipliers for kardl Models
+  : Compute Dynamic Multipliers for KARDL Models
 - [`narayan()`](https://karamelikli.github.io/kardl/reference/narayan.md)
   : Narayan Bounds Test
 - [`parse_formula_vars()`](https://karamelikli.github.io/kardl/reference/parse_formula_vars.md)

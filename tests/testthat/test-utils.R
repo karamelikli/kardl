@@ -99,8 +99,8 @@ test_that("lmerge handles named vectors", {
 test_that("batch_control returns full range for '1/1'", {
   kardl_reset()
   spec <- kardl(
-    CPI ~ ER + PPI,
-    imf_example_data,
+    DriversKilled ~ PetrolPrice + drivers,
+    Seatbelts,
     mode = "grid_custom",
     maxlag = 2
   )
@@ -149,16 +149,16 @@ test_that("batch_control errors on malformed batch string", {
 
 test_that("invalid lag combination produces informative error", {
   expect_error(
-    kardl(CPI ~ ER + PPI, imf_example_data, mode = c(0.5, 1, 1)),
+    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(0.5, 1, 1)),
     "User-defined should have valid numeric and non-decimal."
   )
 
   expect_error(
-    kardl(CPI ~ ER + PPI, imf_example_data, mode = c("2", 1, 1)),
+    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c("2", 1, 1)),
     "User-defined value should have valid vector."
   )
   expect_error(
-    kardl(CPI ~ ER + PPI, imf_example_data, mode = c(2, 1, 5, 1)),
+    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(2, 1, 5, 1)),
     "User-defined should match with short-run variables."
   )
 })
