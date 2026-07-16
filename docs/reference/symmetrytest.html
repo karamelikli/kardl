@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Symmetry Test for Nonlinear kardl Models — symmetrytest"><meta name="description" content="The symmetry test is a statistical procedure used to assess the presence of
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Symmetry Test for Nonlinear kardl Models — symmetrytest"><meta name="description" content="The symmetry test is a statistical procedure used to assess the presence of
 symmetry in the relationship between variables in a model. It is particularly
 useful in econometric analysis, where it helps to identify whether the
 effects of changes in one variable on another are symmetric or asymmetric.
@@ -99,7 +99,7 @@ $$"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -275,7 +275,8 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">DriversKilled</span> <span class="op">~</span> <span class="fu">Lasym</span><span class="op">(</span><span class="va">drivers</span> <span class="op">+</span> <span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">Sas</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>  <span class="va">DriversKilled</span> <span class="op">~</span> <span class="fu">Lasym</span><span class="op">(</span><span class="va">drivers</span> <span class="op">+</span> <span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu">Sas</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>    <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
 <span class="r-in"><span>  <span class="va">Seatbelts</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
@@ -436,17 +437,35 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># If you want to test for symmetry with respect to a specific variable,</span></span></span>
 <span class="r-in"><span><span class="co"># you can use the selected_vars argument in the symmetrytest function. For</span></span></span>
-<span class="r-in"><span><span class="co"># example, to test for symmetry with respect to the PPI variable, you can use</span></span></span>
-<span class="r-in"><span><span class="co"># the following code:</span></span></span>
-<span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="st">"PPI"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> These variables are not available for symmetry testing: PPI</span>
+<span class="r-in"><span><span class="co"># example, to test for symmetry with respect to the drivers variable, you can</span></span></span>
+<span class="r-in"><span><span class="co"># use the following code:</span></span></span>
+<span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="st">"drivers"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers  1    215.58  215.58   1.694 0.1948</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To test for symmetry with respect to multiple variables, you can provide</span></span></span>
 <span class="r-in"><span><span class="co"># a vector of variable names to the selected_vars argument. For example, to</span></span></span>
-<span class="r-in"><span><span class="co"># test for symmetry with respect to both PPI and ER, you can use the</span></span></span>
-<span class="r-in"><span><span class="co"># following code:</span></span></span>
-<span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PPI"</span>, <span class="st">"ER"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> These variables are not available for symmetry testing: PPI, ER</span>
+<span class="r-in"><span><span class="co"># test for symmetry with respect to both drivers and PetrolPrice, you can use</span></span></span>
+<span class="r-in"><span><span class="co"># the following code:</span></span></span>
+<span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"drivers"</span>, <span class="st">"PetrolPrice"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Finally, you can also specify the type of test statistic to be used in the</span></span></span>
 <span class="r-in"><span><span class="co"># symmetry test. By default, the function uses the Wald test F statistic,</span></span></span>
@@ -478,7 +497,7 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

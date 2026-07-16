@@ -358,7 +358,7 @@ kardl_custom
 ## Key Functions and Parameters
 
 - **`kardl(data, model, maxlag, mode, ...)`**:
-  - `data`: A time series dataset (e.g., a data frame with CPI, ER, PPI).
+  - `data`: A time series dataset (e.g., a data frame with DriversKilled, PetrolPrice, drivers).
   - `formula`: A formula specifying the long-run equation, e.g., `y ~ x + z + asymmetric(z) + lasymmetric(x2 + x3) + sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`. Supports:
     - `asymmetric()`: asymmetric effects for both short- and long-run dynamics.
     - `lasymmetric()`: Long-run asymmetric variables.
@@ -370,7 +370,7 @@ kardl_custom
     - `"quick"`: Verbose output for interactive use.
     - `"grid"`: Verbose output with lag optimization.
     - `"grid_custom"`: Silent, efficient execution.
-    - User-defined vector (e.g., `c(1, 2, 4, 5)` or `c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)`).
+    - User-defined vector (e.g., `c(1, 2, 4, 5)` or `c(DriversKilled = 2, PetrolPrice_POS = 3, PetrolPrice_NEG = 1, drivers = 3)`).
   - Returns a list with components: `inputs`, `finalModel`, `start_time`, `end_time`, `properLag`, `time_span`, `opt_lag`, `lag_criteria`, `type` ("kardlmodel").
 
 - **`kardl_set(...)`**: Configures options like `criterion` (AIC, BIC, AICc, HQ), `different_asym_lag`, `asym_prefix`, `Sasymuffix`, `short_coef`, and `long_coef`. Use `kardl_get()` to retrieve settings and `kardl_reset()` to restore defaults.
@@ -395,8 +395,8 @@ The options for the KARDL package are set by the `kardl_set()` function in R. Th
 
 | Option Name | Default | Description |
 |------------------------|------------------------|------------------------|
-| data | NULL | The data to be used for the model estimation |
 | formula | NULL | The formula to be used for the model estimation |
+| data | NULL | The data to be used for the model estimation |
 | maxlag | 4 | The maximum number of lags to be considered for the model estimation |
 | mode | "quick" | The mode of the model estimation, can be "quick", "grid", "grid_custom" or a user-defined vector |
 | criterion | "AIC" | The criterion for model selection, can be "AIC", "BIC", "HQ" or a user-defined function |
@@ -406,10 +406,19 @@ The options for the KARDL package are set by the `kardl_set()` function in R. Th
 | long_coef | "L{lag}.{varName}" | Prefix for long-run coefficients, default is "L1." |
 | short_coef | "L{lag}.d.{varName}" | Prefix for short-run coefficients, default is "L1.d." |
 | batch | "1/1" | Batch size for parallel processing, default is "1/1" |
+| print_wrap | NULL | If not NULL, the output will be wrapped to the specified number of characters |
 
 The details of the options are as follows:
 
-### 1. data
+### 1. model
+
+`formula` is a formula object specifying the model to be estimated. The default value is `NULL`, which means that the user must provide a model formula when calling the `kardl()` function.
+
+#### Details
+
+The `model` parameter defines the structure of the ARDL or NARDL model to be estimated. It should include the dependent variable on the left side of the formula and the independent variables, asymmetric components, deterministic variables, and trend (if applicable) on the right side. The formula can include: - `Asymmetric()`: To specify variables with asymmetric effects in both short- and long -run dynamics. - `Lasymmetric()`: To specify variables with asymmetric effects only in the long-run -dynamics. - `Sasymmetric()`: To specify variables with asymmetric effects only in the short-run -dynamics. - `Deterministic()`: To include fixed dummy variables (e.g., seasonal d -ummies, event dummies). - `trend`: To include a linear time trend in the model. When constructing the `model` formula, ensure that: - All variables used in the formula are present in the `data` provided. - The formula is syntactically correct and follows R's formula conventions. - The use of asymmetric and deterministic functions is appropriate for the research question and data characteristics.
+
+### 2. data
 
 `data` is a data frame or time series object containing the variables to be used in the model estimation. The default value is `NULL`, which means that the user must provide a dataset when calling the `kardl()` function.
 
@@ -418,14 +427,6 @@ The details of the options are as follows:
 The `data` parameter is essential for the `kardl()` function to perform model estimation. It should contain all the variables specified in the model formula, including the dependent variable and any independent variables, asymmetric components, and deterministic variables defined in the formula. The trend will be generated automatically if specified in the formula. Input data can be in the form of a data frame, tibble, or time series object (e.g., `ts`, `xts`, `zoo`).
 
 When providing the `data`, ensure that: - The dataset is clean and free of missing values for the variables used in the model. - The variables are appropriately formatted (e.g., numeric for continuous variables). - The time series data is ordered correctly, especially if the analysis involves lagged variables.
-
-### 2. model
-
-`formula` is a formula object specifying the model to be estimated. The default value is `NULL`, which means that the user must provide a model formula when calling the `kardl()` function.
-
-#### Details
-
-The `model` parameter defines the structure of the ARDL or NARDL model to be estimated. It should include the dependent variable on the left side of the formula and the independent variables, asymmetric components, deterministic variables, and trend (if applicable) on the right side. The formula can include: - `Asymmetric()`: To specify variables with asymmetric effects in both short- and long -run dynamics. - `Lasymmetric()`: To specify variables with asymmetric effects only in the long-run -dynamics. - `Sasymmetric()`: To specify variables with asymmetric effects only in the short-run -dynamics. - `Deterministic()`: To include fixed dummy variables (e.g., seasonal d -ummies, event dummies). - `trend`: To include a linear time trend in the model. When constructing the `model` formula, ensure that: - All variables used in the formula are present in the `data` provided. - The formula is syntactically correct and follows R's formula conventions. - The use of asymmetric and deterministic functions is appropriate for the research question and data characteristics.
 
 ### 3. maxlag
 
@@ -438,7 +439,7 @@ The `maxlag` parameter sets the upper limit for the number of lags that the `kar
 ### 4. mode
 
 `mode` is a character string or numeric vector specifying the mode of the model estimation. The default value is `"quick"`. The available options are:\
-- **"quick"**: This mode provides a fast estimation of the model without optimizing the lags. It is suitable for initial explorations or when the user has a predefined lag structure. - **"grid"**: This mode performs a grid search over all possible lag combinations up to the specified `maxlag`. It provides verbose output, including the lag criteria for each combination, and is useful for thorough lag optimization. - **"grid_custom"**: Similar to `"grid"`, but with silent execution. It is more efficient for large datasets or when the user wants to avoid console output during the lag optimization process. - **User-defined vector**: The user can specify a custom lag structure by providing a numeric vector (e.g., `c(1, 2, 4, 5)`) or a named vector (e.g., `c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)`). This allows for complete control over the lag selection process.
+- **"quick"**: This mode provides a fast estimation of the model without optimizing the lags. It is suitable for initial explorations or when the user has a predefined lag structure. - **"grid"**: This mode performs a grid search over all possible lag combinations up to the specified `maxlag`. It provides verbose output, including the lag criteria for each combination, and is useful for thorough lag optimization. - **"grid_custom"**: Similar to `"grid"`, but with silent execution. It is more efficient for large datasets or when the user wants to avoid console output during the lag optimization process. - **User-defined vector**: The user can specify a custom lag structure by providing a numeric vector (e.g., `c(1, 2, 4, 5)`) or a named vector (e.g., `c(DriversKilled = 2, PetrolPrice_POS = 3, PetrolPrice_NEG = 1, drivers = 3)`). This allows for complete control over the lag selection process.
 
 #### Details
 
@@ -453,6 +454,7 @@ The `mode` parameter determines how the `kardl()` function approaches the estima
 - **BIC**: Schwarz Criterion (SC), also known as the Bayesian Information Criterion (BIC). This criterion imposes a stricter penalty for model complexity compared to AIC, often leading to simpler models when data size is large.
 - **AICc**: Corrected Akaike Information Criterion. This is a modification of AIC that accounts for small sample sizes. It is more reliable than AIC when the number of observations is limited.
 - **HQ**: Hannan-Quinn Criterion. This criterion is similar to AIC and BIC but uses a logarithmic penalty term that grows more slowly than BIC. It is often used in econometric applications.
+
 
 #### Details
 
@@ -694,6 +696,26 @@ kardl(data, my_formula)
 kardl_set(batch = "3/6")
 kardl(data, my_formula)
 ```
+
+### 12. print_wrap
+
+`print_wrap` is an optional parameter that specifies the maximum number of characters per line for console output. The default value is `NULL`, which means that the output will not be wrapped and will be displayed in its entirety.
+ 
+#### Examples
+
+##### Default (no wrapping)
+
+``` r
+kardl_set(print_wrap = NULL)
+```
+
+##### Custom wrapping (e.g., 80 characters per line)
+``` r
+kardl_set(print_wrap = 80L)
+```
+
+
+
 
 ## Contributing to kardl
 

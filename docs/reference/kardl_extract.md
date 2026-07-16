@@ -28,13 +28,13 @@ kardl_extract(kardl_object, what, variable = NULL, component = NULL)
   the selected `what` value and are documented in the relevant sections
   below. This argument is available just for `kardl_symmetric` objects,
   where users can extract results for specific variables included in the
-  symmetry test. For example, if a symmetry test includes variables "ER"
-  and "PPI", users can specify `variable = "ER"` to extract results
-  related to the "ER" variable, or `variable = c("ER", "PPI")` to
-  extract results for both variables. If `variable` is not specified
-  when extracting components that include variable-specific results, the
-  function will return results for all variables included in the
-  symmetry test.
+  symmetry test. For example, if a symmetry test includes variables
+  "drivers" and "PetrolPrice", users can specify `variable = "drivers"`
+  to extract results related to the "drivers" variable, or
+  `variable = c("drivers", "PetrolPrice")` to extract results for both
+  variables. If `variable` is not specified when extracting components
+  that include variable-specific results, the function will return
+  results for all variables included in the symmetry test.
 
 - component:
 
@@ -291,8 +291,10 @@ interest.
 ## Examples
 
 ``` r
-kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts,
-mode = c(2, 1, 0, 4, 0 ))
+kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers),
+  data = Seatbelts,
+  mode = c(2, 1, 0, 4, 0)
+)
 
 # Examples of extracting components from a fitted kardl_lm model object
 # kardl_extract(kardl_model, what = "data_ts_info")
@@ -349,11 +351,11 @@ kardl_extract(kardl_model, what = "model_type")
 #> [1] "NN"
 # kardl_extract(kardl_model, what = "data")
 kardl_extract(kardl_model, what = "start_time")
-#> [1] "2026-07-09 15:34:39 +03"
+#> [1] "2026-07-16 14:52:43 +03"
 kardl_extract(kardl_model, what = "end_time")
-#> [1] "2026-07-09 15:34:39 +03"
+#> [1] "2026-07-16 14:52:43 +03"
 kardl_extract(kardl_model, what = "span")
-#> Time difference of 0.004216909 secs
+#> Time difference of 0.00288105 secs
 kardl_extract(kardl_model, what = "opt_lag")
 #>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN     asyP_drivers_PP 
 #>                   2                   1                   0                   4 
@@ -370,13 +372,11 @@ kardl_extract(kardl_model, what = "model_formula")
 #>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + 
 #>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + 
 #>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN
-#> <environment: 0x5ac63b82e8b8>
+#> <environment: 0x5aec20c6a308>
 kardl_extract(kardl_model, what = "k")
 #> [1] 17
 kardl_extract(kardl_model, what = "n")
 #> [1] 186
-
-
 
 
 # Examples of extracting components from a kardl_mplier object
@@ -413,8 +413,6 @@ kardl_extract(m, what = "horizon")
 
 # Examples of extracting components from a kardl_boot object
 boot_results <- bootstrap(kardl_model, horizon = 40, replications = 2)
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
 head(kardl_extract(boot_results, what = "multipliers"))
 #>   h asyP_PetrolPrice_PP asyN_PetrolPrice_NN PetrolPrice_dif asyP_drivers_PP
 #> 1 0         -352.594515         -1036.63715     -1389.23167      0.07657003
@@ -608,14 +606,57 @@ kardl_extract(symmetry_results, what = "call")
 #> symmetrytest.kardl_lm(kardl_model = kardl_model)
 
 # Example of extracting specific components from symmetry test results
-kardl_extract(symmetry_results, what = "short_wald_tests", variable = "PPI")
-#> Error: Variable(s) not found: PPI. Available variables: PetrolPrice, drivers
-kardl_extract(symmetry_results, what = "long_wald_tests", variable = "PPI")
-#> Error: Variable(s) not found: PPI. Available variables: PetrolPrice, drivers
-kardl_extract(symmetry_results, what = "long_hypotheses", variable = "PPI")
-#> Error: Variable(s) not found: PPI. Available variables: PetrolPrice, drivers
-kardl_extract(symmetry_results, what = "short_hypotheses", variable = "PPI")
-#> Error: Variable(s) not found: PPI. Available variables: PetrolPrice, drivers
+kardl_extract(symmetry_results,
+  what = "short_wald_tests",
+  variable = "PetrolPrice"
+)
+#> 
+#> Linear hypothesis test:
+#> L0.d.asyP_PetrolPrice_PP  + L1.d.asyP_PetrolPrice_PP - L0.d.asyN_PetrolPrice_NN = 0
+#> 
+#> Model 1: restricted model
+#> Model 2: L0.d.DriversKilled ~ L1.DriversKilled + L1.asyP_PetrolPrice_PP + 
+#>     L1.asyN_PetrolPrice_NN + L1.asyP_drivers_PP + L1.asyN_drivers_NN + 
+#>     L1.d.DriversKilled + L2.d.DriversKilled + L0.d.asyP_PetrolPrice_PP + 
+#>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + 
+#>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + 
+#>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN
+#> 
+#>   Res.Df   RSS Df Sum of Sq      F Pr(>F)
+#> 1    170 21824                           
+#> 2    169 21620  1    203.66 1.5919 0.2088
+kardl_extract(symmetry_results,
+  what = "long_wald_tests",
+  variable = "PetrolPrice"
+)
+#> 
+#>  Wald F test of a restriction on model parameters
+#> 
+#> data:  kardl_model
+#> F = 0.25868, df1 = 1, df2 = 169, p-value = 0.6117
+#> 
+kardl_extract(symmetry_results,
+  what = "long_hypotheses",
+  variable = "PetrolPrice"
+)
+#> 
+#> Hypotheses:
+#> 
+#> Variable: PetrolPrice 
+#> H0: - Coef(L1.asyP_PetrolPrice_PP)/Coef(L1.DriversKilled) = - Coef(L1.asyN_PetrolPrice_NN)/Coef(L1.DriversKilled) 
+#> H1: At least one coefficient differs from zero. 
+#> 
+kardl_extract(symmetry_results,
+  what = "short_hypotheses",
+  variable = "PetrolPrice"
+)
+#> 
+#> Hypotheses:
+#> 
+#> Variable: PetrolPrice 
+#> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) 
+#> H1: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) ≠ Coef(L0.d.asyN_PetrolPrice_NN) 
+#> 
 kardl_extract(symmetry_results, what = "short_hypotheses", component = "H0")
 #> 
 #> Hypotheses:
@@ -639,7 +680,11 @@ kardl_extract(symmetry_results, what = "short_hypotheses", component = "H1")
 
 kardl_extract(symmetry_results,
   what = "short_hypotheses",
-  variable = "PPI", component = "H0"
+  variable = "PetrolPrice", component = "H0"
 )
-#> Error: Variable(s) not found: PPI. Available variables: PetrolPrice, drivers
+#> 
+#> Hypotheses:
+#> 
+#> Variable: PetrolPrice 
+#> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) 
 ```

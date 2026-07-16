@@ -688,7 +688,8 @@ kardl_critvals <- function(x, ...) {
 #'   \code{\link{ecm}}, \code{\link{narayan}}
 #' @examples
 #' kardl_model <- kardl(
-#'   DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) + deterministic(law) + trend,
+#'   DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) +
+#'     deterministic(law) + trend,
 #'   Seatbelts
 #' )
 #' ast <- symmetrytest(kardl_model)
@@ -731,15 +732,15 @@ kardl_critvals <- function(x, ...) {
 #'
 #' # If you want to test for symmetry with respect to a specific variable,
 #' # you can use the selected_vars argument in the symmetrytest function. For
-#' # example, to test for symmetry with respect to the PPI variable, you can use
-#' # the following code:
-#' symmetrytest(kardl_model, selected_vars = "PPI")
+#' # example, to test for symmetry with respect to the drivers variable, you can
+#' # use the following code:
+#' symmetrytest(kardl_model, selected_vars = "drivers")
 #'
 #' # To test for symmetry with respect to multiple variables, you can provide
 #' # a vector of variable names to the selected_vars argument. For example, to
-#' # test for symmetry with respect to both PPI and ER, you can use the
-#' # following code:
-#' symmetrytest(kardl_model, selected_vars = c("PPI", "ER"))
+#' # test for symmetry with respect to both drivers and PetrolPrice, you can use
+#' # the following code:
+#' symmetrytest(kardl_model, selected_vars = c("drivers", "PetrolPrice"))
 #'
 #' # Finally, you can also specify the type of test statistic to be used in the
 #' # symmetry test. By default, the function uses the Wald test F statistic,
@@ -1213,28 +1214,25 @@ symmetrytest.kardl_lm <- function(
 #'   \code{\link{kardl}} or an object of class \code{kardl_longrun}
 #'   produced by \code{\link{kardl_longrun}}.
 #' @param case Numeric or character. Specifies the case of the test to be used
-#'        in the function. Acceptable values are 1, 2, 3, 4, 5, and "auto". If
-#'        "auto" is chosen, the function determines the case automatically
-#'        based on the model's characteristics. Invalid values will result in
-#'        an error.
-#' \itemize{
-#' \item \code{1}: No intercept and no trend
-#' \item \code{2}: Restricted intercept and no trend
-#' \item \code{3}: Unrestricted intercept and no trend
-#' \item \code{4}: Unrestricted intercept and restricted trend
-#' \item \code{5}: Unrestricted intercept and unrestricted trend
-#' }
-#'
+#'  in the function. Acceptable values are 1, 2, 3, 4, 5, and "auto". If
+#'  "auto" is chosen, the function determines the case automatically
+#'  based on the model's characteristics. Invalid values will result in
+#'  an error.
+#'  \itemize{
+#'      \item \code{1}: No intercept and no trend
+#'      \item \code{2}: Restricted intercept and no trend
+#'      \item \code{3}: Unrestricted intercept and no trend
+#'      \item \code{4}: Unrestricted intercept and restricted trend
+#'      \item \code{5}: Unrestricted intercept and unrestricted trend
+#'  }
 #' @param signif_level Character or numeric. Specifies the significance level
 #' to be used in the function. Acceptable values are "auto", "0.10",
 #' "0.1", "0.05", "0.025", and "0.01". If a numeric value is provided,
-#'  it will be converted to a character string.
-#'
-#' When \code{"auto"} is selected, the function determines the
-#' significance level sequentially, starting from the most stringent
-#' level (\code{"0.01"}) and proceeding to \code{"0.025"}, \code{"0.05"},
-#' and \code{"0.10"} until a suitable level is identified. Invalid
-#' values will result in an error.
+#'  it will be converted to a character string. When \code{"auto"} is selected,
+#' the function determines the significance level sequentially, starting from
+#' the most stringent level (\code{"0.01"}) and proceeding to \code{"0.025"},
+#' \code{"0.05"}, and \code{"0.10"} until a suitable level is identified.
+#' Invalid values will result in an error.
 #'
 #' @param ... Additional arguments (currently not used).
 #'
@@ -1326,7 +1324,8 @@ symmetrytest.kardl_lm <- function(
 #' @examples
 #'
 #' kardl_model <- kardl(
-#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'     deterministic(law) + trend,
 #'   Seatbelts,
 #'   mode = c(1, 2, 3, 0)
 #' )
@@ -1345,14 +1344,18 @@ symmetrytest.kardl_lm <- function(
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   kardl(
+#'     DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'       deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   pssf()
 #'
 #' # Getting details of the test results using magrittr:
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   kardl(
+#'     DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'       deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   pssf() %>%
@@ -1628,7 +1631,8 @@ pssf.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
 #' @examples
 
 #' kardl_model<-kardl(
-#'                    DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+#'                    DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice)+
+#'                        deterministic(law)+trend,
 #'                    Seatbelts,
 #'                    mode=c(1,2,3,0))
 #' my_test<-narayan(kardl_model, case=3, signif_level="auto")
@@ -1649,14 +1653,18 @@ pssf.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   kardl(
+#'     DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'       deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   narayan()
 #'
 #' # Getting details of the test results using magrittr:
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   kardl(
+#'     DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'       deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   narayan() %>%
@@ -1871,9 +1879,10 @@ narayan.kardl_lm <- function(kardl_model,
 #'   cointegration. This test is particularly useful when working with datasets
 #'   containing both stationary and non-stationary variables.
 #' @inheritParams pssf
-#' @param vcov A variance-covariance matrix for the model coefficients.
+#' @param vcov A variance-covariance matrix to be used for the test. If not
+#' provided, the default variance-covariance matrix from the model will be used.
+#' @param ... Additional arguments.
 #'
-
 #' @section Hypothesis testing:
 #' The PSS t Bound test evaluates the null hypothesis that the long-run
 #' coefficients of the model are equal to zero against the alternative
@@ -1936,7 +1945,8 @@ narayan.kardl_lm <- function(kardl_model,
 #' @examples
 
 #' kardl_model<-kardl(
-#'                    DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+#'                    DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+
+#'                          deterministic(law)+trend,
 #'                    Seatbelts,
 #'                    mode=c(1,2,3,0))
 #' my_test<-psst(kardl_model)
@@ -1949,7 +1959,15 @@ narayan.kardl_lm <- function(kardl_model,
 #' # Getting the critical values of the test.
 #' kardl_extract(my_summary, what = "critical_values")
 #'
-#'
+#' # Using a robust variance-covariance matrix for the test:
+#' if (requireNamespace("sandwich", quietly = TRUE)) {
+#'     vcov_matrix <- sandwich::vcovHC(kardl_model)
+#'     my_test_robust <- psst(kardl_model,
+#'                            case = 1,
+#'                            signif_level =0.01,
+#'                            vcov = vcov_matrix)
+#'   my_test_robust
+#' }
 #'
 #'
 #' # Using magrittr :
@@ -1957,20 +1975,25 @@ narayan.kardl_lm <- function(kardl_model,
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   kardl(
+#'     DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'       deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   psst()
 #'
 #' # Getting details of the test results using magrittr:
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   kardl(
+#'     DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'       deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   psst() %>%
 #'   summary()
 #'
-psst <- function(kardl_model, ...) {
+psst <- function(kardl_model, case = "auto",
+                 signif_level = "auto", vcov = NULL, ...) {
   UseMethod("psst")
 }
 #' Default method for psst function
@@ -1979,7 +2002,8 @@ psst <- function(kardl_model, ...) {
 #'
 #' @noRd
 #' @export
-psst.default <- function(kardl_model, ...) {
+psst.default <- function(kardl_model, case = "auto",
+                         signif_level = "auto", vcov = NULL, ...) {
   stop(
     "psst() requires a kardl_lm object. ",
     "Please estimate a model using kardl() first.",
@@ -1990,11 +2014,11 @@ psst.default <- function(kardl_model, ...) {
 #' @export
 #' @method psst kardl_longrun
 psst.kardl_longrun <- function(kardl_model, case = "auto",
-                               signif_level = "auto", ...) {
+                               signif_level = "auto", vcov = NULL, ...) {
   psst.kardl_lm(
     kardl_model = kardl_model$original_model,
     case = case,
-    signif_level = signif_level,
+    signif_level = signif_level, vcov = vcov,
     ...
   )
 }
@@ -2078,9 +2102,9 @@ psst.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
   if (!is.null(vcov)) {
     vcov_matrix <- vcov
   } else {
-    vcov_matrix <- stats::vcov(kardl_model)
+    vcov_matrix <- stats::vcov(kardl_model, ...)
   }
-  coef_test <- lmtest::coeftest(kardl_model, vcov = vcov_matrix)
+  coef_test <- lmtest::coeftest(kardl_model, vcov = vcov_matrix, ...)
 
   if (kardl_model$est_info$type == "ecm") {
     test_var_name <- "EcmRes"

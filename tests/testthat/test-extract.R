@@ -11,14 +11,21 @@ test_that("kardl_extract works for kardl_lm objects", {
   kardl_reset()
 
   # Create a simple kardl model
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 2)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 2
+  )
 
   # Test extraction of basic components
   expect_type(kardl_extract(model, "dependent_var"), "character")
   expect_equal(kardl_extract(model, "dependent_var"), "DriversKilled")
 
   expect_type(kardl_extract(model, "independent_vars"), "character")
-  expect_true(all(c("PetrolPrice", "drivers") %in% kardl_extract(model, "independent_vars")))
+  expect_true(
+    all(
+      c("PetrolPrice", "drivers") %in% kardl_extract(model, "independent_vars")
+    )
+  )
 
   expect_type(kardl_extract(model, "all_vars"), "character")
   expect_true("DriversKilled" %in% kardl_extract(model, "all_vars"))
@@ -82,7 +89,10 @@ test_that("kardl_extract works for kardl_boot objects", {
 test_that("kardl_extract works for kardl_test objects", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test extraction of test components
@@ -99,7 +109,10 @@ test_that("kardl_extract works for kardl_test objects", {
 test_that("kardl_extract works for kardl_test_summary objects", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summary <- summary(test_result)
 
@@ -120,7 +133,10 @@ test_that("kardl_extract works for kardl_test_summary objects", {
 test_that("kardl_extract works for kardl_symmetric objects", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers),
+    data = Seatbelts,
+    maxlag = 1
+  )
   sym_result <- symmetrytest(model)
 
   # Test extraction of summary tables
@@ -145,7 +161,9 @@ test_that("kardl_extract works for kardl_symmetric objects", {
   expect_type(long_tests, "list")
 
   # Test extraction for specific variable
-  er_test <- kardl_extract(sym_result, "long_wald_tests", variable = "PetrolPrice")
+  er_test <- kardl_extract(sym_result, "long_wald_tests",
+    variable = "PetrolPrice"
+  )
   expect_s3_class(er_test, "htest")
 
   # expect error for non-existent variable
@@ -158,7 +176,9 @@ test_that("kardl_extract works for kardl_symmetric objects", {
   expect_s3_class(long_hyp, "kardl_hypotheses")
 
   # Test extraction of hypotheses for specific variable
-  er_hyp <- kardl_extract(sym_result, "long_hypotheses", variable = "PetrolPrice")
+  er_hyp <- kardl_extract(sym_result, "long_hypotheses",
+    variable = "PetrolPrice"
+  )
   expect_s3_class(er_hyp, "kardl_hypotheses")
 
   # Test extraction of specific hypothesis component
@@ -199,7 +219,10 @@ test_that("kardl_extract errors for invalid 'what' arguments", {
 test_that("kardl_extract handles variable extraction correctly", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers),
+    data = Seatbelts,
+    maxlag = 1
+  )
   sym_result <- symmetrytest(model)
 
   # Test extraction with multiple variables
@@ -272,7 +295,10 @@ test_that("kardl_extract retrieves model specification correctly", {
 test_that("kardl_extract handles lag information correctly", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 3)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 3
+  )
 
   # Test lag criteria extraction
   lag_criteria <- kardl_extract(model, "lag_criteria")

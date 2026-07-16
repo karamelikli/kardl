@@ -120,8 +120,8 @@ linear time trend in the model.
 ``` r
 
 # Define the model formula
-my_formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice + drivers) + deterministic(law) +
-  trend
+my_formula <- DriversKilled ~ PetrolPrice + drivers +
+  asymmetric(PetrolPrice + drivers) + deterministic(law) + trend
 ```
 
 Indeed, the formula syntax is flexible, allowing for various
@@ -332,7 +332,6 @@ library(tidyr)
 library(ggplot2)
 # Convert lag_criteria to a data frame
 lag_criteria <- as.data.frame(kardl_extract(kardl_model, "lag_criteria"))
-colnames(lag_criteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
 lag_criteria <- lag_criteria |> mutate(across(c(AIC, BIC, HQ), as.numeric))
 
 # Pivot to long format
@@ -893,8 +892,8 @@ kardl_custom
 
 - **`kardl(data, model, maxlag, mode, ...)`**:
 
-  - `data`: A time series dataset (e.g., a data frame with CPI, ER,
-    PPI).
+  - `data`: A time series dataset (e.g., a data frame with
+    DriversKilled, PetrolPrice, drivers).
   - `formula`: A formula specifying the long-run equation, e.g.,
     `y ~ x + z + asymmetric(z) + lasymmetric(x2 + x3) + sasymmetric(x3 + x4) + deterministic(dummy1 + dummy2) + trend`.
     Supports:
@@ -912,7 +911,7 @@ kardl_custom
     - `"grid"`: Verbose output with lag optimization.
     - `"grid_custom"`: Silent, efficient execution.
     - User-defined vector (e.g., `c(1, 2, 4, 5)` or
-      `c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)`).
+      `c(DriversKilled = 2, PetrolPrice_POS = 3, PetrolPrice_NEG = 1, drivers = 3)`).
   - Returns a list with components: `inputs`, `finalModel`,
     `start_time`, `end_time`, `properLag`, `time_span`, `opt_lag`,
     `lag_criteria`, `type` (“kardlmodel”).

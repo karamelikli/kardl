@@ -17,8 +17,8 @@ include at least:
 }}
 
 \item{cr}{A character string specifying the criterion to compute.
-Options are \code{"AIC"}, \code{"BIC"}, \code{"AICc"}, and
-\code{"HQ"}. Alternatively, a user-defined function can be
+Options are \code{"AIC"}, \code{"BIC"}, \code{"AICc"},\code{"HQ"}
+and \code{"AdjR2"}. Alternatively, a user-defined function can be
 provided. See details below for more information on using custom
 criteria.}
 
@@ -30,8 +30,8 @@ A numeric value representing the selected criterion, normalized
 by the sample size if one of the predefined options is used.
 }
 \description{
-Computes a model selection criterion (AIC, BIC, AICc, or HQ) or applies
-a user-defined function to evaluate a statistical model.
+Computes a model selection criterion (AIC, BIC, AICc, HQ, or AdjR2) or
+applies a user-defined function to evaluate a statistical model.
 }
 \details{
 This function returns model selection criteria used to compare the quality of
@@ -60,6 +60,11 @@ Information Criterion divided by \code{n}.
 Corrected Akaike Information Criterion divided by \code{n}.
 \item \strong{"HQ"}: \eqn{ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} }
 Hannan-Quinn Criterion divided by \code{n}.
+\item \strong{"AdjR2"}: Adjusted R-squared, computed as
+\eqn{1 - \frac{(1 - R^2)(n - 1)}{n - k - 1}}. In this case, higher values
+indicate better models, but the function still returns the negative of the
+adjusted R-squared for consistency with the minimization approach of the
+other criteria.
 }
 
 where:
@@ -81,7 +86,8 @@ model_criterion(mylm, "AIC")
 
 # Example usage of model_criterion function with a kardl model
 kardl_model <- kardl(
-  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+    deterministic(law) + trend,
   Seatbelts,
   mode = c(1, 2, 3, 0)
 )

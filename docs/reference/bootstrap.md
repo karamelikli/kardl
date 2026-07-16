@@ -109,7 +109,8 @@ calculating dynamic multipliers
 
 # Fit a model using kardl
 kardl_model <- kardl(
-  DriversKilled ~ PetrolPrice + drivers + asy(PetrolPrice) + det(law) + trend,
+  DriversKilled ~ PetrolPrice + drivers + asy(PetrolPrice) +
+    det(law) + trend,
   Seatbelts,
   mode = c(1, 2, 3, 0)
 )
@@ -119,11 +120,6 @@ boot <- bootstrap(kardl_model,
   horizon = 40, level = 95, min_prob = 0,
   replications = 5, seed = 123L
 )
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
 # The boot object will include all plots for the specified variables
 # Displaying the boot object provides an overview of its components
 names(boot)
@@ -188,12 +184,10 @@ plot(boot, variable = "PetrolPrice")
 library(magrittr)
 
 Seatbelts %>%
-  kardl(DriversKilled ~ drivers + asym(PetrolPrice) + trend, maxlag = 2, data = .) %>%
+  kardl(DriversKilled ~ drivers + asym(PetrolPrice) + trend,
+    maxlag = 2,
+    data = .
+  ) %>%
   bootstrap(replications = 5) %>%
   plot(variable = "PetrolPrice")
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
-#> Warning: The data is not a time series. It has been converted to a time series with start = 1 and frequency = 1.
 ```

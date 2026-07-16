@@ -1,7 +1,7 @@
 Package: kardl
 Type: Package
 Title: Make Symmetric and Asymmetric ARDL Estimations
-Version: 2.0.3
+Version: 2.0.4
 Authors@R: 
   c(person(given = "Huseyin",
            family = "karamelikli",
@@ -31,14 +31,12 @@ Imports: stats, msm, lmtest,lifecycle, nlWaldTest, car, ggplot2, utils
 Suggests: 
     knitr,
     rmarkdown,
-    officer,
-    flextable,
-    equatags,
     magrittr,
     rlang,
     tidyr,
     dplyr,
     MASS,
+    sandwich,
     testthat (>= 3.0.0)
 NeedsCompilation: no
 VignetteBuilder: knitr

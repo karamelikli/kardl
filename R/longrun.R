@@ -89,7 +89,8 @@
 #' @examples
 #'
 #' kardl_model <- kardl(
-#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'     deterministic(law) + trend,
 #'   Seatbelts,
 #'   mode = c(1, 2, 3, 0)
 #' )
@@ -105,7 +106,9 @@
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   kardl(
+#'     DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'       deterministic(law) + trend,
 #'     mode = c(1, 2, 3, 0), data = .
 #'   ) %>%
 #'   kardl_longrun() %>%

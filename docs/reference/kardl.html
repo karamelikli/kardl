@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimate ARDL and NARDL Models with Automatic Lag Selection — kardl"><meta name="description" content="This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Estimate ARDL and NARDL Models with Automatic Lag Selection — kardl"><meta name="description" content="This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear
 ARDL (NARDL) model based on the provided data and model formula.
 It allows for flexible specification of variables, including deterministic
 terms, asymmetric variables, and trend components.
@@ -23,7 +23,7 @@ criteria."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -210,9 +210,11 @@ the lag optimization process and directly uses the specified lags.</p>
 <code>mode = c(1, 2, 4, 5)</code> assigns lags of 1, 2, 4, and 5 to variables in
 the specified order. Alternatively, lag values can be assigned to variables
 by name for clarity and control. For example:
-<code>mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)</code> assigns lags to
-variables explicitly. Ensure that the lags are correctly designated by
-verifying the result using <code>kardl_model$proper_lag</code> after estimation.</p>
+If the long-run model defined as <code>DriversKilled~Asy(PetrolPrice)+
+drivers</code>, then <code>mode = c(DriversKilled = 2, PetrolPrice_POS = 3,
+PetrolPrice_NEG = 1, drivers = 3)</code> assigns lags to variables explicitly.
+Ensure that the lags are correctly designated by verifying the result using
+<code>kardl_model$proper_lag</code> after estimation.</p>
 <p><strong><em>Attention!</em></strong>
 A function-based criterion or user-defined function can be specified
 for model selection, but this is only supported for
@@ -244,6 +246,9 @@ relative to the number of parameters.</p></li>
 <li><p><strong>"HQ"</strong>: Hannan-Quinn Information Criterion. This criterion
 provides a compromise between AIC and BIC, favoring models that
 balance fit and complexity without being overly conservative.</p></li>
+<li><p><strong>AdjR2</strong>: Adjusted R-squared. This criterion adjusts
+the R-squared value for the number of predictors in the model,
+favoring models that explain more variance with fewer predictors.</p></li>
 </ul><p>The criterion can be specified as a string (e.g., <code>"AIC"</code>) or as
 a user-defined function that takes a fitted model object.
 Please visit the <code><a href="model_criterion.html">model_criterion</a></code> function documentation
@@ -358,9 +363,10 @@ respectively.</p></li>
 
 <p>In the reported coefficients, the prefix <code>L</code> denotes lagged variables,
 where the accompanying number indicates the lag order, and <code>.d.</code> denotes
-first differences. Accordingly, <code>L1.PPI</code> represents the first lag of the
-level of <code>PPI</code> (long-run component), while <code>L3.d.PPI</code> denotes the
-third lag of the first-differenced <code>PPI</code> (short-run component).</p>
+first differences. Accordingly, <code>L1.drivers</code> represents the first lag of
+the level of <code>drivers</code> (long-run component), while <code>L3.d.drivers</code>
+denotes the third lag of the first-differenced <code>drivers</code>
+(short-run component).</p>
 <p>In addition, the suffixes <code>_POS</code> and <code>_NEG</code> indicate the positive
 and negative partial sum components of a variable, respectively.
 This notation is used by default and remains valid unless modified through
@@ -615,7 +621,7 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

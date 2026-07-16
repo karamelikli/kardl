@@ -59,9 +59,10 @@
 #'
 #' In the reported coefficients, the prefix \code{L} denotes lagged variables,
 #' where the accompanying number indicates the lag order, and \code{.d.} denotes
-#' first differences. Accordingly, \code{L1.PPI} represents the first lag of the
-#' level of \code{PPI} (long-run component), while \code{L3.d.PPI} denotes the
-#' third lag of the first-differenced \code{PPI} (short-run component).
+#' first differences. Accordingly, \code{L1.drivers} represents the first lag of
+#'  the level of \code{drivers} (long-run component), while \code{L3.d.drivers}
+#' denotes the third lag of the first-differenced \code{drivers}
+#' (short-run component).
 #'
 #' In addition, the suffixes \code{_POS} and \code{_NEG} indicate the positive
 #' and negative partial sum components of a variable, respectively.
@@ -236,9 +237,11 @@
 #' \code{mode = c(1, 2, 4, 5)} assigns lags of 1, 2, 4, and 5 to variables in
 #' the specified order. Alternatively, lag values can be assigned to variables
 #' by name for clarity and control. For example:
-#' \code{mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)} assigns lags to
-#' variables explicitly. Ensure that the lags are correctly designated by
-#' verifying the result using \code{kardl_model$proper_lag} after estimation.
+#' If the long-run model defined as \code{DriversKilled~Asy(PetrolPrice)+
+#' drivers}, then \code{mode = c(DriversKilled = 2, PetrolPrice_POS = 3,
+#' PetrolPrice_NEG = 1, drivers = 3)} assigns lags to variables explicitly.
+#' Ensure that the lags are correctly designated by verifying the result using
+#' \code{kardl_model$proper_lag} after estimation.
 #'
 #' \strong{\emph{Attention!}}
 #' A function-based criterion or user-defined function can be specified
@@ -274,6 +277,10 @@
 #' \item \strong{"HQ"}: Hannan-Quinn Information Criterion. This criterion
 #'       provides a compromise between AIC and BIC, favoring models that
 #'       balance fit and complexity without being overly conservative.
+#' \item \strong{AdjR2}: Adjusted R-squared. This criterion adjusts
+#'       the R-squared value for the number of predictors in the model,
+#'        favoring models that explain more variance with fewer predictors.
+#'
 #' }
 #'       The criterion can be specified as a string (e.g., \code{"AIC"}) or as
 #'       a user-defined function that takes a fitted model object.
@@ -339,8 +346,8 @@
 #'           are matched against predefined acceptable values via `match.arg()`
 #'           internally.
 #' @srrstats {G2.3a} The `criterion` argument is matched against
-#'           `c("AIC", "BIC", "AICc", "HQ")`; the `mode` argument against
-#'           `c("quick", "grid", "grid_custom")`.
+#'           `c("AIC", "BIC", "AICc", "HQ", "AdjR2")`; the `mode` argument
+#'           against `c("quick", "grid", "grid_custom")`.
 #' @srrstats {G2.4} Formula parsing and data alignment are performed before
 #'           estimation so all subsequent routines operate on a consistent
 #'           internal representation.
@@ -670,7 +677,8 @@ kardl <- function(
 #' # Example: Road safety analysis using UK Seatbelts data
 #' # Analyzing the effect of seatbelt law on driver deaths
 #' kardl_set(
-#'   formula = DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   formula = DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'     deterministic(law) + trend,
 #'   data = Seatbelts,
 #'   maxlag = 3
 #' )
@@ -730,7 +738,8 @@ kardl <- function(
 #'   asym_prefix = c("asyP_", "asyN_"),
 #'   asym_suffix = c("_PP", "_NN")
 #' )
-#' customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice), Seatbelts)
+#' customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers +
+#'   asym(PetrolPrice), Seatbelts)
 #' customizedNames
 #'
 ecm <- function(
@@ -885,8 +894,8 @@ predict.kardl_lm <- function(object, newdata = NULL, ...) {
 
 #' Model Selection Criteria
 #'
-#' Computes a model selection criterion (AIC, BIC, AICc, or HQ) or applies
-#' a user-defined function to evaluate a statistical model.
+#' Computes a model selection criterion (AIC, BIC, AICc, HQ, or AdjR2) or
+#' applies a user-defined function to evaluate a statistical model.
 #'
 #'
 #' @param lm_model An object containing the fitted model. The object should
@@ -898,8 +907,8 @@ predict.kardl_lm <- function(object, newdata = NULL, ...) {
 #' \item \code{n} - the sample size.
 #' }
 #' @param cr A character string specifying the criterion to compute.
-#'           Options are \code{"AIC"}, \code{"BIC"}, \code{"AICc"}, and
-#'           \code{"HQ"}. Alternatively, a user-defined function can be
+#'           Options are \code{"AIC"}, \code{"BIC"}, \code{"AICc"},\code{"HQ"}
+#'           and \code{"AdjR2"}. Alternatively, a user-defined function can be
 #'           provided. See details below for more information on using custom
 #'            criteria.
 #' @param ... Additional arguments passed to the user-defined criterion
@@ -935,6 +944,11 @@ predict.kardl_lm <- function(object, newdata = NULL, ...) {
 #'       Corrected Akaike Information Criterion divided by \code{n}.
 #' \item \strong{"HQ"}: \eqn{ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} }
 #'       Hannan-Quinn Criterion divided by \code{n}.
+#' \item \strong{"AdjR2"}: Adjusted R-squared, computed as
+#' \eqn{1 - \frac{(1 - R^2)(n - 1)}{n - k - 1}}. In this case, higher values
+#' indicate better models, but the function still returns the negative of the
+#' adjusted R-squared for consistency with the minimization approach of the
+#' other criteria.
 #' }
 #'
 #' where:
@@ -949,11 +963,11 @@ predict.kardl_lm <- function(object, newdata = NULL, ...) {
 #' @seealso \code{\link{kardl}}
 #'
 #' @srrstats {G1.6} This function provides criteria for model selection,
-#'           including AIC, BIC, AICc, and HQ, which can be used in R based
-#'           model selection processes too.
+#'           including AIC, BIC, AICc, HQ, and adjusted R-squared, which can be
+#'           used in R based model selection processes too.
 #' @srrstats {G2.3} The `cr` argument is matched against
-#'           `c("AIC", "BIC", "AICc", "HQ")` via `match.arg()` when a string
-#'           is supplied.
+#'           `c("AIC", "BIC", "AICc", "HQ", "AdjR2")` via `match.arg()` when a
+#'           string is supplied.
 #' @srrstats {G2.3a} `match.arg()` is used to validate the `cr` argument when it
 #'            is a character string.
 #' @srrstats {G2.3b} Using `tolower()` to make the `cr` argument
@@ -971,7 +985,8 @@ predict.kardl_lm <- function(object, newdata = NULL, ...) {
 #'
 #' # Example usage of model_criterion function with a kardl model
 #' kardl_model <- kardl(
-#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+#'   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+#'     deterministic(law) + trend,
 #'   Seatbelts,
 #'   mode = c(1, 2, 3, 0)
 #' )
@@ -1022,9 +1037,8 @@ model_criterion.default <- function(lm_model, cr, ...) {
 #' Model Selection Criterion for Linear Models
 #'
 #' This function computes the specified model selection criterion (AIC, BIC,
-#' AICc, or HQ) for a fitted linear model object of class `lm`. It can also
-#' accept a user-defined function as the criterion. The function returns the
-#' computed criterion value normalized by the sample size.
+#' AICc, HQ, or adjusted R-squared) for a fitted linear model object of class
+#' `lm`. It can also accept a user-defined function as the criterion.
 #'
 #' @noRd
 #' @export
@@ -1034,26 +1048,24 @@ model_criterion.lm <- function(lm_model, cr, ...) {
     do.call(cr, list(lm_model, ...))
   } else {
     cr <- tolower(cr)
-    my_cr <- match.arg(cr, c("aic", "bic", "aicc", "hq"))
-    k <- length(lm_model$coefficients) # k
+    my_cr <- match.arg(cr, c("aic", "bic", "aicc", "hq", "adjr2"))
+
+    k <- length(lm_model$coefficients)
     n <- length(lm_model$residuals)
     llh <- logLik(lm_model)
+
     val <- switch(my_cr,
-      "aic" = ((2 * k - 2 * llh) / n),
-      "bic" = ((log(n) * k - 2 * llh) / n),
-      "aicc" = (((2 * k * (k + 1)) / (n - k - 1)) + (2 * k - 2 * llh) / n),
-      "hq" = ((2 *
-        log(log(
-          n
-        )) *
-        k -
-        2 * llh) /
-        n)
+      "aic" = (2 * k - 2 * llh) / n,
+      "bic" = (log(n) * k - 2 * llh) / n,
+      "aicc" = ((2 * k * (k + 1)) / (n - k - 1)) +
+        ((2 * k - 2 * llh) / n),
+      "hq" = (2 * log(log(n)) * k - 2 * llh) / n,
+      "adjr2" = -summary(lm_model)$adj.r.squared
     )
-    as.numeric(val)
+
+    val
   }
 }
-
 
 #'  Model Estimation Dispatcher
 #'
@@ -1475,8 +1487,8 @@ makemodel.grid <- function(spec, ...) {
   # for faster access to the extracted information in the loop
   s_info <- spec$extracted_info
 
-  lag_criteria <- matrix(NA, s_info$lag_rows_number, 5)
-  colnames(lag_criteria) <- c("lag", "AIC", "BIC", "AICc", "HQ")
+  lag_criteria <- matrix(NA, s_info$lag_rows_number, 6)
+  colnames(lag_criteria) <- c("lag", "AIC", "BIC", "AICc", "HQ", "AdjR2")
   bir <- rep(
     rep(
       c(1:(spec$args_info$maxlag - 1)),
@@ -1540,6 +1552,7 @@ makemodel.grid <- function(spec, ...) {
     lag_criteria[i, 3] <- bic
     lag_criteria[i, 4] <- aic + ((2 * k * (k + 1)) / (n - k - 1))
     lag_criteria[i, 5] <- hq
+    lag_criteria[i, 6] <- summary(the_results)$adj.r.squared
     progress_bar(i, batch$end_row, as.character(lag_criteria[i, 1]))
   }
   cat("\n")
@@ -1561,11 +1574,16 @@ makemodel.grid <- function(spec, ...) {
     lag_criteria[, 5] == min(as.numeric(lag_criteria[, 5]), na.rm = TRUE),
     arr.ind = TRUE
   )[1]
+  adjr2_row <- which(
+    lag_criteria[, 6] == max(as.numeric(lag_criteria[, 6]), na.rm = TRUE),
+    arr.ind = TRUE
+  )[1]
   final_lags <- data.frame(
     "AIC" = c(lag_criteria[aic_row, 1], lag_criteria[aic_row, 2]),
     "BIC" = c(lag_criteria[bic_row, 1], lag_criteria[bic_row, 3]),
     "AICc" = c(lag_criteria[aicc_row, 1], lag_criteria[aicc_row, 4]),
-    "HQ" = c(lag_criteria[hq_row, 1], lag_criteria[hq_row, 5])
+    "HQ" = c(lag_criteria[hq_row, 1], lag_criteria[hq_row, 5]),
+    "AdjR2" = c(lag_criteria[adjr2_row, 1], lag_criteria[adjr2_row, 6])
   )
 
   rownames(final_lags) <- c("lag", "value")
@@ -1573,7 +1591,8 @@ makemodel.grid <- function(spec, ...) {
     "AIC" = aic_row,
     "BIC" = bic_row,
     "AICc" = aicc_row,
-    "HQ" = hq_row
+    "HQ" = hq_row,
+    "AdjR2" = adjr2_row
   )
   proper_lag <- lag_matrix[proper_row, ]
 

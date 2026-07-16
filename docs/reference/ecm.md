@@ -185,10 +185,12 @@ ecm(
     example: `mode = c(1, 2, 4, 5)` assigns lags of 1, 2, 4, and 5 to
     variables in the specified order. Alternatively, lag values can be
     assigned to variables by name for clarity and control. For example:
-    `mode = c(CPI = 2, ER_POS = 3, ER_NEG = 1, PPI = 3)` assigns lags to
-    variables explicitly. Ensure that the lags are correctly designated
-    by verifying the result using `kardl_model$proper_lag` after
-    estimation.
+    If the long-run model defined as
+    `DriversKilled~Asy(PetrolPrice)+ drivers`, then
+    `mode = c(DriversKilled = 2, PetrolPrice_POS = 3, PetrolPrice_NEG = 1, drivers = 3)`
+    assigns lags to variables explicitly. Ensure that the lags are
+    correctly designated by verifying the result using
+    `kardl_model$proper_lag` after estimation.
 
     ***Attention!*** A function-based criterion or user-defined function
     can be specified for model selection, but this is only supported for
@@ -228,6 +230,10 @@ ecm(
   - **"HQ"**: Hannan-Quinn Information Criterion. This criterion
     provides a compromise between AIC and BIC, favoring models that
     balance fit and complexity without being overly conservative.
+
+  - **AdjR2**: Adjusted R-squared. This criterion adjusts the R-squared
+    value for the number of predictors in the model, favoring models
+    that explain more variance with fewer predictors.
 
   The criterion can be specified as a string (e.g., `"AIC"`) or as a
   user-defined function that takes a fitted model object. Please visit
@@ -380,9 +386,10 @@ x\_{i,t-1} ) + e_t \end{aligned} \$\$
 
 In the reported coefficients, the prefix `L` denotes lagged variables,
 where the accompanying number indicates the lag order, and `.d.` denotes
-first differences. Accordingly, `L1.PPI` represents the first lag of the
-level of `PPI` (long-run component), while `L3.d.PPI` denotes the third
-lag of the first-differenced `PPI` (short-run component).
+first differences. Accordingly, `L1.drivers` represents the first lag of
+the level of `drivers` (long-run component), while `L3.d.drivers`
+denotes the third lag of the first-differenced `drivers` (short-run
+component).
 
 In addition, the suffixes `_POS` and `_NEG` indicate the positive and
 negative partial sum components of a variable, respectively. This
@@ -405,7 +412,8 @@ function.
 # Example: Road safety analysis using UK Seatbelts data
 # Analyzing the effect of seatbelt law on driver deaths
 kardl_set(
-  formula = DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  formula = DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+    deterministic(law) + trend,
   data = Seatbelts,
   maxlag = 3
 )
@@ -677,7 +685,8 @@ kardl_set(
   asym_prefix = c("asyP_", "asyN_"),
   asym_suffix = c("_PP", "_NN")
 )
-customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice), Seatbelts)
+customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers +
+  asym(PetrolPrice), Seatbelts)
 customizedNames
 #> Optimal lags for each variable ( AIC ):
 #> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 1 

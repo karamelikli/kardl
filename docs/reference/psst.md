@@ -5,7 +5,7 @@ This function performs the Pesaran t Bound test
 ## Usage
 
 ``` r
-psst(kardl_model, ...)
+psst(kardl_model, case = "auto", signif_level = "auto", vcov = NULL, ...)
 ```
 
 ## Arguments
@@ -17,13 +17,42 @@ psst(kardl_model, ...)
   an object of class `kardl_longrun` produced by
   [`kardl_longrun`](https://karamelikli.github.io/kardl/reference/kardl_longrun.md).
 
-- ...:
+- case:
 
-  Additional arguments (currently not used).
+  Numeric or character. Specifies the case of the test to be used in the
+  function. Acceptable values are 1, 2, 3, 4, 5, and "auto". If "auto"
+  is chosen, the function determines the case automatically based on the
+  model's characteristics. Invalid values will result in an error.
+
+  - `1`: No intercept and no trend
+
+  - `2`: Restricted intercept and no trend
+
+  - `3`: Unrestricted intercept and no trend
+
+  - `4`: Unrestricted intercept and restricted trend
+
+  - `5`: Unrestricted intercept and unrestricted trend
+
+- signif_level:
+
+  Character or numeric. Specifies the significance level to be used in
+  the function. Acceptable values are "auto", "0.10", "0.1", "0.05",
+  "0.025", and "0.01". If a numeric value is provided, it will be
+  converted to a character string. When `"auto"` is selected, the
+  function determines the significance level sequentially, starting from
+  the most stringent level (`"0.01"`) and proceeding to `"0.025"`,
+  `"0.05"`, and `"0.10"` until a suitable level is identified. Invalid
+  values will result in an error.
 
 - vcov:
 
-  A variance-covariance matrix for the model coefficients.
+  A variance-covariance matrix to be used for the test. If not provided,
+  the default variance-covariance matrix from the model will be used.
+
+- ...:
+
+  Additional arguments.
 
 ## Value
 
@@ -111,7 +140,8 @@ Econometrics, 16(3), 289-326.
 
 ``` r
 kardl_model<-kardl(
-                   DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+                   DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+
+                         deterministic(law)+trend,
                    Seatbelts,
                    mode=c(1,2,3,0))
 my_test<-psst(kardl_model)
@@ -168,14 +198,31 @@ kardl_extract(my_summary, what = "critical_values")
 #> 0.025 -3.65 -4.42
 #> 0.01  -3.96 -4.73
 
-
+# Using a robust variance-covariance matrix for the test:
+if (requireNamespace("sandwich", quietly = TRUE)) {
+    vcov_matrix <- sandwich::vcovHC(kardl_model)
+    my_test_robust <- psst(kardl_model,
+                           case = 1,
+                           signif_level =0.01,
+                           vcov = vcov_matrix)
+  my_test_robust
+}
+#> 
+#>  Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
+#> 
+#> data:  model
+#> t = -12.442
+#> alternative hypothesis: Cointegrating relationship exists
+#> 
 
 
 # Using magrittr :
 
 library(magrittr)
 Seatbelts %>%
-  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  kardl(
+    DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) %>%
   psst()
@@ -189,7 +236,9 @@ Seatbelts %>%
 
 # Getting details of the test results using magrittr:
 Seatbelts %>%
-  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  kardl(
+    DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) %>%
   psst() %>%

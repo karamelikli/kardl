@@ -110,7 +110,8 @@ inconclusive.
 
 \examples{
 kardl_model<-kardl(
-                   DriversKilled~PetrolPrice+drivers+asym(PetrolPrice)+deterministic(law)+trend,
+                   DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice)+
+                       deterministic(law)+trend,
                    Seatbelts,
                    mode=c(1,2,3,0))
 my_test<-narayan(kardl_model, case=3, signif_level="auto")
@@ -131,14 +132,18 @@ kardl_extract(my_summary, what = "critical_values")
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
 Seatbelts \%>\%
-  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  kardl(
+    DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) \%>\%
   narayan()
 
 # Getting details of the test results using magrittr:
 Seatbelts \%>\%
-  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  kardl(
+    DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) \%>\%
   narayan() \%>\%

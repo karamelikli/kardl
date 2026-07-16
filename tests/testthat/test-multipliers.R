@@ -10,17 +10,21 @@
 #'  not differ by more than 10% of the signal range.
 
 test_that("bootstrap results are stable across different seeds", {
-  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
+  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts,
+    mode = c(1, 1, 1)
+  )
   b1 <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 1L)
   b2 <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 99L)
 
   # Point estimates come from mplier() which is deterministic, must be identical
-  expect_equal(b1$mpsi[["ER_dif"]], b2$mpsi[["ER_dif"]])
+  expect_equal(b1$mpsi[["PetrolPrice_dif"]], b2$mpsi[["PetrolPrice_dif"]])
 
   # CI width range-to-range: variation between seeds should be small
   # relative to the range of CI widths themselves
-  ci_width_1 <- b1$mpsi[["ER_CI_upper"]] - b1$mpsi[["ER_CI_lower"]]
-  ci_width_2 <- b2$mpsi[["ER_CI_upper"]] - b2$mpsi[["ER_CI_lower"]]
+  ci_width_1 <- b1$mpsi[["PetrolPrice_CI_upper"]] -
+    b1$mpsi[["PetrolPrice_CI_lower"]]
+  ci_width_2 <- b2$mpsi[["PetrolPrice_CI_upper"]] -
+    b2$mpsi[["PetrolPrice_CI_lower"]]
 
   diff_of_widths <- abs(ci_width_1 - ci_width_2) # seed-to-seed diff
   range_of_widths <- diff(range(c(ci_width_1, ci_width_2))) # combined range
@@ -49,7 +53,9 @@ test_that("bootstrap results are stable across different seeds", {
 #'  not differ by more than 10% of the signal range.
 
 test_that("Same seed yields identical bootstrap output", {
-  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
+  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts,
+    mode = c(1, 1, 1)
+  )
   b_a <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 42L)
   b_b <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 42L)
 
@@ -61,7 +67,9 @@ test_that("Same seed yields identical bootstrap output", {
 #'  meaningfully change point estimates or confidence interval bounds.
 
 test_that("Adding machine-epsilon noise to data does not change results", {
-  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
+  fit_base <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts,
+    mode = c(1, 1, 1)
+  )
 
   data_noisy <- Seatbelts
   numeric_cols <- sapply(data_noisy, is.numeric)
@@ -89,26 +97,28 @@ test_that("Adding machine-epsilon noise to data does not change results", {
   data_noisy[, numeric_cols] <- data_noisy[, numeric_cols] +
     noise_matrix
 
-  fit_noisy <- kardl(DriversKilled ~ asymmetric(PetrolPrice), data_noisy, mode = c(1, 1, 1))
+  fit_noisy <- kardl(DriversKilled ~ asymmetric(PetrolPrice), data_noisy,
+    mode = c(1, 1, 1)
+  )
 
   b_clean <- bootstrap(fit_base, horizon = 10, replications = 10, seed = 7L)
   b_noisy <- bootstrap(fit_noisy, horizon = 10, replications = 10, seed = 7L)
 
   # Multiplier point estimates should be virtually identical
   expect_equal(
-    b_clean$mpsi[["ER_dif"]],
-    b_noisy$mpsi[["ER_dif"]],
+    b_clean$mpsi[["PetrolPrice_dif"]],
+    b_noisy$mpsi[["PetrolPrice_dif"]],
     tolerance = 1e-4,
     label = paste0(
-      "ER_dif multipliers changed meaningfully under",
+      "PetrolPrice_dif multipliers changed meaningfully under",
       " trivial noise"
     )
   )
 
   # CI bounds should also be negligibly different
   expect_equal(
-    b_clean$mpsi[["ER_CI_upper"]],
-    b_noisy$mpsi[["ER_CI_upper"]],
+    b_clean$mpsi[["PetrolPrice_CI_upper"]],
+    b_noisy$mpsi[["PetrolPrice_CI_upper"]],
     tolerance = 1e-3,
     label = "Upper CI changed meaningfully under trivial noise"
   )

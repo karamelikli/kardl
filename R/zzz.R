@@ -16,7 +16,8 @@
   asym_suffix = c("_POS", "_NEG"),
   long_coef = "L{lag}.{var_name}",
   short_coef = "L{lag}.d.{var_name}",
-  batch = "1/1"
+  batch = "1/1",
+  print_wrap = NULL
 )
 
 # Initialize the environment with defaults
@@ -58,6 +59,9 @@ local({
 #' # will use these settings for subsequent operations.
 #' my_settings$long_coef
 #' my_settings$maxlag
+#'
+#' # Demonstrate setting print_wrap option
+#' kardl_set(print_wrap=80L)
 #'
 #' # Reset to defaults after demonstrating custom settings
 #' kardl_reset()

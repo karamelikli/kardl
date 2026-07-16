@@ -18,9 +18,10 @@ to extract results for, when applicable. The available options depend on the
 selected \code{what} value and are documented in the relevant sections below. This
 argument is available just for \code{kardl_symmetric} objects, where users can
 extract results for specific variables included in the symmetry test. For
-example, if a symmetry test includes variables "ER" and "PPI", users can
-specify \code{variable = "ER"} to extract results related to the "ER" variable, or
-\code{variable = c("ER", "PPI")} to extract results for both variables.
+example, if a symmetry test includes variables "drivers" and "PetrolPrice",
+users can specify \code{variable = "drivers"} to extract results related to the
+"drivers" variable, or \code{variable = c("drivers", "PetrolPrice")} to extract
+results for both variables.
 If \code{variable} is not specified when extracting components that include
 variable-specific results, the function will return results for all
 variables included in the symmetry test.}
@@ -206,8 +207,10 @@ symmetry test results, enabling users to extract specific components
 }
 
 \examples{
-kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts,
-mode = c(2, 1, 0, 4, 0 ))
+kardl_model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers),
+  data = Seatbelts,
+  mode = c(2, 1, 0, 4, 0)
+)
 
 # Examples of extracting components from a fitted kardl_lm model object
 # kardl_extract(kardl_model, what = "data_ts_info")
@@ -245,8 +248,6 @@ kardl_extract(kardl_model, what = "all_cr_lags")
 kardl_extract(kardl_model, what = "model_formula")
 kardl_extract(kardl_model, what = "k")
 kardl_extract(kardl_model, what = "n")
-
-
 
 
 # Examples of extracting components from a kardl_mplier object
@@ -307,16 +308,28 @@ kardl_extract(symmetry_results, what = "type")
 kardl_extract(symmetry_results, what = "call")
 
 # Example of extracting specific components from symmetry test results
-kardl_extract(symmetry_results, what = "short_wald_tests", variable = "PPI")
-kardl_extract(symmetry_results, what = "long_wald_tests", variable = "PPI")
-kardl_extract(symmetry_results, what = "long_hypotheses", variable = "PPI")
-kardl_extract(symmetry_results, what = "short_hypotheses", variable = "PPI")
+kardl_extract(symmetry_results,
+  what = "short_wald_tests",
+  variable = "PetrolPrice"
+)
+kardl_extract(symmetry_results,
+  what = "long_wald_tests",
+  variable = "PetrolPrice"
+)
+kardl_extract(symmetry_results,
+  what = "long_hypotheses",
+  variable = "PetrolPrice"
+)
+kardl_extract(symmetry_results,
+  what = "short_hypotheses",
+  variable = "PetrolPrice"
+)
 kardl_extract(symmetry_results, what = "short_hypotheses", component = "H0")
 kardl_extract(symmetry_results, what = "short_hypotheses", component = "H1")
 
 kardl_extract(symmetry_results,
   what = "short_hypotheses",
-  variable = "PPI", component = "H0"
+  variable = "PetrolPrice", component = "H0"
 )
 
 }

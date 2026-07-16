@@ -317,7 +317,7 @@ verify_user_defined_lags <- function(spec) {
 #' @srrstats {G2.1} Validates that `formula` is a language object and `data`
 #'           is not NULL before extraction.
 #' @srrstats {G2.3} The `criterion` argument is validated against the set of
-#'           accepted string values `c("AIC","BIC","AICc","HQ")`; custom
+#'           accepted string values `c("AIC","BIC","AICc","HQ","AdjR2")`; custom
 #'           functions are also accepted.
 #' @srrstats {G2.3a} Selection argument `criterion` is matched against
 #'           predefined acceptable values.
@@ -361,18 +361,24 @@ check_inputs <- function(spec) {
     }
   }
   if (!is.function(spec$args_info$criterion)) {
-    if (
-      typeof(spec$args_info$criterion) != "character" &&
-        !spec$args_info$criterion %in% c("AIC", "BIC", "AICc", "HQ")
-    ) {
-      stop(
-        "The entered criterion should be a function or one of the defined ",
-        "criteria here. The defined criteria are AIC, BIC, AICc, HQ",
-        call. = FALSE
-      )
-    }
+    cr <- tolower(spec$args_info$criterion)
+    my_cr <- tryCatch(
+      match.arg(cr, c("aic", "bic", "aicc", "hq", "adjr2")),
+      error = function(e) {
+        stop("The entered criterion should be a function or one of the defined",
+          " criteria here. The defined criteria are AIC, BIC, AICc, HQ, AdjR2.",
+          call. = FALSE
+        )
+      }
+    )
+    spec$args_info$criterion <- switch(my_cr,
+      "aic" = "AIC",
+      "bic" = "BIC",
+      "aicc" = "AICc",
+      "hq" = "HQ",
+      "adjr2" = "AdjR2"
+    )
   }
-
   if (typeof(spec$args_info$different_asym_lag) != "logical") {
     stop(
       "The entered DifferentAsymLag should be a logical value. TRUE/FALSE .",

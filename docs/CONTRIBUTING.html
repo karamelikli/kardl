@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Contributing to kardl"></head><body>
+</script><script src="deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="deps/headroom-0.11.0/headroom.min.js"></script><script src="deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="deps/search-1.0.0/fuse.min.js"></script><script src="deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="pkgdown.js"></script><meta property="og:title" content="Contributing to kardl"></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -13,7 +13,7 @@
 
     <a class="navbar-brand me-2" href="index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,31 +44,38 @@
 
 <div id="contributing-to-kardl" class="section level1">
 
-<p>Thank you for your interest in contributing to <code>kardl</code>. This document outlines the recommended workflow for proposing changes, reporting issues, and contributing code or documentation improvements.</p>
-<div class="section level2">
+<p>Thank you for your interest in contributing to <code>kardl</code>.</p>
+<p>This document outlines the recommended workflow for reporting issues, improving documentation, and contributing code. Many of these practices follow established recommendations for R package development and the tidyverse contribution workflow.</p>
+<p>For general guidance on contributing to R packages, see the tidyverse development guide:</p>
+<ul><li><a href="https://rstd.io/tidy-contrib" class="external-link uri">https://rstd.io/tidy-contrib</a></li>
+<li><a href="https://code-review.tidyverse.org/" class="external-link uri">https://code-review.tidyverse.org/</a></li>
+</ul><div class="section level2">
 <h2 id="before-contributing">Before contributing<a class="anchor" aria-label="anchor" href="#before-contributing"></a></h2>
-<p>Please first check the existing issues and pull requests to avoid duplicate work.</p>
-<p>For substantial changes, feature requests, or API modifications, open an issue before starting development so the proposed change can be discussed.</p>
+<p>Please check existing issues and pull requests before opening a new one to avoid duplicate work.</p>
+<p>For substantial changes, feature requests, API modifications, or changes affecting model behavior, please open an issue first so the proposed changes can be discussed before implementation.</p>
 <p>Repository:</p>
-<p><a href="https://github.com/karamelikli/kardl" class="external-link">kardl GitHub repository</a></p>
+<p><a href="https://github.com/karamelikli/kardl" class="external-link uri">https://github.com/karamelikli/kardl</a></p>
 <hr></div>
 <div class="section level2">
 <h2 id="reporting-bugs">Reporting bugs<a class="anchor" aria-label="anchor" href="#reporting-bugs"></a></h2>
-<p>Bug reports should include a minimal reproducible example using a reprex whenever possible.</p>
+<p>Bug reports should include a minimal reproducible example (reprex) whenever possible.</p>
 <p>Helpful bug reports generally include:</p>
 <ul><li>A short description of the problem</li>
 <li>Expected behavior</li>
 <li>Actual behavior</li>
 <li>A minimal reproducible example</li>
 <li>Relevant error messages or warnings</li>
-</ul><hr></div>
+<li>Session information (<code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code>) when appropriate</li>
+</ul><p>For guidance on writing effective issues, see:</p>
+<p><a href="https://code-review.tidyverse.org/issues/" class="external-link uri">https://code-review.tidyverse.org/issues/</a></p>
+<hr></div>
 <div class="section level2">
 <h2 id="fixing-documentation-issues">Fixing documentation issues<a class="anchor" aria-label="anchor" href="#fixing-documentation-issues"></a></h2>
-<p>Small documentation improvements such as typo corrections, grammar fixes, or clarification edits can be made directly through the GitHub web interface.</p>
+<p>Small documentation improvements such as typo corrections, grammar fixes, formatting improvements, or clarification edits can be made directly through the GitHub web interface.</p>
 <p>Please edit the source <code>.R</code> files containing the <code>roxygen2</code> comments rather than the generated <code>.Rd</code> files.</p>
 <p>Useful references:</p>
-<ul><li><a href="https://roxygen2.r-lib.org/articles/roxygen2.html" class="external-link">roxygen2 documentation</a></li>
-<li><a href="https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html" class="external-link">Roxygen markdown formatting</a></li>
+<ul><li><a href="https://roxygen2.r-lib.org/articles/roxygen2.html" class="external-link uri">https://roxygen2.r-lib.org/articles/roxygen2.html</a></li>
+<li><a href="https://cran.r-project.org/package=roxygen2" class="external-link uri">https://cran.r-project.org/package=roxygen2</a></li>
 </ul><hr></div>
 <div class="section level2">
 <h2 id="development-setup">Development setup<a class="anchor" aria-label="anchor" href="#development-setup"></a></h2>
@@ -84,11 +91,11 @@
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install_deps.html" class="external-link">install_dev_deps</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="id_3-run-package-checks">3. Run package checks<a class="anchor" aria-label="anchor" href="#id_3-run-package-checks"></a></h3>
-<p>Before making changes, ensure the package passes checks locally:</p>
+<h3 id="id_3-verify-package-checks">3. Verify package checks<a class="anchor" aria-label="anchor" href="#id_3-verify-package-checks"></a></h3>
+<p>Before making changes, ensure the package builds successfully:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>If checks fail for reasons unrelated to your changes, please open an issue before continuing.</p>
+<p>If <code>R CMD check</code> fails for reasons unrelated to your changes, please open an issue before continuing.</p>
 <hr></div>
 </div>
 <div class="section level2">
@@ -100,58 +107,68 @@
 <code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/pull-requests.html" class="external-link">pr_init</a></span><span class="op">(</span><span class="st">"brief-description-of-change"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="make-changes">Make changes<a class="anchor" aria-label="anchor" href="#make-changes"></a></h3>
-<p>After implementing your changes:</p>
-<ul><li>Run tests</li>
+<h3 id="implement-your-changes">Implement your changes<a class="anchor" aria-label="anchor" href="#implement-your-changes"></a></h3>
+<p>Before submitting a pull request, please:</p>
+<ul><li>Run package tests</li>
 <li>Run <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code>
 </li>
 <li>Update documentation if necessary</li>
-<li>Add or update unit tests when appropriate</li>
+<li>Add or update unit tests whenever appropriate</li>
 </ul></div>
 <div class="section level3">
-<h3 id="submit-the-pull-request">Submit the pull request<a class="anchor" aria-label="anchor" href="#submit-the-pull-request"></a></h3>
-<p>Push your branch and open a pull request:</p>
+<h3 id="submit-your-pull-request">Submit your pull request<a class="anchor" aria-label="anchor" href="#submit-your-pull-request"></a></h3>
+<p>Push your branch and create a pull request:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/pull-requests.html" class="external-link">pr_push</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Please ensure that:</p>
-<ul><li>The PR title clearly summarizes the change</li>
-<li>The PR description references related issues using:</li>
+<ul><li>The pull request title clearly summarizes the change.</li>
+<li>The pull request description references related issues using:</li>
 </ul><pre class="text"><code><span><span class="va">Fixes</span> <span class="co">#issue-number</span></span></code></pre>
 <hr></div>
 </div>
 <div class="section level2">
 <h2 id="newsmd-updates">NEWS.md updates<a class="anchor" aria-label="anchor" href="#newsmd-updates"></a></h2>
 <p>User-facing changes should be added to the top section of <code>NEWS.md</code>.</p>
-<p>Please follow the tidyverse news style guide:</p>
-<p><a href="https://style.tidyverse.org/news.html" class="external-link">tidyverse NEWS style guide</a></p>
+<p>Please follow the tidyverse NEWS style guide:</p>
+<p><a href="https://style.tidyverse.org/news.html" class="external-link uri">https://style.tidyverse.org/news.html</a></p>
 <hr></div>
 <div class="section level2">
-<h2 id="code-style-guidelines">Code style guidelines<a class="anchor" aria-label="anchor" href="#code-style-guidelines"></a></h2>
+<h2 id="code-style">Code style<a class="anchor" aria-label="anchor" href="#code-style"></a></h2>
+<p>New code should follow the tidyverse style guide:</p>
+<p><a href="https://style.tidyverse.org" class="external-link uri">https://style.tidyverse.org</a></p>
+<p>You may use <strong>Air</strong> to automatically format code:</p>
+<p><a href="https://posit-dev.github.io/air/" class="external-link uri">https://posit-dev.github.io/air/</a></p>
+<p>Please avoid reformatting unrelated code in the same pull request.</p>
 <div class="section level3">
 <h3 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a></h3>
-<p>The package uses:</p>
+<p><code>kardl</code> uses:</p>
 <ul><li>
 <code>roxygen2</code> for documentation</li>
 <li>Markdown syntax within roxygen comments</li>
-</ul></div>
+</ul><p>After modifying documentation, regenerate the Rd files using:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+</div>
 <div class="section level3">
 <h3 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h3>
-<p>Unit tests use the <code>testthat</code> framework.</p>
-<p>Contributions that include tests are easier to review and merge.</p>
-<p>Useful references:</p>
-<ul><li><a href="https://testthat.r-lib.org" class="external-link">testthat documentation</a></li>
-</ul><hr></div>
+<p>Unit tests are written using <strong>testthat</strong>.</p>
+<p>Contributions that include appropriate test cases are easier to review and merge.</p>
+<p>Useful reference:</p>
+<p><a href="https://testthat.r-lib.org" class="external-link uri">https://testthat.r-lib.org</a></p>
+<hr></div>
 </div>
 <div class="section level2">
-<h2 id="package-checks-and-standards">Package checks and standards<a class="anchor" aria-label="anchor" href="#package-checks-and-standards"></a></h2>
-<p>Before submitting a pull request, contributors are encouraged to verify that:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p>runs successfully without errors or warnings.</p>
-<p>If applicable, also check:</p>
+<h2 id="package-checks">Package checks<a class="anchor" aria-label="anchor" href="#package-checks"></a></h2>
+<p>Before submitting a pull request, contributors are encouraged to verify that the package passes all checks without errors or warnings:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<hr></div>
+<div class="section level2">
+<h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a></h2>
+<p>Please note that the <code>kardl</code> project is released with a <a href="CODE_OF_CONDUCT.html">Contributor Code of Conduct</a>.</p>
+<p>By participating in this project, you agree to abide by its terms and help maintain a welcoming and respectful environment for everyone.</p>
 </div>
 </div>
 
@@ -164,7 +181,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

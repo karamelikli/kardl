@@ -1,7 +1,7 @@
 # Model Selection Criteria
 
-Computes a model selection criterion (AIC, BIC, AICc, or HQ) or applies
-a user-defined function to evaluate a statistical model.
+Computes a model selection criterion (AIC, BIC, AICc, HQ, or AdjR2) or
+applies a user-defined function to evaluate a statistical model.
 
 ## Usage
 
@@ -26,9 +26,9 @@ model_criterion(lm_model, cr, ...)
 - cr:
 
   A character string specifying the criterion to compute. Options are
-  `"AIC"`, `"BIC"`, `"AICc"`, and `"HQ"`. Alternatively, a user-defined
-  function can be provided. See details below for more information on
-  using custom criteria.
+  `"AIC"`, `"BIC"`, `"AICc"`,`"HQ"` and `"AdjR2"`. Alternatively, a
+  user-defined function can be provided. See details below for more
+  information on using custom criteria.
 
 - ...:
 
@@ -70,6 +70,11 @@ The function returns:
 - **"HQ"**: \\ \frac{2 \log(\log(n)) \cdot k - 2\ell}{n} \\ Hannan-Quinn
   Criterion divided by `n`.
 
+- **"AdjR2"**: Adjusted R-squared, computed as \\1 - \frac{(1 - R^2)(n -
+  1)}{n - k - 1}\\. In this case, higher values indicate better models,
+  but the function still returns the negative of the adjusted R-squared
+  for consistency with the minimization approach of the other criteria.
+
 where:
 
 - \\k\\ is the number of parameters,
@@ -94,11 +99,12 @@ mylm <- lm(mpg ~ wt + hp, data = mtcars)
 model_criterion(mylm, AIC)
 #> [1] 156.6523
 model_criterion(mylm, "AIC")
-#> [1] 4.832886
+#> 'log Lik.' 4.832886 (df=4)
 
 # Example usage of model_criterion function with a kardl model
 kardl_model <- kardl(
-  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+    deterministic(law) + trend,
   Seatbelts,
   mode = c(1, 2, 3, 0)
 )
@@ -106,7 +112,7 @@ kardl_model <- kardl(
 # Using AIC as the kardl package's built-in criterion function which is
 # different from the base R AIC function.
 model_criterion(kardl_model, "AIC")
-#> [1] 7.802762
+#> 'log Lik.' 7.802762 (df=17)
 
 # Using the base R AIC function directly on the fitted model object
 model_criterion(kardl_model, AIC)
@@ -119,7 +125,7 @@ AIC(kardl_model)
 # Using BIC as the criterion for the kardl model which is different from the
 # base R BIC function.
 model_criterion(kardl_model, "BIC")
-#> [1] 8.079221
+#> 'log Lik.' 8.079221 (df=17)
 
 # Using a custom criterion function that divides AIC by the sample size
 my_cr_fun <- function(mod, ...) {

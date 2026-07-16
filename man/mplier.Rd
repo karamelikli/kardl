@@ -148,9 +148,9 @@ head(kardl_extract(m, "omega"))
 head(kardl_extract(m, "lambda"))
 
 # For plotting specific variables, you can specify them in the plot
-# function. For example, to plot the multipliers for the variable "PPI":
+# function. For example, to plot the multipliers for the variable "drivers":
 
-plot(m, variable = "PPI", title = "Dynamic Multipliers for PPI")
+plot(m, variable = "drivers", title = "Dynamic Multipliers for drivers")
 }
 \seealso{
 \code{\link{bootstrap}}

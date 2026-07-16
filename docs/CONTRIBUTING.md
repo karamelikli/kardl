@@ -1,27 +1,36 @@
 # Contributing to kardl
 
-Thank you for your interest in contributing to `kardl`. This document
-outlines the recommended workflow for proposing changes, reporting
-issues, and contributing code or documentation improvements.
+Thank you for your interest in contributing to `kardl`.
+
+This document outlines the recommended workflow for reporting issues,
+improving documentation, and contributing code. Many of these practices
+follow established recommendations for R package development and the
+tidyverse contribution workflow.
+
+For general guidance on contributing to R packages, see the tidyverse
+development guide:
+
+- <https://rstd.io/tidy-contrib>
+- <https://code-review.tidyverse.org/>
 
 ## Before contributing
 
-Please first check the existing issues and pull requests to avoid
-duplicate work.
+Please check existing issues and pull requests before opening a new one
+to avoid duplicate work.
 
-For substantial changes, feature requests, or API modifications, open an
-issue before starting development so the proposed change can be
-discussed.
+For substantial changes, feature requests, API modifications, or changes
+affecting model behavior, please open an issue first so the proposed
+changes can be discussed before implementation.
 
 Repository:
 
-[kardl GitHub repository](https://github.com/karamelikli/kardl)
+<https://github.com/karamelikli/kardl>
 
 ------------------------------------------------------------------------
 
 ## Reporting bugs
 
-Bug reports should include a minimal reproducible example using a reprex
+Bug reports should include a minimal reproducible example (reprex)
 whenever possible.
 
 Helpful bug reports generally include:
@@ -31,24 +40,29 @@ Helpful bug reports generally include:
 - Actual behavior
 - A minimal reproducible example
 - Relevant error messages or warnings
+- Session information
+  ([`sessionInfo()`](https://rdrr.io/r/utils/sessionInfo.html)) when
+  appropriate
+
+For guidance on writing effective issues, see:
+
+<https://code-review.tidyverse.org/issues/>
 
 ------------------------------------------------------------------------
 
 ## Fixing documentation issues
 
 Small documentation improvements such as typo corrections, grammar
-fixes, or clarification edits can be made directly through the GitHub
-web interface.
+fixes, formatting improvements, or clarification edits can be made
+directly through the GitHub web interface.
 
 Please edit the source `.R` files containing the `roxygen2` comments
 rather than the generated `.Rd` files.
 
 Useful references:
 
-- [roxygen2
-  documentation](https://roxygen2.r-lib.org/articles/roxygen2.html)
-- [Roxygen markdown
-  formatting](https://cran.r-project.org/web/packages/roxygen2/vignettes/rd-formatting.html)
+- <https://roxygen2.r-lib.org/articles/roxygen2.html>
+- <https://cran.r-project.org/package=roxygen2>
 
 ------------------------------------------------------------------------
 
@@ -70,17 +84,17 @@ usethis::create_from_github("karamelikli/kardl", fork = TRUE)
 devtools::install_dev_deps()
 ```
 
-### 3. Run package checks
+### 3. Verify package checks
 
-Before making changes, ensure the package passes checks locally:
+Before making changes, ensure the package builds successfully:
 
 ``` r
 
 devtools::check()
 ```
 
-If checks fail for reasons unrelated to your changes, please open an
-issue before continuing.
+If `R CMD check` fails for reasons unrelated to your changes, please
+open an issue before continuing.
 
 ------------------------------------------------------------------------
 
@@ -95,19 +109,19 @@ We recommend creating a dedicated branch for each pull request:
 usethis::pr_init("brief-description-of-change")
 ```
 
-### Make changes
+### Implement your changes
 
-After implementing your changes:
+Before submitting a pull request, please:
 
-- Run tests
+- Run package tests
 - Run
   [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
 - Update documentation if necessary
-- Add or update unit tests when appropriate
+- Add or update unit tests whenever appropriate
 
-### Submit the pull request
+### Submit your pull request
 
-Push your branch and open a pull request:
+Push your branch and create a pull request:
 
 ``` r
 
@@ -116,8 +130,8 @@ usethis::pr_push()
 
 Please ensure that:
 
-- The PR title clearly summarizes the change
-- The PR description references related issues using:
+- The pull request title clearly summarizes the change.
+- The pull request description references related issues using:
 
 ``` text
 Fixes #issue-number
@@ -129,49 +143,70 @@ Fixes #issue-number
 
 User-facing changes should be added to the top section of `NEWS.md`.
 
-Please follow the tidyverse news style guide:
+Please follow the tidyverse NEWS style guide:
 
-[tidyverse NEWS style guide](https://style.tidyverse.org/news.html)
+<https://style.tidyverse.org/news.html>
 
 ------------------------------------------------------------------------
 
-## Code style guidelines
+## Code style
+
+New code should follow the tidyverse style guide:
+
+<https://style.tidyverse.org>
+
+You may use **Air** to automatically format code:
+
+<https://posit-dev.github.io/air/>
+
+Please avoid reformatting unrelated code in the same pull request.
 
 ### Documentation
 
-The package uses:
+`kardl` uses:
 
 - `roxygen2` for documentation
 - Markdown syntax within roxygen comments
 
-### Testing
-
-Unit tests use the `testthat` framework.
-
-Contributions that include tests are easier to review and merge.
-
-Useful references:
-
-- [testthat documentation](https://testthat.r-lib.org)
-
-------------------------------------------------------------------------
-
-## Package checks and standards
-
-Before submitting a pull request, contributors are encouraged to verify
-that:
+After modifying documentation, regenerate the Rd files using:
 
 ``` r
 
-devtools::check()
+devtools::document()
 ```
 
-runs successfully without errors or warnings.
+### Testing
 
-If applicable, also check:
+Unit tests are written using **testthat**.
+
+Contributions that include appropriate test cases are easier to review
+and merge.
+
+Useful reference:
+
+<https://testthat.r-lib.org>
+
+------------------------------------------------------------------------
+
+## Package checks
+
+Before submitting a pull request, contributors are encouraged to verify
+that the package passes all checks without errors or warnings:
 
 ``` r
 
 devtools::document()
 devtools::test()
+devtools::check()
 ```
+
+------------------------------------------------------------------------
+
+## Code of Conduct
+
+Please note that the `kardl` project is released with a [Contributor
+Code of
+Conduct](https://karamelikli.github.io/kardl/CODE_OF_CONDUCT.md).
+
+By participating in this project, you agree to abide by its terms and
+help maintain a welcoming and respectful environment for everyone.

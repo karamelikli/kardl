@@ -149,16 +149,22 @@ test_that("batch_control errors on malformed batch string", {
 
 test_that("invalid lag combination produces informative error", {
   expect_error(
-    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(0.5, 1, 1)),
+    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts,
+      mode = c(0.5, 1, 1)
+    ),
     "User-defined should have valid numeric and non-decimal."
   )
 
   expect_error(
-    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c("2", 1, 1)),
+    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts,
+      mode = c("2", 1, 1)
+    ),
     "User-defined value should have valid vector."
   )
   expect_error(
-    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = c(2, 1, 5, 1)),
+    kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts,
+      mode = c(2, 1, 5, 1)
+    ),
     "User-defined should match with short-run variables."
   )
 })

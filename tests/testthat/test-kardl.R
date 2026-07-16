@@ -8,7 +8,8 @@
 
 test_that("kardl model estimates correctly in quick mode", {
   kardl_reset()
-  formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend
+  formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) +
+    trend
 
   model <- kardl(
     data = Seatbelts,
@@ -28,7 +29,8 @@ test_that("kardl model estimates correctly in quick mode", {
 #' and recoverable from the fitted object.
 test_that("kardl model estimates correctly with custom lags", {
   kardl_reset()
-  formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + deterministic(law) + trend
+  formula <- DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) +
+    deterministic(law) + trend
 
   model <- kardl(
     data = Seatbelts,
@@ -77,7 +79,9 @@ test_that("kardl with grid_custom mode and BIC criterion works", {
 #' @srrstats {G5.7} Tests the full grid-search estimation path.
 test_that("kardl with grid mode works", {
   kardl_reset()
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts, mode = "grid", maxlag = 2)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers, Seatbelts,
+    mode = "grid", maxlag = 2
+  )
 
   expect_s3_class(model, "kardl_lm")
   expect_identical(model$est_info$method, "grid")
@@ -102,7 +106,9 @@ test_that("kardl with dot formula works", {
 #' configuration.
 test_that("kardl with lasymmetric produces correct structure", {
   kardl_reset()
-  model <- kardl(DriversKilled ~ lasymmetric(PetrolPrice), Seatbelts, mode = c(1, 1))
+  model <- kardl(DriversKilled ~ lasymmetric(PetrolPrice), Seatbelts,
+    mode = c(1, 1)
+  )
   expect_s3_class(model, "kardl_lm")
   expect_gt(length(model$extracted_info$asym_long_vars), 0)
   expect_length(model$extracted_info$asym_short_vars, 0)
@@ -154,11 +160,13 @@ test_that("model_criterion works with all built-in criteria", {
   bic <- model_criterion(mylm, "BIC")
   aicc <- model_criterion(mylm, "AICc")
   hq <- model_criterion(mylm, "HQ")
+  adjr2 <- model_criterion(mylm, "AdjR2")
 
   expect_type(aic, "double")
   expect_type(bic, "double")
   expect_type(aicc, "double")
   expect_type(hq, "double")
+  expect_type(adjr2, "double")
 })
 #' @srrstats {G5.2} Tests the user-defined function path of `model_criterion()`.
 #' @srrstats {G5.6} Result matches the base-R AIC function, confirming
@@ -175,7 +183,9 @@ test_that("model_criterion works with a user-defined function", {
 #' differenced variables correctly.
 test_that("ecm model estimates correctly", {
   kardl_reset()
-  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts,
+    mode = c(1, 1, 1)
+  )
   expect_s3_class(ec, "kardl_lm")
   expect_identical(ec$est_info$type, "ecm")
 })
@@ -183,7 +193,9 @@ test_that("ecm model estimates correctly", {
 #' a coefficient table.
 test_that("ecm summary works", {
   kardl_reset()
-  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
+  ec <- ecm(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts,
+    mode = c(1, 1, 1)
+  )
   sm <- summary(ec)
   expect_false(is.null(sm$coefficients))
 })

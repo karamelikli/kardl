@@ -5,7 +5,7 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Bootstrap Confidence Intervals for Dynamic Multipliers — bootstrap"><meta name="description" content="This function computes bootstrap confidence intervals (CI) for dynamic
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Bootstrap Confidence Intervals for Dynamic Multipliers — bootstrap"><meta name="description" content="This function computes bootstrap confidence intervals (CI) for dynamic
 multipliers of a specified variable in a model estimated using the
 kardl package. The bootstrap method generates resampled datasets to
 estimate the variability of the dynamic multipliers, providing upper and
@@ -21,7 +21,7 @@ lower bounds for the confidence interval."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -154,7 +154,8 @@ values are provided for each variable and at each time horizon.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Fit a model using kardl</span></span></span>
 <span class="r-in"><span><span class="va">kardl_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asy</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>  <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">PetrolPrice</span> <span class="op">+</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asy</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">law</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
 <span class="r-in"><span>  <span class="va">Seatbelts</span>,</span></span>
 <span class="r-in"><span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
@@ -164,37 +165,77 @@ values are provided for each variable and at each time horizon.</p>
 <span class="r-in"><span>  horizon <span class="op">=</span> <span class="fl">40</span>, level <span class="op">=</span> <span class="fl">95</span>, min_prob <span class="op">=</span> <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  replications <span class="op">=</span> <span class="fl">5</span>, seed <span class="op">=</span> <span class="fl">123L</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in attr(x, "tsp") &lt;- c(1, NROW(x), 1):</span> invalid time series parameters specified (1)</span>
 <span class="r-in"><span><span class="co"># The boot object will include all plots for the specified variables</span></span></span>
 <span class="r-in"><span><span class="co"># Displaying the boot object provides an overview of its components</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mpsi"         "level"        "horizon"      "vars"         "replications"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6] "type"        </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Inspect the first few rows of the dynamic multiplier estimates</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">boot</span>, <span class="st">"multipliers"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   h PetrolPrice_POS PetrolPrice_NEG PetrolPrice_dif drivers_POS drivers_NEG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0     -304.280928     -1061.52868     -1365.80961  0.07966293 -0.07966293</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 1      -61.814753      -212.37870      -274.19345  0.08968203 -0.08968203</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 2      201.223815       867.50746      1068.73128  0.07849161 -0.07849161</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4 3       -7.492109       898.32737       890.83526  0.07703254 -0.07703254</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5 4      -45.445132       -42.43396       -87.87909  0.07860427 -0.07860427</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6 5      -16.174940       -50.68350       -66.85844  0.07881651 -0.07881651</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   drivers_dif PetrolPrice_CI_upper PetrolPrice_CI_lower</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1           0           -938.99956          -3796.38005</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2           0            861.20791          -1161.15729</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3           0           1969.96034          -1105.81184</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4           0           2979.52196            -51.77537</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5           0             36.02301           -514.55055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6           0             30.14345           -453.50063</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Summary of Dynamic Multipliers</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Horizon: 40 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        h      PetrolPrice_POS   PetrolPrice_NEG    PetrolPrice_dif   </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   : 0   Min.   :-304.28   Min.   :-1061.53   Min.   :-1365.81  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:10   1st Qu.: -14.99   1st Qu.:   66.98   1st Qu.:   51.99  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :20   Median : -14.99   Median :   66.98   Median :   51.99  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :20   Mean   : -18.41   Mean   :   67.59   Mean   :   49.18  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:30   3rd Qu.: -14.99   3rd Qu.:   66.98   3rd Qu.:   51.99  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :40   Max.   : 201.22   Max.   :  898.33   Max.   : 1068.73  </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   drivers_POS       drivers_NEG        drivers_dif PetrolPrice_CI_upper</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :0.07703   Min.   :-0.08968   Min.   :0    Min.   :-939.0      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.:0.07860   1st Qu.:-0.07860   1st Qu.:0    1st Qu.: 150.3      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Median :0.07860   Median :-0.07860   Median :0    Median : 150.3      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   :0.07886   Mean   :-0.07886   Mean   :0    Mean   : 250.2      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.:0.07860   3rd Qu.:-0.07860   3rd Qu.:0    3rd Qu.: 150.3      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :0.08968   Max.   :-0.07703   Max.   :0    Max.   :2979.5      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  PetrolPrice_CI_lower</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Min.   :-3796.38    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1st Qu.: -105.92    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Median : -105.92    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Mean   : -263.58    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.: -105.92    </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :  -51.78    </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Retrieve plots generated during the bootstrap process</span></span></span>
 <span class="r-in"><span><span class="co"># Accessing all plots</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot' not found</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Multiple variables selected. Only the first one will be plotted.</span>
+<span class="r-plt img"><img src="bootstrap-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Accessing the plot for a specific variable by its name</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"drivers"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot' not found</span>
+<span class="r-plt img"><img src="bootstrap-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"PetrolPrice"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'boot' not found</span>
+<span class="r-plt img"><img src="bootstrap-3.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">Seatbelts</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>, maxlag <span class="op">=</span> <span class="fl">2</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="kardl.html">kardl</a></span><span class="op">(</span><span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">drivers</span> <span class="op">+</span> <span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span> <span class="op">+</span> <span class="va">trend</span>,</span></span>
+<span class="r-in"><span>    maxlag <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">.</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">bootstrap</span><span class="op">(</span>replications <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"PetrolPrice"</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in attr(x, "tsp") &lt;- c(1, NROW(x), 1):</span> invalid time series parameters specified (1)</span>
+<span class="r-plt img"><img src="bootstrap-4.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -206,7 +247,7 @@ values are provided for each variable and at each time horizon.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

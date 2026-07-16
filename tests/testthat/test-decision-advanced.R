@@ -7,7 +7,10 @@
 test_that("psst decision handles inconclusive range", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test psst with different significance levels to potentially hit inconclusive
   for (sig in c("0.10", "0.05", "0.025", "0.01")) {
@@ -23,7 +26,10 @@ test_that("psst decision handles inconclusive range", {
 test_that("pssf decision handles all significance levels correctly", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test all four significance levels
   for (sig in c("0.10", "0.05", "0.025", "0.01")) {
@@ -38,7 +44,10 @@ test_that("pssf decision handles all significance levels correctly", {
 test_that("narayan decision handles 0.1 vs 0.10 significance formats", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test both "0.1" and "0.10" formats
   narayan_1 <- narayan(model, case = 2, sig = "0.1")
@@ -52,7 +61,10 @@ test_that("narayan decision handles 0.1 vs 0.10 significance formats", {
 test_that("bounds tests handle all case values", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test psst with cases 1, 3, 5 (2 and 4 map to 3 and 5)
   psst_c1 <- psst(model, case = 1, sig = "auto")
@@ -78,7 +90,10 @@ test_that("bounds tests handle all case values", {
 test_that("narayan handles case 1 appropriately", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Case 1 is not implemented in Narayan
   # The function should handle it gracefully
@@ -97,7 +112,10 @@ test_that("critical values are correct for different k values", {
   summ1 <- summary(pssf1)
 
   # Model with k=2 (two regressors)
-  model2 <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model2 <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
   pssf2 <- pssf(model2, case = 3, sig = "auto")
   summ2 <- summary(pssf2)
 
@@ -121,20 +139,29 @@ test_that("hypotheses generation handles single vs multiple variables", {
   expect_true(grepl("PetrolPrice", pssf1$hypotheses$H0))
 
   # Multiple variable model
-  model2 <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model2 <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
   pssf2 <- pssf(model2, case = 3, sig = "auto")
 
   # Check hypothesis text for multiple variables
   expect_s3_class(pssf2$hypotheses, "kardl_hypotheses")
   expect_true(
-    grepl("PetrolPrice", pssf2$hypotheses$H0) || grepl("drivers", pssf2$hypotheses$H0)
+    grepl("PetrolPrice", pssf2$hypotheses$H0) || grepl(
+      "drivers",
+      pssf2$hypotheses$H0
+    )
   )
 })
 
 test_that("summary.kardl_test handles all test functions", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test pssf summary
   pssf_test <- pssf(model, case = 3, sig = "auto")
@@ -152,7 +179,10 @@ test_that("summary.kardl_test handles all test functions", {
 test_that("decision functions handle extreme test statistics", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Get actual test results
   pssf_result <- pssf(model, case = 3, sig = "auto")
@@ -167,7 +197,10 @@ test_that("decision functions handle extreme test statistics", {
 test_that("test summaries contain all required components", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test pssf summary completeness
   pssf_test <- pssf(model, case = 3, sig = "auto")
@@ -207,7 +240,10 @@ test_that("bounds tests work with models with deterministic terms", {
 test_that("bounds tests work with models without intercept", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers - 1, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers - 1,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test with case 1 (no intercept, no trend)
   pssf_result <- pssf(model, case = 1, sig = "auto")
@@ -220,7 +256,9 @@ test_that("bounds tests work with models without intercept", {
 test_that("bounds tests work with trend", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers + trend,
+    data = Seatbelts, maxlag = 1
+  )
 
   # Test with case 5 (unrestricted intercept and trend)
   pssf_result <- pssf(model, case = 5, sig = "auto")
@@ -236,7 +274,10 @@ test_that("bounds tests work with trend", {
 test_that("decision text includes correct significance levels", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test pssf with 0.05
   pssf_05 <- pssf(model, case = 3, sig = "0.05")
@@ -252,7 +293,10 @@ test_that("decision text includes correct significance levels", {
 test_that("auto significance selection is consistent", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Run test twice with auto - should give same result
   pssf1 <- pssf(model, case = 3, sig = "auto")

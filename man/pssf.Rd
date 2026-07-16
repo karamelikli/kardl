@@ -27,13 +27,11 @@ an error.
 \item{signif_level}{Character or numeric. Specifies the significance level
 to be used in the function. Acceptable values are "auto", "0.10",
 "0.1", "0.05", "0.025", and "0.01". If a numeric value is provided,
-it will be converted to a character string.
-
-When \code{"auto"} is selected, the function determines the
-significance level sequentially, starting from the most stringent
-level (\code{"0.01"}) and proceeding to \code{"0.025"}, \code{"0.05"},
-and \code{"0.10"} until a suitable level is identified. Invalid
-values will result in an error.}
+it will be converted to a character string. When \code{"auto"} is selected,
+the function determines the significance level sequentially, starting from
+the most stringent level (\code{"0.01"}) and proceeding to \code{"0.025"},
+\code{"0.05"}, and \code{"0.10"} until a suitable level is identified.
+Invalid values will result in an error.}
 
 \item{...}{Additional arguments (currently not used).}
 }
@@ -111,7 +109,8 @@ inconclusive.
 \examples{
 
 kardl_model <- kardl(
-  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+    deterministic(law) + trend,
   Seatbelts,
   mode = c(1, 2, 3, 0)
 )
@@ -130,14 +129,18 @@ kardl_extract(my_summary, what = "critical_values")
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)
 Seatbelts \%>\%
-  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  kardl(
+    DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) \%>\%
   pssf()
 
 # Getting details of the test results using magrittr:
 Seatbelts \%>\%
-  kardl(DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) + deterministic(law) + trend,
+  kardl(
+    DriversKilled ~ PetrolPrice + drivers + asym(PetrolPrice) +
+      deterministic(law) + trend,
     mode = c(1, 2, 3, 0), data = .
   ) \%>\%
   pssf() \%>\%

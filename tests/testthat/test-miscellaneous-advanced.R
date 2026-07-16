@@ -24,7 +24,7 @@ test_that("replace_lag_var handles numeric lag values", {
   string <- "Lag{lag}_{var_name}"
   result <- replace_lag_var(string, "DriversKilled", 5)
 
-  expect_equal(result, "Lag5_CPI")
+  expect_equal(result, "Lag5_DriversKilled")
 })
 
 test_that("replace_lag_var handles character lag values", {
@@ -233,7 +233,10 @@ test_that("lmerge handles many lists", {
 test_that("model_criterion works with different criteria", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test with string criteria
   aic_val <- model_criterion(model, "AIC")

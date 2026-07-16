@@ -81,7 +81,8 @@ values are provided for each variable and at each time horizon.
 
 # Fit a model using kardl
 kardl_model <- kardl(
-  DriversKilled ~ PetrolPrice + drivers + asy(PetrolPrice) + det(law) + trend,
+  DriversKilled ~ PetrolPrice + drivers + asy(PetrolPrice) +
+    det(law) + trend,
   Seatbelts,
   mode = c(1, 2, 3, 0)
 )
@@ -112,7 +113,10 @@ plot(boot, variable = "PetrolPrice")
 library(magrittr)
 
 Seatbelts \%>\%
-  kardl(DriversKilled ~ drivers + asym(PetrolPrice) + trend, maxlag = 2, data = .) \%>\%
+  kardl(DriversKilled ~ drivers + asym(PetrolPrice) + trend,
+    maxlag = 2,
+    data = .
+  ) \%>\%
   bootstrap(replications = 5) \%>\%
   plot(variable = "PetrolPrice")
 \dontshow{\}) # examplesIf}

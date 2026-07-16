@@ -154,7 +154,8 @@ applications, 281-314.
 
 ``` r
 kardl_model <- kardl(
-  DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) + deterministic(law) + trend,
+  DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) +
+    deterministic(law) + trend,
   Seatbelts
 )
 ast <- symmetrytest(kardl_model)
@@ -315,17 +316,35 @@ symmetrytest(kardl_model, component = "shortrun")
 
 # If you want to test for symmetry with respect to a specific variable,
 # you can use the selected_vars argument in the symmetrytest function. For
-# example, to test for symmetry with respect to the PPI variable, you can use
-# the following code:
-symmetrytest(kardl_model, selected_vars = "PPI")
-#> Error: These variables are not available for symmetry testing: PPI
+# example, to test for symmetry with respect to the drivers variable, you can
+# use the following code:
+symmetrytest(kardl_model, selected_vars = "drivers")
+#> 
+#> KARDL Symmetry Test Results
+#> Symmetry Test Results - Long-run:
+#> =======================
+#>         Df Sum of Sq Mean Sq F value Pr(>F)
+#> drivers  1    215.58  215.58   1.694 0.1948
+#> 
 
 # To test for symmetry with respect to multiple variables, you can provide
 # a vector of variable names to the selected_vars argument. For example, to
-# test for symmetry with respect to both PPI and ER, you can use the
-# following code:
-symmetrytest(kardl_model, selected_vars = c("PPI", "ER"))
-#> Error: These variables are not available for symmetry testing: PPI, ER
+# test for symmetry with respect to both drivers and PetrolPrice, you can use
+# the following code:
+symmetrytest(kardl_model, selected_vars = c("drivers", "PetrolPrice"))
+#> 
+#> KARDL Symmetry Test Results
+#> Symmetry Test Results - Long-run:
+#> =======================
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> drivers      1   215.576 215.576  1.6940 0.1948
+#> PetrolPrice  1    14.688  14.688  0.1154 0.7345
+#> 
+#> Symmetry Test Results - Short-run:
+#> =======================
+#>             Df Sum of Sq Mean Sq F value Pr(>F)
+#> PetrolPrice  1    161.38  161.38  1.2681 0.2616
+#> 
 
 # Finally, you can also specify the type of test statistic to be used in the
 # symmetry test. By default, the function uses the Wald test F statistic,

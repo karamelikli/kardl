@@ -5,7 +5,9 @@
 
 local_models <- local({
   kardl_reset()
-  linear <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts, mode = c(1, 1, 1))
+  linear <- kardl(DriversKilled ~ PetrolPrice + drivers + trend, Seatbelts,
+    mode = c(1, 1, 1)
+  )
   asym <- kardl(
     DriversKilled ~ PetrolPrice + drivers + asymmetric(PetrolPrice) + trend,
     Seatbelts,
@@ -136,7 +138,9 @@ test_that("print and summary for kardl_mplier work", {
 #' method; this test confirms that results are returned correctly.
 test_that("print and summary for kardl_boot work", {
   kardl_reset()
-  asym_only <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts, mode = c(1, 1, 1))
+  asym_only <- kardl(DriversKilled ~ asymmetric(PetrolPrice), Seatbelts,
+    mode = c(1, 1, 1)
+  )
   bt <- bootstrap(asym_only, horizon = 10, replications = 5, level = 90)
 
   expect_s3_class(bt, "kardl_boot")

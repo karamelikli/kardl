@@ -124,7 +124,8 @@ model's accuracy and predictive performance.
 }
 \examples{
 kardl_model <- kardl(
-  DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) + deterministic(law) + trend,
+  DriversKilled ~ Lasym(drivers + PetrolPrice) + Sas(PetrolPrice) +
+    deterministic(law) + trend,
   Seatbelts
 )
 ast <- symmetrytest(kardl_model)
@@ -167,15 +168,15 @@ symmetrytest(kardl_model, component = "shortrun")
 
 # If you want to test for symmetry with respect to a specific variable,
 # you can use the selected_vars argument in the symmetrytest function. For
-# example, to test for symmetry with respect to the PPI variable, you can use
-# the following code:
-symmetrytest(kardl_model, selected_vars = "PPI")
+# example, to test for symmetry with respect to the drivers variable, you can
+# use the following code:
+symmetrytest(kardl_model, selected_vars = "drivers")
 
 # To test for symmetry with respect to multiple variables, you can provide
 # a vector of variable names to the selected_vars argument. For example, to
-# test for symmetry with respect to both PPI and ER, you can use the
-# following code:
-symmetrytest(kardl_model, selected_vars = c("PPI", "ER"))
+# test for symmetry with respect to both drivers and PetrolPrice, you can use
+# the following code:
+symmetrytest(kardl_model, selected_vars = c("drivers", "PetrolPrice"))
 
 # Finally, you can also specify the type of test statistic to be used in the
 # symmetry test. By default, the function uses the Wald test F statistic,

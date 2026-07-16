@@ -158,9 +158,9 @@
 #' head(kardl_extract(m, "lambda"))
 #'
 #' # For plotting specific variables, you can specify them in the plot
-#' # function. For example, to plot the multipliers for the variable "PPI":
+#' # function. For example, to plot the multipliers for the variable "drivers":
 #'
-#' plot(m, variable = "PPI", title = "Dynamic Multipliers for PPI")
+#' plot(m, variable = "drivers", title = "Dynamic Multipliers for drivers")
 mplier <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
   UseMethod("mplier")
 }
@@ -522,7 +522,8 @@ mplier.kardl_lm <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
 #'
 #' # Fit a model using kardl
 #' kardl_model <- kardl(
-#'   DriversKilled ~ PetrolPrice + drivers + asy(PetrolPrice) + det(law) + trend,
+#'   DriversKilled ~ PetrolPrice + drivers + asy(PetrolPrice) +
+#'     det(law) + trend,
 #'   Seatbelts,
 #'   mode = c(1, 2, 3, 0)
 #' )
@@ -553,7 +554,10 @@ mplier.kardl_lm <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
 #' library(magrittr)
 #'
 #' Seatbelts %>%
-#'   kardl(DriversKilled ~ drivers + asym(PetrolPrice) + trend, maxlag = 2, data = .) %>%
+#'   kardl(DriversKilled ~ drivers + asym(PetrolPrice) + trend,
+#'     maxlag = 2,
+#'     data = .
+#'   ) %>%
 #'   bootstrap(replications = 5) %>%
 #'   plot(variable = "PetrolPrice")
 bootstrap <- function(kardl_model,

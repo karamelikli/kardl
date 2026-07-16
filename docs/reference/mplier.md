@@ -207,8 +207,7 @@ head(kardl_extract(m, "lambda"))
 #> [6,]  0.000000000  0.000000000          0.0000           0.000
 
 # For plotting specific variables, you can specify them in the plot
-# function. For example, to plot the multipliers for the variable "PPI":
+# function. For example, to plot the multipliers for the variable "drivers":
 
-plot(m, variable = "PPI", title = "Dynamic Multipliers for PPI")
-#> Error: PPI is not exits among independent variables!
+plot(m, variable = "drivers", title = "Dynamic Multipliers for drivers")
 ```

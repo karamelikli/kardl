@@ -41,7 +41,7 @@
 #'   asymmetric multipliers) represents a novel and practical contribution in R.
 #'
 #' * Additional unique features include flexible formula parsing, multiple model
-#'   selection criteria (AIC, BIC, AICc, HQ, and user-defined), and
+#'   selection criteria (AIC, BIC, AICc, HQ, AdjR2, and user-defined), and
 #'   comprehensive post-estimation tools tailored specifically for asymmetric
 #'   ARDL analysis.
 #'

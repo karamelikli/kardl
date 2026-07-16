@@ -101,7 +101,10 @@ test_that("bootstrap with progress=FALSE", {
 test_that("mplier with specific variable subset", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test extracting multipliers for single variable
   mpl_single <- mplier(model, horizon = 10, variables = "drivers")
@@ -129,7 +132,10 @@ test_that("plot.kardl_mplier with different parameters", {
 test_that("kardl_extract handles case_txt from test_summary", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test case 1 - but it may map to a different case internally
   test_c1 <- pssf(model, case = 1, sig = "auto")
@@ -153,7 +159,10 @@ test_that("kardl_extract handles case_txt from test_summary", {
 test_that("narayan decision with auto selects correct significance", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
 
   # Test narayan with auto
   narayan_auto <- narayan(model, case = 2, sig = "auto")
@@ -236,7 +245,10 @@ test_that("kardl_extract handles all kardl_boot components", {
 test_that("kardl_extract handles all kardl_test components", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
   test_result <- pssf(model, case = 3, sig = "auto")
 
   # Test all test extraction options
@@ -255,7 +267,10 @@ test_that("kardl_extract handles all kardl_test components", {
 test_that("kardl_extract handles all kardl_test_summary components", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 
@@ -274,7 +289,10 @@ test_that("kardl_extract handles all kardl_test_summary components", {
 test_that("kardl_extract handles all kardl_symmetric components", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers), data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice + drivers),
+    data = Seatbelts,
+    maxlag = 1
+  )
   sym_result <- symmetrytest(model)
 
   # Test all symmetric extraction options
@@ -303,7 +321,10 @@ test_that("kardl_extract handles all kardl_symmetric components", {
 test_that("print.kardl_test_summary produces output", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ PetrolPrice + drivers, data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ PetrolPrice + drivers,
+    data = Seatbelts,
+    maxlag = 1
+  )
   test_result <- pssf(model, case = 3, sig = "auto")
   test_summ <- summary(test_result)
 
@@ -316,7 +337,10 @@ test_that("print.kardl_test_summary produces output", {
 test_that("summary.kardl_symmetric prints correctly", {
   kardl_reset()
 
-  model <- kardl(DriversKilled ~ asym(PetrolPrice), data = Seatbelts, maxlag = 1)
+  model <- kardl(DriversKilled ~ asym(PetrolPrice),
+    data = Seatbelts,
+    maxlag = 1
+  )
   sym_result <- symmetrytest(model)
   summ <- summary(sym_result, level = 0.05)
 
@@ -347,11 +371,13 @@ test_that("model_criterion with different criteria strings", {
   bic <- model_criterion(model, "BIC")
   aicc <- model_criterion(model, "AICc")
   hq <- model_criterion(model, "HQ")
+  adjr2 <- model_criterion(model, "AdjR2")
 
   expect_type(aic, "double")
   expect_type(bic, "double")
   expect_type(aicc, "double")
   expect_type(hq, "double")
+  expect_type(adjr2, "double")
 
   # Different criteria should give different values
   expect_true(aic != bic || aic != hq)

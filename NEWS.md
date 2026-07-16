@@ -1,7 +1,8 @@
-# kardl 2.0.2
+# kardl 2.0.4
 ## Improvements
 
 * Expanded S3 method support throughout the package. Functions including `bootstrap()`, `kardl_longrun()`, `mplier()`, `narayan()`, `pssf()`, `psst()`, and `symmetrytest()` are now implemented as S3 methods for `kardl_lm` objects, with extended support for `kardl_longrun` objects where appropriate.
+* The data for examples in the package has been updated to include a new dataset, `kardl_data`, which is now used in all examples and vignettes. This dataset provides a consistent basis for demonstrating the package's functionality and ensures that users can easily replicate the examples.
 
 
 # kardl 2.0.1
