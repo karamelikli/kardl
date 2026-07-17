@@ -185,20 +185,6 @@
 #' }
 #'
 #'
-#' \strong{\emph{examples}}
-#'
-#' Using the default maximum lag (4)
-#'
-#' \code{kardl(data, my_formula, maxlag = 4)}
-#'
-#' Reducing the maximum lag to 2 for faster computation
-#'
-#' \code{kardl(data, my_formula, maxlag = 2)}
-#'
-#' Increasing the maximum lag to 8 for datasets with longer dependencies
-#'
-#' \code{kardl(data, my_formula, maxlag = 8)}
-#'
 #' @param mode Specifies the mode of estimation and output control. This
 #'        parameter determines how the function handles lag estimation and what
 #'        kind of feedback or control is provided during the process. The

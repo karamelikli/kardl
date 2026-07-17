@@ -61,7 +61,7 @@ local({
 #' my_settings$maxlag
 #'
 #' # Demonstrate setting print_wrap option
-#' kardl_set(print_wrap=80L)
+#' kardl_set(print_wrap = 80L)
 #'
 #' # Reset to defaults after demonstrating custom settings
 #' kardl_reset()

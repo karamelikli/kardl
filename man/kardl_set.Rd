@@ -41,6 +41,9 @@ my_settings <- kardl_set(
 my_settings$long_coef
 my_settings$maxlag
 
+# Demonstrate setting print_wrap option
+kardl_set(print_wrap = 80L)
+
 # Reset to defaults after demonstrating custom settings
 kardl_reset()
 

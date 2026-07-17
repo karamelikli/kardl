@@ -54,7 +54,7 @@ kardl_get()
 #> $formula
 #> DriversKilled ~ PetrolPrice + drivers + Asymmetr(PetrolPrice) + 
 #>     deterministic(law) + trend
-#> <environment: 0x5aec287b44a8>
+#> <environment: 0x562cd442e040>
 #> 
 #> $print_wrap
 #> NULL

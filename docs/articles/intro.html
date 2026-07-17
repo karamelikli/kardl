@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Huseyin
 karamelikli and Huseyin Utku Demir</h4>
             
-            <h4 data-toc-skip class="date">2026-07-16</h4>
+            <h4 data-toc-skip class="date">2026-07-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/karamelikli/kardl/blob/HEAD/vignettes/intro.Rmd" class="external-link"><code>vignettes/intro.Rmd</code></a></small>
       <div class="d-none name"><code>intro.Rmd</code></div>
@@ -386,7 +386,7 @@ criteria (AIC, BIC, HQ).</p>
 <span></span>
 <span><span class="co"># Pivot to long format</span></span>
 <span><span class="va">lag_criteria_long</span> <span class="op">&lt;-</span> <span class="va">lag_criteria</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="va">AICc</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AICc</span>, <span class="va">AdjR2</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://tidyr.tidyverse.org/reference/pivot_longer.html" class="external-link">pivot_longer</a></span><span class="op">(</span></span>
 <span>    cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">AIC</span>, <span class="va">BIC</span>, <span class="va">HQ</span><span class="op">)</span>,</span>
 <span>    names_to <span class="op">=</span> <span class="st">"Criteria"</span>,</span>
@@ -413,6 +413,9 @@ criteria (AIC, BIC, HQ).</p>
 <span>    data <span class="op">=</span> <span class="va">min_values</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">lag</span>, y <span class="op">=</span> <span class="va">Value</span>, label <span class="op">=</span> <span class="va">lag</span><span class="op">)</span>,</span>
 <span>    vjust <span class="op">=</span> <span class="fl">1.5</span>, color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">3.5</span></span>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_discrete.html" class="external-link">scale_x_discrete</a></span><span class="op">(</span></span>
+<span>    breaks <span class="op">=</span> <span class="va">lag_criteria</span><span class="op">$</span><span class="va">lag</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lag_criteria</span><span class="op">)</span>, by <span class="op">=</span> <span class="fl">20</span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html" class="external-link">labs</a></span><span class="op">(</span></span>
 <span>    title <span class="op">=</span> <span class="st">"Lag Criteria Comparison"</span>,</span>
 <span>    x <span class="op">=</span> <span class="st">"Lag Configuration"</span>,</span>
@@ -420,7 +423,7 @@ criteria (AIC, BIC, HQ).</p>
 <span>  <span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="external-link">theme_minimal</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="intro_files/figure-html/lag-criteria-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/lag-criteria-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level4">
 <h4 id="error-correction-model-ecm-estimation">Error Correction Model (ECM) Estimation<a class="anchor" aria-label="anchor" href="#error-correction-model-ecm-estimation"></a>
@@ -782,7 +785,7 @@ the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external
 dependent variable to changes in independent variables over time.</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">multipliers</span>, variables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"PetrolPrice"</span>, <span class="st">"drivers"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="intro_files/figure-html/plot-multipliers-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/plot-multipliers-1.png" class="r-plt" alt="" width="100%"></p>
 <p>To handle a large number of variables, you can specify a subset of
 variables to plot or use <code>variables = "all"</code> to visualize all
 dynamic multipliers.</p>
@@ -822,7 +825,7 @@ robust estimates of uncertainty around the multipliers.</p>
 variability and confidence intervals of the dynamic multipliers.</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">bootstrap_results</span>, variables <span class="op">=</span> <span class="st">"drivers"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="intro_files/figure-html/plot-bootstrap-multipliers-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="intro_files/figure-html/plot-bootstrap-multipliers-1.png" class="r-plt" alt="" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="step-8-customizing-asymmetric-variables">Step 8: Customizing asymmetric Variables<a class="anchor" aria-label="anchor" href="#step-8-customizing-asymmetric-variables"></a>

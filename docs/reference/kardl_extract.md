@@ -351,11 +351,11 @@ kardl_extract(kardl_model, what = "model_type")
 #> [1] "NN"
 # kardl_extract(kardl_model, what = "data")
 kardl_extract(kardl_model, what = "start_time")
-#> [1] "2026-07-16 14:52:43 +03"
+#> [1] "2026-07-17 13:19:40 +03"
 kardl_extract(kardl_model, what = "end_time")
-#> [1] "2026-07-16 14:52:43 +03"
+#> [1] "2026-07-17 13:19:40 +03"
 kardl_extract(kardl_model, what = "span")
-#> Time difference of 0.00288105 secs
+#> Time difference of 0.00285387 secs
 kardl_extract(kardl_model, what = "opt_lag")
 #>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN     asyP_drivers_PP 
 #>                   2                   1                   0                   4 
@@ -372,7 +372,7 @@ kardl_extract(kardl_model, what = "model_formula")
 #>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + 
 #>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + 
 #>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN
-#> <environment: 0x5aec20c6a308>
+#> <environment: 0x562cddcc12a0>
 kardl_extract(kardl_model, what = "k")
 #> [1] 17
 kardl_extract(kardl_model, what = "n")

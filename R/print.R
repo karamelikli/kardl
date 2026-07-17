@@ -35,6 +35,35 @@ kardl_print_wrapped <- function(expr) {
 
   invisible(NULL)
 }
+
+#' Concatenates and prints text with optional wrapping
+#'
+#' This function concatenates the provided text arguments and prints them to
+#' the console. If a wrapping width is set using
+#' `kardl_set("print_wrap", width)`, the output will be wrapped to fit within
+#' that width. Otherwise, it will print normally.
+#'
+#' @param ... Text arguments to be concatenated and printed.
+#' @param sep A character string to separate the terms. Default is an empty
+#' string.
+#' @param fill A logical value indicating whether to fill the output. Default
+#' is FALSE.
+#'
+#' @return Invisibly returns NULL after printing the concatenated text.
+#' @noRd
+kardl_cat <- function(..., sep = "", fill = FALSE) {
+  wrap_width <- kardl_get("print_wrap")
+
+  txt <- paste(..., sep = sep)
+
+  if (is.null(wrap_width)) {
+    cat(txt, fill = fill)
+  } else {
+    cat(strwrap(txt, width = wrap_width), sep = "\n")
+  }
+
+  invisible(NULL)
+}
 #' Print and summary methods for kardl objects
 #' @description
 #' These methods provide custom print and summary outputs for various kardl
@@ -198,7 +227,7 @@ print.kardl_hypotheses <- function(x, ...) {
 #' @noRd
 print.summary_kardl_longrun <- function(x, ...) {
   kardl_print_wrapped({
-    cat("\nCall:\n", paste(deparse(x$call), collapse = "\n"), "\n", sep = "")
+    kardl_cat("\nCall:\n", paste(deparse(x$call), collapse = "\n"), "\n", sep = "")
 
     cat("\nEstimation type:\n")
     cat(x$estimation_type, "\n")
@@ -215,7 +244,7 @@ print.summary_kardl_longrun <- function(x, ...) {
 #' @noRd
 print.kardl_symmetric <- function(x, ...) {
   kardl_print_wrapped({
-    cat("\n", "KARDL Symmetry Test Results\n", sep = "")
+    kardl_cat("\n", "KARDL Symmetry Test Results\n", sep = "")
     if (!is.null(x$long_wald_summary) && nrow(x$long_wald_summary) > 0) {
       print(x$long_wald_summary, ...)
       cat("\n")
@@ -380,9 +409,9 @@ print.summary.kardl_symmetric <- function(x,
 #' @noRd
 print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
   kardl_print_wrapped({
-    cat("\n========================================")
-    cat("\nKARDL Cointegration Test Results")
-    cat("\n========================================\n")
+    kardl_cat("\n========================================")
+    kardl_cat("\nKARDL Cointegration Test Results")
+    kardl_cat("\n========================================\n")
 
     stat_name <- names(x$statistic)
 
@@ -391,11 +420,11 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
     crit_upper <- x$cr_vals[sig_level, "U"]
 
     # Decision
-    cat("\n Decision:", x$decision)
+    kardl_cat("\n Decision:", x$decision)
 
     # Test statistic
-    cat("\n\n Test Statistic:")
-    cat(
+    kardl_cat("\n\n Test Statistic:")
+    kardl_cat(
       sprintf(
         paste0("\n  %s: %.", digits, "f"),
         stat_name,
@@ -404,22 +433,23 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
     )
 
     # Critical values
-    cat("\n\n Critical Values (Lower & Upper Bounds):\n")
+    kardl_cat("\n\n Critical Values (Lower & Upper Bounds):\n")
 
     cv_table <- x$cr_vals
     rownames(cv_table) <- paste0(
       as.numeric(rownames(cv_table)) * 100,
       "%"
     )
-    cv_output <- capture.output(print(cv_table, digits = digits, ...))
-    cv_output <- paste0("  ", cv_output)
-    cat(cv_output, sep = "\n")
+    # cv_output <- capture.output(print(cv_table, digits = digits, ...))
+    # cv_output <- paste0("  ", cv_output)
+    # kardl_cat(cv_output, sep = "\n")
+    print(cv_table, digits = digits, ...)
 
     # Comparison
-    cat("\n\n Comparison:")
+    kardl_cat("\n\n Comparison:")
 
     if (abs(x$statistic) < abs(crit_lower)) {
-      cat(
+      kardl_cat(
         sprintf(
           paste0(
             "\n  At the %.0f%% significance level, ",
@@ -432,13 +462,13 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
         )
       )
 
-      cat(
+      kardl_cat(
         "\n  This indicates that the variables do not move together in",
         " the long run."
       )
-      cat("\n  Conclusion: No evidence of cointegration.")
+      kardl_cat("\n  Conclusion: No evidence of cointegration.")
     } else if (abs(x$statistic) > abs(crit_upper)) {
-      cat(
+      kardl_cat(
         sprintf(
           paste0(
             "\n  At the %.0f%% significance level, ",
@@ -451,16 +481,16 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
         )
       )
 
-      cat(
+      kardl_cat(
         "\n  This indicates that the variables tend to move together over",
         " time."
       )
-      cat(
+      kardl_cat(
         "\n  Conclusion: There is strong evidence of a long-run relationship",
         " (cointegration)."
       )
     } else {
-      cat(
+      kardl_cat(
         sprintf(
           paste0(
             "\n  At the %.0f%% significance level, ",
@@ -475,11 +505,11 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
         )
       )
 
-      cat(
+      kardl_cat(
         "\n  This is an inconclusive zone where we cannot make a definitive",
         " judgment."
       )
-      cat(
+      kardl_cat(
         "\n  Conclusion: The test does not provide clear evidence ",
         "either way."
       )
@@ -487,22 +517,16 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
 
     cat("\n\n Hypotheses:\n")
 
-    cat(
-      strwrap(paste0("  ", x$hypotheses$H0), width = getOption("width")),
-      "\n"
-    )
-    cat(
-      strwrap(paste0("  ", x$hypotheses$H1, "\n"), width = getOption("width")),
-      "\n"
-    )
+    kardl_cat( paste0("  ", x$hypotheses$H0 , "\n"  ))
+    kardl_cat( paste0("  ", x$hypotheses$H1,  "\n"    ))
 
     cat("\n Model Details:")
-    cat(sprintf("\n  Number of regressors (k): %d", x$k))
+    kardl_cat(sprintf("\n  Number of regressors (k): %d", x$k))
     cat("\n  Case:", x$case, "\n")
 
     if (!is.null(x$notes) && nzchar(x$notes)) {
       cat("\n\n Note:")
-      cat(strwrap(paste0("\n ", x$notes), width = getOption("width")), sep = "")
+      kardl_cat( paste0("\n ", x$notes , sep = ""))
     }
 
     cat("\n========================================\n")
@@ -521,7 +545,7 @@ print.kardl_long_run <- function(x, ...) {
     cat("\n========================================\n")
 
     NextMethod() # continues with normal coefficient printing
-    cat("Note:", strwrap(attr(x, "note"), width = getOption("width")), "\n\n")
+    kardl_cat("Note:",  attr(x, "note"),  "\n\n")
   })
   invisible(x)
 }
@@ -549,8 +573,8 @@ plot.kardl_long_run <- function(x, ...) {
 #' @noRd
 print.kardl_lm <- function(x, ...) {
   kardl_print_wrapped({
-    cat("Optimal lags for each variable (", x$args_info$criterion, "):\n")
-    cat(
+    kardl_cat("Optimal lags for each variable (", x$args_info$criterion, "):\n")
+    kardl_cat(
       toString(sprintf(
         "%s: %d",
         names(x$lag_info$opt_lag),
@@ -562,10 +586,7 @@ print.kardl_lm <- function(x, ...) {
     if (!is.null(x$notes)) {
       cat("\nNotes:\n")
       for (note in x$notes) {
-        cat(strwrap(paste0("   \u2022 ", note), width = getOption("width")),
-          "\n",
-          sep = ""
-        )
+        kardl_cat(paste0("   \u2022 ", note) , "\n", sep = ""  )
       }
       cat("\n")
     }

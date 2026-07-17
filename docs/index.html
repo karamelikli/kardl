@@ -61,7 +61,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="kardl-">KARDL <img src="reference/figures/KARDL.png" align="right"><a class="anchor" aria-label="anchor" href="#kardl-"></a>
 </h1></div>
-<p><a href="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/karamelikli/kardl/releases" class="external-link"><img src="https://img.shields.io/github/v/release/karamelikli/kardl" alt="GitHub version"></a> <a href="https://opensource.org/licenses/GPL-3.0" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a> <a href="https://cran.r-project.org/package=kardl" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/kardl" alt="CRAN downloads"></a></p>
+<p><a href="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/karamelikli/kardl/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a> <a href="https://github.com/karamelikli/kardl/releases" class="external-link"><img src="https://img.shields.io/github/v/release/karamelikli/kardl" alt="GitHub version"></a> <a href="https://opensource.org/licenses/GPL-3.0" class="external-link"><img src="https://img.shields.io/badge/license-GPL--3-blue.svg" alt="License: GPL-3"></a> <a href="https://cran.r-project.org/package=kardl" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/kardl" alt="CRAN downloads"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
@@ -433,14 +433,14 @@
 </tr></thead>
 <tbody>
 <tr>
-<td>data</td>
-<td>NULL</td>
-<td>The data to be used for the model estimation</td>
-</tr>
-<tr>
 <td>formula</td>
 <td>NULL</td>
 <td>The formula to be used for the model estimation</td>
+</tr>
+<tr>
+<td>data</td>
+<td>NULL</td>
+<td>The data to be used for the model estimation</td>
 </tr>
 <tr>
 <td>maxlag</td>
@@ -487,28 +487,33 @@
 <td>“1/1”</td>
 <td>Batch size for parallel processing, default is “1/1”</td>
 </tr>
+<tr>
+<td>print_wrap</td>
+<td>NULL</td>
+<td>If not NULL, the output will be wrapped to the specified number of characters</td>
+</tr>
 </tbody>
 </table>
 <p>The details of the options are as follows:</p>
 <div class="section level3">
-<h3 id="id_1-data">1. data<a class="anchor" aria-label="anchor" href="#id_1-data"></a>
-</h3>
-<p><code>data</code> is a data frame or time series object containing the variables to be used in the model estimation. The default value is <code>NULL</code>, which means that the user must provide a dataset when calling the <code><a href="reference/kardl.html">kardl()</a></code> function.</p>
-<div class="section level4">
-<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
-</h4>
-<p>The <code>data</code> parameter is essential for the <code><a href="reference/kardl.html">kardl()</a></code> function to perform model estimation. It should contain all the variables specified in the model formula, including the dependent variable and any independent variables, asymmetric components, and deterministic variables defined in the formula. The trend will be generated automatically if specified in the formula. Input data can be in the form of a data frame, tibble, or time series object (e.g., <code>ts</code>, <code>xts</code>, <code>zoo</code>).</p>
-<p>When providing the <code>data</code>, ensure that: - The dataset is clean and free of missing values for the variables used in the model. - The variables are appropriately formatted (e.g., numeric for continuous variables). - The time series data is ordered correctly, especially if the analysis involves lagged variables.</p>
-</div>
-</div>
-<div class="section level3">
-<h3 id="id_2-model">2. model<a class="anchor" aria-label="anchor" href="#id_2-model"></a>
+<h3 id="id_1-model">1. model<a class="anchor" aria-label="anchor" href="#id_1-model"></a>
 </h3>
 <p><code>formula</code> is a formula object specifying the model to be estimated. The default value is <code>NULL</code>, which means that the user must provide a model formula when calling the <code><a href="reference/kardl.html">kardl()</a></code> function.</p>
 <div class="section level4">
-<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a>
+<h4 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a>
 </h4>
 <p>The <code>model</code> parameter defines the structure of the ARDL or NARDL model to be estimated. It should include the dependent variable on the left side of the formula and the independent variables, asymmetric components, deterministic variables, and trend (if applicable) on the right side. The formula can include: - <code>Asymmetric()</code>: To specify variables with asymmetric effects in both short- and long -run dynamics. - <code>Lasymmetric()</code>: To specify variables with asymmetric effects only in the long-run -dynamics. - <code>Sasymmetric()</code>: To specify variables with asymmetric effects only in the short-run -dynamics. - <code>Deterministic()</code>: To include fixed dummy variables (e.g., seasonal d -ummies, event dummies). - <code>trend</code>: To include a linear time trend in the model. When constructing the <code>model</code> formula, ensure that: - All variables used in the formula are present in the <code>data</code> provided. - The formula is syntactically correct and follows R’s formula conventions. - The use of asymmetric and deterministic functions is appropriate for the research question and data characteristics.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="id_2-data">2. data<a class="anchor" aria-label="anchor" href="#id_2-data"></a>
+</h3>
+<p><code>data</code> is a data frame or time series object containing the variables to be used in the model estimation. The default value is <code>NULL</code>, which means that the user must provide a dataset when calling the <code><a href="reference/kardl.html">kardl()</a></code> function.</p>
+<div class="section level4">
+<h4 id="details-1">Details<a class="anchor" aria-label="anchor" href="#details-1"></a>
+</h4>
+<p>The <code>data</code> parameter is essential for the <code><a href="reference/kardl.html">kardl()</a></code> function to perform model estimation. It should contain all the variables specified in the model formula, including the dependent variable and any independent variables, asymmetric components, and deterministic variables defined in the formula. The trend will be generated automatically if specified in the formula. Input data can be in the form of a data frame, tibble, or time series object (e.g., <code>ts</code>, <code>xts</code>, <code>zoo</code>).</p>
+<p>When providing the <code>data</code>, ensure that: - The dataset is clean and free of missing values for the variables used in the model. - The variables are appropriately formatted (e.g., numeric for continuous variables). - The time series data is ordered correctly, especially if the analysis involves lagged variables.</p>
 </div>
 </div>
 <div class="section level3">
@@ -829,6 +834,27 @@
 <div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>batch <span class="op">=</span> <span class="st">"3/6"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/kardl.html">kardl</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">my_formula</span><span class="op">)</span></span></code></pre></div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="id_12-print_wrap">12. print_wrap<a class="anchor" aria-label="anchor" href="#id_12-print_wrap"></a>
+</h3>
+<p><code>print_wrap</code> is an optional parameter that specifies the maximum number of characters per line for console output. The default value is <code>NULL</code>, which means that the output will not be wrapped and will be displayed in its entirety.</p>
+<div class="section level4">
+<h4 id="examples-4">Examples<a class="anchor" aria-label="anchor" href="#examples-4"></a>
+</h4>
+<div class="section level5">
+<h5 id="default-no-wrapping">Default (no wrapping)<a class="anchor" aria-label="anchor" href="#default-no-wrapping"></a>
+</h5>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>print_wrap <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level5">
+<h5 id="custom-wrapping-eg-80-characters-per-line">Custom wrapping (e.g., 80 characters per line)<a class="anchor" aria-label="anchor" href="#custom-wrapping-eg-80-characters-per-line"></a>
+</h5>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>print_wrap <span class="op">=</span> <span class="fl">80L</span><span class="op">)</span></span></code></pre></div>
 </div>
 </div>
 </div>

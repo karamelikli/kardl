@@ -336,7 +336,7 @@ lag_criteria <- lag_criteria |> mutate(across(c(AIC, BIC, HQ), as.numeric))
 
 # Pivot to long format
 lag_criteria_long <- lag_criteria |>
-  select(-AICc) |>
+  select(-c(AICc, AdjR2)) |>
   pivot_longer(
     cols = c(AIC, BIC, HQ),
     names_to = "Criteria",
@@ -362,6 +362,9 @@ ggplot(
   geom_text(
     data = min_values, aes(x = lag, y = Value, label = lag),
     vjust = 1.5, color = "black", size = 3.5
+  ) +
+  scale_x_discrete(
+    breaks = lag_criteria$lag[seq(1, nrow(lag_criteria), by = 20)]
   ) +
   labs(
     title = "Lag Criteria Comparison",

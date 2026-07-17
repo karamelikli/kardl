@@ -5,6 +5,7 @@
 [![GitHub version](https://img.shields.io/github/v/release/karamelikli/kardl)](https://github.com/karamelikli/kardl/releases) 
 [![License: GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://opensource.org/licenses/GPL-3.0) 
 [![CRAN downloads](https://cranlogs.r-pkg.org/badges/kardl)](https://cran.r-project.org/package=kardl) 
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 ## Introduction
 

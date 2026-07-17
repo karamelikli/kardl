@@ -7,6 +7,8 @@ version](https://img.shields.io/github/v/release/karamelikli/kardl)](https://git
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://opensource.org/licenses/GPL-3.0)
 [![CRAN
 downloads](https://cranlogs.r-pkg.org/badges/kardl)](https://cran.r-project.org/package=kardl)
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 ## Introduction
 
@@ -564,8 +566,8 @@ available:
 
 | Option Name | Default | Description |
 |----|----|----|
-| data | NULL | The data to be used for the model estimation |
 | formula | NULL | The formula to be used for the model estimation |
+| data | NULL | The data to be used for the model estimation |
 | maxlag | 4 | The maximum number of lags to be considered for the model estimation |
 | mode | “quick” | The mode of the model estimation, can be “quick”, “grid”, “grid_custom” or a user-defined vector |
 | criterion | “AIC” | The criterion for model selection, can be “AIC”, “BIC”, “HQ” or a user-defined function |
@@ -575,36 +577,11 @@ available:
 | long_coef | “L{lag}.{varName}” | Prefix for long-run coefficients, default is “L1.” |
 | short_coef | “L{lag}.d.{varName}” | Prefix for short-run coefficients, default is “L1.d.” |
 | batch | “1/1” | Batch size for parallel processing, default is “1/1” |
+| print_wrap | NULL | If not NULL, the output will be wrapped to the specified number of characters |
 
 The details of the options are as follows:
 
-### 1. data
-
-`data` is a data frame or time series object containing the variables to
-be used in the model estimation. The default value is `NULL`, which
-means that the user must provide a dataset when calling the
-[`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
-function.
-
-#### Details
-
-The `data` parameter is essential for the
-[`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
-function to perform model estimation. It should contain all the
-variables specified in the model formula, including the dependent
-variable and any independent variables, asymmetric components, and
-deterministic variables defined in the formula. The trend will be
-generated automatically if specified in the formula. Input data can be
-in the form of a data frame, tibble, or time series object (e.g., `ts`,
-`xts`, `zoo`).
-
-When providing the `data`, ensure that: - The dataset is clean and free
-of missing values for the variables used in the model. - The variables
-are appropriately formatted (e.g., numeric for continuous variables). -
-The time series data is ordered correctly, especially if the analysis
-involves lagged variables.
-
-### 2. model
+### 1. model
 
 `formula` is a formula object specifying the model to be estimated. The
 default value is `NULL`, which means that the user must provide a model
@@ -630,6 +607,32 @@ variables used in the formula are present in the `data` provided. - The
 formula is syntactically correct and follows R’s formula conventions. -
 The use of asymmetric and deterministic functions is appropriate for the
 research question and data characteristics.
+
+### 2. data
+
+`data` is a data frame or time series object containing the variables to
+be used in the model estimation. The default value is `NULL`, which
+means that the user must provide a dataset when calling the
+[`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
+function.
+
+#### Details
+
+The `data` parameter is essential for the
+[`kardl()`](https://karamelikli.github.io/kardl/reference/kardl.md)
+function to perform model estimation. It should contain all the
+variables specified in the model formula, including the dependent
+variable and any independent variables, asymmetric components, and
+deterministic variables defined in the formula. The trend will be
+generated automatically if specified in the formula. Input data can be
+in the form of a data frame, tibble, or time series object (e.g., `ts`,
+`xts`, `zoo`).
+
+When providing the `data`, ensure that: - The dataset is clean and free
+of missing values for the variables used in the model. - The variables
+are appropriately formatted (e.g., numeric for continuous variables). -
+The time series data is ordered correctly, especially if the analysis
+involves lagged variables.
 
 ### 3. maxlag
 
@@ -1060,6 +1063,29 @@ kardl(data, my_formula)
 
 kardl_set(batch = "3/6")
 kardl(data, my_formula)
+```
+
+### 12. print_wrap
+
+`print_wrap` is an optional parameter that specifies the maximum number
+of characters per line for console output. The default value is `NULL`,
+which means that the output will not be wrapped and will be displayed in
+its entirety.
+
+#### Examples
+
+##### Default (no wrapping)
+
+``` r
+
+kardl_set(print_wrap = NULL)
+```
+
+##### Custom wrapping (e.g., 80 characters per line)
+
+``` r
+
+kardl_set(print_wrap = 80L)
 ```
 
 ## Contributing to kardl
