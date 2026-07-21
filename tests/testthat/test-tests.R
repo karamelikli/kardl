@@ -37,6 +37,13 @@ test_that("Post-estimation tests run correctly", {
   expect_s3_class(st$long_wald_summary, c("anova", "data.frame"))
   expect_identical(st$long_wald_summary$Df, 1L)
 
+  summar <- kardl_longrun(symm_model)
+  summar_st <- symmetrytest(summar)
+
+  # excpect st = summar_st
+  expect_equal(st$long_wald_summary, summar_st$long_wald_summary)
+
+
   #' Test pssf
   pf <- pssf(model, case = 3, signif_level = "auto")
   expect_s3_class(pf, c("kardl_test", "htest"))

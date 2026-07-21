@@ -157,38 +157,34 @@ my_test
 # Getting details of the test.
 my_summary<-summary(my_test)
 my_summary
+#> KARDL Cointegration Test Summary
 #> 
-#> ========================================
-#> KARDL Cointegration Test Results
-#> ========================================
+#> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
-#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> t statistic = -12.5530733
 #> 
-#>  Test Statistic:
-#>   t: -12.5530733
-#> 
-#>  Critical Values (Lower & Upper Bounds):
+#> Critical Values (Lower & Upper Bounds):
 #>            L     U
 #>   10%  -3.13 -3.84
 #>   5%   -3.41 -4.16
 #>   2.5% -3.65 -4.42
 #>   1%   -3.96 -4.73
 #> 
+#> Decision:
+#>   Reject H0 → Cointegration (at 1% level)
 #> 
-#>  Comparison:
+#> Comparison:
 #>   At the 1% significance level, t (12.5530733) exceeds the upper bound (4.73).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
-#>  Hypotheses:
-#> H0: Coef(L1.DriversKilled) = 0 
-#> H1: Coef(L1.DriversKilled) ≠ 0 
+#> Hypotheses:
+#>   H0: Coef(L1.DriversKilled) = 0
+#>   H1: Coef(L1.DriversKilled) ≠ 0
 #> 
-#>  Model Details:
+#> Model Details:
 #>   Number of regressors (k): 3
 #>   Case: V 
-#> 
-#> ========================================
 
 # Getting the critical values of the test.
 kardl_extract(my_summary, what = "critical_values")
@@ -243,36 +239,32 @@ Seatbelts %>%
   ) %>%
   psst() %>%
   summary()
+#> KARDL Cointegration Test Summary
 #> 
-#> ========================================
-#> KARDL Cointegration Test Results
-#> ========================================
+#> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
-#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> t statistic = -12.5530733
 #> 
-#>  Test Statistic:
-#>   t: -12.5530733
-#> 
-#>  Critical Values (Lower & Upper Bounds):
+#> Critical Values (Lower & Upper Bounds):
 #>            L     U
 #>   10%  -3.13 -3.84
 #>   5%   -3.41 -4.16
 #>   2.5% -3.65 -4.42
 #>   1%   -3.96 -4.73
 #> 
+#> Decision:
+#>   Reject H0 → Cointegration (at 1% level)
 #> 
-#>  Comparison:
+#> Comparison:
 #>   At the 1% significance level, t (12.5530733) exceeds the upper bound (4.73).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
-#>  Hypotheses:
-#> H0: Coef(L1.DriversKilled) = 0 
-#> H1: Coef(L1.DriversKilled) ≠ 0 
+#> Hypotheses:
+#>   H0: Coef(L1.DriversKilled) = 0
+#>   H1: Coef(L1.DriversKilled) ≠ 0
 #> 
-#>  Model Details:
+#> Model Details:
 #>   Number of regressors (k): 3
 #>   Case: V 
-#> 
-#> ========================================
 ```

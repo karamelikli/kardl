@@ -26,7 +26,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Huseyin
 karamelikli and Huseyin Utku Demir</h4>
             
-            <h4 data-toc-skip class="date">2026-07-17</h4>
+            <h4 data-toc-skip class="date">2026-07-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/karamelikli/kardl/blob/HEAD/vignettes/intro.Rmd" class="external-link"><code>vignettes/intro.Rmd</code></a></small>
       <div class="d-none name"><code>intro.Rmd</code></div>
@@ -240,7 +240,9 @@ vector.</p>
 <code class="sourceCode R"><span><span class="co"># View results</span></span>
 <span><span class="va">kardl_model</span></span></code></pre></div>
 <pre><code><span><span class="co">## Optimal lags for each variable ( BIC ):</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers_POS: 0, drivers_NEG: 0 </span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>
@@ -355,7 +357,9 @@ dependent variable:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/kardl_set.html">kardl_set</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Seatbelts</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span>formula <span class="op">=</span> <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span>, maxlag <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Optimal lags for each variable ( BIC ):</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## DriversKilled: 1, drivers: 0, front: 0, rear: 0, kms: 0, PetrolPrice: 0, VanKilled: 0 </span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>
@@ -489,9 +493,9 @@ and significance levels.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summary of long-run coefficients</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my_long</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Call:</span></span>
-<span><span class="co">## kardl_longrun.kardl_lm(kardl_model = kardl_model)</span></span>
+<pre><code><span><span class="co">## Call:</span></span>
+<span><span class="co">##  kardl_longrun.kardl_lm(kardl_model = kardl_model) </span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Estimation type:</span></span>
 <span><span class="co">## Long-run multipliers </span></span>
@@ -520,16 +524,14 @@ assess short- and long-run asymmetry in the model.</p>
 <span>  <span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="../reference/symmetrytest.html">symmetrytest</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">ast</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## KARDL Symmetry Test Results</span></span>
-<span><span class="co">## Symmetry Test Results - Long-run:</span></span>
-<span><span class="co">## =======================</span></span>
+<pre><code><span><span class="co">## kardl Symmetry Test </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Long-run:</span></span>
 <span><span class="co">##             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span></span>
 <span><span class="co">## PetrolPrice  1     2.663   2.663   0.020 0.8877</span></span>
 <span><span class="co">## drivers      1   175.149 175.149   1.316 0.2530</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Symmetry Test Results - Short-run:</span></span>
-<span><span class="co">## =======================</span></span>
+<span><span class="co">## Short-run:</span></span>
 <span><span class="co">##             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span></span>
 <span><span class="co">## PetrolPrice  1     2.649   2.649  0.0199 0.8880</span></span>
 <span><span class="co">## drivers      1    35.235  35.235  0.2647 0.6076</span></span></code></pre>
@@ -539,43 +541,42 @@ hypotheses, and test decisions.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summary of symmetry test</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ast</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Long-run symmetry tests</span></span>
-<span><span class="co">## -----------------------</span></span>
-<span><span class="co">##                   F  Pr(&gt;F)</span></span>
-<span><span class="co">## PetrolPrice 0.02001 0.88768</span></span>
-<span><span class="co">## drivers     1.31595 0.25295</span></span>
+<pre><code><span><span class="co">## Symmetry Test Summary</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Hypotheses and decisions:</span></span>
+<span><span class="co">## Long-run:</span></span>
+<span><span class="co">##             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span><span class="co">## PetrolPrice  1     2.663   2.663   0.020 0.8877</span></span>
+<span><span class="co">## drivers      1   175.149 175.149   1.316 0.2530</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: PetrolPrice </span></span>
-<span><span class="co">## H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span></span>
-<span><span class="co">## H1: At least one coefficient differs from zero. </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice. </span></span>
+<span><span class="co">## Hypotheses:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: drivers </span></span>
-<span><span class="co">## H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) </span></span>
-<span><span class="co">## H1: At least one coefficient differs from zero. </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers. </span></span>
+<span><span class="co">##   PetrolPrice</span></span>
+<span><span class="co">##    H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled)</span></span>
+<span><span class="co">##    H1: At least one coefficient differs from zero.</span></span>
+<span><span class="co">##    Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice.</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">##   drivers</span></span>
+<span><span class="co">##    H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled)</span></span>
+<span><span class="co">##    H1: At least one coefficient differs from zero.</span></span>
+<span><span class="co">##    Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers.</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Short-run symmetry tests</span></span>
-<span><span class="co">## ------------------------</span></span>
-<span><span class="co">##                   F  Pr(&gt;F)</span></span>
-<span><span class="co">## PetrolPrice 0.01990 0.88797</span></span>
-<span><span class="co">## drivers     0.26473 0.60756</span></span>
+<span><span class="co">## Short-run:</span></span>
+<span><span class="co">##             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span></span>
+<span><span class="co">## PetrolPrice  1     2.649   2.649  0.0199 0.8880</span></span>
+<span><span class="co">## drivers      1    35.235  35.235  0.2647 0.6076</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Hypotheses and decisions:</span></span>
+<span><span class="co">## Hypotheses:</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: PetrolPrice </span></span>
-<span><span class="co">## H0: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) </span></span>
-<span><span class="co">## H1: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice. </span></span>
+<span><span class="co">##   PetrolPrice</span></span>
+<span><span class="co">##    H0: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG)</span></span>
+<span><span class="co">##    H1: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG)</span></span>
+<span><span class="co">##    Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Variable: drivers </span></span>
-<span><span class="co">## H0: Coef(L0.d.drivers_POS) = Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) </span></span>
-<span><span class="co">## H1: Coef(L0.d.drivers_POS) ≠ Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) </span></span>
-<span><span class="co">## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable drivers.</span></span></code></pre>
+<span><span class="co">##   drivers</span></span>
+<span><span class="co">##    H0: Coef(L0.d.drivers_POS) = Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG)</span></span>
+<span><span class="co">##    H1: Coef(L0.d.drivers_POS) ≠ Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG)</span></span>
+<span><span class="co">##    Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable drivers.</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="step-6-cointegration-tests">Step 6: Cointegration Tests<a class="anchor" aria-label="anchor" href="#step-6-cointegration-tests"></a>
@@ -602,38 +603,34 @@ the test statistic, critical values, hypotheses, and decision regarding
 cointegration.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## ========================================</span></span>
-<span><span class="co">## KARDL Cointegration Test Results</span></span>
-<span><span class="co">## ========================================</span></span>
+<pre><code><span><span class="co">## KARDL Cointegration Test Summary</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Decision: Reject H0 → Cointegration (at 5% level)</span></span>
+<span><span class="co">## Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Test Statistic:</span></span>
-<span><span class="co">##   F: 32.3445539</span></span>
+<span><span class="co">## F statistic = 32.3445539</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Critical Values (Lower &amp; Upper Bounds):</span></span>
+<span><span class="co">## Critical Values (Lower &amp; Upper Bounds):</span></span>
 <span><span class="co">##           L    U</span></span>
 <span><span class="co">##   10%  3.03 4.06</span></span>
 <span><span class="co">##   5%   3.47 4.57</span></span>
 <span><span class="co">##   2.5% 3.89 5.07</span></span>
 <span><span class="co">##   1%   4.40 5.72</span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## Decision:</span></span>
+<span><span class="co">##   Reject H0 → Cointegration (at 5% level)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Comparison:</span></span>
+<span><span class="co">## Comparison:</span></span>
 <span><span class="co">##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.57).</span></span>
 <span><span class="co">##   This indicates that the variables tend to move together over  time.</span></span>
 <span><span class="co">##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 </span></span>
-<span><span class="co">## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. </span></span>
+<span><span class="co">## Hypotheses:</span></span>
+<span><span class="co">##   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0</span></span>
+<span><span class="co">##   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Model Details:</span></span>
+<span><span class="co">## Model Details:</span></span>
 <span><span class="co">##   Number of regressors (k): 4</span></span>
-<span><span class="co">##   Case: V </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## ========================================</span></span></code></pre>
+<span><span class="co">##   Case: V</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="pss-t-bound-test">PSS t Bound Test<a class="anchor" aria-label="anchor" href="#pss-t-bound-test"></a>
@@ -654,38 +651,34 @@ the test statistic, critical values, hypotheses, and decision regarding
 cointegration.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## ========================================</span></span>
-<span><span class="co">## KARDL Cointegration Test Results</span></span>
-<span><span class="co">## ========================================</span></span>
+<pre><code><span><span class="co">## KARDL Cointegration Test Summary</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Decision: Reject H0 → Cointegration (at 5% level)</span></span>
+<span><span class="co">## Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Test Statistic:</span></span>
-<span><span class="co">##   t: -12.6296459</span></span>
+<span><span class="co">## t statistic = -12.6296459</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Critical Values (Lower &amp; Upper Bounds):</span></span>
+<span><span class="co">## Critical Values (Lower &amp; Upper Bounds):</span></span>
 <span><span class="co">##            L     U</span></span>
 <span><span class="co">##   10%  -3.13 -4.04</span></span>
 <span><span class="co">##   5%   -3.41 -4.36</span></span>
 <span><span class="co">##   2.5% -3.65 -4.62</span></span>
 <span><span class="co">##   1%   -3.96 -4.96</span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## Decision:</span></span>
+<span><span class="co">##   Reject H0 → Cointegration (at 5% level)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Comparison:</span></span>
+<span><span class="co">## Comparison:</span></span>
 <span><span class="co">##   At the 5% significance level, t (12.6296459) exceeds the upper bound (4.36).</span></span>
 <span><span class="co">##   This indicates that the variables tend to move together over  time.</span></span>
 <span><span class="co">##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.DriversKilled) = 0 </span></span>
-<span><span class="co">## H1: Coef(L1.DriversKilled) ≠ 0 </span></span>
+<span><span class="co">## Hypotheses:</span></span>
+<span><span class="co">##   H0: Coef(L1.DriversKilled) = 0</span></span>
+<span><span class="co">##   H1: Coef(L1.DriversKilled) ≠ 0</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Model Details:</span></span>
+<span><span class="co">## Model Details:</span></span>
 <span><span class="co">##   Number of regressors (k): 4</span></span>
-<span><span class="co">##   Case: V </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## ========================================</span></span></code></pre>
+<span><span class="co">##   Case: V</span></span></code></pre>
 </div>
 <div class="section level4">
 <h4 id="narayan-test">Narayan Test<a class="anchor" aria-label="anchor" href="#narayan-test"></a>
@@ -707,39 +700,36 @@ test statistic, critical values, hypotheses, and decision regarding
 cointegration.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">test_result</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## ========================================</span></span>
-<span><span class="co">## KARDL Cointegration Test Results</span></span>
-<span><span class="co">## ========================================</span></span>
+<pre><code><span><span class="co">## KARDL Cointegration Test Summary</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Decision: Reject H0 → Cointegration (at 5% level)</span></span>
+<span><span class="co">## Narayan F Test for Cointegration</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Test Statistic:</span></span>
-<span><span class="co">##   F: 32.3445539</span></span>
+<span><span class="co">## F statistic = 32.3445539</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Critical Values (Lower &amp; Upper Bounds):</span></span>
+<span><span class="co">## Critical Values (Lower &amp; Upper Bounds):</span></span>
 <span><span class="co">##           L     U</span></span>
 <span><span class="co">##   10% 3.160 4.230</span></span>
 <span><span class="co">##   5%  3.678 4.840</span></span>
 <span><span class="co">##   1%  4.890 6.164</span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## Decision:</span></span>
+<span><span class="co">##   Reject H0 → Cointegration (at 5% level)</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Comparison:</span></span>
+<span><span class="co">## Comparison:</span></span>
 <span><span class="co">##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.84).</span></span>
 <span><span class="co">##   This indicates that the variables tend to move together over  time.</span></span>
 <span><span class="co">##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Hypotheses:</span></span>
-<span><span class="co">## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 </span></span>
-<span><span class="co">## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. </span></span>
+<span><span class="co">## Hypotheses:</span></span>
+<span><span class="co">##   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0</span></span>
+<span><span class="co">##   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero.</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">##  Model Details:</span></span>
+<span><span class="co">## Model Details:</span></span>
 <span><span class="co">##   Number of regressors (k): 4</span></span>
 <span><span class="co">##   Case: V </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.</span></span>
-<span><span class="co">## ========================================</span></span></code></pre>
+<span><span class="co">## Note:</span></span>
+<span><span class="co">##   The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.</span></span></code></pre>
 </div>
 </div>
 <div class="section level3">
@@ -839,7 +829,9 @@ variables using <code><a href="../reference/kardl_set.html">kardl_set()</a></cod
 <span><span class="va">kardl_custom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/kardl.html">kardl</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">Seatbelts</span>, <span class="va">my_formula</span><span class="op">)</span></span>
 <span><span class="va">kardl_custom</span></span></code></pre></div>
 <pre><code><span><span class="co">## Optimal lags for each variable ( AIC ):</span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, asyP_drivers_PP: 2, asyN_drivers_NN: 0 </span></span>
+<span><span class="co">## </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Call:</span></span>
 <span><span class="co">## lm(formula = my_formula, data = model_data)</span></span>

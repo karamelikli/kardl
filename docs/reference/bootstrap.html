@@ -21,7 +21,7 @@ lower bounds for the confidence interval."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -160,18 +160,18 @@ values are provided for each variable and at each time horizon.</p>
 <span class="r-in"><span>  mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Perform bootstrap with specific variables for plotting</span></span></span>
+<span class="r-in"><span><span class="co"># Perform bootstrap with specific variables for plotting.</span></span></span>
 <span class="r-in"><span><span class="va">boot</span> <span class="op">&lt;-</span> <span class="fu">bootstrap</span><span class="op">(</span><span class="va">kardl_model</span>,</span></span>
 <span class="r-in"><span>  horizon <span class="op">=</span> <span class="fl">40</span>, level <span class="op">=</span> <span class="fl">95</span>, min_prob <span class="op">=</span> <span class="fl">0</span>,</span></span>
 <span class="r-in"><span>  replications <span class="op">=</span> <span class="fl">5</span>, seed <span class="op">=</span> <span class="fl">123L</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># The boot object will include all plots for the specified variables</span></span></span>
-<span class="r-in"><span><span class="co"># Displaying the boot object provides an overview of its components</span></span></span>
+<span class="r-in"><span><span class="co"># Displaying the boot object provides an overview of its components.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "mpsi"         "level"        "horizon"      "vars"         "replications"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [6] "type"        </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Inspect the first few rows of the dynamic multiplier estimates</span></span></span>
+<span class="r-in"><span><span class="co"># Inspect the first few rows of the dynamic multiplier estimates.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">boot</span>, <span class="st">"multipliers"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   h PetrolPrice_POS PetrolPrice_NEG PetrolPrice_dif drivers_POS drivers_NEG</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 0     -304.280928     -1061.52868     -1365.80961  0.07966293 -0.07966293</span>
@@ -214,17 +214,29 @@ values are provided for each variable and at each time horizon.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  3rd Qu.: -105.92    </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Max.   :  -51.78    </span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Retrieve plots generated during the bootstrap process</span></span></span>
+<span class="r-in"><span><span class="co"># Retrieve plots generated during the bootstrap process.</span></span></span>
 <span class="r-in"><span><span class="co"># Accessing all plots</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Multiple variables selected. Only the first one will be plotted.</span>
 <span class="r-plt img"><img src="bootstrap-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Accessing the plot for a specific variable by its name</span></span></span>
+<span class="r-in"><span><span class="co"># Accessing the plot for a specific variable by its name.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"drivers"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="bootstrap-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"PetrolPrice"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="bootstrap-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can also specify a title for the plot.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>,</span></span>
+<span class="r-in"><span>  variable <span class="op">=</span> <span class="st">"PetrolPrice"</span>,</span></span>
+<span class="r-in"><span>  title <span class="op">=</span> <span class="st">"Dynamic Multipliers for PetrolPrice"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="bootstrap-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># To remove the title from the plot, you can set the title argument</span></span></span>
+<span class="r-in"><span><span class="co"># to an empty string.</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">boot</span>, variable <span class="op">=</span> <span class="st">"drivers"</span>, title <span class="op">=</span> <span class="st">""</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="bootstrap-5.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org" class="external-link">magrittr</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -235,7 +247,7 @@ values are provided for each variable and at each time horizon.</p>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">bootstrap</span><span class="op">(</span>replications <span class="op">=</span> <span class="fl">5</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>variable <span class="op">=</span> <span class="st">"PetrolPrice"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="bootstrap-4.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="bootstrap-6.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

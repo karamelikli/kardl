@@ -87,27 +87,37 @@ kardl_model <- kardl(
   mode = c(1, 2, 3, 0)
 )
 
-# Perform bootstrap with specific variables for plotting
+# Perform bootstrap with specific variables for plotting.
 boot <- bootstrap(kardl_model,
   horizon = 40, level = 95, min_prob = 0,
   replications = 5, seed = 123L
 )
 # The boot object will include all plots for the specified variables
-# Displaying the boot object provides an overview of its components
+# Displaying the boot object provides an overview of its components.
 names(boot)
 
-# Inspect the first few rows of the dynamic multiplier estimates
+# Inspect the first few rows of the dynamic multiplier estimates.
 head(kardl_extract(boot, "multipliers"))
 
 summary(boot)
 
-# Retrieve plots generated during the bootstrap process
+# Retrieve plots generated during the bootstrap process.
 # Accessing all plots
 plot(boot)
 
-# Accessing the plot for a specific variable by its name
+# Accessing the plot for a specific variable by its name.
 plot(boot, variable = "drivers")
 plot(boot, variable = "PetrolPrice")
+
+# You can also specify a title for the plot.
+plot(boot,
+  variable = "PetrolPrice",
+  title = "Dynamic Multipliers for PetrolPrice"
+)
+
+# To remove the title from the plot, you can set the title argument
+# to an empty string.
+plot(boot, variable = "drivers", title = "")
 
 \dontshow{if (requireNamespace("magrittr", quietly = TRUE)) withAutoprint(\{ # examplesIf}
 library(magrittr)

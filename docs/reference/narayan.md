@@ -153,39 +153,36 @@ my_test
 # Getting details of the test.
 my_summary<-summary(my_test)
 my_summary
+#> KARDL Cointegration Test Summary
 #> 
-#> ========================================
-#> KARDL Cointegration Test Results
-#> ========================================
+#> Narayan F Test for Cointegration
 #> 
-#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> F statistic = 39.5080601
 #> 
-#>  Test Statistic:
-#>   F: 39.5080601
-#> 
-#>  Critical Values (Lower & Upper Bounds):
+#> Critical Values (Lower & Upper Bounds):
 #>           L     U
 #>   10% 3.588 4.605
 #>   5%  4.203 5.320
 #>   1%  5.620 6.908
 #> 
+#> Decision:
+#>   Reject H0 → Cointegration (at 1% level)
 #> 
-#>  Comparison:
+#> Comparison:
 #>   At the 1% significance level, F (39.5080601) exceeds the upper bound (6.908).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
-#>  Hypotheses:
-#> H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0 
-#> H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero. 
+#> Hypotheses:
+#>   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0
+#>   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero.
 #> 
-#>  Model Details:
+#> Model Details:
 #>   Number of regressors (k): 3
 #>   Case: V 
 #> 
-#> 
-#>  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.
-#> ========================================
+#> Note:
+#>   The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.
 
 # Getting the critical values of the test.
 kardl_extract(my_summary, what = "critical_values")
@@ -224,37 +221,34 @@ Seatbelts %>%
   ) %>%
   narayan() %>%
   summary()
+#> KARDL Cointegration Test Summary
 #> 
-#> ========================================
-#> KARDL Cointegration Test Results
-#> ========================================
+#> Narayan F Test for Cointegration
 #> 
-#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> F statistic = 39.5080601
 #> 
-#>  Test Statistic:
-#>   F: 39.5080601
-#> 
-#>  Critical Values (Lower & Upper Bounds):
+#> Critical Values (Lower & Upper Bounds):
 #>           L     U
 #>   10% 3.588 4.605
 #>   5%  4.203 5.320
 #>   1%  5.620 6.908
 #> 
+#> Decision:
+#>   Reject H0 → Cointegration (at 1% level)
 #> 
-#>  Comparison:
+#> Comparison:
 #>   At the 1% significance level, F (39.5080601) exceeds the upper bound (6.908).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
-#>  Hypotheses:
-#> H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0 
-#> H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero. 
+#> Hypotheses:
+#>   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0
+#>   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero.
 #> 
-#>  Model Details:
+#> Model Details:
 #>   Number of regressors (k): 3
 #>   Case: V 
 #> 
-#> 
-#>  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.
-#> ========================================
+#> Note:
+#>   The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.
 ```

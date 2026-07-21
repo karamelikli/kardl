@@ -114,6 +114,7 @@ summary.kardl_test <- function(object, ...) {
       var_names = object$var_names,
       decision = test_decision$decision,
       hypotheses = object$hypotheses,
+      method = object$method,
       numeric_decision = test_decision$numeric_decision,
       significance_level = test_decision$significance_level,
       cr_vals = test_cr_vals$crit_vals,
@@ -1038,10 +1039,7 @@ symmetrytest.kardl_lm <- function(
         } else {
           class(long_wald_summary) <- c("anova", "data.frame")
         }
-        attr(long_wald_summary, "heading") <- c(
-          "Symmetry Test Results - Long-run:",
-          "======================="
-        )
+        attr(long_wald_summary, "heading") <- "Long-run:"
         attr(long_wald_summary, "type") <- "Symmetry Test"
         attr(long_wald_summary, "method") <- paste("Wald Test", type)
         attr(long_wald_summary, "signif.legend") <-
@@ -1154,10 +1152,7 @@ symmetrytest.kardl_lm <- function(
       class(short_wald_summary) <- c("anova", "data.frame")
       attr(short_wald_summary, "signif.legend") <-
         "Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1"
-      attr(short_wald_summary, "heading") <- c(
-        "Symmetry Test Results - Short-run:",
-        "======================="
-      )
+      attr(short_wald_summary, "heading") <- "Short-run:"
       attr(short_wald_summary, "type") <- "Symmetry Test"
       attr(short_wald_summary, "method") <- paste("Wald Test", type)
 

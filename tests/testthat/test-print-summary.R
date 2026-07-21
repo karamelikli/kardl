@@ -54,7 +54,7 @@ test_that("print and summary of kardl_symmetric (type F) work", {
 
   sm <- summary(st)
   expect_s3_class(sm, "summary.kardl_symmetric")
-  expect_output(print(sm), "Long-run symmetry tests")
+  expect_output(print(sm), "Symmetry Test Summary")
 })
 
 #' @srrstats {G5.7} Tests that the `level` argument is accepted and does not
@@ -72,7 +72,7 @@ test_that("print and summary of kardl_symmetric (type Chisq) work", {
 
   sm_chi <- summary(st_chi)
   expect_s3_class(sm_chi, "summary.kardl_symmetric")
-  expect_output(print(sm_chi), "Long-run symmetry tests")
+  expect_output(print(sm_chi), "Symmetry Test Summary")
 })
 
 #' @srrstats {G5.7} Confirms that short-run-only symmetry test results
@@ -88,7 +88,7 @@ test_that("print.kardl_symmetric handles short-run-only results", {
   expect_output(print(st_sr))
 
   sm_sr <- summary(st_sr)
-  expect_output(print(sm_sr), "Short-run symmetry tests")
+  expect_output(print(sm_sr), "Symmetry Test Summary")
 })
 
 #' @srrstats {G5.3} Checks that `summary()` on a `pssf()` result returns

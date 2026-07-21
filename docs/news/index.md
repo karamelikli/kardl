@@ -2,6 +2,8 @@
 
 ## kardl 2.0.4
 
+CRAN release: 2026-07-17
+
 ### Improvements
 
 - Expanded S3 method support throughout the package. Functions including

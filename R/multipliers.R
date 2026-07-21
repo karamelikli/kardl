@@ -556,12 +556,14 @@ mplier.kardl_lm <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
 #' plot(boot, variable = "PetrolPrice")
 #'
 #' # You can also specify a title for the plot.
-#' plot(boot, variable = "PetrolPrice",
-#' title = "Dynamic Multipliers for PetrolPrice")
+#' plot(boot,
+#'   variable = "PetrolPrice",
+#'   title = "Dynamic Multipliers for PetrolPrice"
+#' )
 #'
 #' # To remove the title from the plot, you can set the title argument
 #' # to an empty string.
-#' plot(boot, variable = "drivers",title = "")
+#' plot(boot, variable = "drivers", title = "")
 #'
 #' @examplesIf requireNamespace("magrittr", quietly = TRUE)
 #' library(magrittr)

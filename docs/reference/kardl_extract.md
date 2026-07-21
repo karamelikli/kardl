@@ -351,11 +351,11 @@ kardl_extract(kardl_model, what = "model_type")
 #> [1] "NN"
 # kardl_extract(kardl_model, what = "data")
 kardl_extract(kardl_model, what = "start_time")
-#> [1] "2026-07-17 13:19:40 +03"
+#> [1] "2026-07-21 16:34:59 +03"
 kardl_extract(kardl_model, what = "end_time")
-#> [1] "2026-07-17 13:19:40 +03"
+#> [1] "2026-07-21 16:34:59 +03"
 kardl_extract(kardl_model, what = "span")
-#> Time difference of 0.00285387 secs
+#> Time difference of 0.002884626 secs
 kardl_extract(kardl_model, what = "opt_lag")
 #>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN     asyP_drivers_PP 
 #>                   2                   1                   0                   4 
@@ -372,7 +372,7 @@ kardl_extract(kardl_model, what = "model_formula")
 #>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + 
 #>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + 
 #>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN
-#> <environment: 0x562cddcc12a0>
+#> <environment: 0x5c5f4ca2cf98>
 kardl_extract(kardl_model, what = "k")
 #> [1] 17
 kardl_extract(kardl_model, what = "n")
@@ -460,8 +460,8 @@ kardl_extract(test_results, what = "data.name")
 kardl_extract(test_results, what = "sample.size")
 #> [1] 191
 kardl_extract(test_results, what = "hypotheses")
-#> 
 #> Hypotheses:
+#> 
 #> H0: Coef(L1.DriversKilled) = 0 
 #> H1: Coef(L1.DriversKilled) ≠ 0 
 kardl_extract(test_results, what = "var_names")
@@ -487,8 +487,8 @@ kardl_extract(test_summary, what = "variables")
 kardl_extract(test_summary, what = "decision")
 #> [1] "Reject H0 → Cointegration (at 1% level)"
 kardl_extract(test_summary, what = "hypotheses")
-#> 
 #> Hypotheses:
+#> 
 #> H0: Coef(L1.DriversKilled) = 0 
 #> H1: Coef(L1.DriversKilled) ≠ 0 
 kardl_extract(test_summary, what = "numeric_decision")
@@ -509,14 +509,13 @@ kardl_extract(test_summary, what = "notes")
 # Examples of extracting components from a kardl_symmetric object
 symmetry_results <- symmetrytest(kardl_model)
 kardl_extract(symmetry_results, what = "long_wald_summary")
-#> Symmetry Test Results - Long-run:
-#> =======================
+#> Long-run:
 #>             Df Sum of Sq Mean Sq F value Pr(>F)
 #> PetrolPrice  1    33.094  33.094  0.2587 0.6117
 #> drivers      1    19.680  19.680  0.1538 0.6954
 kardl_extract(symmetry_results, what = "long_hypotheses")
-#> 
 #> Hypotheses:
+#> 
 #> 
 #> Variable: PetrolPrice 
 #> H0: - Coef(L1.asyP_PetrolPrice_PP)/Coef(L1.DriversKilled) = - Coef(L1.asyN_PetrolPrice_NN)/Coef(L1.DriversKilled) 
@@ -528,14 +527,13 @@ kardl_extract(symmetry_results, what = "long_hypotheses")
 #> H1: At least one coefficient differs from zero. 
 #> 
 kardl_extract(symmetry_results, what = "short_wald_summary")
-#> Symmetry Test Results - Short-run:
-#> =======================
+#> Short-run:
 #>             Df Sum of Sq Mean Sq F value Pr(>F)
 #> PetrolPrice  1    203.66  203.66  1.5919 0.2088
 #> drivers      1      7.90    7.90  0.0618 0.8041
 kardl_extract(symmetry_results, what = "short_hypotheses")
-#> 
 #> Hypotheses:
+#> 
 #> 
 #> Variable: PetrolPrice 
 #> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) 
@@ -639,8 +637,8 @@ kardl_extract(symmetry_results,
   what = "long_hypotheses",
   variable = "PetrolPrice"
 )
-#> 
 #> Hypotheses:
+#> 
 #> 
 #> Variable: PetrolPrice 
 #> H0: - Coef(L1.asyP_PetrolPrice_PP)/Coef(L1.DriversKilled) = - Coef(L1.asyN_PetrolPrice_NN)/Coef(L1.DriversKilled) 
@@ -650,16 +648,16 @@ kardl_extract(symmetry_results,
   what = "short_hypotheses",
   variable = "PetrolPrice"
 )
-#> 
 #> Hypotheses:
+#> 
 #> 
 #> Variable: PetrolPrice 
 #> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) 
 #> H1: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) ≠ Coef(L0.d.asyN_PetrolPrice_NN) 
 #> 
 kardl_extract(symmetry_results, what = "short_hypotheses", component = "H0")
-#> 
 #> Hypotheses:
+#> 
 #> 
 #> Variable: PetrolPrice 
 #> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) 
@@ -667,8 +665,8 @@ kardl_extract(symmetry_results, what = "short_hypotheses", component = "H0")
 #> Variable: drivers 
 #> H0: Coef(L0.d.asyP_drivers_PP) + Coef(L1.d.asyP_drivers_PP) + Coef(L2.d.asyP_drivers_PP) + Coef(L3.d.asyP_drivers_PP) + Coef(L4.d.asyP_drivers_PP) = Coef(L0.d.asyN_drivers_NN) 
 kardl_extract(symmetry_results, what = "short_hypotheses", component = "H1")
-#> 
 #> Hypotheses:
+#> 
 #> 
 #> Variable: PetrolPrice 
 #> H1: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) ≠ Coef(L0.d.asyN_PetrolPrice_NN) 
@@ -682,8 +680,8 @@ kardl_extract(symmetry_results,
   what = "short_hypotheses",
   variable = "PetrolPrice", component = "H0"
 )
-#> 
 #> Hypotheses:
+#> 
 #> 
 #> Variable: PetrolPrice 
 #> H0: Coef(L0.d.asyP_PetrolPrice_PP) + Coef(L1.d.asyP_PetrolPrice_PP) = Coef(L0.d.asyN_PetrolPrice_NN) 

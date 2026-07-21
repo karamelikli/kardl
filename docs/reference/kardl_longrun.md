@@ -120,9 +120,9 @@ long
 
 # Details of the long-run multipliers
 summary(long)
-#> 
 #> Call:
-#> kardl_longrun.kardl_lm(kardl_model = kardl_model)
+#>  kardl_longrun.kardl_lm(kardl_model = kardl_model) 
+#> 
 #> 
 #> Estimation type:
 #> Long-run multipliers 
@@ -147,9 +147,9 @@ Seatbelts %>%
   summary()
 #> Warning: Coefficients, standard errors, t-statistics and p-values are reliably estimated.
 #> Fitted values and residuals are NOT centered (E(u) ≠ 0 by design) → diagnostic plots and residual-based tests are invalid.
-#> 
 #> Call:
-#> kardl_longrun.kardl_lm(kardl_model = .)
+#>  kardl_longrun.kardl_lm(kardl_model = .) 
+#> 
 #> 
 #> Estimation type:
 #> Long-run multipliers 

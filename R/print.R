@@ -48,18 +48,28 @@ kardl_print_wrapped <- function(expr) {
 #' string.
 #' @param fill A logical value indicating whether to fill the output. Default
 #' is FALSE.
+#' @param indent An integer specifying the number of spaces to indent the
+#' output.
 #'
 #' @return Invisibly returns NULL after printing the concatenated text.
 #' @noRd
-kardl_cat <- function(..., sep = "", fill = FALSE) {
+kardl_cat <- function(..., sep = "\n", fill = FALSE, indent = 0L,
+                      exdent = indent) {
   wrap_width <- kardl_get("print_wrap")
 
-  txt <- paste(..., sep = sep)
+  txt <- paste(...)
 
   if (is.null(wrap_width)) {
-    cat(txt, fill = fill)
+    cat(strrep(" ", indent), txt, "\n", sep = "", fill = fill)
   } else {
-    cat(strwrap(txt, width = wrap_width), sep = "\n")
+    cat(
+      strwrap(txt,
+        width = wrap_width, indent = indent,
+        exdent = exdent
+      ),
+      sep = sep,
+      fill = fill
+    )
   }
 
   invisible(NULL)
@@ -195,7 +205,7 @@ plot.kardl_mplier <- function(x, variables = "all", title = NULL, ...) {
 #' @method print kardl_hypotheses
 print.kardl_hypotheses <- function(x, ...) {
   kardl_print_wrapped({
-    cat("\nHypotheses:\n")
+    cat("Hypotheses:\n\n")
     vars <- names(x[[1]])
     if (is.null(vars)) {
       cat(strwrap(x$H0, width = getOption("width")), "\n")
@@ -227,7 +237,9 @@ print.kardl_hypotheses <- function(x, ...) {
 #' @noRd
 print.summary_kardl_longrun <- function(x, ...) {
   kardl_print_wrapped({
-    kardl_cat("\nCall:\n", paste(deparse(x$call), collapse = "\n"), "\n", sep = "")
+    kardl_cat("Call:\n", paste(deparse(x$call), collapse = "\n"), "\n",
+      sep = ""
+    )
 
     cat("\nEstimation type:\n")
     cat(x$estimation_type, "\n")
@@ -244,7 +256,7 @@ print.summary_kardl_longrun <- function(x, ...) {
 #' @noRd
 print.kardl_symmetric <- function(x, ...) {
   kardl_print_wrapped({
-    kardl_cat("\n", "KARDL Symmetry Test Results\n", sep = "")
+    cat("kardl Symmetry Test \n\n")
     if (!is.null(x$long_wald_summary) && nrow(x$long_wald_summary) > 0) {
       print(x$long_wald_summary, ...)
       cat("\n")
@@ -330,78 +342,42 @@ summary.kardl_symmetric <- function(object, level = 0.05, ...) {
 #' @noRd
 print.summary.kardl_symmetric <- function(x,
                                           digits = getOption("digits"), ...) {
-  if (identical(x$type, "Chisq")) {
-    stat_col <- "Chisq"
-    p_col <- "Pr(>Chisq)"
-    title_stat <- "Chi-squared"
-  } else {
-    stat_col <- "F value"
-    p_col <- "Pr(>F)"
-    title_stat <- "F"
-  }
+  cat("Symmetry Test Summary\n\n")
+  if (!is.null(x$long_wald_summary) && nrow(x$long_wald_summary) > 0) {
+    kardl_print_wrapped({
+      print(x$long_wald_summary, ...)
+    })
 
-  print_block <- function(wald, hypotheses, decision, title) {
-    if (is.null(wald) || nrow(wald) == 0) {
-      return(invisible(NULL))
-    }
+    cat("\nHypotheses:\n\n")
 
-    cat("\n", title, "\n", sep = "")
-    cat(strrep("-", nchar(title)), "\n", sep = "")
-
-    tab <- as.data.frame(wald[, c(stat_col, p_col), drop = FALSE])
-    names(tab) <- c(title_stat, p_col)
-
-    printCoefmat(
-      as.matrix(tab),
-      digits = digits,
-      signif.stars = TRUE,
-      has.Pvalue = TRUE,
-      P.values = TRUE,
-      ...
-    )
-
-    cat("\nHypotheses and decisions:\n")
-
-    for (v in rownames(wald)) {
-      cat("\nVariable:", v, "\n")
-      cat(strwrap(
-        paste0("  H0: ", hypotheses$H0[[v]]),
-        width = getOption("width")
-      ), "\n")
-      cat(strwrap(
-        paste0("  H1: ", enc2utf8(hypotheses$H1[[v]])),
-        width = getOption("width")
-      ), "\n")
-      cat(
-        strwrap(
-          paste0("  Decision: ", decision[[v]]),
-          width = getOption("width")
-        ),
-        "\n"
-      )
-    }
-
-    invisible(NULL)
-  }
-  kardl_print_wrapped({
-    print_block(
-      x$long_wald_summary,
-      x$long_hypotheses,
-      x$decision$long_run,
-      "Long-run symmetry tests"
-    )
-
-    if (!is.null(x$long_wald_summary) && !is.null(x$short_wald_summary)) {
+    for (v in rownames(x$long_wald_summary)) {
+      kardl_cat(v, indent = 2)
+      kardl_cat(paste0("H0: ", x$long_hypotheses$H0[[v]]), indent = 3)
+      kardl_cat(paste0("H1: ", enc2utf8(x$long_hypotheses$H1[[v]])), indent = 3)
+      kardl_cat(paste0("Decision: ", x$decision$long_run[[v]]), indent = 3)
       cat("\n")
     }
+  }
 
-    print_block(
-      x$short_wald_summary,
-      x$short_hypotheses,
-      x$decision$short_run,
-      "Short-run symmetry tests"
-    )
-  })
+  if (!is.null(x$short_wald_summary) && nrow(x$short_wald_summary) > 0) {
+    cat("\n")
+    kardl_print_wrapped({
+      print(x$short_wald_summary, ...)
+    })
+
+    cat("\nHypotheses:\n\n")
+    for (v in rownames(x$short_wald_summary)) {
+      kardl_cat(v, indent = 2)
+      kardl_cat(paste0("H0: ", x$short_hypotheses$H0[[v]]), indent = 3)
+      kardl_cat(paste0("H1: ", enc2utf8(x$short_hypotheses$H1[[v]])),
+        indent = 3
+      )
+      kardl_cat(paste0("Decision: ", x$decision$short_run[[v]]), indent = 3)
+
+      cat("\n")
+    }
+  }
+
   invisible(x)
 }
 
@@ -409,91 +385,95 @@ print.summary.kardl_symmetric <- function(x,
 #' @noRd
 print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
   kardl_print_wrapped({
-    kardl_cat("\n========================================")
-    kardl_cat("\nKARDL Cointegration Test Results")
-    kardl_cat("\n========================================\n")
+    cat("KARDL Cointegration Test Summary\n\n")
+    kardl_cat(x$method)
+    cat("\n")
 
     stat_name <- names(x$statistic)
-
-    sig_level <- x$significance_level
-    crit_lower <- x$cr_vals[sig_level, "L"]
-    crit_upper <- x$cr_vals[sig_level, "U"]
-
-    # Decision
-    kardl_cat("\n Decision:", x$decision)
-
-    # Test statistic
-    kardl_cat("\n\n Test Statistic:")
-    kardl_cat(
+    cat(
       sprintf(
-        paste0("\n  %s: %.", digits, "f"),
+        paste0("%s statistic = %.", digits, "f"),
         stat_name,
         unname(x$statistic)
       )
     )
-
-    # Critical values
-    kardl_cat("\n\n Critical Values (Lower & Upper Bounds):\n")
+    cat("\n\n")
+    kardl_cat("Critical Values (Lower & Upper Bounds):", indent = 0)
 
     cv_table <- x$cr_vals
     rownames(cv_table) <- paste0(
       as.numeric(rownames(cv_table)) * 100,
       "%"
     )
-    # cv_output <- capture.output(print(cv_table, digits = digits, ...))
-    # cv_output <- paste0("  ", cv_output)
-    # kardl_cat(cv_output, sep = "\n")
-    print(cv_table, digits = digits, ...)
+    out <- capture.output(print(cv_table, digits = digits, ...))
+    cat(paste0("  ", out), sep = "\n")
 
-    # Comparison
-    kardl_cat("\n\n Comparison:")
+    sig_level <- x$significance_level
+    crit_lower <- x$cr_vals[sig_level, "L"]
+    crit_upper <- x$cr_vals[sig_level, "U"]
+
+    cat("\n")
+    # Decision
+    cat("Decision:\n")
+    kardl_cat(x$decision, indent = 2)
+
+
+    cat("\n")
+    cat("Comparison:\n")
 
     if (abs(x$statistic) < abs(crit_lower)) {
       kardl_cat(
         sprintf(
           paste0(
-            "\n  At the %.0f%% significance level, ",
+            "At the %.0f%% significance level, ",
             "%s (%.", digits, "f) is below the lower bound (%s)."
           ),
           as.numeric(sig_level) * 100,
           stat_name,
           abs(x$statistic),
           abs(crit_lower)
-        )
+        ),
+        indent = 2
       )
 
       kardl_cat(
-        "\n  This indicates that the variables do not move together in",
-        " the long run."
+        "This indicates that the variables do not move together in",
+        " the long run.",
+        indent = 2
       )
-      kardl_cat("\n  Conclusion: No evidence of cointegration.")
+
+      kardl_cat("Conclusion: No evidence of cointegration.", indent = 2)
     } else if (abs(x$statistic) > abs(crit_upper)) {
       kardl_cat(
         sprintf(
           paste0(
-            "\n  At the %.0f%% significance level, ",
+            "At the %.0f%% significance level, ",
             "%s (%.", digits, "f) exceeds the upper bound (%s)."
           ),
           as.numeric(sig_level) * 100,
           stat_name,
           abs(x$statistic),
           abs(crit_upper)
-        )
+        ),
+        indent = 2
       )
 
       kardl_cat(
-        "\n  This indicates that the variables tend to move together over",
-        " time."
+        "This indicates that the variables tend to move together over",
+        " time.",
+        indent = 2
       )
+
       kardl_cat(
-        "\n  Conclusion: There is strong evidence of a long-run relationship",
-        " (cointegration)."
+        "Conclusion: There is strong evidence of a long-run relationship",
+        " (cointegration).",
+        indent = 2
       )
     } else {
       kardl_cat(
         sprintf(
           paste0(
-            "\n  At the %.0f%% significance level, ",
+            "At the %.0f%% significance level, ",
             "%s (%.", digits, "f) falls between the lower bound (%s) and",
             " upper bound (%s)."
           ),
@@ -502,34 +482,35 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
           abs(x$statistic),
           abs(crit_lower),
           abs(crit_upper)
-        )
+        ),
+        indent = 2
       )
 
       kardl_cat(
-        "\n  This is an inconclusive zone where we cannot make a definitive",
-        " judgment."
+        "This is an inconclusive zone where we cannot make a definitive",
+        " judgment.",
+        indent = 2
       )
       kardl_cat(
-        "\n  Conclusion: The test does not provide clear evidence ",
-        "either way."
+        "Conclusion: The test does not provide clear evidence ",
+        "either way.",
+        indent = 2
       )
     }
 
-    cat("\n\n Hypotheses:\n")
+    cat("\nHypotheses:\n")
 
-    kardl_cat( paste0("  ", x$hypotheses$H0 , "\n"  ))
-    kardl_cat( paste0("  ", x$hypotheses$H1,  "\n"    ))
+    kardl_cat(x$hypotheses$H0, indent = 2)
+    kardl_cat(x$hypotheses$H1, indent = 2)
 
-    cat("\n Model Details:")
-    kardl_cat(sprintf("\n  Number of regressors (k): %d", x$k))
-    cat("\n  Case:", x$case, "\n")
+    cat("\nModel Details:\n")
+    kardl_cat(sprintf("Number of regressors (k): %d", x$k), indent = 2)
+    cat("  Case:", x$case, "\n")
 
     if (!is.null(x$notes) && nzchar(x$notes)) {
-      cat("\n\n Note:")
-      kardl_cat( paste0("\n ", x$notes , sep = ""))
+      cat("\nNote:\n")
+      kardl_cat(x$notes, indent = 2)
     }
-
-    cat("\n========================================\n")
   })
   invisible(x)
 }
@@ -540,12 +521,10 @@ print.kardl_test_summary <- function(x, digits = getOption("digits"), ...) {
 #' @noRd
 print.kardl_long_run <- function(x, ...) {
   kardl_print_wrapped({
-    cat("\n========================================\n")
     cat("Long-run multiplier estimate\n")
-    cat("\n========================================\n")
 
     NextMethod() # continues with normal coefficient printing
-    kardl_cat("Note:",  attr(x, "note"),  "\n\n")
+    kardl_cat("Note:", attr(x, "note"), "\n")
   })
   invisible(x)
 }
@@ -586,7 +565,7 @@ print.kardl_lm <- function(x, ...) {
     if (!is.null(x$notes)) {
       cat("\nNotes:\n")
       for (note in x$notes) {
-        kardl_cat(paste0("   \u2022 ", note) , "\n", sep = ""  )
+        kardl_cat(paste0("   \u2022 ", note), "\n", sep = "")
       }
       cat("\n")
     }

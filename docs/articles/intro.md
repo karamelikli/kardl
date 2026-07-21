@@ -175,7 +175,9 @@ kardl_model
 ```
 
     ## Optimal lags for each variable ( BIC ):
+    ## 
     ## DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers_POS: 0, drivers_NEG: 0 
+    ## 
     ## 
     ## Call:
     ## lm(formula = my_formula, data = model_data)
@@ -304,7 +306,9 @@ kardl(formula = DriversKilled ~ . + deterministic(law), maxlag = 2)
 ```
 
     ## Optimal lags for each variable ( BIC ):
+    ## 
     ## DriversKilled: 1, drivers: 0, front: 0, rear: 0, kms: 0, PetrolPrice: 0, VanKilled: 0 
+    ## 
     ## 
     ## Call:
     ## lm(formula = my_formula, data = model_data)
@@ -451,9 +455,9 @@ errors, t-values, and significance levels.
 summary(my_long)
 ```
 
-    ## 
     ## Call:
-    ## kardl_longrun.kardl_lm(kardl_model = kardl_model)
+    ##  kardl_longrun.kardl_lm(kardl_model = kardl_model) 
+    ## 
     ## 
     ## Estimation type:
     ## Long-run multipliers 
@@ -487,16 +491,14 @@ ast <- Seatbelts |>
 ast
 ```
 
+    ## kardl Symmetry Test 
     ## 
-    ## KARDL Symmetry Test Results
-    ## Symmetry Test Results - Long-run:
-    ## =======================
+    ## Long-run:
     ##             Df Sum of Sq Mean Sq F value Pr(>F)
     ## PetrolPrice  1     2.663   2.663   0.020 0.8877
     ## drivers      1   175.149 175.149   1.316 0.2530
     ## 
-    ## Symmetry Test Results - Short-run:
-    ## =======================
+    ## Short-run:
     ##             Df Sum of Sq Mean Sq F value Pr(>F)
     ## PetrolPrice  1     2.649   2.649  0.0199 0.8880
     ## drivers      1    35.235  35.235  0.2647 0.6076
@@ -511,43 +513,42 @@ and test decisions.
 summary(ast)
 ```
 
+    ## Symmetry Test Summary
     ## 
-    ## Long-run symmetry tests
-    ## -----------------------
-    ##                   F  Pr(>F)
-    ## PetrolPrice 0.02001 0.88768
-    ## drivers     1.31595 0.25295
+    ## Long-run:
+    ##             Df Sum of Sq Mean Sq F value Pr(>F)
+    ## PetrolPrice  1     2.663   2.663   0.020 0.8877
+    ## drivers      1   175.149 175.149   1.316 0.2530
     ## 
-    ## Hypotheses and decisions:
+    ## Hypotheses:
     ## 
-    ## Variable: PetrolPrice 
-    ## H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) 
-    ## H1: At least one coefficient differs from zero. 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice. 
+    ##   PetrolPrice
+    ##    H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled)
+    ##    H1: At least one coefficient differs from zero.
+    ##    Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice.
     ## 
-    ## Variable: drivers 
-    ## H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) 
-    ## H1: At least one coefficient differs from zero. 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers. 
+    ##   drivers
+    ##    H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled)
+    ##    H1: At least one coefficient differs from zero.
+    ##    Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers.
     ## 
     ## 
-    ## Short-run symmetry tests
-    ## ------------------------
-    ##                   F  Pr(>F)
-    ## PetrolPrice 0.01990 0.88797
-    ## drivers     0.26473 0.60756
+    ## Short-run:
+    ##             Df Sum of Sq Mean Sq F value Pr(>F)
+    ## PetrolPrice  1     2.649   2.649  0.0199 0.8880
+    ## drivers      1    35.235  35.235  0.2647 0.6076
     ## 
-    ## Hypotheses and decisions:
+    ## Hypotheses:
     ## 
-    ## Variable: PetrolPrice 
-    ## H0: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) 
-    ## H1: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG) 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice. 
+    ##   PetrolPrice
+    ##    H0: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG)
+    ##    H1: Coef(L0.d.PetrolPrice_POS) + Coef(L1.d.PetrolPrice_POS) + Coef(L2.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) + Coef(L1.d.PetrolPrice_NEG) + Coef(L2.d.PetrolPrice_NEG) + Coef(L3.d.PetrolPrice_NEG)
+    ##    Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice.
     ## 
-    ## Variable: drivers 
-    ## H0: Coef(L0.d.drivers_POS) = Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) 
-    ## H1: Coef(L0.d.drivers_POS) ≠ Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG) 
-    ## Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable drivers.
+    ##   drivers
+    ##    H0: Coef(L0.d.drivers_POS) = Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG)
+    ##    H1: Coef(L0.d.drivers_POS) ≠ Coef(L0.d.drivers_NEG) + Coef(L1.d.drivers_NEG)
+    ##    Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable drivers.
 
 ### Step 6: Cointegration Tests
 
@@ -584,38 +585,34 @@ cointegration.
 summary(test_result)
 ```
 
+    ## KARDL Cointegration Test Summary
     ## 
-    ## ========================================
-    ## KARDL Cointegration Test Results
-    ## ========================================
+    ## Pesaran-Shin-Smith (PSS) Bounds F-test for cointegration
     ## 
-    ##  Decision: Reject H0 → Cointegration (at 5% level)
+    ## F statistic = 32.3445539
     ## 
-    ##  Test Statistic:
-    ##   F: 32.3445539
-    ## 
-    ##  Critical Values (Lower & Upper Bounds):
+    ## Critical Values (Lower & Upper Bounds):
     ##           L    U
     ##   10%  3.03 4.06
     ##   5%   3.47 4.57
     ##   2.5% 3.89 5.07
     ##   1%   4.40 5.72
     ## 
+    ## Decision:
+    ##   Reject H0 → Cointegration (at 5% level)
     ## 
-    ##  Comparison:
+    ## Comparison:
     ##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.57).
     ##   This indicates that the variables tend to move together over  time.
     ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
     ## 
-    ##  Hypotheses:
-    ## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 
-    ## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. 
+    ## Hypotheses:
+    ##   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0
+    ##   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero.
     ## 
-    ##  Model Details:
+    ## Model Details:
     ##   Number of regressors (k): 4
-    ##   Case: V 
-    ## 
-    ## ========================================
+    ##   Case: V
 
 #### PSS t Bound Test
 
@@ -645,38 +642,34 @@ cointegration.
 summary(test_result)
 ```
 
+    ## KARDL Cointegration Test Summary
     ## 
-    ## ========================================
-    ## KARDL Cointegration Test Results
-    ## ========================================
+    ## Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
     ## 
-    ##  Decision: Reject H0 → Cointegration (at 5% level)
+    ## t statistic = -12.6296459
     ## 
-    ##  Test Statistic:
-    ##   t: -12.6296459
-    ## 
-    ##  Critical Values (Lower & Upper Bounds):
+    ## Critical Values (Lower & Upper Bounds):
     ##            L     U
     ##   10%  -3.13 -4.04
     ##   5%   -3.41 -4.36
     ##   2.5% -3.65 -4.62
     ##   1%   -3.96 -4.96
     ## 
+    ## Decision:
+    ##   Reject H0 → Cointegration (at 5% level)
     ## 
-    ##  Comparison:
+    ## Comparison:
     ##   At the 5% significance level, t (12.6296459) exceeds the upper bound (4.36).
     ##   This indicates that the variables tend to move together over  time.
     ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
     ## 
-    ##  Hypotheses:
-    ## H0: Coef(L1.DriversKilled) = 0 
-    ## H1: Coef(L1.DriversKilled) ≠ 0 
+    ## Hypotheses:
+    ##   H0: Coef(L1.DriversKilled) = 0
+    ##   H1: Coef(L1.DriversKilled) ≠ 0
     ## 
-    ##  Model Details:
+    ## Model Details:
     ##   Number of regressors (k): 4
-    ##   Case: V 
-    ## 
-    ## ========================================
+    ##   Case: V
 
 #### Narayan Test
 
@@ -707,39 +700,36 @@ cointegration.
 summary(test_result)
 ```
 
+    ## KARDL Cointegration Test Summary
     ## 
-    ## ========================================
-    ## KARDL Cointegration Test Results
-    ## ========================================
+    ## Narayan F Test for Cointegration
     ## 
-    ##  Decision: Reject H0 → Cointegration (at 5% level)
+    ## F statistic = 32.3445539
     ## 
-    ##  Test Statistic:
-    ##   F: 32.3445539
-    ## 
-    ##  Critical Values (Lower & Upper Bounds):
+    ## Critical Values (Lower & Upper Bounds):
     ##           L     U
     ##   10% 3.160 4.230
     ##   5%  3.678 4.840
     ##   1%  4.890 6.164
     ## 
+    ## Decision:
+    ##   Reject H0 → Cointegration (at 5% level)
     ## 
-    ##  Comparison:
+    ## Comparison:
     ##   At the 5% significance level, F (32.3445539) exceeds the upper bound (4.84).
     ##   This indicates that the variables tend to move together over  time.
     ##   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
     ## 
-    ##  Hypotheses:
-    ## H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0 
-    ## H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero. 
+    ## Hypotheses:
+    ##   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers_POS) = Coef(L1.drivers_NEG) = 0
+    ##   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers_POS), Coef(L1.drivers_NEG) are zero.
     ## 
-    ##  Model Details:
+    ## Model Details:
     ##   Number of regressors (k): 4
     ##   Case: V 
     ## 
-    ## 
-    ##  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.
-    ## ========================================
+    ## Note:
+    ##   The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.
 
 ### Step 7: Dynamic Multipliers
 
@@ -874,7 +864,9 @@ kardl_custom
 ```
 
     ## Optimal lags for each variable ( AIC ):
+    ## 
     ## DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, asyP_drivers_PP: 2, asyN_drivers_NN: 0 
+    ## 
     ## 
     ## Call:
     ## lm(formula = my_formula, data = model_data)

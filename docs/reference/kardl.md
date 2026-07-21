@@ -135,20 +135,6 @@ kardl(
     values (e.g., `maxlag = 8`) may be appropriate, though this
     increases computational time.
 
-  ***examples***
-
-  Using the default maximum lag (4)
-
-  `kardl(data, my_formula, maxlag = 4)`
-
-  Reducing the maximum lag to 2 for faster computation
-
-  `kardl(data, my_formula, maxlag = 2)`
-
-  Increasing the maximum lag to 8 for datasets with longer dependencies
-
-  `kardl(data, my_formula, maxlag = 8)`
-
 - mode:
 
   Specifies the mode of estimation and output control. This parameter
@@ -410,7 +396,9 @@ kardl_model_grid <- kardl(
 )
 kardl_model_grid
 #> Optimal lags for each variable ( BIC ):
+#> 
 #> DriversKilled: 1, asyP_PetrolPrice_PP: 1, asyN_PetrolPrice_NN: 0, drivers: 0 
+#> 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
@@ -431,7 +419,9 @@ kardl_model2 <- kardl(mode = c(2, 1, 1, 3))
 # Getting the results
 kardl_model2
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 2, asyP_PetrolPrice_PP: 1, asyN_PetrolPrice_NN: 1, drivers: 3 
+#> 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
@@ -494,7 +484,9 @@ summary(kardl_model2)
 fit_bic <- kardl(formula = DriversKilled ~ . + deterministic(law))
 fit_bic
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 2, drivers: 2, front: 0, rear: 0, kms: 1, PetrolPrice: 0, VanKilled: 0 
+#> 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
@@ -518,7 +510,9 @@ kardl(DriversKilled ~ PetrolPrice + drivers + Lasymmetric(PetrolPrice),
   maxlag = 3, mode = "grid_custom"
 )
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 1, PetrolPrice: 0, drivers: 1 
+#> 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
@@ -536,7 +530,9 @@ kardl(DriversKilled ~ PetrolPrice + drivers + Lasymmetric(PetrolPrice),
 kardl_set(criterion = "HQ") # setting the criterion to HQ
 kardl(mode = "grid_custom")
 #> Optimal lags for each variable ( HQ ):
+#> 
 #> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 0 
+#> 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
@@ -555,7 +551,9 @@ kardl(mode = "grid_custom")
 # using default values of lags
 kardl(mode = c(1, 2, 3, 0))
 #> Optimal lags for each variable ( HQ ):
+#> 
 #> DriversKilled: 1, asyP_PetrolPrice_PP: 2, asyN_PetrolPrice_NN: 3, drivers: 0 
+#> 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)
@@ -602,7 +600,9 @@ kardl_model_pipe <- Seatbelts %>%
   kardl(mode = "grid_custom", data = .)
 kardl_model_pipe
 #> Optimal lags for each variable ( HQ ):
+#> 
 #> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 0 
+#> 
 #> 
 #> Call:
 #> lm(formula = my_formula, data = model_data)

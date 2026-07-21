@@ -151,6 +151,11 @@ head(kardl_extract(m, "lambda"))
 # function. For example, to plot the multipliers for the variable "drivers":
 
 plot(m, variable = "drivers", title = "Dynamic Multipliers for drivers")
+
+# To plot the multipliers for the variable "PetrolPrice" without a title,
+# you can use:
+plot(m, variable = "PetrolPrice", title = "")
+
 }
 \seealso{
 \code{\link{bootstrap}}

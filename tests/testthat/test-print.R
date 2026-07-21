@@ -143,7 +143,7 @@ test_that("print.kardl_symmetric works correctly", {
 
   # Test that output contains expected text
   output <- capture.output(print(sym_result))
-  expect_true(any(grepl("KARDL Symmetry Test Results", output)))
+  expect_true(any(grepl("kardl Symmetry Test", output)))
 })
 
 test_that("summary.kardl_symmetric works correctly", {

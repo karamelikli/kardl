@@ -134,20 +134,6 @@ ecm(
     values (e.g., `maxlag = 8`) may be appropriate, though this
     increases computational time.
 
-  ***examples***
-
-  Using the default maximum lag (4)
-
-  `kardl(data, my_formula, maxlag = 4)`
-
-  Reducing the maximum lag to 2 for faster computation
-
-  `kardl(data, my_formula, maxlag = 2)`
-
-  Increasing the maximum lag to 8 for datasets with longer dependencies
-
-  `kardl(data, my_formula, maxlag = 8)`
-
 - mode:
 
   Specifies the mode of estimation and output control. This parameter
@@ -423,7 +409,9 @@ ecm_model_grid <- ecm(mode = "grid")
 #> 
 ecm_model_grid
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 
+#> 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
@@ -438,7 +426,8 @@ ecm_model_grid
 #> 
 #> 
 #> Notes:
-#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
+#>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. 
+#> 
 #> 
 
 # Checking the cointegration test results using Pesaran t test
@@ -453,38 +442,34 @@ psst(ecm_model_grid)
 
 # Getting the details of psst result
 summary(psst(ecm_model_grid))
+#> KARDL Cointegration Test Summary
 #> 
-#> ========================================
-#> KARDL Cointegration Test Results
-#> ========================================
+#> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration
 #> 
-#>  Decision: Reject H0 → Cointegration (at 1% level)
+#> t statistic = -12.8280123
 #> 
-#>  Test Statistic:
-#>   t: -12.8280123
-#> 
-#>  Critical Values (Lower & Upper Bounds):
+#> Critical Values (Lower & Upper Bounds):
 #>            L     U
 #>   10%  -3.13 -3.84
 #>   5%   -3.41 -4.16
 #>   2.5% -3.65 -4.42
 #>   1%   -3.96 -4.73
 #> 
+#> Decision:
+#>   Reject H0 → Cointegration (at 1% level)
 #> 
-#>  Comparison:
+#> Comparison:
 #>   At the 1% significance level, t (12.8280123) exceeds the upper bound (4.73).
 #>   This indicates that the variables tend to move together over  time.
 #>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).
 #> 
-#>  Hypotheses:
-#> H0: Coef(EcmRes) = 0 
-#> H1: Coef(EcmRes) ≠ 0 
+#> Hypotheses:
+#>   H0: Coef(EcmRes) = 0
+#>   H1: Coef(EcmRes) ≠ 0
 #> 
-#>  Model Details:
+#> Model Details:
 #>   Number of regressors (k): 3
 #>   Case: V 
-#> 
-#> ========================================
 
 # Using the grid_custom mode for faster execution without console output
 ecm_model <- ecm(
@@ -493,7 +478,9 @@ ecm_model <- ecm(
 )
 ecm_model
 #> Optimal lags for each variable ( HQ ):
+#> 
 #> DriversKilled: 2, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 0 
+#> 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
@@ -508,7 +495,8 @@ ecm_model
 #> 
 #> 
 #> Notes:
-#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
+#>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. 
+#> 
 #> 
 
 # Estimating the model with user-defined lag values
@@ -517,7 +505,9 @@ ecm_model2 <- ecm(mode = c(2, 1, 1, 3))
 # Getting the results
 ecm_model2
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 2, PetrolPrice_POS: 1, PetrolPrice_NEG: 1, drivers: 3 
+#> 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
@@ -536,7 +526,8 @@ ecm_model2
 #> 
 #> 
 #> Notes:
-#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
+#>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. 
+#> 
 #> 
 
 # Getting the summary of the results
@@ -604,7 +595,9 @@ summary(ecm(DriversKilled ~ drivers + asym(PetrolPrice) + trend, Seatbelts))
 # For increasing the performance of finding the most fitted lag vector
 ecm(mode = "grid_custom")
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 
+#> 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
@@ -619,13 +612,16 @@ ecm(mode = "grid_custom")
 #> 
 #> 
 #> Notes:
-#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
+#>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. 
+#> 
 #> 
 
 # Setting max lag instead of default value [4]
 ecm(maxlag = 2, mode = "grid_custom")
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 
+#> 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
@@ -640,13 +636,16 @@ ecm(maxlag = 2, mode = "grid_custom")
 #> 
 #> 
 #> Notes:
-#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
+#>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. 
+#> 
 #> 
 
 # Using another criterion for finding the best lag
 ecm(criterion = "HQ", mode = "grid_custom")
 #> Optimal lags for each variable ( HQ ):
+#> 
 #> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 0 
+#> 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
@@ -661,7 +660,8 @@ ecm(criterion = "HQ", mode = "grid_custom")
 #> 
 #> 
 #> Notes:
-#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
+#>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. 
+#> 
 #> 
 
 # For using different lag values for positive and negative decompositions
@@ -689,7 +689,9 @@ customizedNames <- ecm(DriversKilled ~ PetrolPrice + drivers +
   asym(PetrolPrice), Seatbelts)
 customizedNames
 #> Optimal lags for each variable ( AIC ):
+#> 
 #> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 1 
+#> 
 #> 
 #> Call:
 #> lm(formula = shortrun_eq, data = ecm_data)
@@ -704,6 +706,7 @@ customizedNames
 #> 
 #> 
 #> Notes:
-#> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.
+#>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. 
+#> 
 #> 
 ```

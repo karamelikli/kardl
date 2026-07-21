@@ -99,7 +99,7 @@ $$"></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -281,52 +281,50 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ast</span> <span class="op">&lt;-</span> <span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ast</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> kardl Symmetry Test </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># Detailed results of the test:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ast</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run symmetry tests</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -----------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 0.11542 0.73446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drivers     1.69404 0.19476</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   PetrolPrice</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H1: At least one coefficient differs from zero.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable PetrolPrice.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   drivers</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H1: At least one coefficient differs from zero.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Decision: Fail to Reject H0 at 5% level. Indicating long-run symmetry for variable drivers.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run symmetry tests</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 1.26814 0.26164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   PetrolPrice</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Decision: Fail to Reject H0 at 5% level. Indicating short-run symmetry for variable PetrolPrice.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="co"># The null hypothesis of the test is that the model is symmetric, while the</span></span></span>
 <span class="r-in"><span><span class="co"># alternative hypothesis is that the model is asymmetric. The test statistic</span></span></span>
 <span class="r-in"><span><span class="co"># and p-value are provided in the output. If the p-value is less than a</span></span></span>
@@ -337,58 +335,56 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="co"># level using the 'level' argument in the summary function. For example, to</span></span></span>
 <span class="r-in"><span><span class="co"># use a significance level of 0.01, you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">ast</span>, level <span class="op">=</span> <span class="fl">0.01</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run symmetry tests</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -----------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 0.11542 0.73446</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> drivers     1.69404 0.19476</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PetrolPrice. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   PetrolPrice</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H1: At least one coefficient differs from zero.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable PetrolPrice.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: drivers </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: At least one coefficient differs from zero. </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable drivers. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   drivers</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H0: - Coef(L1.drivers_POS)/Coef(L1.DriversKilled) = - Coef(L1.drivers_NEG)/Coef(L1.DriversKilled)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H1: At least one coefficient differs from zero.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Decision: Fail to Reject H0 at 1% level. Indicating long-run symmetry for variable drivers.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run symmetry tests</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ------------------------</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                   F  Pr(&gt;F)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice 1.26814 0.26164</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses and decisions:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Decision: Fail to Reject H0 at 1% level. Indicating short-run symmetry for variable PetrolPrice. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   PetrolPrice</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    H1: Coef(L0.d.PetrolPrice_POS) ≠ Coef(L0.d.PetrolPrice_NEG)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Decision: Fail to Reject H0 at 1% level. Indicating short-run symmetry for variable PetrolPrice.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get symmetry test results in long-run, you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">ast</span>, what <span class="op">=</span> <span class="st">"long_wald_summary"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get symmetry test results in short-run, you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">ast</span>, what <span class="op">=</span> <span class="st">"short_wald_summary"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To get the null and alternative hypotheses of the test in long-run,</span></span></span>
 <span class="r-in"><span><span class="co"># you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">ast</span>, what <span class="op">=</span> <span class="st">"long_hypotheses"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H0: - Coef(L1.PetrolPrice_POS)/Coef(L1.DriversKilled) = - Coef(L1.PetrolPrice_NEG)/Coef(L1.DriversKilled) </span>
@@ -403,8 +399,8 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="co"># To get the null and alternative hypotheses of the test in short-run,</span></span></span>
 <span class="r-in"><span><span class="co"># you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">ast</span>, what <span class="op">=</span> <span class="st">"short_hypotheses"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Variable: PetrolPrice </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L0.d.PetrolPrice_POS) = Coef(L0.d.PetrolPrice_NEG) </span>
@@ -416,10 +412,9 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="co"># short-run symmetry. For example, to test for long-run symmetry, you can use</span></span></span>
 <span class="r-in"><span><span class="co"># the following code:</span></span></span>
 <span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, component <span class="op">=</span> <span class="st">"longrun"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> kardl Symmetry Test </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
@@ -427,10 +422,9 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># To test for short-run symmetry, you can use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, component <span class="op">=</span> <span class="st">"shortrun"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> kardl Symmetry Test </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -440,10 +434,9 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="co"># example, to test for symmetry with respect to the drivers variable, you can</span></span></span>
 <span class="r-in"><span><span class="co"># use the following code:</span></span></span>
 <span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="st">"drivers"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> kardl Symmetry Test </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drivers  1    215.58  215.58   1.694 0.1948</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -453,16 +446,14 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="co"># test for symmetry with respect to both drivers and PetrolPrice, you can use</span></span></span>
 <span class="r-in"><span><span class="co"># the following code:</span></span></span>
 <span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, selected_vars <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"drivers"</span>, <span class="st">"PetrolPrice"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> kardl Symmetry Test </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1   215.576 215.576  1.6940 0.1948</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    14.688  14.688  0.1154 0.7345</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq Mean Sq F value Pr(&gt;F)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38  161.38  1.2681 0.2616</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -473,16 +464,14 @@ Festschrift in honor of Peter Schmidt: Econometric methods and applications,
 <span class="r-in"><span><span class="co"># For example, to use the chi-squared test statistic, you can use the</span></span></span>
 <span class="r-in"><span><span class="co"># following code:</span></span></span>
 <span class="r-in"><span><span class="fu">symmetrytest</span><span class="op">(</span><span class="va">kardl_model</span>, type <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> kardl Symmetry Test </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Symmetry Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Long-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Long-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df  Chisq Pr(&gt;Chisq)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1 0.1154     0.7341</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> drivers      1 1.6940     0.1931</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Symmetry Test Results - Short-run:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> =======================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Short-run:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             Df Sum of Sq  Chisq Pr(&gt;Chisq)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> PetrolPrice  1    161.38 1.2681     0.2601</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

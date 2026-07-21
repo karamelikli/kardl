@@ -27,7 +27,7 @@ equilibrium relationship between variables."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -199,39 +199,36 @@ evidence from cointegration tests. Applied economics, 37(17), 1979-1990.</p>
 <span class="r-in"><span><span class="co"># Getting details of the test.</span></span></span>
 <span class="r-in"><span><span class="va">my_summary</span><span class="op">&lt;-</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">my_test</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">my_summary</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Narayan F Test for Cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 1% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F statistic = 39.5080601</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F: 39.5080601</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Critical Values (Lower &amp; Upper Bounds):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           L     U</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   10% 3.588 4.605</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5%  4.203 5.320</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1%  5.620 6.908</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reject H0 → Cointegration (at 1% level)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Comparison:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   At the 1% significance level, F (39.5080601) exceeds the upper bound (6.908).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model Details:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Case: V </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting the critical values of the test.</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="kardl_extract.html">kardl_extract</a></span><span class="op">(</span><span class="va">my_summary</span>, what <span class="op">=</span> <span class="st">"critical_values"</span><span class="op">)</span></span></span>
@@ -270,39 +267,36 @@ evidence from cointegration tests. Applied economics, 37(17), 1979-1990.</p>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu">narayan</span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Narayan F Test for Cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 1% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> F statistic = 39.5080601</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   F: 39.5080601</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Critical Values (Lower &amp; Upper Bounds):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           L     U</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   10% 3.588 4.605</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5%  4.203 5.320</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1%  5.620 6.908</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reject H0 → Cointegration (at 1% level)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Comparison:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   At the 1% significance level, F (39.5080601) exceeds the upper bound (6.908).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   H0: Coef(L1.DriversKilled) = Coef(L1.PetrolPrice_POS) = Coef(L1.PetrolPrice_NEG) = Coef(L1.drivers) = 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   H1: Not all of Coef(L1.DriversKilled), Coef(L1.PetrolPrice_POS), Coef(L1.PetrolPrice_NEG), Coef(L1.drivers) are zero.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model Details:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Case: V </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Note:The number of observations exceeds the maximum limit for the critical valuestable. Using the critical values for 80 observations.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   The number of observations exceeds the maximum limit for the critical values table. Using the critical values for 80 observations.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

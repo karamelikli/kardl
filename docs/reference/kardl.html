@@ -23,7 +23,7 @@ criteria."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -168,13 +168,7 @@ dataset and the context of the analysis:</p><ul><li><p>For small datasets or qui
 <li><p>For datasets with more observations or longer-term patterns, larger
 values (e.g., <code>maxlag = 8</code>) may be appropriate, though this increases
 computational time.</p></li>
-</ul><p><strong><em>examples</em></strong></p>
-<p>Using the default maximum lag (4)</p>
-<p><code>kardl(data, my_formula, maxlag = 4)</code></p>
-<p>Reducing the maximum lag to 2 for faster computation</p>
-<p><code>kardl(data, my_formula, maxlag = 2)</code></p>
-<p>Increasing the maximum lag to 8 for datasets with longer dependencies</p>
-<p><code>kardl(data, my_formula, maxlag = 8)</code></p></dd>
+</ul></dd>
 
 
 <dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
@@ -403,7 +397,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">kardl_model_grid</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( BIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, asyP_PetrolPrice_PP: 1, asyN_PetrolPrice_NN: 0, drivers: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = my_formula, data = model_data)</span>
@@ -424,7 +420,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="co"># Getting the results</span></span></span>
 <span class="r-in"><span><span class="va">kardl_model2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 2, asyP_PetrolPrice_PP: 1, asyN_PetrolPrice_NN: 1, drivers: 3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = my_formula, data = model_data)</span>
@@ -487,7 +485,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="va">fit_bic</span> <span class="op">&lt;-</span> <span class="fu">kardl</span><span class="op">(</span>formula <span class="op">=</span> <span class="va">DriversKilled</span> <span class="op">~</span> <span class="va">.</span> <span class="op">+</span> <span class="fu">deterministic</span><span class="op">(</span><span class="va">law</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">fit_bic</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 2, drivers: 2, front: 0, rear: 0, kms: 1, PetrolPrice: 0, VanKilled: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = my_formula, data = model_data)</span>
@@ -511,7 +511,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span>  maxlag <span class="op">=</span> <span class="fl">3</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, PetrolPrice: 0, drivers: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = my_formula, data = model_data)</span>
@@ -529,7 +531,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="fu"><a href="kardl_set.html">kardl_set</a></span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"HQ"</span><span class="op">)</span> <span class="co"># setting the criterion to HQ</span></span></span>
 <span class="r-in"><span><span class="fu">kardl</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = my_formula, data = model_data)</span>
@@ -548,7 +552,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="co"># using default values of lags</span></span></span>
 <span class="r-in"><span><span class="fu">kardl</span><span class="op">(</span>mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, asyP_PetrolPrice_PP: 2, asyN_PetrolPrice_NN: 3, drivers: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = my_formula, data = model_data)</span>
@@ -595,7 +601,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span>  <span class="fu">kardl</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"grid_custom"</span>, data <span class="op">=</span> <span class="va">.</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">kardl_model_pipe</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = my_formula, data = model_data)</span>

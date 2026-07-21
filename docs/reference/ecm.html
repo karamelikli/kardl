@@ -21,7 +21,7 @@ variable and the independent variables in the model."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -165,13 +165,7 @@ dataset and the context of the analysis:</p><ul><li><p>For small datasets or qui
 <li><p>For datasets with more observations or longer-term patterns, larger
 values (e.g., <code>maxlag = 8</code>) may be appropriate, though this increases
 computational time.</p></li>
-</ul><p><strong><em>examples</em></strong></p>
-<p>Using the default maximum lag (4)</p>
-<p><code>kardl(data, my_formula, maxlag = 4)</code></p>
-<p>Reducing the maximum lag to 2 for faster computation</p>
-<p><code>kardl(data, my_formula, maxlag = 2)</code></p>
-<p>Increasing the maximum lag to 8 for datasets with longer dependencies</p>
-<p><code>kardl(data, my_formula, maxlag = 8)</code></p></dd>
+</ul></dd>
 
 
 <dt id="arg-mode">mode<a class="anchor" aria-label="anchor" href="#arg-mode"></a></dt>
@@ -416,7 +410,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="va">ecm_model_grid</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
@@ -431,7 +427,8 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Checking the cointegration test results using Pesaran t test</span></span></span>
@@ -446,38 +443,34 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting the details of psst result</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="psst.html">psst</a></span><span class="op">(</span><span class="va">ecm_model_grid</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> KARDL Cointegration Test Results</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Pesaran-Shin-Smith (PSS) Bounds t-test for cointegration</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Decision: Reject H0 → Cointegration (at 1% level)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> t statistic = -12.8280123</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Test Statistic:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   t: -12.8280123</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Critical Values (Lower &amp; Upper Bounds):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Critical Values (Lower &amp; Upper Bounds):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            L     U</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   10%  -3.13 -3.84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5%   -3.41 -4.16</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   2.5% -3.65 -4.42</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1%   -3.96 -4.73</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Decision:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Reject H0 → Cointegration (at 1% level)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Comparison:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Comparison:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   At the 1% significance level, t (12.8280123) exceeds the upper bound (4.73).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   This indicates that the variables tend to move together over  time.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Conclusion: There is strong evidence of a long-run relationship  (cointegration).</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hypotheses:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H0: Coef(EcmRes) = 0 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> H1: Coef(EcmRes) ≠ 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Hypotheses:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   H0: Coef(EcmRes) = 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   H1: Coef(EcmRes) ≠ 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Model Details:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Model Details:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Number of regressors (k): 3</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Case: V </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ========================================</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using the grid_custom mode for faster execution without console output</span></span></span>
 <span class="r-in"><span><span class="va">ecm_model</span> <span class="op">&lt;-</span> <span class="fu">ecm</span><span class="op">(</span></span></span>
@@ -486,7 +479,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ecm_model</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 2, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
@@ -501,7 +496,8 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Estimating the model with user-defined lag values</span></span></span>
@@ -510,7 +506,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="co"># Getting the results</span></span></span>
 <span class="r-in"><span><span class="va">ecm_model2</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 2, PetrolPrice_POS: 1, PetrolPrice_NEG: 1, drivers: 3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
@@ -529,7 +527,8 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Getting the summary of the results</span></span></span>
@@ -597,7 +596,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span><span class="co"># For increasing the performance of finding the most fitted lag vector</span></span></span>
 <span class="r-in"><span><span class="fu">ecm</span><span class="op">(</span>mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
@@ -612,13 +613,16 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Setting max lag instead of default value [4]</span></span></span>
 <span class="r-in"><span><span class="fu">ecm</span><span class="op">(</span>maxlag <span class="op">=</span> <span class="fl">2</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
@@ -633,13 +637,16 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using another criterion for finding the best lag</span></span></span>
 <span class="r-in"><span><span class="fu">ecm</span><span class="op">(</span>criterion <span class="op">=</span> <span class="st">"HQ"</span>, mode <span class="op">=</span> <span class="st">"grid_custom"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( HQ ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, PetrolPrice_POS: 0, PetrolPrice_NEG: 0, drivers: 0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
@@ -654,7 +661,8 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># For using different lag values for positive and negative decompositions</span></span></span>
@@ -682,7 +690,9 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-in"><span>  <span class="fu">asym</span><span class="op">(</span><span class="va">PetrolPrice</span><span class="op">)</span>, <span class="va">Seatbelts</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">customizedNames</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Optimal lags for each variable ( AIC ):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> DriversKilled: 1, asyP_PetrolPrice_PP: 0, asyN_PetrolPrice_NN: 0, drivers: 1 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Call:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> lm(formula = shortrun_eq, data = ecm_data)</span>
@@ -697,7 +707,8 @@ the <code><a href="kardl_set.html">kardl_set()</a></code> function.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Notes:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> • The coefficient of the error correction term (EcmRes) is less than -1. Thismay suggest over-adjustment or instability in the long-run relationship.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    • The coefficient of the error correction term (EcmRes) is less than -1. This may suggest over-adjustment or instability in the long-run relationship. </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
