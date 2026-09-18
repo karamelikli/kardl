@@ -17,7 +17,7 @@ A data frame with 470 rows and 4 variables:
 imf_example_data
 }
 \description{
-\lifecycle{deprecated}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
 This dataset is \strong{deprecated} and is provided for testing purposes only
 for versions of \pkg{kardl} before 2.0.5. It is retained for backward

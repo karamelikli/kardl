@@ -555,11 +555,14 @@ kardl_critvals <- function(x, ...) {
 
 
 #' Symmetry Test for Nonlinear kardl Models
+#' @description
+#' `r lifecycle::badge('superseded')`
 #'
 #' This function performs symmetry tests on non-linear KARDL models to assess
 #' whether the effects of positive and negative changes in independent variables
 #' are statistically different.
 #'
+#' @details
 #' This function evaluates whether the inclusion of a particular variable in the
 #' model follows a linear relationship or exhibits a non-linear pattern. By
 #' analyzing the behavior of the variable, the function helps to identify if the
@@ -569,7 +572,6 @@ kardl_critvals <- function(x, ...) {
 #' ensures that the variable is appropriately represented, which can enhance the
 #' model's accuracy and predictive performance.
 #'
-#' @description
 #' The symmetry test is a statistical procedure used to assess the presence of
 #' symmetry in the relationship between variables in a model. It is particularly
 #' useful in econometric analysis, where it helps to identify whether the
@@ -1193,6 +1195,8 @@ symmetrytest.kardl_lm <- function(
 
 
 #' Pesaran, Shin, and Smith Bounds F-Test
+#' @description
+#' `r lifecycle::badge('superseded')`
 #'
 #' This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to
 #' assess the presence of a long-term relationship (cointegration) between
@@ -1559,6 +1563,8 @@ pssf.kardl_lm <- function(kardl_model, case = "auto", signif_level = "auto",
 }
 
 #' Narayan Bounds Test
+#' @description
+#' `r lifecycle::badge('superseded')`
 #'
 #' This function performs the Narayan test, which is designed to assess
 #' cointegration using critical values specifically tailored for small sample
@@ -1860,8 +1866,8 @@ narayan.kardl_lm <- function(kardl_model,
 
 
 #' Pesaran, Shin, and Smith t Bounds Test
-#'
-#' This function performs the Pesaran t Bound test
+#' @description
+#' `r lifecycle::badge('superseded')`
 #'
 #' This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which
 #'  is used to detect the existence of a long-term relationship (cointegration)
@@ -1873,6 +1879,7 @@ narayan.kardl_lm <- function(kardl_model,
 #'   falls within the appropriate range, it confirms the presence of
 #'   cointegration. This test is particularly useful when working with datasets
 #'   containing both stationary and non-stationary variables.
+#'
 #' @inheritParams pssf
 #' @param vcov A variance-covariance matrix to be used for the test. If not
 #' provided, the default variance-covariance matrix from the model will be used.

@@ -64,6 +64,8 @@ in this case "bootstrap".
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function computes bootstrap confidence intervals (CI) for dynamic
 multipliers of a specified variable in a model estimated using the
 \code{kardl} package. The bootstrap method generates resampled datasets to

@@ -31,6 +31,8 @@ in the formula.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The \code{parse_formula()} function analyzes a given formula to identify and
 extract variables that match specified patterns. It is particularly useful
 for isolating variables enclosed within certain functions or constructs in

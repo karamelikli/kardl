@@ -57,6 +57,8 @@ characteristics.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
 This function performs the Pesaran, Shin, and Smith (PSS) F Bound test to
 assess the presence of a long-term relationship (cointegration) between
 variables in the context of an autoregressive distributed lag (ARDL) model.

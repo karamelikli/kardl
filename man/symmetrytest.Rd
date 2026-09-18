@@ -60,6 +60,22 @@ hypotheses for the short-run variables.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
+This function performs symmetry tests on non-linear KARDL models to assess
+whether the effects of positive and negative changes in independent variables
+are statistically different.
+}
+\details{
+This function evaluates whether the inclusion of a particular variable in the
+model follows a linear relationship or exhibits a non-linear pattern. By
+analyzing the behavior of the variable, the function helps to identify if the
+relationship between the variable and the outcome of interest adheres to a
+straight-line assumption or if it deviates, indicating a non-linear
+interaction. This distinction is important in model specification, as it
+ensures that the variable is appropriately represented, which can enhance the
+model's accuracy and predictive performance.
+
 The symmetry test is a statistical procedure used to assess the presence of
 symmetry in the relationship between variables in a model. It is particularly
 useful in econometric analysis, where it helps to identify whether the
@@ -107,20 +123,6 @@ The hypotheses for the short-run variables are:
 \deqn{
   H_{1}: \sum_{j = 0}^{q}{\beta^{+}_{j}} \neq \sum_{j = 0}^{m}{\beta^{-}_{j}}
 }
-}
-\details{
-This function performs symmetry tests on non-linear KARDL models to assess
-whether the effects of positive and negative changes in independent variables
-are statistically different.
-
-This function evaluates whether the inclusion of a particular variable in the
-model follows a linear relationship or exhibits a non-linear pattern. By
-analyzing the behavior of the variable, the function helps to identify if the
-relationship between the variable and the outcome of interest adheres to a
-straight-line assumption or if it deviates, indicating a non-linear
-interaction. This distinction is important in model specification, as it
-ensures that the variable is appropriately represented, which can enhance the
-model's accuracy and predictive performance.
 }
 \examples{
 kardl_model <- kardl(

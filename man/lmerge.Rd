@@ -18,6 +18,8 @@ A merged list with unique names, prioritizing values from the first
 list in case of name conflicts.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 The first list of values takes precedence. When both lists have items with
 the same names, the values from the first list will be applied. In merging
 the two lists, priority is given to the left list, so if there are

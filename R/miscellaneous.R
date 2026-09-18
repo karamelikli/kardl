@@ -1,4 +1,6 @@
 #' Merge Lists with Priority to the First Argument
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' The first list of values takes precedence. When both lists have items with
 #' the same names, the values from the first list will be applied. In merging
@@ -110,6 +112,8 @@ lmerge <- function(first, second, ...) {
 }
 
 #' Parse Formula Variables
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' The \code{parse_formula()} function analyzes a given formula to identify and
 #' extract variables that match specified patterns. It is particularly useful

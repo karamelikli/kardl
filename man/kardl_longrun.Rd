@@ -34,6 +34,8 @@ long-run model.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function calculates the long-run parameters of a KARDL model estimated
 using the \code{kardl} function. The long-run parameters are calculated by
 dividing the negative of the coefficients of the independent variables by

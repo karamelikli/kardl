@@ -15,6 +15,8 @@ If no arguments are provided, returns all options as a list. If
 specific option names are provided, returns their values.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function retrieves the current settings of the kardl package. Users can
 specify option names to get their values or call the function without
 arguments to retrieve all current settings.

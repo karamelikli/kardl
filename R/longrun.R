@@ -1,4 +1,6 @@
 #' Compute Long-Run Multipliers from a kardl Model
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' This function calculates the long-run parameters of a KARDL model estimated
 #' using the \code{kardl} function. The long-run parameters are calculated by
@@ -6,7 +8,7 @@
 #' the coefficient of the dependent variable. If an intercept is included in
 #' the model, it is also standardized by dividing it by the negative of the
 #' long-run parameter of the dependent variable.
-#'
+#' @details
 #' The function also calculates the standard errors of the long-run multipliers
 #' using the delta method, which accounts for the covariance between the
 #' coefficients. The fitted values and residuals of the long-run model are
@@ -37,7 +39,6 @@
 #' Hence, \eqn{\eta_i} is the coefficient of the independent variable and
 #' \eqn{\eta_0} is the coefficient of the dependent variable in the original
 #' KARDL model.
-#'
 #' @param kardl_model An object of class \code{kardl} estimated using the
 #'        \code{kardl} function.
 #' @param ... Additional arguments (currently not used).

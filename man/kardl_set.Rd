@@ -11,13 +11,12 @@ kardl_set(...)
 option names include those defined in the kardl package settings.}
 }
 \value{
-All current settings as a list after applying any updates from the
-provided named arguments invisibly.
-
 If no arguments are provided, returns all options as a list. If named
 arguments are provided, sets those options and returns the updated list.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function allows users to set options for the kardl package. Users can
 specify named arguments to set options or call the function without arguments
 to retrieve all current settings.

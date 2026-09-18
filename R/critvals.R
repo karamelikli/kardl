@@ -39,6 +39,7 @@
 #' to the analysis of level relationships. Journal of Applied Econometrics,
 #' 16(3), 289-326.
 #'
+#'
 #' @keywords internal
 #' @noRd
 psst_critvals <- function(case, k, ...) {

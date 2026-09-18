@@ -1,7 +1,7 @@
 Package: kardl
 Type: Package
 Title: Make Symmetric and Asymmetric ARDL Estimations
-Version: 2.0.6
+Version: 2.0.7
 Authors@R: 
   c(person(given = "Huseyin",
            family = "karamelikli",
@@ -40,7 +40,6 @@ Suggests:
     testthat (>= 3.0.0)
 NeedsCompilation: no
 VignetteBuilder: knitr
-RdMacros: lifecycle
 Packaged: 2025-06-24 17:22:10 UTC; karamelikli
 Author: Huseyin karamelikli [aut, cre] (ORCID:
     <https://orcid.org/0000-0001-7622-0972>),

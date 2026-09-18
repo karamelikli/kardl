@@ -1,4 +1,6 @@
 #' Compute Dynamic Multipliers for KARDL Models
+#' @description
+#' `r lifecycle::badge('superseded')`
 #'
 #' Computes cumulative dynamic multipliers from fitted KARDL models.
 #' The method supports linear, asymmetric, and mixed asymmetric
@@ -6,26 +8,6 @@
 #' multipliers can be computed from objects of class `kardl_lm`
 #' as well as from long-run representations obtained via
 #' `kardl_longrun()`, using the corresponding S3 methods.
-#'
-#' The asymmetry structure is determined internally:
-#' \itemize{
-#'   \item Variables in \code{extracted_info$asym_short_vars} are treated as
-#'   asymmetric in the short run.
-#'   \item Variables in \code{extracted_info$asym_long_vars} are treated as
-#'   asymmetric in the long run.
-#' }
-#'
-#' This allows four possible configurations:
-#' \itemize{
-#'   \item \strong{LL}: Linear in both short-run and long-run
-#'   \item \strong{NN}: Asymmetric in both short-run and long-run
-#'   \item \strong{SA}: Short-run linear, long-run asymmetric
-#'   \item \strong{AS}: Short-run asymmetric, long-run linear
-#' }
-#'
-#' When a component is linear, the same coefficient path is used for both
-#' positive and negative changes. When asymmetric, separate positive and
-#' negative effects are computed.
 #'
 #' @param kardl_model An object of class \code{kardl_lm} or
 #'   \code{kardl_longrun}, representing a fitted KARDL model or its
@@ -52,6 +34,25 @@
 #' }
 #'
 #' @details
+#' The asymmetry structure is determined internally:
+#' \itemize{
+#'   \item Variables in \code{extracted_info$asym_short_vars} are treated as
+#'   asymmetric in the short run.
+#'   \item Variables in \code{extracted_info$asym_long_vars} are treated as
+#'   asymmetric in the long run.
+#' }
+#'
+#' This allows four possible configurations:
+#' \itemize{
+#'   \item \strong{LL}: Linear in both short-run and long-run
+#'   \item \strong{NN}: Asymmetric in both short-run and long-run
+#'   \item \strong{SA}: Short-run linear, long-run asymmetric
+#'   \item \strong{AS}: Short-run asymmetric, long-run linear
+#' }
+#'
+#' When a component is linear, the same coefficient path is used for both
+#' positive and negative changes. When asymmetric, separate positive and
+#' negative effects are computed.
 #'
 #' The \code{mplier} function computes dynamic multipliers based on the
 #' coefficients and lag structure of a model estimated using the \code{kardl}
@@ -449,6 +450,8 @@ mplier.kardl_lm <- function(kardl_model, horizon = 80, min_prob = 0, ...) {
 }
 
 #' Bootstrap Confidence Intervals for Dynamic Multipliers
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' This function computes bootstrap confidence intervals (CI) for dynamic
 #' multipliers of a specified variable in a model estimated using the

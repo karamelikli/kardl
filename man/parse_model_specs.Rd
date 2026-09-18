@@ -18,6 +18,8 @@ A list containing three components:
 constant terms, and asymmetric specifications}
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 Extracts and organizes information from model formulas including asymmetric
 terms, deterministic components, and variable relationships.
 }

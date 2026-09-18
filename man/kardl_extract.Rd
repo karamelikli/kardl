@@ -43,10 +43,11 @@ The requested component. The returned object depends on the class of \code{objec
 and the selected value of \code{what}.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 \code{kardl_extract()} is a generic accessor for retrieving selected documented
 components from objects produced by the \strong{kardl} package.
-}
-\details{
+
 It provides a stable user-facing interface for accessing important results
 without requiring users to rely on the internal list structure of returned
 objects.

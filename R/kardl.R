@@ -1,4 +1,6 @@
-#' Estimate ARDL and NARDL Models with Automatic Lag Selection
+#' Estimate ARDL and NARDL Models
+#' @description
+#' `r lifecycle::badge('superseded')`
 #'
 #' This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear
 #' ARDL (NARDL) model based on the provided data and model formula.
@@ -502,12 +504,15 @@ kardl <- function(
   makemodel(spec, ...)
 }
 #' Estimate a Restricted ECM Model
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' The `ecm` function estimates a restricted Error Correction Model (ECM) based
 #' on the provided data and model specification. This function is designed to
 #' test for cointegration using the PSS t Bound test, which assesses the
 #' presence of a long-term equilibrium relationship between the dependent
 #' variable and the independent variables in the model.
+#'
 #'
 #' @inheritParams kardl
 #' @inheritSection kardl Notation of reported coefficients
@@ -879,10 +884,11 @@ predict.kardl_lm <- function(object, newdata = NULL, ...) {
 }
 
 #' Model Selection Criteria
+#' @description
+#' `r lifecycle::badge('superseded')`
 #'
 #' Computes a model selection criterion (AIC, BIC, AICc, HQ, or AdjR2) or
 #' applies a user-defined function to evaluate a statistical model.
-#'
 #'
 #' @param lm_model An object containing the fitted model. The object should
 #'        include at least:

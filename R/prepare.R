@@ -61,6 +61,8 @@ prepare <- function(inputs) {
 }
 
 #' Parse model specifications from user inputs
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' Extracts and organizes information from model formulas including asymmetric
 #' terms, deterministic components, and variable relationships.

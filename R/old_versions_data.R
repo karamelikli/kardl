@@ -1,7 +1,7 @@
 #' IMF Example Data (Deprecated)
 #'
 #' @description
-#' \lifecycle{deprecated}
+#' `r lifecycle::badge('deprecated')`
 #'
 #' This dataset is \strong{deprecated} and is provided for testing purposes only
 #' for versions of \pkg{kardl} before 2.0.5. It is retained for backward

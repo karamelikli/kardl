@@ -57,9 +57,8 @@ determined automatically based on the model's characteristics.}
 }
 }
 \description{
-This function performs the Pesaran t Bound test
-}
-\details{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
 This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which
 is used to detect the existence of a long-term relationship (cointegration)
 between variables in an autoregressive distributed lag (ARDL) model. The t

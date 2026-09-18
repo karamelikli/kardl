@@ -61,6 +61,8 @@ characteristics.
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
 This function performs the Narayan test, which is designed to assess
 cointegration using critical values specifically tailored for small sample
 sizes. Unlike traditional cointegration tests that may rely on asymptotic

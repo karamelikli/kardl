@@ -1,4 +1,6 @@
 #' Extract Components from kardl Objects
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' `kardl_extract()` is a generic accessor for retrieving selected documented
 #' components from objects produced by the **kardl** package.

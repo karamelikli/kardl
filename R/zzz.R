@@ -28,6 +28,8 @@ local({
 })
 
 #' Set kardl Package Options
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' This function allows users to set options for the kardl package. Users can
 #' specify named arguments to set options or call the function without arguments
@@ -36,10 +38,16 @@ local({
 #' @param ... Named arguments corresponding to the options to be set. Valid
 #' option names include those defined in the kardl package settings.
 #'
-#' @return All current settings as a list after applying any updates from the
-#' provided named arguments invisibly.
+#' @return If no arguments are provided, returns all options as a list. If named
+#'  arguments are provided, sets those options and returns the updated list.
+#' @seealso  \code{\link{kardl_get}}, \code{\link{kardl_reset}}
 #'
-#'
+#' @srrstats {G2.3a} Package-level option names are validated against a
+#' predefined list of acceptable values; invalid names produce an informative
+#' error.
+#' @srrstats {G2.4} Default argument values for `formula`, `data`, `maxlag`,
+#' `mode`, `criterion`, and `different_asym_lag` are stored centrally and merged
+#' with function arguments at call time.
 #' @export
 #' @examples
 #' # Get default options
@@ -65,17 +73,6 @@ local({
 #'
 #' # Reset to defaults after demonstrating custom settings
 #' kardl_reset()
-#'
-#' @return If no arguments are provided, returns all options as a list. If named
-#'  arguments are provided, sets those options and returns the updated list.
-#' @seealso  \code{\link{kardl_get}}, \code{\link{kardl_reset}}
-#'
-#' @srrstats {G2.3a} Package-level option names are validated against a
-#' predefined list of acceptable values; invalid names produce an informative
-#' error.
-#' @srrstats {G2.4} Default argument values for `formula`, `data`, `maxlag`,
-#' `mode`, `criterion`, and `different_asym_lag` are stored centrally and merged
-#' with function arguments at call time.
 #'
 
 
@@ -104,6 +101,8 @@ kardl_set <- function(...) {
 
 
 #' Get kardl Package Options
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' This function retrieves the current settings of the kardl package. Users can
 #' specify option names to get their values or call the function without
@@ -170,6 +169,8 @@ kardl_get <- function(...) {
 
 
 #' Reset kardl Package Options to Default Values
+#' @description
+#' `r lifecycle::badge('experimental')`
 #'
 #' This function resets kardl package options to their default values.
 #'

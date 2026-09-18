@@ -2,7 +2,7 @@
 % Please edit documentation in R/kardl.R
 \name{kardl}
 \alias{kardl}
-\title{Estimate ARDL and NARDL Models with Automatic Lag Selection}
+\title{Estimate ARDL and NARDL Models}
 \usage{
 kardl(
   formula = NULL,
@@ -253,6 +253,8 @@ the estimated ARDL or NARDL model.}
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
 This function estimates an Autoregressive Distributed Lag (ARDL) or Nonlinear
 ARDL (NARDL) model based on the provided data and model formula.
 It allows for flexible specification of variables, including deterministic

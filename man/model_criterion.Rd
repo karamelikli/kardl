@@ -30,6 +30,8 @@ A numeric value representing the selected criterion, normalized
 by the sample size if one of the predefined options is used.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
 Computes a model selection criterion (AIC, BIC, AICc, HQ, or AdjR2) or
 applies a user-defined function to evaluate a statistical model.
 }

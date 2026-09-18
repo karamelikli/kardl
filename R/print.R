@@ -168,7 +168,7 @@ print.summary.kardl_boot <- function(x, ...) {
 #' dynamic multiplier visualisations.
 #' @srrstats {TS5.3} Multiplier plots display the horizon index used in the
 #' model output.
-
+#'
 #' @noRd
 plot.kardl_mplier <- function(x, variables = "all", title = NULL, ...) {
   mpsi <- x$mpsi

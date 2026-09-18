@@ -15,6 +15,8 @@ reset.}
 A list of the settings after reset, returned invisibly.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+
 This function resets kardl package options to their default values.
 }
 \examples{

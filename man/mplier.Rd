@@ -36,6 +36,8 @@ A list of class \code{kardl_mplier} containing:
 }
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#superseded}{\figure{lifecycle-superseded.svg}{options: alt='[Superseded]'}}}{\strong{[Superseded]}}
+
 Computes cumulative dynamic multipliers from fitted KARDL models.
 The method supports linear, asymmetric, and mixed asymmetric
 specifications estimated using the \code{kardl()} framework. Dynamic
