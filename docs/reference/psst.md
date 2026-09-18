@@ -1,6 +1,18 @@
 # Pesaran, Shin, and Smith t Bounds Test
 
-This function performs the Pesaran t Bound test
+**\[superseded\]**
+
+This function performs the Pesaran, Shin, and Smith (PSS) t Bound test,
+which is used to detect the existence of a long-term relationship
+(cointegration) between variables in an autoregressive distributed lag
+(ARDL) model. The t Bound test specifically focuses on the significance
+of the coefficient of the lagged dependent variable, helping to assess
+whether the variable reverts to its long-term equilibrium after
+short-term deviations. The test provides critical values for both upper
+and lower bounds. If the t-statistic falls within the appropriate range,
+it confirms the presence of cointegration. This test is particularly
+useful when working with datasets containing both stationary and
+non-stationary variables.
 
 ## Usage
 
@@ -94,20 +106,6 @@ components:
 
   The case used for the test, either specified by the user or determined
   automatically based on the model's characteristics.
-
-## Details
-
-This function performs the Pesaran, Shin, and Smith (PSS) t Bound test,
-which is used to detect the existence of a long-term relationship
-(cointegration) between variables in an autoregressive distributed lag
-(ARDL) model. The t Bound test specifically focuses on the significance
-of the coefficient of the lagged dependent variable, helping to assess
-whether the variable reverts to its long-term equilibrium after
-short-term deviations. The test provides critical values for both upper
-and lower bounds. If the t-statistic falls within the appropriate range,
-it confirms the presence of cointegration. This test is particularly
-useful when working with datasets containing both stationary and
-non-stationary variables.
 
 ## Hypothesis testing
 

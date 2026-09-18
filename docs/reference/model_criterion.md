@@ -1,5 +1,7 @@
 # Model Selection Criteria
 
+**\[superseded\]**
+
 Computes a model selection criterion (AIC, BIC, AICc, HQ, or AdjR2) or
 applies a user-defined function to evaluate a statistical model.
 

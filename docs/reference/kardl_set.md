@@ -1,5 +1,7 @@
 # Set kardl Package Options
 
+**\[experimental\]**
+
 This function allows users to set options for the kardl package. Users
 can specify named arguments to set options or call the function without
 arguments to retrieve all current settings.
@@ -18,9 +20,6 @@ kardl_set(...)
   names include those defined in the kardl package settings.
 
 ## Value
-
-All current settings as a list after applying any updates from the
-provided named arguments invisibly.
 
 If no arguments are provided, returns all options as a list. If named
 arguments are provided, sets those options and returns the updated list.

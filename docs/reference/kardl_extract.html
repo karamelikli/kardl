@@ -5,9 +5,17 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Extract Components from kardl Objects — kardl_extract"><meta name="description" content="kardl_extract() is a generic accessor for retrieving selected documented
-components from objects produced by the kardl package."><meta property="og:description" content="kardl_extract() is a generic accessor for retrieving selected documented
-components from objects produced by the kardl package."></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Extract Components from kardl Objects — kardl_extract"><meta name="description" content="
+kardl_extract() is a generic accessor for retrieving selected documented
+components from objects produced by the kardl package.
+It provides a stable user-facing interface for accessing important results
+without requiring users to rely on the internal list structure of returned
+objects."><meta property="og:description" content="
+kardl_extract() is a generic accessor for retrieving selected documented
+components from objects produced by the kardl package.
+It provides a stable user-facing interface for accessing important results
+without requiring users to rely on the internal list structure of returned
+objects."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -15,7 +23,7 @@ components from objects produced by the kardl package."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,8 +54,12 @@ components from objects produced by the kardl package."></head><body>
     </div>
 
     <div class="ref-description section level2">
-    <p><code>kardl_extract()</code> is a generic accessor for retrieving selected documented
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="figures/lifecycle-experimental.svg" alt="[Experimental]"></a></p>
+<p><code>kardl_extract()</code> is a generic accessor for retrieving selected documented
 components from objects produced by the <strong>kardl</strong> package.</p>
+<p>It provides a stable user-facing interface for accessing important results
+without requiring users to rely on the internal list structure of returned
+objects.</p>
     </div>
 
     <div class="section level2">
@@ -102,12 +114,6 @@ the function will return all available subcomponents for the selected
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>The requested component. The returned object depends on the class of <code>object</code>
 and the selected value of <code>what</code>.</p>
-    </div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>It provides a stable user-facing interface for accessing important results
-without requiring users to rely on the internal list structure of returned
-objects.</p>
     </div>
     <div class="section level2">
     <h2 id="supported-classes">Supported classes<a class="anchor" aria-label="anchor" href="#supported-classes"></a></h2>
@@ -311,11 +317,11 @@ symmetry test results, enabling users to extract specific components
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "NN"</span>
 <span class="r-in"><span><span class="co"># kardl_extract(kardl_model, what = "data")</span></span></span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"start_time"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-07-21 16:34:59 +03"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-09-18 11:16:15 +03"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"end_time"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-07-21 16:34:59 +03"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "2026-09-18 11:16:15 +03"</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"span"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Time difference of 0.002884626 secs</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Time difference of 0.002825022 secs</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"opt_lag"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN     asyP_drivers_PP </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   2                   1                   0                   4 </span>
@@ -332,7 +338,7 @@ symmetry test results, enabling users to extract specific components
 <span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5c5f4ca2cf98&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> &lt;environment: 0x5a7fa1df5b30&gt;</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"k"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17</span>
 <span class="r-in"><span><span class="fu">kardl_extract</span><span class="op">(</span><span class="va">kardl_model</span>, what <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span></span></span>

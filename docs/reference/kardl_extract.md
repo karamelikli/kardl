@@ -1,7 +1,13 @@
 # Extract Components from kardl Objects
 
+**\[experimental\]**
+
 `kardl_extract()` is a generic accessor for retrieving selected
 documented components from objects produced by the **kardl** package.
+
+It provides a stable user-facing interface for accessing important
+results without requiring users to rely on the internal list structure
+of returned objects.
 
 ## Usage
 
@@ -54,12 +60,6 @@ kardl_extract(kardl_object, what, variable = NULL, component = NULL)
 
 The requested component. The returned object depends on the class of
 `object` and the selected value of `what`.
-
-## Details
-
-It provides a stable user-facing interface for accessing important
-results without requiring users to rely on the internal list structure
-of returned objects.
 
 ## Supported classes
 
@@ -351,11 +351,11 @@ kardl_extract(kardl_model, what = "model_type")
 #> [1] "NN"
 # kardl_extract(kardl_model, what = "data")
 kardl_extract(kardl_model, what = "start_time")
-#> [1] "2026-07-21 16:34:59 +03"
+#> [1] "2026-09-18 11:16:15 +03"
 kardl_extract(kardl_model, what = "end_time")
-#> [1] "2026-07-21 16:34:59 +03"
+#> [1] "2026-09-18 11:16:15 +03"
 kardl_extract(kardl_model, what = "span")
-#> Time difference of 0.002884626 secs
+#> Time difference of 0.002825022 secs
 kardl_extract(kardl_model, what = "opt_lag")
 #>       DriversKilled asyP_PetrolPrice_PP asyN_PetrolPrice_NN     asyP_drivers_PP 
 #>                   2                   1                   0                   4 
@@ -372,7 +372,7 @@ kardl_extract(kardl_model, what = "model_formula")
 #>     L1.d.asyP_PetrolPrice_PP + L0.d.asyN_PetrolPrice_NN + L0.d.asyP_drivers_PP + 
 #>     L1.d.asyP_drivers_PP + L2.d.asyP_drivers_PP + L3.d.asyP_drivers_PP + 
 #>     L4.d.asyP_drivers_PP + L0.d.asyN_drivers_NN
-#> <environment: 0x5c5f4ca2cf98>
+#> <environment: 0x5a7fa1df5b30>
 kardl_extract(kardl_model, what = "k")
 #> [1] 17
 kardl_extract(kardl_model, what = "n")

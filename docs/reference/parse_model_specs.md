@@ -1,5 +1,7 @@
 # Parse model specifications from user inputs
 
+**\[experimental\]**
+
 Extracts and organizes information from model formulas including
 asymmetric terms, deterministic components, and variable relationships.
 
@@ -73,7 +75,7 @@ result
 #> $args_info
 #> $args_info$formula
 #> y ~ x + sasymmetric(z) + deterministic(w)
-#> <environment: 0x5c5f424fd650>
+#> <environment: 0x5a7f969f0010>
 #> 
 #> 
 #> $settings

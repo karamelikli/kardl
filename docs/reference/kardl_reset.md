@@ -1,5 +1,7 @@
 # Reset kardl Package Options to Default Values
 
+**\[experimental\]**
+
 This function resets kardl package options to their default values.
 
 ## Usage

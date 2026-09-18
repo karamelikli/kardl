@@ -1,5 +1,7 @@
 # Compute Dynamic Multipliers for KARDL Models
 
+**\[superseded\]**
+
 Computes cumulative dynamic multipliers from fitted KARDL models. The
 method supports linear, asymmetric, and mixed asymmetric specifications
 estimated using the

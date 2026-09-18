@@ -1,5 +1,7 @@
 # Estimate a Restricted ECM Model
 
+**\[experimental\]**
+
 The `ecm` function estimates a restricted Error Correction Model (ECM)
 based on the provided data and model specification. This function is
 designed to test for cointegration using the PSS t Bound test, which
@@ -70,7 +72,6 @@ ecm(
   `Lasymmetric()`, and `Asymmetric()` follow the same usage rules:
 
   - They can be freely combined within a single formula, for example:
-
 
           y ~ . +
             Asymmetric(z) +

@@ -1,5 +1,7 @@
 # Merge Lists with Priority to the First Argument
 
+**\[experimental\]**
+
 The first list of values takes precedence. When both lists have items
 with the same names, the values from the first list will be applied. In
 merging the two lists, priority is given to the left list, so if there

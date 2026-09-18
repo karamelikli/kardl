@@ -1,5 +1,7 @@
 # Parse Formula Variables
 
+**\[experimental\]**
+
 The `parse_formula()` function analyzes a given formula to identify and
 extract variables that match specified patterns. It is particularly
 useful for isolating variables enclosed within certain functions or

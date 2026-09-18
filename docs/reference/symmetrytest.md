@@ -1,45 +1,10 @@
 # Symmetry Test for Nonlinear kardl Models
 
-The symmetry test is a statistical procedure used to assess the presence
-of symmetry in the relationship between variables in a model. It is
-particularly useful in econometric analysis, where it helps to identify
-whether the effects of changes in one variable on another are symmetric
-or asymmetric. The test involves estimating a model that includes both
-positive and negative components of the variables and then performing a
-Wald test to determine if the coefficients of these components are
-significantly different from each other. If the test indicates
-significant differences, it suggests that the relationship is
-asymmetric, meaning that the impact of increases and decreases in the
-variables differs. This test returns results for both long-run and
-short-run variables in a KARDL model. Where applicable, it provides the
-Wald test statistics, p-values, degrees of freedom, sum of squares, and
-mean squares for each variable tested. If the null hypothesis of
-symmetry is rejected, it indicates that the effects of positive and
-negative changes in the variable are significantly different, suggesting
-an asymmetric relationship.
+**\[superseded\]**
 
-The non-linear model with one asymmetric variables is specified as
-follows: \$\$ \Delta{y\_{t}} = \psi + \eta\_{0}y\_{t - 1} +
-\eta^{+}\_{1} x^{+}\_{t - 1} + \eta^{-}\_{1} x^{-}\_{t - 1} + \sum\_{j =
-1}^{p}{\gamma\_{j}\Delta y\_{t - j}} + \sum\_{j =
-0}^{q}{\beta^{+}\_{j}\Delta x^{+}\_{t - j}} + \sum\_{j =
-0}^{m}{\beta^{-}\_{j}\Delta x^{-}\_{t - j}} + e\_{t} \$\$
-
-This function performs the symmetry test both for long-run and short-run
-variables in a kardl model. It uses the
-[`nlWaldtest`](https://rdrr.io/pkg/nlWaldTest/man/nlWaldtest.html)
-function from the nlWaldTest package for long-run variables and the
-[`linearHypothesis`](https://rdrr.io/pkg/car/man/linearHypothesis.html)
-function from the car package for short-run variables. The hypotheses
-for the long-run variables are: \$\$ H\_{0}:
--\frac{\eta^{+}\_{1}}{\eta\_{0}} = -\frac{\eta^{-}\_{1}}{\eta\_{0}} \$\$
-\$\$ H\_{1}: -\frac{\eta^{+}\_{1}}{\eta\_{0}} \neq
--\frac{\eta^{-}\_{1}}{\eta\_{0}} \$\$
-
-The hypotheses for the short-run variables are: \$\$ H\_{0}: \sum\_{j =
-0}^{q}{\beta^{+}\_{j}} = \sum\_{j = 0}^{m}{\beta^{-}\_{j}} \$\$ \$\$
-H\_{1}: \sum\_{j = 0}^{q}{\beta^{+}\_{j}} \neq \sum\_{j =
-0}^{m}{\beta^{-}\_{j}} \$\$
+This function performs symmetry tests on non-linear KARDL models to
+assess whether the effects of positive and negative changes in
+independent variables are statistically different.
 
 ## Usage
 
@@ -121,10 +86,6 @@ A list with class "kardl" containing the following components:
 
 ## Details
 
-This function performs symmetry tests on non-linear KARDL models to
-assess whether the effects of positive and negative changes in
-independent variables are statistically different.
-
 This function evaluates whether the inclusion of a particular variable
 in the model follows a linear relationship or exhibits a non-linear
 pattern. By analyzing the behavior of the variable, the function helps
@@ -134,6 +95,47 @@ indicating a non-linear interaction. This distinction is important in
 model specification, as it ensures that the variable is appropriately
 represented, which can enhance the model's accuracy and predictive
 performance.
+
+The symmetry test is a statistical procedure used to assess the presence
+of symmetry in the relationship between variables in a model. It is
+particularly useful in econometric analysis, where it helps to identify
+whether the effects of changes in one variable on another are symmetric
+or asymmetric. The test involves estimating a model that includes both
+positive and negative components of the variables and then performing a
+Wald test to determine if the coefficients of these components are
+significantly different from each other. If the test indicates
+significant differences, it suggests that the relationship is
+asymmetric, meaning that the impact of increases and decreases in the
+variables differs. This test returns results for both long-run and
+short-run variables in a KARDL model. Where applicable, it provides the
+Wald test statistics, p-values, degrees of freedom, sum of squares, and
+mean squares for each variable tested. If the null hypothesis of
+symmetry is rejected, it indicates that the effects of positive and
+negative changes in the variable are significantly different, suggesting
+an asymmetric relationship.
+
+The non-linear model with one asymmetric variables is specified as
+follows: \$\$ \Delta{y\_{t}} = \psi + \eta\_{0}y\_{t - 1} +
+\eta^{+}\_{1} x^{+}\_{t - 1} + \eta^{-}\_{1} x^{-}\_{t - 1} + \sum\_{j =
+1}^{p}{\gamma\_{j}\Delta y\_{t - j}} + \sum\_{j =
+0}^{q}{\beta^{+}\_{j}\Delta x^{+}\_{t - j}} + \sum\_{j =
+0}^{m}{\beta^{-}\_{j}\Delta x^{-}\_{t - j}} + e\_{t} \$\$
+
+This function performs the symmetry test both for long-run and short-run
+variables in a kardl model. It uses the
+[`nlWaldtest`](https://rdrr.io/pkg/nlWaldTest/man/nlWaldtest.html)
+function from the nlWaldTest package for long-run variables and the
+[`linearHypothesis`](https://rdrr.io/pkg/car/man/linearHypothesis.html)
+function from the car package for short-run variables. The hypotheses
+for the long-run variables are: \$\$ H\_{0}:
+-\frac{\eta^{+}\_{1}}{\eta\_{0}} = -\frac{\eta^{-}\_{1}}{\eta\_{0}} \$\$
+\$\$ H\_{1}: -\frac{\eta^{+}\_{1}}{\eta\_{0}} \neq
+-\frac{\eta^{-}\_{1}}{\eta\_{0}} \$\$
+
+The hypotheses for the short-run variables are: \$\$ H\_{0}: \sum\_{j =
+0}^{q}{\beta^{+}\_{j}} = \sum\_{j = 0}^{m}{\beta^{-}\_{j}} \$\$ \$\$
+H\_{1}: \sum\_{j = 0}^{q}{\beta^{+}\_{j}} \neq \sum\_{j =
+0}^{m}{\beta^{-}\_{j}} \$\$
 
 ## References
 

@@ -5,7 +5,27 @@
       fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/output/chtml/fonts/woff-v2"
     }
   };
-</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pesaran, Shin, and Smith t Bounds Test — psst"><meta name="description" content="This function performs the Pesaran t Bound test"><meta property="og:description" content="This function performs the Pesaran t Bound test"></head><body>
+</script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet"><script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet"><link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet"><script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Pesaran, Shin, and Smith t Bounds Test — psst"><meta name="description" content="
+This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which
+is used to detect the existence of a long-term relationship (cointegration)
+between variables in an autoregressive distributed lag (ARDL) model. The t
+Bound test specifically focuses on the significance of the coefficient of
+the lagged dependent variable, helping to assess whether the variable
+reverts to its long-term equilibrium after short-term deviations. The test
+provides critical values for both upper and lower bounds. If the t-statistic
+falls within the appropriate range, it confirms the presence of
+cointegration. This test is particularly useful when working with datasets
+containing both stationary and non-stationary variables."><meta property="og:description" content="
+This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which
+is used to detect the existence of a long-term relationship (cointegration)
+between variables in an autoregressive distributed lag (ARDL) model. The t
+Bound test specifically focuses on the significance of the coefficient of
+the lagged dependent variable, helping to assess whether the variable
+reverts to its long-term equilibrium after short-term deviations. The test
+provides critical values for both upper and lower bounds. If the t-statistic
+falls within the appropriate range, it confirms the presence of
+cointegration. This test is particularly useful when working with datasets
+containing both stationary and non-stationary variables."></head><body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
 
 
@@ -13,7 +33,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">kardl</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">2.0.7</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,7 +64,17 @@
     </div>
 
     <div class="ref-description section level2">
-    <p>This function performs the Pesaran t Bound test</p>
+    <p><a href="https://lifecycle.r-lib.org/articles/stages.html#superseded" class="external-link"><img src="figures/lifecycle-superseded.svg" alt="[Superseded]"></a></p>
+<p>This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which
+is used to detect the existence of a long-term relationship (cointegration)
+between variables in an autoregressive distributed lag (ARDL) model. The t
+Bound test specifically focuses on the significance of the coefficient of
+the lagged dependent variable, helping to assess whether the variable
+reverts to its long-term equilibrium after short-term deviations. The test
+provides critical values for both upper and lower bounds. If the t-statistic
+falls within the appropriate range, it confirms the presence of
+cointegration. This test is particularly useful when working with datasets
+containing both stationary and non-stationary variables.</p>
     </div>
 
     <div class="section level2">
@@ -128,19 +158,6 @@ determined automatically based on the model's characteristics.</p></dd>
 
 
 </dl></div>
-    <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function performs the Pesaran, Shin, and Smith (PSS) t Bound test, which
-is used to detect the existence of a long-term relationship (cointegration)
-between variables in an autoregressive distributed lag (ARDL) model. The t
-Bound test specifically focuses on the significance of the coefficient of
-the lagged dependent variable, helping to assess whether the variable
-reverts to its long-term equilibrium after short-term deviations. The test
-provides critical values for both upper and lower bounds. If the t-statistic
-falls within the appropriate range, it confirms the presence of
-cointegration. This test is particularly useful when working with datasets
-containing both stationary and non-stationary variables.</p>
-    </div>
     <div class="section level2">
     <h2 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a></h2>
 

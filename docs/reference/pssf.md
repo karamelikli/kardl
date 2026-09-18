@@ -1,5 +1,7 @@
 # Pesaran, Shin, and Smith Bounds F-Test
 
+**\[superseded\]**
+
 This function performs the Pesaran, Shin, and Smith (PSS) F Bound test
 to assess the presence of a long-term relationship (cointegration)
 between variables in the context of an autoregressive distributed lag

@@ -1,5 +1,7 @@
 # Get kardl Package Options
 
+**\[experimental\]**
+
 This function retrieves the current settings of the kardl package. Users
 can specify option names to get their values or call the function
 without arguments to retrieve all current settings.
@@ -54,7 +56,7 @@ kardl_get()
 #> $formula
 #> DriversKilled ~ PetrolPrice + drivers + Asymmetr(PetrolPrice) + 
 #>     deterministic(law) + trend
-#> <environment: 0x5c5f497c0ba0>
+#> <environment: 0x5a7f9e0fd518>
 #> 
 #> $print_wrap
 #> NULL

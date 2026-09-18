@@ -665,7 +665,7 @@ resources and time constraints when setting `maxlag`.
 
 `mode` is a character string or numeric vector specifying the mode of
 the model estimation. The default value is `"quick"`. The available
-options are:  
+options are:\
 - **“quick”**: This mode provides a fast estimation of the model without
 optimizing the lags. It is suitable for initial explorations or when the
 user has a predefined lag structure. - **“grid”**: This mode performs a

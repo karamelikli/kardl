@@ -1,4 +1,6 @@
-# Estimate ARDL and NARDL Models with Automatic Lag Selection
+# Estimate ARDL and NARDL Models
+
+**\[superseded\]**
 
 This function estimates an Autoregressive Distributed Lag (ARDL) or
 Nonlinear ARDL (NARDL) model based on the provided data and model
@@ -71,7 +73,6 @@ kardl(
   `Lasymmetric()`, and `Asymmetric()` follow the same usage rules:
 
   - They can be freely combined within a single formula, for example:
-
 
           y ~ . +
             Asymmetric(z) +

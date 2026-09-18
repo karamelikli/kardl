@@ -1,5 +1,7 @@
 # Narayan Bounds Test
 
+**\[superseded\]**
+
 This function performs the Narayan test, which is designed to assess
 cointegration using critical values specifically tailored for small
 sample sizes. Unlike traditional cointegration tests that may rely on

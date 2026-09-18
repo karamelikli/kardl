@@ -1,5 +1,7 @@
 # Bootstrap Confidence Intervals for Dynamic Multipliers
 
+**\[experimental\]**
+
 This function computes bootstrap confidence intervals (CI) for dynamic
 multipliers of a specified variable in a model estimated using the
 `kardl` package. The bootstrap method generates resampled datasets to

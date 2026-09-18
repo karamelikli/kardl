@@ -5,7 +5,8 @@
 #'
 #' This dataset is \strong{deprecated} and is provided for testing purposes only
 #' for versions of \pkg{kardl} before 2.0.5. It is retained for backward
-#' compatibility.
+#' compatibility. Now the \strong{Seatbelts} dataset is used for testing
+#' purposes. Please use the Seatbelts dataset instead.
 #'
 #' @format A data frame with 470 rows and 4 variables:
 #' \describe{
